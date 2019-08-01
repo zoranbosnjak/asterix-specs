@@ -26,6 +26,7 @@ in
     buildInputs = [
       asterix-converter
       pkgs.python36Packages.sphinx
+      pkgs.tk
     ];
   }
 
