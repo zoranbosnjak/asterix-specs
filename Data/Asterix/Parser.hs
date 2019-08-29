@@ -1,5 +1,6 @@
-{-# LANGUAGE LambdaCase        #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase         #-}
+{-# LANGUAGE OverloadedStrings  #-}
+{-# LANGUAGE TypeFamilies       #-}
 
 -- |
 -- Module:      Data.Asterix.Parser
@@ -15,6 +16,7 @@ module Data.Asterix.Parser where
 
 import           Control.Monad
 import           Data.Void
+import           Data.Bool
 import           Data.Word (Word8)
 import           Data.Text (Text)
 import qualified Data.Text as T
@@ -26,32 +28,49 @@ import           Data.Asterix.Types
 
 type Parser = Parsec Void Text
 
--- | Parse 'cat'.
+-- | Space consumer helper function.
+smartSkip :: Parser () -> Parser ()
+smartSkip skipSpace = L.space
+    skipSpace
+    (L.skipLineComment "//")
+    (L.skipBlockCommentNested "/*" "*/")
+
+-- | Skip whitespace with newline.
+scn :: Parser ()
+scn = smartSkip space1
+
+-- | Skip whitespace without newline.
+sc :: Parser ()
+sc = smartSkip (void $ some (char ' ' <|> char '\t'))
+
+stringLiteral :: Parser String
+stringLiteral = char '"' >> manyTill L.charLiteral (char '"')
+
+-- | Parse with first successfull parser.
+tryOne :: [Parser a] -> Parser a
+tryOne [] = fail "empty list"
+tryOne [x] = x
+tryOne (x:xs) = try x <|> tryOne xs
+
+-- | Parse 'category'.
 pCat :: Parser Word8
 pCat = do
-    string "category" >> space
+    string "category" >> sc
     (a,b,c) <- (,,) <$> digitChar <*> digitChar <*> digitChar
-    space
     return (read [a,b,c] :: Word8)
 
 -- | Parse 'edition'.
 pEdition :: Parser Edition
 pEdition = do
-    string "edition" >> space
-    a <- L.decimal
-    void $ char '.'
-    b <- L.decimal
-    space
+    string "edition" >> sc
+    (a,_,b) <- (,,) <$> L.decimal <*> char '.' <*> L.decimal
     return $ Edition a b
 
 -- | Parse 'date'.
 pDate :: Parser Date
 pDate = do
-    string "date" >> space
-    a <- L.decimal
-    void $ char '-'
-    b <- L.decimal
-    space
+    string "date" >> sc
+    (a,_,b) <- (,,) <$> L.decimal <*> char '-' <*> L.decimal
     return $ Date a b
 
 -- | Parse to the end of line.
@@ -65,20 +84,17 @@ skipEmptyLines = do
         True -> pLine >> skipEmptyLines
         False -> return ()
 
--- | Get indent level of a string.
-getIndent :: String -> Pos
-getIndent = mkPos . succ . length . takeWhile (== ' ')
-
 -- | Parse text block after a header 'hdr'.
 blockAfter :: Text -> Parser String
 blockAfter hdr = do
     i <- L.indentLevel
-    void $ string hdr >> newline
+    void $ string hdr >> many (char ' ') >> newline
     skipEmptyLines
-    result <- unlines . leftIndent . dropEmpty <$> consumeUntilIndent i
-    space
-    return result
+    unlines . leftIndent . dropEmpty <$> consumeUntilIndent i
   where
+    getIndent :: String -> Pos
+    getIndent = mkPos . succ . length . takeWhile (== ' ')
+
     consumeUntilIndent :: Pos -> Parser [String]
     consumeUntilIndent i = atEnd >>= \case
         True -> return []
@@ -103,74 +119,67 @@ blockAfter hdr = do
 pPreamble :: Parser Text
 pPreamble = T.pack <$> blockAfter "preamble"
 
-stringLiteral :: Parser String
-stringLiteral = char '"' >> manyTill L.charLiteral (char '"')
-
--- | Parse first successfull parser.
-tryOne :: [Parser a] -> Parser a
-tryOne [] = fail "empty list"
-tryOne [x] = x
-tryOne (x:xs) = try x <|> tryOne xs
-
 -- | Parse a list of chunks (all chunks have the same initial indent level).
-parseList :: Parser h -> Parser a -> Parser (h, [a])
-parseList parseHeader parseOne = do
-    hdr <- parseHeader <* newline
-    skipEmptyLines
-    i <- getIndent <$> lookAhead pLine
-    space
-    values <- some $ do
-        j <- L.indentLevel
-        when  (j /= i) $ fail "unexpected indent"
-        parseOne
+parseList :: Parser h -> (Parser () -> Parser a) -> Parser (h, [a])
+parseList parseHeader parseChunk = do
+    i0 <- L.indentLevel
+    hdr <- parseHeader
+    i1 <- lookAhead (scn >> L.indentLevel)
+    when (i1 <= i0) $ fail "indent required"
+    let sc' = do
+            scn
+            j <- L.indentLevel
+            end <- atEnd
+            bool (fail "unexpected indent") (return ()) ((j > i1) || end)
+    values <- some (try (L.indentGuard scn EQ i1) >> parseChunk sc')
     return (hdr, values)
 
 pNumber :: Parser Number
 pNumber = tryOne
-    [ NumberR <$> ((L.signed space L.float) <* space)
-    , NumberZ <$> ((L.signed space L.decimal) <* space)
+    [ NumberR <$> (L.signed space L.float)
+    , NumberZ <$> (L.signed space L.decimal)
     ]
 
 -- | Parse (fixed) type.
-pFixed :: Parser ItemType
-pFixed = do
-    string "fixed" >> space
-    n <- L.decimal <* space
-    val <- tryOne
-        [ string "raw" >> space >> pure Raw
-        , string "signed" >> space >> fmap Signed pQuantity
-        , string "unsigned" >> space >> fmap Unsigned pQuantity
-        , Table . snd <$> parseList (string "values") parseRow
-        , string "string" >> pure Ascii
+pFixed :: Parser () -> Parser ItemType
+pFixed sc' = do
+    string "item" >> sc'
+    n <- L.decimal
+    val <- sc' >> tryOne
+        [ string "raw" >> pure Raw
+        , string "signed" >> fmap Signed pQuantity
+        , string "unsigned" >> fmap Unsigned pQuantity
+        , (Table . snd <$> parseList (string "discrete") parseRow)
+        , string "string" >> sc >> string "ascii" >> pure StringAscii
+        , string "string" >> sc >> string "icao" >> pure StringICAO
         ]
     return $ Fixed n val
   where
     pQuantity = do
-        scale <- string "scale" >> space >> pNumber
-        fract <- string "fract" >> space >> (L.decimal <* space)
-        unit <- optional . try $ do
-            string "unit" >> space
-            (T.pack <$> stringLiteral) <* space
-        lo <- optional $ tryOne
-            [ string "ge" >> space >> (Including <$> pNumber)
-            , string "gt" >> space >> (Excluding <$> pNumber)
+        scale <- try (sc' >> string "scale" >> sc' >> pNumber) <|> pure (NumberZ 1)
+        fract <- try (sc' >> string "fractional" >> sc' >> (L.decimal <* sc')) <|> pure 0
+        unit <- optional . try $
+            ( sc' >> string "unit" >> sc' >> (T.pack <$> stringLiteral) )
+        lo <- optional . try $ tryOne
+            [ sc' >> string "ge" >> sc' >> (Including <$> pNumber)
+            , sc' >> string "gt" >> sc' >> (Excluding <$> pNumber)
             ]
-        hi <- optional $ tryOne
-            [ string "le" >> space >> (Including <$> pNumber)
-            , string "lt" >> space >> (Excluding <$> pNumber)
+        hi <- optional . try $ tryOne
+            [ sc' >> string "le" >> sc' >> (Including <$> pNumber)
+            , sc' >> string "lt" >> sc' >> (Excluding <$> pNumber)
             ]
         return $ Quantity scale fract unit lo hi
-    parseRow = do
-        val <- L.decimal
-        char ':' >> space
+
+    parseRow _ = do
+        val <- L.decimal    -- TODO: add support for [INT, CHR, HEX, OCT]
+        char ':' >> sc
         msg <- T.strip . T.pack <$> pLine
-        space
         return (val, msg)
 
 -- | Parse group of nested items.
 pGroup :: Parser ItemType
 pGroup = do
-    Group . snd <$> parseList (string "items") pItem
+    Group . snd <$> parseList (string "subitems") pItem
 
 -- | Parse 'extended' item.
 pExtended :: Parser ItemType
@@ -179,61 +188,70 @@ pExtended = do
     return $ Extended n1 n2 lst
   where
     parseHeader = do
-        string "extended" >> space
-        n1 <- L.decimal <* space
+        string "extended" >> sc
+        n1 <- L.decimal <* sc
         n2 <- L.decimal
         return (n1, n2)
 
+-- | Parse 'repetitive' item.
+pRepetitive :: Parser ItemType
+pRepetitive = do
+    void $ string "repetitive"
+    i <- lookAhead (scn >> L.indentLevel)
+    let sc' = do
+            scn
+            j <- L.indentLevel
+            end <- atEnd
+            bool (fail "unexpected indent") (return ()) ((j > i) || end)
+    scn >> fmap Repetitive (pContent sc')
+
 -- | Parse 'compound' item.
 pCompound :: Parser ItemType
-pCompound = do
-    (_, lst) <- parseList (string "compound") pItem
-    return $ Compound lst
+pCompound = Compound . snd <$> parseList (string "compound") pItem
 
 -- | Parse item 'content'.
-pContent :: Parser ItemType
-pContent = tryOne
-    [ pFixed
+pContent :: Parser () -> Parser ItemType
+pContent sc' = tryOne
+    [ pFixed sc'
     , pGroup
     , pExtended
-    --, pRepetitive
+    , pRepetitive
     --, pExplicit
     , pCompound
     --, pRFC
     ]
 
 -- | Parse spare or regular 'item'.
-pItem :: Parser Item
-pItem = try pSpare <|> do
-    name <- some alphaNumChar <* space
-    title <- (T.pack <$> stringLiteral) <* space
-    description <- optional . try $ do
-        (T.pack <$> blockAfter "description")
-    content <- pContent
-    return $ Item name title description content
+pItem :: Parser () -> Parser Item
+pItem sc' = try pSpare <|> pRegular
   where
-    pSpare = do
-        string "spare" >> space
-        fmap Spare L.decimal <* space
+    pRegular = do
+        name <- some alphaNumChar <* sc'
+        title <- (T.pack <$> stringLiteral)
+        description <- optional . try $ do
+            sc'
+            (T.pack <$> blockAfter "description")
+        content <- sc' >> pContent sc'
+        remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
+        return $ Item name title description content remark
+    pSpare = string "spare" >> sc' >> fmap Spare L.decimal
 
--- | Parse toplevel item at ident level 'p'.
-pToplevelItem :: Parser Toplevel
-pToplevelItem = do
-    name <- some alphaNumChar <* space
-    title <- (T.pack <$> stringLiteral) <* space
+-- | Parse toplevel item.
+pToplevelItem :: Parser () -> Parser Toplevel
+pToplevelItem sc' = do
+    name <- some alphaNumChar <* sc'
+    title <- (T.pack <$> stringLiteral) <* sc'
     mandatory <-
         (string "mandatory" *> pure True)
         <|> (string "optional" *> pure False)
-    space
-    definition <- (T.pack <$> blockAfter "definition") <* space
-    content <- pContent
-    remark <- optional . try $ do
-        (T.pack <$> blockAfter "remark")
+    sc'
+    definition <- (T.pack <$> blockAfter "definition") <* sc'
+    content <- pContent sc'
+    remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
     return $ Toplevel
         mandatory
         definition
-        (Item name title Nothing content)
-        remark
+        (Item name title Nothing content remark)
 
 -- | Parse toplevel items.
 pToplevelItems :: Parser [Toplevel]
@@ -243,9 +261,9 @@ pToplevelItems = snd <$> parseList (string "items") pToplevelItem
 pUap :: Parser Uap
 pUap = uap {- <|> uaps -}
   where
-    parseOne
-        = (char '-' >> space >> return Nothing)
-      <|> (fmap Just (some alphaNumChar <* space))
+    parseOne _sc'
+        = (char '-' >> return Nothing)
+      <|> (fmap Just (some alphaNumChar))
     uap = Uap . snd <$> parseList (string "uap") parseOne
     -- uaps = undefined -- TODO
 
@@ -253,10 +271,10 @@ pUap = uap {- <|> uaps -}
 pCategory :: Parser Category
 pCategory = Category
     <$> pCat
-    <*> (T.pack <$> stringLiteral) <* space
-    <*> pEdition
-    <*> pDate
-    <*> (fmap Just (try pPreamble) <|> pure Nothing)
-    <*> pToplevelItems
-    <*> pUap
+    <*> (scn >> (T.pack <$> stringLiteral))
+    <*> (scn >> pEdition)
+    <*> (scn >> pDate)
+    <*> optional (try (scn >> pPreamble))
+    <*> (scn >> pToplevelItems)
+    <*> (scn >> pUap)
 

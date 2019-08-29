@@ -81,7 +81,8 @@ data ItemContent
     | Unsigned Quantity
     | Signed Quantity
     | Table [(Int, Text)]
-    | Ascii
+    | StringAscii
+    | StringICAO
     deriving (Generic, Eq, Show)
 
 instance ToJSON ItemContent where
@@ -101,8 +102,11 @@ instance ToJSON ItemContent where
             [ "type" .= ("Table" :: String)
             , "values" .= Map.fromList lst
             ]
-        Ascii -> object
-            [ "type" .= ("Ascii" :: String)
+        StringAscii -> object
+            [ "type" .= ("StringAscii" :: String)
+            ]
+        StringICAO -> object
+            [ "type" .= ("StringICAO" :: String)
             ]
 
 type RegisterSize = Int
@@ -111,7 +115,7 @@ data ItemType
     = Fixed RegisterSize ItemContent
     | Group [Item]
     | Extended Int Int [Item]
-    | Repetitive [Item]
+    | Repetitive ItemType
     | Explicit Int
     | Compound [Item]
     | Rfs
@@ -133,6 +137,10 @@ instance ToJSON ItemType where
         , "extents" .= n2
         , "items"   .= lst
         ]
+    toJSON (Repetitive i) = object
+        [ "type"    .= ("Repetitive" :: String)
+        , "item"    .= i
+        ]
     toJSON (Compound lst) = object
         [ "type"    .= ("Compound" :: String)
         , "items"   .= lst
@@ -146,6 +154,7 @@ data Item
         , itemTitle         :: Text
         , itemDescription   :: Maybe Text
         , itemContent       :: ItemType
+        , itemRemark        :: Maybe Text
         }
     deriving (Generic, Eq, Show)
 
@@ -154,19 +163,19 @@ instance ToJSON Item where
         [ "spare"       .= True
         , "length"      .= n
         ]
-    toJSON (Item name tit dsc cont) = object
+    toJSON (Item name tit dsc cont remark) = object
         [ "spare"       .= False
         , "name"        .= name
         , "title"       .= tit
         , "description" .= dsc
         , "content"     .= cont
+        , "remark"      .= remark
         ]
 
 data Toplevel = Toplevel
     { topMandatory      :: Bool
     , topDefinition     :: Text
     , topItem           :: Item
-    , topRemark         :: Maybe Text
     } deriving (Generic, Eq, Show)
 
 instance ToJSON Toplevel where
@@ -176,7 +185,6 @@ instance ToJSON Toplevel where
             [ "mandatory"   .= topMandatory t
             , "definition"  .= topDefinition t
             , "item"        .= i
-            , "remark"      .= topRemark t
             ]
 
 data Uap

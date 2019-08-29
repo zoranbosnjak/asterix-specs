@@ -99,8 +99,8 @@ class RenderRst(GenericRender):
         self.dumpLn('')
         self.renderItem(item['content'])
         self.dumpLn('')
-        if toplevel['remark']:
-            self.dump(toplevel['remark'])
+        if item['remark']:
+            self.dump(item['remark'])
             self.dumpLn('')
 
     def renderItem(self, content):
@@ -111,22 +111,24 @@ class RenderRst(GenericRender):
             return '{} bits'.format(n)
 
         def renderQuantity(signed, q):
-            fract = q['fractionalBits']
-            self.dumpLn('- scaling factor: {}'.format(q['scaling']))
-            self.dumpLn('- fractional bits: {}'.format(fract))
-            self.dumpLn('- unit: "{}"'.format(q.get('unit', '-')))
-
-            # lsb1
             k = q['scaling']
-            k = str(k)+'*' if k != 1 else ''
-            exp = '{-'+str(fract)+'}'
-            lsb1 = ':math:`{}2^{} {}`'.format(k, exp, q.get('unit',''))
+            fract = q['fractionalBits']
+            unit = q.get('unit')
 
-            # lsb2
-            a = '{'+str(q['scaling'])+'}'
-            b = '{' + str(pow(2, fract)) + '}'
-            lsb2 = ':math:`\\frac {} {} {}`'.format(a, b, q.get('unit',''))
-            self.dumpLn('- LSB = {} = {}'.format(lsb1, lsb2))
+            self.dumpLn('- scaling factor: {}'.format(k))
+            self.dumpLn('- fractional bits: {}'.format(fract))
+            if unit:
+                self.dumpLn('- unit: "{}"'.format(unit))
+
+            if fract == 0:
+                lsb = ":math:`{}` {}".format(k, unit or '')
+                self.dumpLn("- LSB = {}".format(lsb))
+            else:
+                b = '{2^{'+str(fract)+'}}'
+                lsb1 = ":math:`{} / {}` {}".format(k, b, unit or '')
+                c = '{'+str(pow(2, fract))+'}'
+                lsb2 = ":math:`{} / {}` {}".format(k, c, unit or '')
+                self.dumpLn("- LSB = {} = {}".format(lsb1, lsb2))
 
             lim1 = q['lowLimit']
             lim2 = q['highLimit']
@@ -143,7 +145,7 @@ class RenderRst(GenericRender):
                     rng += (']' if lim2['including'] else ')')
                 else:
                     rng += r'\infty)'
-                self.dumpLn('- range: :math:`{}` {}'.format(rng, q.get('unit', '')))
+                self.dumpLn('- range: :math:`{}` {}'.format(rng, unit or ''))
             self.dumpLn('')
 
         def renderFixed():
@@ -168,8 +170,12 @@ class RenderRst(GenericRender):
                     self.dumpLn('| {}: {}'.format(key, value))
                 self.unindent()
                 self.dumpLn('')
-            elif t == 'Ascii':
-                pass    # TODO
+            elif t == 'StringAscii':
+                self.dumpLn('- Ascii string (8-bits per character)')
+                self.dumpLn('')
+            elif t == 'StringICAO':
+                self.dumpLn('- Ascii ICAO (6-bits per character)')
+                self.dumpLn('')
             else:
                 raise Exception('unexpected value type {}'.format(t))
             return n
@@ -187,13 +193,16 @@ class RenderRst(GenericRender):
             self.dumpLn(' - *{}*'.format(tit) if tit else '')
             self.dumpLn('')
             if item['description']:
-                self.dumpLn('{}'.format(item['description']))
+                self.dumpLn(' '.join(item['description'].splitlines()))
+                self.dumpLn('')
             return self.renderItem(item['content'])
 
         def renderGroup():
             n = 0
+            self.indent()
             for item in content['items']:
                 n += renderMaybeItem(item)
+            self.unindent()
             return n
 
         def renderExtended():
@@ -204,6 +213,7 @@ class RenderRst(GenericRender):
             self.dumpLn('Extended item with first part ``{} bits`` long and optional ``{} bits`` extends.'.format(n1, n2))
             self.dumpLn('')
             n = 0
+            self.indent()
             terminated = False
             for item in content['items']:
                 n += renderMaybeItem(item)
@@ -221,17 +231,28 @@ class RenderRst(GenericRender):
                     n += 1
                     nextFx = next(fx)
                     terminated = True
+            self.unindent()
             assert terminated, "wrong termination of extended item"
             return n
+
+        def renderRepetitive():
+            self.dumpLn('Repetitive item')
+            self.dumpLn('')
+            self.indent()
+            x = self.renderItem(content['item'])
+            self.unindent()
+            return x
 
         def renderCompound():
             self.dumpLn('Compound item')
             self.dumpLn('')
+            self.indent()
             n = 0
             m = 0
             for item in content['items']:
                 n += renderMaybeItem(item)
                 m += 1
+            self.unindent()
             return n
 
         return locals()['render'+content['type']]()
