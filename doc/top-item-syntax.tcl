@@ -1,3 +1,4 @@
+set title "top-item-def"
 set spec {
     stack
         {line NAME {''} TITLE {''}}

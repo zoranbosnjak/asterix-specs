@@ -1,3 +1,4 @@
+set title "content-def"
 set spec {
     stack
         { or

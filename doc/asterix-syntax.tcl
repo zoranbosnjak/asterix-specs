@@ -1,3 +1,4 @@
+set title "asterix-def"
 set spec {
     stack
         {line /category 3-DIGIT-NUMBER {''} {TITLE} {''}}

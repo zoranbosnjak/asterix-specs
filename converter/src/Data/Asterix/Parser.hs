@@ -17,6 +17,7 @@ module Data.Asterix.Parser where
 import           Control.Monad
 import           Data.Void
 import           Data.Bool
+import           Data.Ratio ((%))
 import           Data.Word (Word8)
 import           Data.Text (Text)
 import qualified Data.Text as T
@@ -137,8 +138,15 @@ parseList parseHeader parseChunk = do
 pNumber :: Parser Number
 pNumber = tryOne
     [ NumberR <$> (L.signed space L.float)
+    , NumberQ <$> pRatio
     , NumberZ <$> (L.signed space L.decimal)
     ]
+  where
+    pRatio = do
+        a <- L.decimal
+        void $ string "/"
+        b <- L.decimal
+        return $ (a % b)
 
 -- | Parse (fixed) type.
 pFixed :: Parser () -> Parser ItemType

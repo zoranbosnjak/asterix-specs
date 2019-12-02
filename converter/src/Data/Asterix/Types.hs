@@ -15,7 +15,7 @@
 module Data.Asterix.Types where
 
 import           GHC.Generics (Generic)
-import           Data.Ratio (Ratio)
+import           Data.Ratio (Ratio, numerator, denominator)
 import           Data.Text
 import qualified Text.Printf as TP
 import           Data.Word (Word8)
@@ -46,9 +46,9 @@ data Number
 
 instance ToJSON Number where
     toJSON = \case
-        NumberZ n -> toJSON n -- TODO: "Natural " ++ show n
-        NumberQ r -> toJSON r -- TODO: toJSON ("Ratio " ++ show r)
-        NumberR d -> toJSON d -- TOOD: "Real " ++ show d
+        NumberZ val -> toJSON $ "Natural " ++ show val
+        NumberQ val -> toJSON $ "Ratio " ++ show (numerator val) ++ " " ++ show (denominator val)
+        NumberR val -> toJSON $ "Real " ++ show val
 
 data Limit
     = Including Number

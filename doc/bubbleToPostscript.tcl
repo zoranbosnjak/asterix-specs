@@ -617,9 +617,13 @@ proc draw_diagram {spec} {
   error "unknown operator: $cmd"
 }
 
-proc draw_graph {spec} {
+proc draw_graph {title spec} {
   .c delete all
   wm deiconify .
+  set font $::font2
+  set id1 [.c create text 0 0 -anchor c -text $title -font $font]
+  foreach {x0 y0 x1 y1} [.c bbox $id1] break
+  .c move all 0 {-30}
   draw_diagram "line bullet [list $spec] bullet"
   foreach {x0 y0 x1 y1} [.c bbox all] break
   .c move all [expr {2-$x0}] [expr {2-$y0}]
@@ -633,6 +637,6 @@ proc draw_graph {spec} {
 
 # main script
 eval [read stdin]
-puts [draw_graph $spec]
+puts [draw_graph $title $spec]
 exit 0
 
