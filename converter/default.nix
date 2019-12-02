@@ -5,7 +5,7 @@
 , unordered-containers
 }:
 mkDerivation {
-  pname = "asterix-specs";
+  pname = "converter";
   version = "0.1.0";
   src = ./.;
   isLibrary = true;
@@ -20,6 +20,7 @@ mkDerivation {
     optparse-applicative QuickCheck stm template-haskell text
     text-format time unordered-containers
   ];
-  description = "Asterix data specifications and converter";
+  testHaskellDepends = [ base bytestring text ];
+  description = "asterix specs converter";
   license = stdenv.lib.licenses.bsd3;
 }

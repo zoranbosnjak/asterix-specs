@@ -1,27 +1,26 @@
-{ withHoogle ? false }:
+{ gitrev ? "devel"
+, packages ? null
+}:
 
 let
   nixpkgs = builtins.fromJSON (builtins.readFile ./nixpkgs.json);
-  pkgs = import (builtins.fetchGit nixpkgs) {};
+  pkgs = if packages == null
+    then import (builtins.fetchGit nixpkgs) { }
+    else import packages { };
 
-  converter = import ./converter.nix { inherit withHoogle pkgs; };
+  haskellPackages = pkgs.haskellPackages;
+  converter = haskellPackages.callPackage ./converter/default.nix { };
 
-in {
+  deps = import ./deps.nix { inherit pkgs; };
 
-  conv = pkgs.stdenv.mkDerivation {
-    name = "converter-environment";
-    buildInputs = converter.env.nativeBuildInputs ++ [
-      pkgs.haskellPackages.cabal-install
-    ];
-  };
-
-  specs = pkgs.stdenv.mkDerivation {
-    name = "specs-environment";
-    buildInputs = [
-      converter
-      pkgs.python36Packages.sphinx
-      pkgs.tk
-    ];
-  };
-}
+in
+  pkgs.stdenv.mkDerivation {
+    name = "asterix-specs-environment";
+    buildInputs =
+      converter.env.nativeBuildInputs
+      ++ deps
+      ++ [ pkgs.tree];
+    shellHook = ''
+    '';
+  }
 
