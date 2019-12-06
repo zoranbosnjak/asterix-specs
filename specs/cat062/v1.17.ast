@@ -43,6 +43,10 @@ items
                 discrete
                     0: Default
                     1: Garbled code
+            CH "Change in Mode 3/A" item 1
+                discrete
+                    0: No Change
+                    1: Mode 3/A has changed
             spare 1
             ABCD "Mode-3/A reply in octal representation" item 12 raw
 
@@ -1034,8 +1038,8 @@ items
                         discrete
                             0: Unknown
                             1: Aircraft Altitude
-                            0: FCU/MCP Selected Altitude
-                            1: FMS Selected Altitude
+                            2: FCU/MCP Selected Altitude
+                            3: FMS Selected Altitude
                     Altitude "Altitude in two's complement form"
                         item 13
                         signed scale 25 unit "ft" ge -1300 le 100000
@@ -1066,7 +1070,7 @@ items
                         item 13
                         signed scale 25 unit "ft" ge -1300 le 100000
             TIS "Trajectory Intent Status"
-                subitems
+                extended 8 8
                     NAV ""
                         item 1
                         discrete
@@ -1514,6 +1518,7 @@ items
                             1: Not available
                             2: Unknown
                             3: Invalid
+                    spare 4
             STD "Standard Instrument Departure"
                 item 56
                 string ascii
@@ -1671,6 +1676,18 @@ items
                   track number for each unit involved in the co-operation. The first
                   unit identification identifies the unit that is responsible for the
                   track amalgamation.
+
+    RE "Reserved Expansion Field"
+        optional
+        definition
+            Expansion
+        explicit
+
+    SP "Special Purpose Field"
+        optional
+        definition
+            Special Purpose Field
+        explicit
 
 uap
     010

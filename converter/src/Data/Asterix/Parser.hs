@@ -149,7 +149,7 @@ pNumber = tryOne
         return $ (a % b)
 
 -- | Parse (fixed) type.
-pFixed :: Parser () -> Parser ItemType
+pFixed :: Parser () -> Parser Variation
 pFixed sc' = do
     string "item" >> sc'
     n <- L.decimal
@@ -185,12 +185,12 @@ pFixed sc' = do
         return (val, msg)
 
 -- | Parse group of nested items.
-pGroup :: Parser ItemType
+pGroup :: Parser Variation
 pGroup = do
     Group . snd <$> parseList (string "subitems") pItem
 
 -- | Parse 'extended' item.
-pExtended :: Parser ItemType
+pExtended :: Parser Variation
 pExtended = do
     ((n1,n2), lst) <- parseList parseHeader pItem
     return $ Extended n1 n2 lst
@@ -202,7 +202,7 @@ pExtended = do
         return (n1, n2)
 
 -- | Parse 'repetitive' item.
-pRepetitive :: Parser ItemType
+pRepetitive :: Parser Variation
 pRepetitive = do
     void $ string "repetitive"
     i <- lookAhead (scn >> L.indentLevel)
@@ -211,20 +211,24 @@ pRepetitive = do
             j <- L.indentLevel
             end <- atEnd
             bool (fail "unexpected indent") (return ()) ((j > i) || end)
-    scn >> fmap Repetitive (pContent sc')
+    scn >> fmap Repetitive (pVariation sc')
+
+-- | Parse 'explicit' item.
+pExplicit :: Parser Variation
+pExplicit = string "explicit" *> pure Explicit
 
 -- | Parse 'compound' item.
-pCompound :: Parser ItemType
+pCompound :: Parser Variation
 pCompound = Compound . snd <$> parseList (string "compound") pItem
 
--- | Parse item 'content'.
-pContent :: Parser () -> Parser ItemType
-pContent sc' = tryOne
+-- | Parse item 'variation'.
+pVariation :: Parser () -> Parser Variation
+pVariation sc' = tryOne
     [ pFixed sc'
     , pGroup
     , pExtended
     , pRepetitive
-    --, pExplicit
+    , pExplicit
     , pCompound
     --, pRFC
     ]
@@ -239,9 +243,9 @@ pItem sc' = try pSpare <|> pRegular
         description <- optional . try $ do
             sc'
             (T.pack <$> blockAfter "description")
-        content <- sc' >> pContent sc'
+        variation <- sc' >> pVariation sc'
         remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
-        return $ Item name title description content remark
+        return $ Item name title description variation remark
     pSpare = string "spare" >> sc' >> fmap Spare L.decimal
 
 -- | Parse toplevel item.
@@ -254,12 +258,12 @@ pToplevelItem sc' = do
         <|> (string "optional" *> pure False)
     sc'
     definition <- (T.pack <$> blockAfter "definition") <* sc'
-    content <- pContent sc'
+    variation <- pVariation sc'
     remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
     return $ Toplevel
         mandatory
         definition
-        (Item name title Nothing content remark)
+        (Item name title Nothing variation remark)
 
 -- | Parse toplevel items.
 pToplevelItems :: Parser [Toplevel]

@@ -19,6 +19,7 @@ set spec {
                 }
             }
             { line /repetitive item-def }
+            { line /explicit }
             { line /item BITS content-def }
             { line /spare BITS }
         }

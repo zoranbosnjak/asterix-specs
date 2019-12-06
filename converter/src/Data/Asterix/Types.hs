@@ -111,17 +111,17 @@ instance ToJSON ItemContent where
 
 type RegisterSize = Int
 
-data ItemType
+data Variation
     = Fixed RegisterSize ItemContent
     | Group [Item]
     | Extended Int Int [Item]
-    | Repetitive ItemType
-    | Explicit Int
+    | Repetitive Variation
+    | Explicit
     | Compound [Item]
     | Rfs
     deriving (Generic, Eq, Show)
 
-instance ToJSON ItemType where
+instance ToJSON Variation where
     toJSON (Fixed n x) = object
         [ "type"    .= ("Fixed" :: String)
         , "size"    .= n
@@ -141,6 +141,9 @@ instance ToJSON ItemType where
         [ "type"    .= ("Repetitive" :: String)
         , "item"    .= i
         ]
+    toJSON Explicit = object
+        [ "type"    .= ("Explicit" :: String)
+        ]
     toJSON (Compound lst) = object
         [ "type"    .= ("Compound" :: String)
         , "items"   .= lst
@@ -153,7 +156,7 @@ data Item
         { itemName          :: String
         , itemTitle         :: Text
         , itemDescription   :: Maybe Text
-        , itemContent       :: ItemType
+        , itemVariation     :: Variation
         , itemRemark        :: Maybe Text
         }
     deriving (Generic, Eq, Show)
@@ -163,12 +166,12 @@ instance ToJSON Item where
         [ "spare"       .= True
         , "length"      .= n
         ]
-    toJSON (Item name tit dsc cont remark) = object
+    toJSON (Item name tit dsc var remark) = object
         [ "spare"       .= False
         , "name"        .= name
         , "title"       .= tit
         , "description" .= dsc
-        , "content"     .= cont
+        , "variation"   .= var
         , "remark"      .= remark
         ]
 
