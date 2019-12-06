@@ -12,8 +12,8 @@ let
 in
   [
     tex
-    pkgs.python36
-    pkgs.python36Packages.sphinx
+    pkgs.python3
+    pkgs.python3Packages.sphinx
     pkgs.tk
     pkgs.inkscape
   ]
