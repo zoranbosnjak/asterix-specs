@@ -102,7 +102,7 @@ items
                 discrete
                     0: default value
                     1: last message transmitted to the user for the track
-            TBS "" item 1
+            TSB "" item 1
                 discrete
                     0: default value
                     1: first message transmitted to the user for the track
@@ -454,10 +454,10 @@ items
             Calculated track velocity expressed in Cartesian co-ordinates,in
             two's complement form.
         subitems
-            Vx ""
+            VX ""
                 item 16
                 signed fractional 2 unit "m/s" ge -8192 le +8191.75
-            Vy ""
+            VY ""
                 item 16
                 signed fractional 2 unit "m/s" ge -8192 le +8191.75
 
@@ -530,10 +530,8 @@ items
         optional
         definition
             Calculated rate of Climb/Descent of an aircraft in two's complement form.
-        subitems
-            RCD "Rate Of Climb/Descent"
-                item 16
-                signed scale 6.25 unit "feet/min"
+        item 16
+        signed scale 6.25 unit "ft/min"
 
         remark
             Notes:
@@ -918,7 +916,7 @@ items
                         unsigned scale 360 fractional 16 unit "deg"
             HEIGHT "Measured 3-D Height"
                 item 16
-                unsigned scale 25 unit "feet"
+                unsigned scale 25 unit "ft"
             MDC ""
                 subitems
                     V ""
@@ -1015,7 +1013,7 @@ items
                 raw
             MHG "Magnetic Heading"
                 item 16
-                unsigned scale 360 fractional 16 unit "deg" le 0.0055
+                unsigned scale 360 fractional 16 unit "deg"
             IAS "Indicated Airspeed/Mach No"
                 subitems
                     IM "" item 1
@@ -1025,7 +1023,7 @@ items
                     IAS "" item 15 raw
             TAS "True Air Speed"
                 item 16
-                unsigned unit "knot" ge 0 le 2046
+                unsigned unit "kt" ge 0 le 2046
             SAL "Selected Altitude"
                 subitems
                     SAS ""
@@ -1033,14 +1031,14 @@ items
                         discrete
                             0: No source information provided
                             1: Source information provided
-                    Source ""
+                    SRC ""
                         item 2
                         discrete
                             0: Unknown
                             1: Aircraft Altitude
                             2: FCU/MCP Selected Altitude
                             3: FMS Selected Altitude
-                    Altitude "Altitude in two's complement form"
+                    ALT "Altitude in two's complement form"
                         item 13
                         signed scale 25 unit "ft" ge -1300 le 100000
             FSS "Final State Selected Altitude"
@@ -1179,8 +1177,8 @@ items
                     ARC "Altitude reporting capability"
                         item 1
                         discrete
-                            0: 100 ft resoution
-                            1: 25 ft resoution
+                            0: 100 ft resolution
+                            1: 25 ft resolution
                     AIC "Aircraft identification capability"
                         item 1
                         discrete
@@ -1241,17 +1239,17 @@ items
                 description
                     Barometric Vertical Rate in two's complement form
                 item 16
-                signed scale 6.25 unit "feet/minute"
+                signed scale 6.25 unit "ft/min"
             GVR "Geometric Vertical Rate"
                 description
                     Geometric Vertical Rate in two's complement form
                 item 16
-                signed scale 6.25 unit "feet/minute"
+                signed scale 6.25 unit "ft/min"
             RAN "Roll Angle"
                 description
                     Roll Angle in two's complement form
                 item 16
-                signed scale 0.01 unit "degree" ge -180 le 180
+                signed scale 0.01 unit "deg" ge -180 le 180
             TAR "Track Angle Rate"
                 subitems
                     TI ""
@@ -1268,7 +1266,7 @@ items
                     spare 1
             TAN "Track Angle"
                 item 16
-                unsigned scale 360 fractional 16 unit "degrees" ge 0.0055
+                unsigned scale 360 fractional 16 unit "deg" ge 0.0055
             GSP "Ground Speed"
                 description
                     Ground Speed in two's complement form referenced to WGS84
@@ -1300,16 +1298,16 @@ items
                             0: Not valid Turbulence
                             1: Valid Turbulence
                     spare 4
-                    WS "Wind Speed"
+                    WS_D "Wind Speed"
                         item 16
-                        unsigned unit "knot" ge 0 le 300
-                    WD "Wind Direction"
+                        unsigned unit "kt" ge 0 le 300
+                    WD_D "Wind Direction"
                         item 16
-                        unsigned unit "degree" ge 1 le 360
-                    TMP "Temperature in degrees celsius"
+                        unsigned unit "deg" ge 1 le 360
+                    TMP_D "Temperature in degrees celsius"
                         item 16
-                        signed fractional 2 unit "degree C" ge -100 le 100
-                    TUR "Turbulence"
+                        signed fractional 2 unit "degC" ge -100 le 100
+                    TRB_D "Turbulence"
                         item 8
                         unsigned ge 0 le 15
             EMC "Emitter Category"
@@ -1343,10 +1341,10 @@ items
                 subitems
                     Latitude "In WGS.84 in two's complement form."
                         item 24
-                        signed scale 180 fractional 23 unit "degree" ge -90 le 90
+                        signed scale 180 fractional 23 unit "deg" ge -90 le 90
                     Longitude "In WGS.84 in two's complement form."
                         item 24
-                        signed scale 180 fractional 23 unit "degree" ge -180 lt 180
+                        signed scale 180 fractional 23 unit "deg" ge -180 lt 180
                 remark
                     This corresponds to a resolution of at least 2.4 meters.
             GAL "Geometric Altitude"
@@ -1368,7 +1366,7 @@ items
                         item 4 raw
             IAR "Indicated Airspeed"
                 item 16
-                signed unit "Kt" ge 0 le 1100
+                signed unit "kt" ge 0 le 1100
             MAC "Mach Number"
                 item 16
                 signed scale 0.008 unit "Mach" ge 0 le 4096
@@ -1377,7 +1375,7 @@ items
                     spare 4
                     BPS ""
                         item 12
-                        signed scale 0.1 unit "mb" ge -0 le 409.5
+                        unsigned scale 0.1 unit "mb" ge -0 le 409.5
 
         remark
             Notes:
@@ -1492,15 +1490,15 @@ items
                             2: Tomorrow
                             3: Invalid
                     spare 4
-                    HOR "Hours" item 5 unsigned unit "Hour" ge 0 le 23
+                    HOR "Hours" item 5 unsigned unit "h" ge 0 le 23
                     spare 2
-                    MIN "Minutes" item 6 unsigned unit "Minute" ge 0 le 59
+                    MIN "Minutes" item 6 unsigned unit "min" ge 0 le 59
                     AVS "Seconds Available Flag" item 1
                         discrete
                             0: Seconds available
                             1: Seconds not available
                     spare 1
-                    SEC "Seconds" item 6 unsigned unit "Second" ge 0 le 59
+                    SEC "Seconds" item 6 unsigned unit "s" ge 0 le 59
             AST "Aircraft Stand" item 48 string ascii
             STS "Stand Status"
                 subitems
@@ -1606,10 +1604,10 @@ items
                 subitems
                     X "APW (Latitude Component)"
                         item 16
-                        unsigned scale 180 fractional 25 unit "degree"
+                        unsigned scale 180 fractional 25 unit "deg"
                     Y "APW (Longitude Component)"
                         item 16
-                        unsigned scale 180 fractional 25 unit "degree"
+                        unsigned scale 180 fractional 25 unit "deg"
             AGA "Estimated Accuracy Of Calculated Track Geometric Altitude"
                 item 8
                 unsigned scale 6.25 unit "ft"
@@ -1634,7 +1632,7 @@ items
                         unsigned fractional 2 unit "m/s2"
             ARC "Estimated Accuracy Of Rate Of Climb/Descent"
                 item 8
-                unsigned scale 6.25 unit "feet/minute"
+                unsigned scale 6.25 unit "ft/min"
 
         remark
             Notes:

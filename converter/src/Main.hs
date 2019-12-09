@@ -54,84 +54,98 @@ options = Options
         json = flag' OutputJson ( long "json" <> help "JSON format" )
 
 validate :: Category -> [ValidationError]
-validate category = concat
-    [ allToplevelDefined    -- Defined items and UAP items must match.
-    , itemValid (topItem <$> catItems category) -- Check alignments, sizes...
+validate category = join
+    [ allToplevelDefined
+    , join $ (snd . validateItem [] . topItem <$> catItems category)
     ]
   where
-    allToplevelDefined =
-        let required = case catUap category of
-                Uap lst -> catMaybes lst
-                Uaps _lst -> undefined
-            defined = (topItem <$> catItems category) >>= \case
-                Spare _ -> return []
-                Item name _ _ _ _ -> [name]
 
-            problemsNotDefined = do
-                x <- required
-                guard $ x `notElem` defined
-                return $ show x ++ " required, but not defined."
-
-            problemsNotRequired = do
-                x <- defined
-                guard $ x `notElem` required
-                return $ show x ++ " defined, but not required."
-
-        in problemsNotDefined ++ problemsNotRequired
-
-    itemValid [] = []
-    itemValid (x:xs) = snd (checkItem [] x) ++ itemValid xs
+    allToplevelDefined :: [ValidationError]
+    allToplevelDefined = join [requiredNotDefined, definedNotRequired]
       where
-        reportWhen False _ _ = []
-        reportWhen True path msg = [show (reverse path) ++ " -> " ++ msg]
+        required = case catUap category of
+            Uap lst -> catMaybes lst
+            Uaps _lst -> undefined
 
-        checkItem path (Spare n) = (n, reportWhen (n <= 0) ("spare":path) "size")
-        checkItem path (Item name _ _ iType _) = checkType iType
-          where
-            checkType t =
-                let checkSubitems lst =
-                        let result = fmap (checkItem (name:path)) lst
-                            n = sum (fst <$> result)
-                        in (n, join
-                            [ mconcat (snd <$> result)
-                            , reportWhen (null lst) (name:path) "empty"
-                            , reportWhen ((mod n 8) /= 0) (name:path) "size reminder error"
-                            ])
-                in case t of
-                    Fixed n content -> (n, join
-                        [ reportWhen (n <= 0) (name:path) "size"
-                        , case content of
-                            Table lst ->
-                                let keys = fst <$> lst
-                                    size = compare (length keys) (2 ^ n)
-                                in join
-                                    [ reportWhen (keys /= nub keys) (name:path) "duplicated keys"
-                                    , reportWhen (size == GT) (name:path) "table too big"
-                                    ]
-                            _ -> []
-                        ])
-                    Group lst -> checkSubitems lst
-                    Extended n1 n2 lst -> loop (0, join [check n1, check n2]) fxPositions lst where
-                        check n = reportWhen (mod n 8 /= 0) (name:path) ("extended size: " ++ show n)
-                        fxPositions = tail (sum <$> inits (n1:repeat n2))
-                        loop (n,problems) fx = \case
-                            [] -> (n, join
-                                [ problems
-                                , reportWhen ((mod n 8) /= 0) (name:path) "not aligned"
-                                ])
-                            (i:is) ->
-                                let (a,b) = (head fx, tail fx)
-                                    (n', problems') = checkItem (name:path) i
-                                in case compare (n+n'+1) a of
-                                    LT -> loop (n+n', problems'++problems) (a:b) is
-                                    EQ -> loop (n+n'+1, problems'++problems) b is
-                                    GT -> loop (n+n', problems'++problems++["overflow"]) b is
-                    Repetitive subType ->
-                        let (n, problems) = checkType subType
-                        in (8+n, problems)
-                    Explicit -> (0, [])
-                    Compound lst -> checkSubitems lst
-                    Rfs -> (0, [])
+        defined = (topItem <$> catItems category) >>= \case
+            Spare _ -> return []
+            Item name _ _ _ _ -> [name]
+
+        requiredNotDefined = do
+            x <- required
+            guard $ x `notElem` defined
+            return $ show x ++ " required, but not defined."
+
+        definedNotRequired = do
+            x <- defined
+            guard $ x `notElem` required
+            return $ show x ++ " defined, but not required."
+
+reportWhen :: Bool -> [String] -> ValidationError -> [ValidationError]
+reportWhen False _ _ = []
+reportWhen True path msg = [show (reverse path) ++ " -> " ++ msg]
+
+validateItem :: [String] -> Item -> (Int, [ValidationError])
+validateItem path = \case
+    Spare n -> (n, reportWhen (n <= 0) ("spare":path) "size")
+    Item name _ _ variation _ -> validateVariation (name:path) variation
+
+validateVariation :: [String] -> Variation -> (Int, [ValidationError])
+validateVariation path = \case
+    Fixed n content -> (n, join
+        [ reportWhen (n <= 0) path "size"
+        , validateContent path n content
+        ])
+    Group lst -> checkSubitems lst
+    Extended n1 n2 lst -> loop (0, join [check n1, check n2]) fxPositions lst where
+        check n = reportWhen (mod n 8 /= 0) path ("extended size: " ++ show n)
+        fxPositions = tail (sum <$> inits (n1:repeat n2))
+        loop (n,problems) fx = \case
+            [] -> (n, join
+                [ problems
+                , reportWhen ((mod n 8) /= 0) path "not aligned"
+                , reportWhen (dupNames lst) path "duplicated names"
+                ])
+            (i:is) ->
+                let (a,b) = (head fx, tail fx)
+                    (n', problems') = validateItem path i
+                in case compare (n+n'+1) a of
+                    LT -> loop (n+n', problems'++problems) (a:b) is
+                    EQ -> loop (n+n'+1, problems'++problems) b is
+                    GT -> loop (n+n', problems'++problems++["overflow"]) b is
+    Repetitive subVariation ->
+        let (n, problems) = validateVariation path subVariation
+        in (8+n, problems)
+    Explicit -> (0, [])
+    Compound lst -> checkSubitems lst
+    Rfs -> (0, [])
+  where
+    dupNames lst =
+        let getName = \case
+                Spare _ -> Nothing
+                Item name' _ _ _ _ -> Just name'
+            names = catMaybes (fmap getName lst)
+        in names /= nub names
+    checkSubitems lst =
+        let result = fmap (validateItem path) lst
+            n = sum (fst <$> result)
+        in (n, join
+            [ mconcat (snd <$> result)
+            , reportWhen (null lst) path "empty"
+            , reportWhen ((mod n 8) /= 0) path "size reminder error"
+            , reportWhen (dupNames lst) path "duplicated names"
+            ])
+
+validateContent :: [String] -> Int -> ItemContent -> [ValidationError]
+validateContent path n = \case
+    Table lst ->
+        let keys = fst <$> lst
+            size = compare (length keys) (2 ^ n)
+        in join
+            [ reportWhen (keys /= nub keys) path "duplicated keys"
+            , reportWhen (size == GT) path "table too big"
+            ]
+    _ -> []
 
 main :: IO ()
 main = do

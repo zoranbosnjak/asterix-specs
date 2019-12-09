@@ -233,12 +233,16 @@ pVariation sc' = tryOne
     --, pRFC
     ]
 
+-- | Parser valid name.
+pName :: Parser String
+pName = some (alphaNumChar <|> char '_')
+
 -- | Parse spare or regular 'item'.
 pItem :: Parser () -> Parser Item
 pItem sc' = try pSpare <|> pRegular
   where
     pRegular = do
-        name <- some alphaNumChar <* sc'
+        name <- pName <* sc'
         title <- (T.pack <$> stringLiteral)
         description <- optional . try $ do
             sc'
@@ -251,7 +255,7 @@ pItem sc' = try pSpare <|> pRegular
 -- | Parse toplevel item.
 pToplevelItem :: Parser () -> Parser Toplevel
 pToplevelItem sc' = do
-    name <- some alphaNumChar <* sc'
+    name <- pName <* sc'
     title <- (T.pack <$> stringLiteral) <* sc'
     mandatory <-
         (string "mandatory" *> pure True)
@@ -275,7 +279,7 @@ pUap = uap {- <|> uaps -}
   where
     parseOne _sc'
         = (char '-' >> return Nothing)
-      <|> (fmap Just (some alphaNumChar))
+      <|> (fmap Just pName)
     uap = Uap . snd <$> parseList (string "uap") parseOne
     -- uaps = undefined -- TODO
 
