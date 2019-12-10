@@ -107,7 +107,7 @@ class RenderRst(RenderTextGeneric):
                 self.dumpLn('- values:')
                 self.dumpLn('')
                 self.indent()
-                for key,value in value['values'].items():
+                for key,value in value['values']:
                     self.dumpLn('| {}: {}'.format(key, value))
                 self.unindent()
                 self.dumpLn('')
@@ -136,7 +136,17 @@ class RenderRst(RenderTextGeneric):
             if item['description']:
                 self.dumpLn(' '.join(item['description'].splitlines()))
                 self.dumpLn('')
-            return self.renderItem(item['variation'])
+            n = self.renderItem(item['variation'])
+            if item['remark']:
+                self.indent()
+                self.dumpLn('remark')
+                self.indent()
+                for i in item['remark'].strip().splitlines():
+                    self.dumpLn(i)
+                self.unindent()
+                self.unindent()
+                self.dumpLn('')
+            return n
 
         def renderGroup():
             n = 0

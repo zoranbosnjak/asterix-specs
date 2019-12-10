@@ -20,7 +20,6 @@ import           Data.Text
 import qualified Text.Printf as TP
 import           Data.Word (Word8)
 import           Data.Aeson (ToJSON, toJSON, object, (.=))
-import qualified Data.Map as Map
 
 data Edition = Edition
     { editionMajor :: Int
@@ -100,7 +99,7 @@ instance ToJSON ItemContent where
             ]
         Table lst -> object
             [ "type" .= ("Table" :: String)
-            , "values" .= Map.fromList lst
+            , "values" .= lst
             ]
         StringAscii -> object
             [ "type" .= ("StringAscii" :: String)

@@ -35,6 +35,7 @@ let
     buildInputs = deps;
     shellHook = ''
       export VERSION=${version};
+      export PYTHONPATH=$(pwd):$PYTHONPATH
     '';
   };
 
