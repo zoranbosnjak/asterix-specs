@@ -90,12 +90,13 @@ class RenderRst(RenderTextGeneric):
 
         def renderFixed():
             n = variation['size']
-            self.dumpLn('- fixed item, {}'.format(bits(n)))
+            self.dumpLn('- {} [``{}``]'.format(bits(n), '.'*n))
             self.dumpLn('')
             value = variation['value']
             t = value['type']
             if t == 'Raw':
-                pass
+                self.dumpLn('- raw value')
+                self.dumpLn('')
             elif t == 'Unsigned':
                 self.dumpLn('- unsigned number')
                 renderQuantity(False, value['quantity'])
@@ -125,7 +126,7 @@ class RenderRst(RenderTextGeneric):
                 n = item['length']
                 self.dumpLn('``(spare)``')
                 self.dumpLn('')
-                self.dumpLn('- {}'.format(bits(item['length'])))
+                self.dumpLn('- {} [``{}``]'.format(bits(n), '.'*n))
                 self.dumpLn('')
                 return n
             tit = item['title']
