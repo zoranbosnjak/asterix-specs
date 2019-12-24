@@ -5,7 +5,7 @@ preamble
     Surveillance data exchange.
 
 items
-    
+
     010 "Data Source Identifier"
         mandatory
         definition
@@ -13,29 +13,29 @@ items
         subitems
             SAC "System Area Code"
                 item 8
-                raw
+                    raw
             SIC "System Identification code"
                 item 8
-                raw
+                    raw
         remark
             Note:
                 - The up-to-date list of SACs is published on the
                   EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
-    
+
     015 "Service Identification"
         optional
         definition
             Identification of the service provided to one or more users.
         item 8
-        raw
-    
+            raw
+
     040 "Track Number"
         mandatory
         definition
             Identification of a track
         item 16
-        raw
-    
+            raw
+
     060 "Track Mode 3/A Code"
         optional
         definition
@@ -43,24 +43,24 @@ items
         subitems
             V "validated"
                 item 1
-                discrete
-                    0: Code validated
-                    1: Code not validated
+                    discrete
+                        0: Code validated
+                        1: Code not validated
             G "garbled"
                 item 1
-                discrete
-                    0: Default
-                    1: Garbled code
+                    discrete
+                        0: Default
+                        1: Garbled code
             CH "Change in Mode 3/A"
                 item 1
-                discrete
-                    0: No Change
-                    1: Mode 3/A has changed
+                    discrete
+                        0: No Change
+                        1: Mode 3/A has changed
             spare 1
             ABCD "Mode-3/A reply in octal representation"
                 item 12
-                raw
-    
+                    raw
+
     070 "Time Of Track Information"
         mandatory
         definition
@@ -68,15 +68,15 @@ items
             in the track message, in the form of elapsed time since
             last mid night, expressed as UTC.
         item 24
-        unsigned
-        fractional 7
-        unit "s"
+            unsigned
+            fractional 7
+            unit "s"
         remark
             Notes:
-            
+
                 1. This is the time of the track state vector.
                 2. The time is reset to zero at every midnight.
-    
+
     080 "Track Status"
         mandatory
         definition
@@ -84,181 +84,181 @@ items
         extended 8 8
             MON ""
                 item 1
-                discrete
-                    0: Multisensor track
-                    1: Monosensor track
+                    discrete
+                        0: Multisensor track
+                        1: Monosensor track
             SPI ""
                 item 1
-                discrete
-                    0: default value
-                    1: SPI present in the last report received from a sensor capable of decoding this data
+                    discrete
+                        0: default value
+                        1: SPI present in the last report received from a sensor capable of decoding this data
             MRH "Most Reliable Height"
                 item 1
-                discrete
-                    0: Barometric altitude (Mode C) more reliable
-                    1: Geometric altitude more reliable
+                    discrete
+                        0: Barometric altitude (Mode C) more reliable
+                        1: Geometric altitude more reliable
             SRC "Source of calculated track altitude for I062/130"
                 item 3
-                discrete
-                    0: no source
-                    1: GNSS
-                    2: 3D radar
-                    3: triangulation
-                    4: height from coverage
-                    5: speed look-up table
-                    6: default height
-                    7: multilateration
+                    discrete
+                        0: no source
+                        1: GNSS
+                        2: 3D radar
+                        3: triangulation
+                        4: height from coverage
+                        5: speed look-up table
+                        6: default height
+                        7: multilateration
             CNF ""
                 item 1
-                discrete
-                    0: Confirmed track
-                    1: Tentative track
+                    discrete
+                        0: Confirmed track
+                        1: Tentative track
             SIM ""
                 item 1
-                discrete
-                    0: Actual track
-                    1: Simulated track
+                    discrete
+                        0: Actual track
+                        1: Simulated track
             TSE ""
                 item 1
-                discrete
-                    0: default value
-                    1: last message transmitted to the user for the track
+                    discrete
+                        0: default value
+                        1: last message transmitted to the user for the track
             TSB ""
                 item 1
-                discrete
-                    0: default value
-                    1: first message transmitted to the user for the track
+                    discrete
+                        0: default value
+                        1: first message transmitted to the user for the track
             FPC ""
                 item 1
-                discrete
-                    0: Not flight-plan correlated
-                    1: Flight plan correlated
+                    discrete
+                        0: Not flight-plan correlated
+                        1: Flight plan correlated
             AFF ""
                 item 1
-                discrete
-                    0: default value
-                    1: ADS-B data inconsistent with other surveillance information
+                    discrete
+                        0: default value
+                        1: ADS-B data inconsistent with other surveillance information
             STP ""
                 item 1
-                discrete
-                    0: default value
-                    1: Slave Track Promotion
+                    discrete
+                        0: default value
+                        1: Slave Track Promotion
             KOS ""
                 item 1
-                discrete
-                    0: Complementary service used
-                    1: Background service used
+                    discrete
+                        0: Complementary service used
+                        1: Background service used
             AMA ""
                 item 1
-                discrete
-                    0: track not resulting from amalgamation process
-                    1: track resulting from amalgamation process
+                    discrete
+                        0: track not resulting from amalgamation process
+                        1: track resulting from amalgamation process
             MD4 ""
                 item 2
-                discrete
-                    0: No Mode 4 interrogation
-                    1: Friendly target
-                    2: Unknown target
-                    3: No reply
+                    discrete
+                        0: No Mode 4 interrogation
+                        1: Friendly target
+                        2: Unknown target
+                        3: No reply
             ME ""
                 item 1
-                discrete
-                    0: default value
-                    1: Military Emergency present in the last report received from a sensor capable of decoding this data
+                    discrete
+                        0: default value
+                        1: Military Emergency present in the last report received from a sensor capable of decoding this data
             MI ""
                 item 1
-                discrete
-                    0: default value
-                    1: Military Identification present in the last report received from a sensor capable of decoding this data
+                    discrete
+                        0: default value
+                        1: Military Identification present in the last report received from a sensor capable of decoding this data
             MD5 ""
                 item 2
-                discrete
-                    0: No Mode 5 interrogation
-                    1: Friendly target
-                    2: Unknown target
-                    3: No reply
+                    discrete
+                        0: No Mode 5 interrogation
+                        1: Friendly target
+                        2: Unknown target
+                        3: No reply
             CST ""
                 item 1
-                discrete
-                    0: default value
-                    1: Age of the last received track update is higher than system dependent threshold (coasting)
+                    discrete
+                        0: default value
+                        1: Age of the last received track update is higher than system dependent threshold (coasting)
             PSR ""
                 item 1
-                discrete
-                    0: default value
-                    1: Age of the last received PSR track update is higher than system dependent threshold
+                    discrete
+                        0: default value
+                        1: Age of the last received PSR track update is higher than system dependent threshold
             SSR ""
                 item 1
-                discrete
-                    0: default value
-                    1: Age of the last received SSR track update is higher than system dependent threshold
+                    discrete
+                        0: default value
+                        1: Age of the last received SSR track update is higher than system dependent threshold
             MDS ""
                 item 1
-                discrete
-                    0: default value
-                    1: Age of the last received Mode S track update is higher than system dependent threshold
+                    discrete
+                        0: default value
+                        1: Age of the last received Mode S track update is higher than system dependent threshold
             ADS ""
                 item 1
-                discrete
-                    0: default value
-                    1: Age of the last received ADS-B track update is higher than system dependent threshold
+                    discrete
+                        0: default value
+                        1: Age of the last received ADS-B track update is higher than system dependent threshold
             SUC ""
                 item 1
-                discrete
-                    0: default value
-                    1: Special Used Code (Mode A codes to be defined in the system to mark a track with special interest)
+                    discrete
+                        0: default value
+                        1: Special Used Code (Mode A codes to be defined in the system to mark a track with special interest)
             AAC ""
                 item 1
-                discrete
-                    0: default value
-                    1: Assigned Mode A Code Conflict (same discrete Mode A Code assigned to another track)
+                    discrete
+                        0: default value
+                        1: Assigned Mode A Code Conflict (same discrete Mode A Code assigned to another track)
             SDS ""
                 item 2
-                discrete
-                    0: Combined
-                    1: Co-operative only
-                    2: Non-Cooperative only
-                    3: Not defined
+                    discrete
+                        0: Combined
+                        1: Co-operative only
+                        2: Non-Cooperative only
+                        3: Not defined
             EMS ""
                 item 3
-                discrete
-                    0: No emergency
-                    1: General emergency
-                    2: Lifeguard / medical
-                    3: Minimum fuel
-                    4: No communications
-                    5: Unlawful interference
-                    6: "Downed" Aircraft
-                    7: Undefined
+                    discrete
+                        0: No emergency
+                        1: General emergency
+                        2: Lifeguard / medical
+                        3: Minimum fuel
+                        4: No communications
+                        5: Unlawful interference
+                        6: "Downed" Aircraft
+                        7: Undefined
             PFT ""
                 item 1
-                discrete
-                    0: No indication
-                    1: Potential False Track Indication
+                    discrete
+                        0: No indication
+                        1: Potential False Track Indication
             FPLT ""
                 item 1
-                discrete
-                    0: Default value
-                    1: Track created / updated with FPL data
+                    discrete
+                        0: Default value
+                        1: Track created / updated with FPL data
             DUPT ""
                 item 1
-                discrete
-                    0: Default value
-                    1: Duplicate Mode 3/A Code
+                    discrete
+                        0: Default value
+                        1: Duplicate Mode 3/A Code
             DUPF ""
                 item 1
-                discrete
-                    0: Default value
-                    1: Duplicate Flight Plan
+                    discrete
+                        0: Default value
+                        1: Duplicate Flight Plan
             DUPM ""
                 item 1
-                discrete
-                    0: Default value
-                    1: Duplicate Flight Plan due to manual correlation
+                    discrete
+                        0: Default value
+                        1: Duplicate Flight Plan due to manual correlation
             spare 4
         remark
             Notes:
-            
+
                 1. Track type and coasting can also be derived from I062/290 System Track Update Ages
                 2. If the system supports the technology, default value (0) means that the technology was used to produce the report
                 3. If the system does not support the technology, default value is meaningless.
@@ -281,7 +281,7 @@ items
                 9. Bit (DUPM) is set to 1 if a target was correlated manually but also a regular
                    flight plan exists.
                 10. All tracks for which bits DUPT, DUPF or DUPM are set to 1 are marked on the CWP.
-    
+
     100 "Calculated Track Position"
         optional
         definition
@@ -290,15 +290,15 @@ items
         subitems
             X "x-coordinate"
                 item 24
-                signed
-                fractional 1
-                unit "m"
+                    signed
+                    fractional 1
+                    unit "m"
             Y "y-coordinate"
                 item 24
-                signed
-                fractional 1
-                unit "m"
-    
+                    signed
+                    fractional 1
+                    unit "m"
+
     105 "Calculated Position In WGS-84 Co-ordinates"
         optional
         definition
@@ -307,25 +307,25 @@ items
         subitems
             LAT "Latitude"
                 item 32
-                signed
-                scale 180
-                fractional 25
-                unit "deg"
-                ge -90
-                le 90
+                    signed
+                    scale 180
+                    fractional 25
+                    unit "deg"
+                    ge -90
+                    le 90
             LON "Longitude"
                 item 32
-                signed
-                scale 180
-                fractional 25
-                unit "deg"
-                ge -180
-                lt 180
+                    signed
+                    scale 180
+                    fractional 25
+                    unit "deg"
+                    ge -180
+                    lt 180
         remark
             Notes:
-            
+
                 - The LSB provides a resolution at least better than 0.6m.
-    
+
     110 "Mode 5 Data reports & Extended Mode 1 Code"
         optional
         definition
@@ -335,96 +335,96 @@ items
                 subitems
                     M5 ""
                         item 1
-                        discrete
-                            0: No Mode 5 interrogation
-                            1: Mode 5 interrogation
+                            discrete
+                                0: No Mode 5 interrogation
+                                1: Mode 5 interrogation
                     ID ""
                         item 1
-                        discrete
-                            0: No authenticated Mode 5 ID reply
-                            1: Authenticated Mode 5 ID reply
+                            discrete
+                                0: No authenticated Mode 5 ID reply
+                                1: Authenticated Mode 5 ID reply
                     DA ""
                         item 1
-                        discrete
-                            0: No authenticated Mode 5 Data reply or Repor
-                            1: Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply type other than ID)
+                            discrete
+                                0: No authenticated Mode 5 Data reply or Repor
+                                1: Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply type other than ID)
                     M1 ""
                         item 1
-                        discrete
-                            0: Mode 1 code not present or not from Mode 5 reply
-                            1: Mode 1 code from Mode 5 reply
+                            discrete
+                                0: Mode 1 code not present or not from Mode 5 reply
+                                1: Mode 1 code from Mode 5 reply
                     M2 ""
                         item 1
-                        discrete
-                            0: Mode 2 code not present or not from Mode 5 reply
-                            1: Mode 2 code from Mode 5 reply
+                            discrete
+                                0: Mode 2 code not present or not from Mode 5 reply
+                                1: Mode 2 code from Mode 5 reply
                     M3 ""
                         item 1
-                        discrete
-                            0: Mode 3 code not present or not from Mode 5 reply
-                            1: Mode 3 code from Mode 5 reply
+                            discrete
+                                0: Mode 3 code not present or not from Mode 5 reply
+                                1: Mode 3 code from Mode 5 reply
                     MC ""
                         item 1
-                        discrete
-                            0: Mode C altitude code not present or not from Mode 5 reply
-                            1: Mode C altitude from Mode 5 reply
+                            discrete
+                                0: Mode C altitude code not present or not from Mode 5 reply
+                                1: Mode C altitude from Mode 5 reply
                     X "X-pulse from Mode 5 Data reply or Report"
                         item 1
-                        discrete
-                            0: X-pulse set to zero or no authenticated Data reply or Report received.
-                            1: X-pulse set to one
+                            discrete
+                                0: X-pulse set to zero or no authenticated Data reply or Report received.
+                                1: X-pulse set to one
             PMN "Mode 5 PIN/ National Origin/Mission Code"
                 subitems
                     spare 2
                     PIN "PIN Code"
                         item 14
-                        raw
+                            raw
                     spare 3
                     NAT "National Origin"
                         item 5
-                        raw
+                            raw
                     spare 2
                     MIS "Mission Code"
                         item 6
-                        raw
+                            raw
             POS "Mode 5 Reported Position"
                 subitems
                     LAT "Latitude"
                         item 24
-                        signed
-                        scale 180
-                        fractional 23
-                        unit "deg"
-                        ge -90
-                        le 90
+                            signed
+                            scale 180
+                            fractional 23
+                            unit "deg"
+                            ge -90
+                            le 90
                     LON "Longitude"
                         item 24
-                        signed
-                        scale 180
-                        fractional 23
-                        unit "deg"
-                        ge -180
-                        lt 180
+                            signed
+                            scale 180
+                            fractional 23
+                            unit "deg"
+                            ge -180
+                            lt 180
             GA "Mode 5 GNSS-derived Altitude"
                 subitems
                     spare 1
                     RES "Resolution with which the GNSS-derived Altitude (GA) is reported"
                         item 1
-                        discrete
-                            0: GA reported in 100 ft increments.
-                            1: GA reported in 25 ft increments.
+                            discrete
+                                0: GA reported in 100 ft increments.
+                                1: GA reported in 25 ft increments.
                     GA "GNSS-derived Altitude of target, expressed as height above WGS 84 ellipsoid."
                         item 14
-                        signed
-                        scale 25
-                        unit "ft"
-                        ge -1000
+                            signed
+                            scale 25
+                            unit "ft"
+                            ge -1000
             EM1 "Extended Mode 1 Code in Octal Representation"
                 subitems
                     spare 4
                     EM1 "Extended Mode 1 reply in octal representation"
                         item 12
-                        raw
+                            raw
             TOS "Time Offset for POS and GA"
                 description
                     Time Offset coded as a twos complement number with an LSB of 1/128 s.
@@ -432,40 +432,40 @@ items
                     and Mode 5 GNSS-derived Altitude (Subfield #4) are valid is given
                     by Time of Day (I048/140) plus Time Offset.
                 item 8
-                signed
-                fractional 7
-                unit "s"
+                    signed
+                    fractional 7
+                    unit "s"
             XP "X Pulse Presence"
                 subitems
                     spare 3
                     X5 "X-pulse from Mode 5 Data reply or Report"
                         item 1
-                        discrete
-                            0: X-pulse set to zero or no authenticated Data reply or Report received.
-                            1: X-pulse set to one (present).
+                            discrete
+                                0: X-pulse set to zero or no authenticated Data reply or Report received.
+                                1: X-pulse set to one (present).
                     XC "X-pulse from Mode C reply"
                         item 1
-                        discrete
-                            0: X-pulse set to zero or no Mode C reply.
-                            1: X-pulse set to one (present).
+                            discrete
+                                0: X-pulse set to zero or no Mode C reply.
+                                1: X-pulse set to one (present).
                     X3 "X-pulse from Mode 3/A reply"
                         item 1
-                        discrete
-                            0: X-pulse set to zero or no Mode 3/A reply.
-                            1: X-pulse set to one (present).
+                            discrete
+                                0: X-pulse set to zero or no Mode 3/A reply.
+                                1: X-pulse set to one (present).
                     X2 "X-pulse from Mode 2 reply"
                         item 1
-                        discrete
-                            0: X-pulse set to zero or no Mode 2 reply.
-                            1: X-pulse set to one (present).
+                            discrete
+                                0: X-pulse set to zero or no Mode 2 reply.
+                                1: X-pulse set to one (present).
                     X1 "X-pulse from Mode 1 reply"
                         item 1
-                        discrete
-                            0: X-pulse set to zero or no Mode 1 reply.
-                            1: X-pulse set to one (present).
+                            discrete
+                                0: X-pulse set to zero or no Mode 1 reply.
+                                1: X-pulse set to one (present).
         remark
             Notes:
-            
+
                 1. The flags M2, M3, MC refer to the contents of data subitems I062/120,
                    I062/060 and I062/135 respectively. The flag M1 refers to the contents
                    of the Subfield #5 (Extended Mode 1 Code in Octal Representation).
@@ -486,7 +486,7 @@ items
                    a Mode 1 reply. If Subfield #1 is not present, the Extended
                    Mode 1 Code is from a Mode 1 reply.
                 8. TOS shall be assumed to be zero if Subfield #6 is not present.
-    
+
     120 "Track Mode 2 Code"
         optional
         definition
@@ -495,26 +495,26 @@ items
             spare 4
             ABCD "Mode-2 code in octal representation"
                 item 12
-                raw
-    
+                    raw
+
     130 "Calculated Track Geometric Altitude"
         optional
         definition
             Vertical distance between the target and the projection of its position
             on the earth's ellipsoid, as defined by WGS84, in two's complement form.
         item 16
-        unsigned
-        scale 6.25
-        unit "ft"
-        ge -1500
-        le 150000
+            unsigned
+            scale 6.25
+            unit "ft"
+            ge -1500
+            le 150000
         remark
             Notes:
-            
+
                 1. LSB is required to be less than 10 ft by ICAO
                 2. The source of altitude is identified in bits (SRC) of item
                    I062/080 Track Status.
-    
+
     135 "Calculated Track Barometric Altitude"
         optional
         definition
@@ -522,42 +522,42 @@ items
         subitems
             QNH ""
                 item 1
-                discrete
-                    0: No QNH correction applied
-                    1: QNH correction applied
+                    discrete
+                        0: No QNH correction applied
+                        1: QNH correction applied
             CTB "Calculated Track Barometric Altitude"
                 item 15
-                signed
-                fractional 2
-                unit "FL"
-                ge -15
-                le 1500
+                    signed
+                    fractional 2
+                    unit "FL"
+                    ge -15
+                    le 1500
         remark
             Notes:
-            
+
                 1) ICAO specifies a range between -10 FL and 1267 FL for Mode C
-    
+
     136 "Measured Flight Level"
         optional
         definition
             Last valid and credible flight level used to update the track, in two's
             complement form.
         item 16
-        signed
-        fractional 2
-        unit "FL"
-        ge -15
-        le 1500
+            signed
+            fractional 2
+            unit "FL"
+            ge -15
+            le 1500
         remark
             Notes:
-            
+
                 1. The criteria to determine the credibility of the flight level
                    are Tracker dependent.
                 2. Credible means: within reasonable range of change with respect
                    to the previous detection.
                 3. ICAO specifies a range between -10 FL and 1267 FL for Mode C.
                 4. This item includes the barometric altitude received from ADS-B.
-    
+
     185 "Calculated Track Velocity (Cartesian)"
         optional
         definition
@@ -566,24 +566,24 @@ items
         subitems
             VX ""
                 item 16
-                signed
-                fractional 2
-                unit "m/s"
-                ge -8192
-                le 8191.75
+                    signed
+                    fractional 2
+                    unit "m/s"
+                    ge -8192
+                    le 8191.75
             VY ""
                 item 16
-                signed
-                fractional 2
-                unit "m/s"
-                ge -8192
-                le 8191.75
+                    signed
+                    fractional 2
+                    unit "m/s"
+                    ge -8192
+                    le 8191.75
         remark
             Notes:
-            
+
                 - The y-axis points to the Geographical North at the location of
                   the target.
-    
+
     200 "Mode of Movement"
         optional
         definition
@@ -591,38 +591,38 @@ items
         subitems
             TRANS "Transversal Acceleration"
                 item 2
-                discrete
-                    0: Constant Course
-                    1: Right Turn
-                    2: Left Turn
-                    3: Undetermined
+                    discrete
+                        0: Constant Course
+                        1: Right Turn
+                        2: Left Turn
+                        3: Undetermined
             LONG "Longitudinal Acceleration"
                 item 2
-                discrete
-                    0: Constant Groundspeed
-                    1: Increasing Groundspeed
-                    2: Decreasing Groundspeed
-                    3: Undetermined
+                    discrete
+                        0: Constant Groundspeed
+                        1: Increasing Groundspeed
+                        2: Decreasing Groundspeed
+                        3: Undetermined
             VERT "Transversal Acceleration"
                 item 2
-                discrete
-                    0: Level
-                    1: Climb
-                    2: Descent
-                    3: Undetermined
+                    discrete
+                        0: Level
+                        1: Climb
+                        2: Descent
+                        3: Undetermined
             ADF "Altitude Discrepancy Flag"
                 item 1
-                discrete
-                    0: No altitude discrepancy
-                    1: Altitude discrepancy
+                    discrete
+                        0: No altitude discrepancy
+                        1: Altitude discrepancy
             spare 1
         remark
             Notes:
-            
+
                 - The ADF, if set, indicates that a difference has been detected
                   in the altitude information derived from radar as compared to
                   other technologies (such as ADS-B).
-    
+
     210 "Calculated Acceleration (Cartesian)"
         optional
         definition
@@ -631,36 +631,36 @@ items
         subitems
             Ax ""
                 item 8
-                signed
-                fractional 2
-                unit "m/s2"
-                ge 0.25
+                    signed
+                    fractional 2
+                    unit "m/s2"
+                    ge 0.25
             Ay ""
                 item 8
-                signed
-                fractional 2
-                unit "m/s2"
-                ge 0.25
+                    signed
+                    fractional 2
+                    unit "m/s2"
+                    ge 0.25
         remark
             Notes:
-            
+
                 1. The y-axis points to the Geographical North at the location of the target.
                 2. Maximum value means maximum value or above.
-    
+
     220 "Calculated Rate Of Climb/Descent"
         optional
         definition
             Calculated rate of Climb/Descent of an aircraft in two's complement form.
         item 16
-        signed
-        scale 6.25
-        unit "ft/min"
+            signed
+            scale 6.25
+            unit "ft/min"
         remark
             Notes:
-            
+
                 1. A positive value indicates a climb, whereas a negative value
                    indicates a descent.
-    
+
     245 "Target Identification"
         optional
         definition
@@ -668,25 +668,25 @@ items
         subitems
             STI ""
                 item 2
-                discrete
-                    0: Callsign or registration downlinked from target
-                    1: Callsign not downlinked from target
-                    2: Registration not downlinked from target
-                    3: Invalid
+                    discrete
+                        0: Callsign or registration downlinked from target
+                        1: Callsign not downlinked from target
+                        2: Registration not downlinked from target
+                        3: Invalid
             spare 6
             CHR "Characters 1-8 (coded on 6 bits each) defining target identification"
                 item 48
-                string icao
+                    string icao
         remark
             Notes:
-            
+
                 1. For coding, see section 3.1.2.9 of [Ref.3]
                 2. As the Callsign of the target can already be transmitted
                    (thanks to I062/380 Subfield #2 if downlinked from the
                    aircraft or thanks to I062/390 Subfield #2 if the target
                    is correlated to a flight plan), and in order to avoid
                    confusion at end user's side, this item SHALL not be used.
-    
+
     270 "Target Size & Orientation"
         optional
         definition
@@ -696,29 +696,29 @@ items
                 description
                     Length
                 item 7
-                unsigned
-                unit "m"
+                    unsigned
+                    unit "m"
             ORIENTATION "Orientation"
                 description
                     Length
                 item 7
-                unsigned
-                scale 360
-                fractional 7
-                unit "deg"
+                    unsigned
+                    scale 360
+                    fractional 7
+                    unit "deg"
             WIDTH "Width"
                 description
                     Length
                 item 7
-                unsigned
-                unit "m"
+                    unsigned
+                    unit "m"
         remark
             Notes:
-            
+
                 1. The orientation gives the direction which the target nose is
                    pointing to,relative to the Geographical North.
                 2. When the length only is sent, the largest dimension is provided.
-    
+
     290 "System Track Update Ages"
         optional
         definition
@@ -728,85 +728,85 @@ items
                 description
                     Actual track age since occurence
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 255/4
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 255/4
             PSR ""
                 description
                     Age of the last primary detection used to update the track
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             SSR ""
                 description
                     Age of the last secondary detection used to update the track
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MDS ""
                 description
                     Age of the last Mode S detection used to update the track
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             ADS ""
                 description
                     Age of the last ADS-C report used to update the track
                 item 16
-                unsigned
-                fractional 2
-                unit "s"
-                le 16383.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 16383.75
             ES ""
                 description
                     Age of the last 1090 Extended Squitter ADS-B report used to update the track
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             VDL ""
                 description
                     Age of the last VDL Mode 4 ADS-B report used to update the track
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             UAT ""
                 description
                     Age of the last UAT ADS-B report used to update the track
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             LOP ""
                 description
                     Age of the last magnetic loop detection
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MLT ""
                 description
                     Age of the last MLT detection
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
         remark
             Notes:
-            
+
                 1. Except for Track Age, the ages are counted from Data Item I062/070,
                    Time Of Track Information, using the following formula:
                    Age = Time of track information - Time of last detection used
@@ -815,7 +815,7 @@ items
                 3. If the data has never been received, then the corresponding
                    subfield is not sent.
                 4. Maximum value means maximum value or above.
-    
+
     295 "Track Data Ages"
         optional
         definition
@@ -826,109 +826,109 @@ items
                     Age of the last valid and credible Mode C code or barometric altitude
                     from ADS-B used to update the track (I062/136).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MD1 "Mode 1 Age"
                 description
                     Age of the last valid and credible Mode 1 code used to update the
                     track (I062/110).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MD2 "Mode 2 Age"
                 description
                     Age of the last valid and credible Mode 2 code used to update the
                     track (I062/120).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MDA "Mode 3/A Age"
                 description
                     Age of the last valid and credible Mode 3/A code used to update the
                     track (I062/060).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MD4 "Mode 4 Age"
                 description
                     Age of the last valid and credible Mode 4 code used to update the
                     track.
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MD5 "Mode 5 Age"
                 description
                     Age of the last valid and credible Mode 5 code used to update the
                     track (I062/110).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MHG "Magnetic Heading Age"
                 description
                     Age of the DAP "Magnetic Heading"
                     in item 062/380 (Subfield #3).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             IAS "Indicated Airspeed / Mach Nb age"
                 description
                     Age of the DAP "Indicated Airspeed/Mach Number"
                     in item 062/380 (Subfield #4).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             TAS "True Airspeed Age"
                 description
                     Age of the DAP "True Airspeed"
                     in item 062/380 (Subfield #5).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             SAL "Selected Altitude Age"
                 description
                     Age of the DAP "Selected Altitude"
                     in item 062/380 (Subfield #6).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             FSS "Final State Selected Altitude Age"
                 description
                     Age of the DAP "Final State Selected Altitude Age"
                     in item 062/380 (Subfield #7).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             TID "Trajectory Intent Age"
                 description
                     Age of the DAP "Trajectory Intent"
                     in item 062/380 (Subfield #8).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             COM "Communication/ACAS Capability and Flight Status Age"
                 description
                     Age of the DAP
@@ -936,179 +936,179 @@ items
                     Capability and Flight Status"
                     in item 062/380 (Subfield #10).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             SAB "Status Reported by ADS-B Age"
                 description
                     Age of the DAP "Status Reported
                     by ADS-B"
                     in item 062/380 (Subfield #11).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             ACS "ACAS Resolution Advisory Report Age"
                 description
                     Age of the DAP "ACAS Resolution
                     Advisory Report"
                     in item 062/380 (Subfield #12).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             BVR "Barometric Vertical Rate Age"
                 description
                     Age of the DAP "Barometric
                     Vertical Rate"
                     in item 062/380 (Subfield #13).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             GVR "Geometrical Vertical Rate Age"
                 description
                     Age of the DAP "Geometrical
                     Vertical Rate"
                     in item 062/380 (Subfield #14).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             RAN "Roll Angle Age"
                 description
                     Age of the DAP "Roll Angle"
                     in item 062/380 (Subfield #15).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             TAR "Track Angle Rate Age"
                 description
                     Age of the DAP "Track Angle
                     Rate" in item 062/380 (Subfield #16).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             TAN "Track Angle Age"
                 description
                     Age of the DAP "Track Angle"
                     in item 062/380 (Subfield #17).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             GSP "Ground Speed Age"
                 description
                     Age of the DAP "Ground Speed" in item 062/380 (Subfield #18).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             VUN "Velocity Uncertainty Age"
                 description
                     Age of the DAP "Velocity
                     Uncertainty" in item 062/380 (Subfield #19).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MET "Meteorological Data Age"
                 description
                     Age of the DAP "Meteorological
                     Data" in item 062/380 (Subfield #20).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             EMC "Emitter Category Age"
                 description
                     Age of the DAP "Emitter Category"
                     in item 062/380 (Subfield #21).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             POS "Position Age"
                 description
                     Age of the DAP "Position"
                     in item 062/380 (Subfield #23).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             GAL "Geometric Altitude Age"
                 description
                     Age of the DAP "Geometric
                     Altitude" in item 062/380 (Subfield #24).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             PUN "Position Uncertainty Age"
                 description
                     Age of the DAP "Position
                     Uncertainty" in item 062/380 (Subfield #25).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MB "Mode S MB Data Age"
                 description
                     Age of the DAP "Mode S MB
                     Data" in item 062/380 (Subfield #22).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             IAR "Indicated Airspeed Data Age"
                 description
                     Age of the DAP "Indicated
                     Airspeed" in item 062/380 (Subfield #26).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             MAC "Mach Number Data Age"
                 description
                     Age of the DAP "Mach Number"
                     in item 062/380 (Subfield #27).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
             BPS "Barometric Pressure Setting Data Age"
                 description
                     Age of the DAP "Barometric
                     Pressure Setting" in item 062/380
                     (Subfield #28).
                 item 8
-                unsigned
-                fractional 2
-                unit "s"
-                le 63.75
+                    unsigned
+                    fractional 2
+                    unit "s"
+                    le 63.75
         remark
             Notes:
-            
+
                 1. Despite there are now two subfields (#29 and #30) reporting the ages
                    of, respectively, the Indicated Airspeed track data and the Mach
                    Number track data, the subfield #8 (and so its presence bit , bit-32) is
@@ -1116,31 +1116,31 @@ items
                    releases of ASTERIX Cat. 062 already implemented.
                 2. In all the subfields, the age is the time delay since the value was
                    measured
-    
+
     300 "Vehicle Fleet Identification"
         optional
         definition
             Vehicle fleet identification number.
         item 8
-        discrete
-            0: Unknown
-            1: ATC equipment maintenance
-            2: Airport maintenance
-            3: Fire
-            4: Bird scarer
-            5: Snow plough
-            6: Runway sweeper
-            7: Emergency
-            8: Police
-            9: Bus
-            10: Tug (push/tow)
-            11: Grass cutter
-            12: Fuel
-            13: Baggage
-            14: Catering
-            15: Aircraft maintenance
-            16: Flyco (follow me)
-    
+            discrete
+                0: Unknown
+                1: ATC equipment maintenance
+                2: Airport maintenance
+                3: Fire
+                4: Bird scarer
+                5: Snow plough
+                6: Runway sweeper
+                7: Emergency
+                8: Police
+                9: Bus
+                10: Tug (push/tow)
+                11: Grass cutter
+                12: Fuel
+                13: Baggage
+                14: Catering
+                15: Aircraft maintenance
+                16: Flyco (follow me)
+
     340 "Measured Information"
         optional
         definition
@@ -1151,103 +1151,103 @@ items
                 subitems
                     SAC "System Area Code"
                         item 8
-                        raw
+                            raw
                     SIC "System Identification code"
                         item 8
-                        raw
+                            raw
             POS "Measured Position"
                 subitems
                     RHO "Measured distance"
                         item 16
-                        unsigned
-                        fractional 8
-                        unit "NM"
-                        le 256
+                            unsigned
+                            fractional 8
+                            unit "NM"
+                            le 256
                     THETA "Measured azimuth"
                         item 16
-                        unsigned
-                        scale 360
-                        fractional 16
-                        unit "deg"
+                            unsigned
+                            scale 360
+                            fractional 16
+                            unit "deg"
             HEIGHT "Measured 3-D Height"
                 item 16
-                unsigned
-                scale 25
-                unit "ft"
+                    unsigned
+                    scale 25
+                    unit "ft"
             MDC ""
                 subitems
                     V ""
                         item 1
-                        discrete
-                            0: Code validated
-                            1: Code not validated
+                            discrete
+                                0: Code validated
+                                1: Code not validated
                     G ""
                         item 1
-                        discrete
-                            0: Default
-                            1: Garbled code
+                            discrete
+                                0: Default
+                                1: Garbled code
                     LMC ""
                         description
                             Last Measured Mode C Code, in two's complement form
                         item 14
-                        signed
-                        fractional 2
-                        unit "FL"
-                        ge -12
-                        le 1270
+                            signed
+                            fractional 2
+                            unit "FL"
+                            ge -12
+                            le 1270
             MDA ""
                 subitems
                     V ""
                         item 1
-                        discrete
-                            0: Code validated
-                            1: Code not validated
+                            discrete
+                                0: Code validated
+                                1: Code not validated
                     G ""
                         item 1
-                        discrete
-                            0: Default
-                            1: Garbled code
+                            discrete
+                                0: Default
+                                1: Garbled code
                     L ""
                         item 1
-                        discrete
-                            0: MODE 3/A code as derived from the reply of the transponder,
-                            1: MODE 3/A code as provided by a sensor local tracker.
+                            discrete
+                                0: MODE 3/A code as derived from the reply of the transponder,
+                                1: MODE 3/A code as provided by a sensor local tracker.
                     spare 1
                     ABCD "Mode-3/A reply under the form of 4 digits in octal representation"
                         item 12
-                        raw
+                            raw
             TYP ""
                 subitems
                     TYP ""
                         item 3
-                        discrete
-                            0: No detection
-                            1: Single PSR detection
-                            2: Single SSR detection
-                            3: SSR + PSR detection
-                            4: Single ModeS All-Call
-                            5: Single ModeS Roll-Call
-                            6: ModeS All-Call + PSR
-                            7: ModeS Roll-Call +PSR
+                            discrete
+                                0: No detection
+                                1: Single PSR detection
+                                2: Single SSR detection
+                                3: SSR + PSR detection
+                                4: Single ModeS All-Call
+                                5: Single ModeS Roll-Call
+                                6: ModeS All-Call + PSR
+                                7: ModeS Roll-Call +PSR
                     SIM ""
                         item 1
-                        discrete
-                            0: Actual target report
-                            1: Simulated target report
+                            discrete
+                                0: Actual target report
+                                1: Simulated target report
                     RAB ""
                         item 1
-                        discrete
-                            0: Report from target transponder
-                            1: Report from field monitor (item transponder)
+                            discrete
+                                0: Report from target transponder
+                                1: Report from field monitor (item transponder)
                     TST ""
                         item 1
-                        discrete
-                            0: Real target report
-                            1: Test target report
+                            discrete
+                                0: Real target report
+                                1: Test target report
                     spare 2
         remark
             Notes:
-            
+
                 1. In case of a plot, the measured bias-corrected polar co-ordinates;
                 2. In case of a sensor local track, the measured bias-corrected
                    polar co-ordinates of the plot associated to the track;
@@ -1256,7 +1256,7 @@ items
                 4. Smoothed MODE 3/A data (L = 1) will be used in case of absence of
                    MODE 3/A code information in the plot or in case of difference
                    between plot and sensor local track MODE 3/A code information.
-    
+
     380 "Aircraft Derived Data"
         optional
         definition
@@ -1264,7 +1264,7 @@ items
         compound
             ADR "Target address"
                 item 24
-                raw
+                    raw
             ID "Target Identification"
                 description
                     Characters 1-8 (coded on 6 bits each) defining a target
@@ -1272,263 +1272,271 @@ items
                     marking when no flight plan is available. Coding rules are
                     provided in [3] Section 3.1.2.9.1.2 and Table 3-9"
                 item 48
-                raw
+                    raw
             MHG "Magnetic Heading"
                 item 16
-                unsigned
-                scale 360
-                fractional 16
-                unit "deg"
+                    unsigned
+                    scale 360
+                    fractional 16
+                    unit "deg"
             IAS "Indicated Airspeed/Mach No"
                 subitems
                     IM ""
                         item 1
-                        discrete
-                            0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
-                            1: Air Speed = Mach, LSB (Bit-1) = 0.001
+                            discrete
+                                0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
+                                1: Air Speed = Mach, LSB (Bit-1) = 0.001
                     IAS ""
                         item 15
-                        raw
+                            case 380/IAS/IM
+                                0:
+                                    unsigned
+                                    fractional 14
+                                    unit "NM/s"
+                                1:
+                                    unsigned
+                                    scale 0.001
+                                    unit "mach"
             TAS "True Air Speed"
                 item 16
-                unsigned
-                unit "kt"
-                ge 0
-                le 2046
+                    unsigned
+                    unit "kt"
+                    ge 0
+                    le 2046
             SAL "Selected Altitude"
                 subitems
                     SAS ""
                         item 1
-                        discrete
-                            0: No source information provided
-                            1: Source information provided
+                            discrete
+                                0: No source information provided
+                                1: Source information provided
                     SRC ""
                         item 2
-                        discrete
-                            0: Unknown
-                            1: Aircraft Altitude
-                            2: FCU/MCP Selected Altitude
-                            3: FMS Selected Altitude
+                            discrete
+                                0: Unknown
+                                1: Aircraft Altitude
+                                2: FCU/MCP Selected Altitude
+                                3: FMS Selected Altitude
                     ALT "Altitude in two's complement form"
                         item 13
-                        signed
-                        scale 25
-                        unit "ft"
-                        ge -1300
-                        le 100000
+                            signed
+                            scale 25
+                            unit "ft"
+                            ge -1300
+                            le 100000
             FSS "Final State Selected Altitude"
                 subitems
                     MV ""
                         description
                             Manage Vertical Mode
                         item 1
-                        discrete
-                            0: Not active
-                            1: Active
+                            discrete
+                                0: Not active
+                                1: Active
                     AH ""
                         description
                             Altitude Hold
                         item 1
-                        discrete
-                            0: Not active
-                            1: Active
+                            discrete
+                                0: Not active
+                                1: Active
                     AM ""
                         description
                             Approach Mode
                         item 1
-                        discrete
-                            0: Not active
-                            1: Active
+                            discrete
+                                0: Not active
+                                1: Active
                     Altitude "Altitude in two's complement form"
                         item 13
-                        signed
-                        scale 25
-                        unit "ft"
-                        ge -1300
-                        le 100000
+                            signed
+                            scale 25
+                            unit "ft"
+                            ge -1300
+                            le 100000
             TIS "Trajectory Intent Status"
                 extended 8 8
                     NAV ""
                         item 1
-                        discrete
-                            0: Trajectory Intent Data is available for this aircraft
-                            1: Trajectory Intent Data is not available for this aircraft
+                            discrete
+                                0: Trajectory Intent Data is available for this aircraft
+                                1: Trajectory Intent Data is not available for this aircraft
                     NVB ""
                         item 1
-                        discrete
-                            0: Trajectory Intent Data is valid
-                            1: Trajectory Intent Data is not valid
+                            discrete
+                                0: Trajectory Intent Data is valid
+                                1: Trajectory Intent Data is not valid
                     spare 5
             TID "Trajectory Intent Data"
                 repetitive
                     subitems
                         TCA ""
                             item 1
-                            discrete
-                                0: TCP number available
-                                1: TCP number not available
+                                discrete
+                                    0: TCP number available
+                                    1: TCP number not available
                         NC ""
                             item 1
-                            discrete
-                                0: TCP compliance
-                                1: TCP non-compliance
+                                discrete
+                                    0: TCP compliance
+                                    1: TCP non-compliance
                         TCPNumber ""
                             description
                                 Trajectory Change Point number
                             item 6
-                            raw
+                                raw
                         Altitude "Altitude in two's complement form"
                             item 16
-                            signed
-                            scale 10
-                            unit "ft"
-                            ge -1500
-                            le 150000
+                                signed
+                                scale 10
+                                unit "ft"
+                                ge -1500
+                                le 150000
                         Latitude "In WGS.84 in rwo's complementde in two's complement."
                             item 24
-                            unsigned
-                            scale 180
-                            fractional 23
-                            unit "deg"
-                            ge -90
-                            le 90
+                                unsigned
+                                scale 180
+                                fractional 23
+                                unit "deg"
+                                ge -90
+                                le 90
                         Longitude "In WGS.84 in rwo's complementde in two's complement."
                             item 24
-                            unsigned
-                            scale 180
-                            fractional 23
-                            unit "deg"
-                            ge -180
-                            lt 180
+                                unsigned
+                                scale 180
+                                fractional 23
+                                unit "deg"
+                                ge -180
+                                lt 180
                         PT "Point Type"
                             item 4
-                            discrete
-                                0: Unknown
-                                1: Fly by waypoint (LT)
-                                2: Fly over waypoint (LT)
-                                3: Hold pattern (LT)
-                                4: Procedure hold (LT)
-                                5: Procedure turn (LT)
-                                6: RF leg (LT)
-                                7: Top of climb (VT)
-                                8: Top of descent (VT)
-                                9: Start of level (VT)
-                                10: Cross-over altitude (VT)
-                                11: Transition altitude (VT)
+                                discrete
+                                    0: Unknown
+                                    1: Fly by waypoint (LT)
+                                    2: Fly over waypoint (LT)
+                                    3: Hold pattern (LT)
+                                    4: Procedure hold (LT)
+                                    5: Procedure turn (LT)
+                                    6: RF leg (LT)
+                                    7: Top of climb (VT)
+                                    8: Top of descent (VT)
+                                    9: Start of level (VT)
+                                    10: Cross-over altitude (VT)
+                                    11: Transition altitude (VT)
                         TD ""
                             item 2
-                            discrete
-                                0: N/A
-                                1: Turn right
-                                2: Turn left
-                                3: No turn
+                                discrete
+                                    0: N/A
+                                    1: Turn right
+                                    2: Turn left
+                                    3: No turn
                         TRA ""
                             description
                                 Turn Radius Availability
                             item 1
-                            discrete
-                                0: TTR not available
-                                1: TTR available
+                                discrete
+                                    0: TTR not available
+                                    1: TTR available
                         TOA ""
                             item 1
-                            discrete
-                                0: TOV available
-                                1: TOV not available
+                                discrete
+                                    0: TOV available
+                                    1: TOV not available
                         TOV "Time Over Point"
                             item 24
-                            unsigned
-                            unit "s"
+                                unsigned
+                                unit "s"
                         TTR "TCP Turn radius"
                             item 16
-                            unsigned
-                            scale 0.01
-                            unit "Nm"
-                            ge 0
-                            le 655.35
+                                unsigned
+                                scale 0.01
+                                unit "Nm"
+                                ge 0
+                                le 655.35
             COM "Communications/ACAS Capability and Flight Status"
                 subitems
                     COM "Communications capability of the transponder"
                         item 3
-                        discrete
-                            0: No communications capability (surveillance only)
-                            1: Comm. A and Comm. B capability
-                            2: Comm. A, Comm. B and Uplink ELM
-                            3: Comm. A, Comm. B, Uplink ELM and Downlink ELM
-                            4: Level 5 Transponder capability
-                            5: Not assigned
-                            6: Not assigned
-                            7: Not assigned
+                            discrete
+                                0: No communications capability (surveillance only)
+                                1: Comm. A and Comm. B capability
+                                2: Comm. A, Comm. B and Uplink ELM
+                                3: Comm. A, Comm. B, Uplink ELM and Downlink ELM
+                                4: Level 5 Transponder capability
+                                5: Not assigned
+                                6: Not assigned
+                                7: Not assigned
                     STAT "Flight Status"
                         item 3
-                        discrete
-                            0: No alert, no SPI, aircraft airborne
-                            1: No alert, no SPI, aircraft on ground
-                            2: Alert, no SPI, aircraft airborne
-                            3: Alert, no SPI, aircraft on ground
-                            4: Alert, SPI, aircraft airborne or on ground
-                            5: No alert, SPI, aircraft airborne or on ground
+                            discrete
+                                0: No alert, no SPI, aircraft airborne
+                                1: No alert, no SPI, aircraft on ground
+                                2: Alert, no SPI, aircraft airborne
+                                3: Alert, no SPI, aircraft on ground
+                                4: Alert, SPI, aircraft airborne or on ground
+                                5: No alert, SPI, aircraft airborne or on ground
                     spare 2
                     SSC "Specific service capability"
                         item 1
-                        discrete
-                            0: No
-                            1: Yes
+                            discrete
+                                0: No
+                                1: Yes
                     ARC "Altitude reporting capability"
                         item 1
-                        discrete
-                            0: 100 ft resolution
-                            1: 25 ft resolution
+                            discrete
+                                0: 100 ft resolution
+                                1: 25 ft resolution
                     AIC "Aircraft identification capability"
                         item 1
-                        discrete
-                            0: No
-                            1: Yes
+                            discrete
+                                0: No
+                                1: Yes
                     B1A "BDS 1,0 bit 16"
                         item 1
-                        raw
+                            raw
                     B1B "BDS BDS 1,0 bits 37/40"
                         item 4
-                        raw
+                            raw
             SAB "Status reported by ADS-B"
                 subitems
                     AC ""
                         item 2
-                        discrete
-                            0: unknown
-                            1: ACAS not operational
-                            2: ACAS operational
-                            3: invalid
+                            discrete
+                                0: unknown
+                                1: ACAS not operational
+                                2: ACAS operational
+                                3: invalid
                     MN ""
                         item 2
-                        discrete
-                            0: unknown
-                            1: Multiple navigational aids not operating
-                            2: Multiple navigational aids operating
-                            3: invalid
+                            discrete
+                                0: unknown
+                                1: Multiple navigational aids not operating
+                                2: Multiple navigational aids operating
+                                3: invalid
                     DC ""
                         item 2
-                        discrete
-                            0: unknown
-                            1: Differential correction
-                            2: No differential correction
-                            3: invalid
+                            discrete
+                                0: unknown
+                                1: Differential correction
+                                2: No differential correction
+                                3: invalid
                     GBS ""
                         item 1
-                        discrete
-                            0: Transponder Ground Bit not set or unknown
-                            1: Transponder Ground Bit set
+                            discrete
+                                0: Transponder Ground Bit not set or unknown
+                                1: Transponder Ground Bit set
                     spare 6
                     STAT "Flight Status"
                         item 3
-                        discrete
-                            0: No emergency
-                            1: General emergency
-                            2: Lifeguard / medical
-                            3: Minimum fuel
-                            4: No communications
-                            5: Unlawful interference
-                            6: "Downed" Aircraft
-                            7: Unknown
+                            discrete
+                                0: No emergency
+                                1: General emergency
+                                2: Lifeguard / medical
+                                3: Minimum fuel
+                                4: No communications
+                                5: Unlawful interference
+                                6: "Downed" Aircraft
+                                7: Unknown
             ACS "ACAS Resolution Advisory Report"
                 description
                     Currently active Resolution Advisory (RA), if any, generated
@@ -1537,212 +1545,212 @@ items
                     (MB Data) 56-bit message
                     conveying Mode S Comm B message data of BDS Register 3,0
                 item 56
-                raw
+                    raw
             BVR "Barometric Vertical Rate"
                 description
                     Barometric Vertical Rate in two's complement form
                 item 16
-                signed
-                scale 6.25
-                unit "ft/min"
+                    signed
+                    scale 6.25
+                    unit "ft/min"
             GVR "Geometric Vertical Rate"
                 description
                     Geometric Vertical Rate in two's complement form
                 item 16
-                signed
-                scale 6.25
-                unit "ft/min"
+                    signed
+                    scale 6.25
+                    unit "ft/min"
             RAN "Roll Angle"
                 description
                     Roll Angle in two's complement form
                 item 16
-                signed
-                scale 0.01
-                unit "deg"
-                ge -180
-                le 180
+                    signed
+                    scale 0.01
+                    unit "deg"
+                    ge -180
+                    le 180
             TAR "Track Angle Rate"
                 subitems
                     TI ""
                         item 2
-                        discrete
-                            0: Not available
-                            1: Left
-                            2: Right
-                            3: Straight
+                            discrete
+                                0: Not available
+                                1: Left
+                                2: Right
+                                3: Straight
                     spare 6
                     ROT "Rate of Turn in two's complement form"
                         item 7
-                        signed
-                        fractional 2
-                        unit "deg/s"
-                        ge -15
-                        le 15
+                            signed
+                            fractional 2
+                            unit "deg/s"
+                            ge -15
+                            le 15
                     spare 1
             TAN "Track Angle"
                 item 16
-                unsigned
-                scale 360
-                fractional 16
-                unit "deg"
-                ge 0.0055
+                    unsigned
+                    scale 360
+                    fractional 16
+                    unit "deg"
+                    ge 0.0055
             GSP "Ground Speed"
                 description
                     Ground Speed in two's complement form referenced to WGS84
                 item 16
-                signed
-                fractional 14
-                unit "NM/s"
-                ge -2
-                le 2
+                    signed
+                    fractional 14
+                    unit "NM/s"
+                    ge -2
+                    le 2
             VUN "Velocity Uncertainty"
                 item 8
-                raw
+                    raw
             MET "Meteorogical Data"
                 subitems
                     WS "Wind Speed Valid Flag"
                         item 1
-                        discrete
-                            0: Not valid Wind Speed
-                            1: Valid Wind Speed
+                            discrete
+                                0: Not valid Wind Speed
+                                1: Valid Wind Speed
                     WD "Wind Direction Valid Flag"
                         item 1
-                        discrete
-                            0: Not valid Wind Direction
-                            1: Valid Wind Direction
+                            discrete
+                                0: Not valid Wind Direction
+                                1: Valid Wind Direction
                     TMP "Temperature Valid Flag"
                         item 1
-                        discrete
-                            0: Not valid Temperature
-                            1: Valid Temperature
+                            discrete
+                                0: Not valid Temperature
+                                1: Valid Temperature
                     TRB "Turbolence Valid Flag"
                         item 1
-                        discrete
-                            0: Not valid Turbulence
-                            1: Valid Turbulence
+                            discrete
+                                0: Not valid Turbulence
+                                1: Valid Turbulence
                     spare 4
                     WS_D "Wind Speed"
                         item 16
-                        unsigned
-                        unit "kt"
-                        ge 0
-                        le 300
+                            unsigned
+                            unit "kt"
+                            ge 0
+                            le 300
                     WD_D "Wind Direction"
                         item 16
-                        unsigned
-                        unit "deg"
-                        ge 1
-                        le 360
+                            unsigned
+                            unit "deg"
+                            ge 1
+                            le 360
                     TMP_D "Temperature in degrees celsius"
                         item 16
-                        signed
-                        fractional 2
-                        unit "degC"
-                        ge -100
-                        le 100
+                            signed
+                            fractional 2
+                            unit "degC"
+                            ge -100
+                            le 100
                     TRB_D "Turbulence"
                         item 8
-                        unsigned
-                        ge 0
-                        le 15
+                            unsigned
+                            ge 0
+                            le 15
             EMC "Emitter Category"
                 item 8
-                discrete
-                    1: light aircraft =< 7000 kg
-                    2: reserved
-                    3: 7000 kg < medium aircraft < 136000 kg
-                    4: reserved
-                    5: 136000 kg =< heavy aircraft
-                    6: highly manoeuvrable (5g acceleration capability) and high speed (>400 knots cruise)
-                    7: reserved
-                    8: reserved
-                    9: reserved
-                    10: rotocraft
-                    11: glider / sailplane
-                    12: lighter-than-air
-                    13: unmanned aerial vehicle
-                    14: space / transatmospheric vehicle
-                    15: ultralight / handglider / paraglider
-                    16: parachutist / skydiver
-                    17: reserved
-                    18: reserved
-                    19: reserved
-                    20: surface emergency vehicle
-                    21: surface service vehicle
-                    22: item ground or tethered obstruction
-                    23: reserved
-                    24: reserved
+                    discrete
+                        1: light aircraft =< 7000 kg
+                        2: reserved
+                        3: 7000 kg < medium aircraft < 136000 kg
+                        4: reserved
+                        5: 136000 kg =< heavy aircraft
+                        6: highly manoeuvrable (5g acceleration capability) and high speed (>400 knots cruise)
+                        7: reserved
+                        8: reserved
+                        9: reserved
+                        10: rotocraft
+                        11: glider / sailplane
+                        12: lighter-than-air
+                        13: unmanned aerial vehicle
+                        14: space / transatmospheric vehicle
+                        15: ultralight / handglider / paraglider
+                        16: parachutist / skydiver
+                        17: reserved
+                        18: reserved
+                        19: reserved
+                        20: surface emergency vehicle
+                        21: surface service vehicle
+                        22: item ground or tethered obstruction
+                        23: reserved
+                        24: reserved
             POS "Position"
                 subitems
                     Latitude "In WGS.84 in two's complement form."
                         item 24
-                        signed
-                        scale 180
-                        fractional 23
-                        unit "deg"
-                        ge -90
-                        le 90
+                            signed
+                            scale 180
+                            fractional 23
+                            unit "deg"
+                            ge -90
+                            le 90
                     Longitude "In WGS.84 in two's complement form."
                         item 24
-                        signed
-                        scale 180
-                        fractional 23
-                        unit "deg"
-                        ge -180
-                        lt 180
+                            signed
+                            scale 180
+                            fractional 23
+                            unit "deg"
+                            ge -180
+                            lt 180
                 remark
                     This corresponds to a resolution of at least 2.4 meters.
             GAL "Geometric Altitude"
                 item 16
-                signed
-                scale 6.25
-                unit "ft"
-                ge -1500
-                le 150000
+                    signed
+                    scale 6.25
+                    unit "ft"
+                    ge -1500
+                    le 150000
             PUN "Position Uncertainty"
                 subitems
                     spare 4
                     PUN "Position Uncertainty"
                         item 4
-                        raw
+                            raw
             MB "MODE S MB DATA"
                 repetitive
                     subitems
                         MBdata "56 bit message conveying Mode S B message data"
                             item 56
-                            raw
+                                raw
                         BDS1 "Comm B data Buffer Store 1 Address"
                             item 4
-                            raw
+                                raw
                         BDS2 "Comm B data Buffer Store 2 Address"
                             item 4
-                            raw
+                                raw
             IAR "Indicated Airspeed"
                 item 16
-                signed
-                unit "kt"
-                ge 0
-                le 1100
+                    signed
+                    unit "kt"
+                    ge 0
+                    le 1100
             MAC "Mach Number"
                 item 16
-                signed
-                scale 0.008
-                unit "Mach"
-                ge 0
-                le 4096
+                    signed
+                    scale 0.008
+                    unit "Mach"
+                    ge 0
+                    le 4096
             BPS "Barometric Pressure Setting (derived from Mode S BDS 4,0)"
                 subitems
                     spare 4
                     BPS ""
                         item 12
-                        unsigned
-                        scale 0.1
-                        unit "mb"
-                        ge 0
-                        le 409.5
+                            unsigned
+                            scale 0.1
+                            unit "mb"
+                            ge 0
+                            le 409.5
         remark
             Notes:
-            
+
                 1. NC is set to one when the aircraft will not fly the path described
                    by the TCP data.
                 2. TCP numbers start from zero.
@@ -1761,7 +1769,7 @@ items
                 13. Only DAPs that can not be encoded into other subfields of this item
                     should be sent using subfield #25
                 14. BPS is the barometric pressure setting of the aircraft minus 800 mb.
-    
+
     390 "Flight Plan Related Data"
         optional
         definition
@@ -1771,189 +1779,189 @@ items
                 subitems
                     SAC "System Area Code"
                         item 8
-                        raw
+                            raw
                     SIC "System Identification code"
                         item 8
-                        raw
+                            raw
             CSN "Callsign"
                 item 56
-                string ascii
+                    string ascii
             IFI "IFPS_FLIGHT_ID"
                 subitems
                     TYP ""
                         item 2
-                        discrete
-                            0: Plan Number
-                            1: Unit 1 internal flight number
-                            2: Unit 2 internal flight number
-                            3: Unit 3 internal flight number
+                            discrete
+                                0: Plan Number
+                                1: Unit 1 internal flight number
+                                2: Unit 2 internal flight number
+                                3: Unit 3 internal flight number
                     spare 3
                     NBR "Number from 0 to 99 999 999"
                         item 27
-                        unsigned
-                        ge 0
-                        le 99999999
+                            unsigned
+                            ge 0
+                            le 99999999
             FCT "Flight Category"
                 subitems
                     GATOAT ""
                         item 2
-                        discrete
-                            0: Unknown
-                            1: General Air Traffic
-                            2: Operational Air Traffic
-                            3: Not applicable
+                            discrete
+                                0: Unknown
+                                1: General Air Traffic
+                                2: Operational Air Traffic
+                                3: Not applicable
                     FR1FR2 ""
                         item 2
-                        discrete
-                            0: Instrument Flight Rules
-                            1: Visual Flight Rules
-                            2: Not applicable
-                            3: Controlled Visual Flight Rules
+                            discrete
+                                0: Instrument Flight Rules
+                                1: Visual Flight Rules
+                                2: Not applicable
+                                3: Controlled Visual Flight Rules
                     RVSM ""
                         item 2
-                        discrete
-                            0: Unknown
-                            1: Approved
-                            2: Exempt
-                            3: Not Approved
+                            discrete
+                                0: Unknown
+                                1: Approved
+                                2: Exempt
+                                3: Not Approved
                     HPR ""
                         item 1
-                        discrete
-                            0: Normal Priority Flight
-                            1: High Priority Flight
+                            discrete
+                                0: Normal Priority Flight
+                                1: High Priority Flight
                     spare 1
             TAC "Type of Aircraft"
                 item 32
-                string ascii
+                    string ascii
             WTC "Wake Turbulence Category"
                 item 8
-                string ascii
+                    string ascii
             DEP "Departure Airport"
                 item 32
-                string ascii
+                    string ascii
             DST "Destination Airport"
                 item 32
-                string ascii
+                    string ascii
             RDS "Runway Designation"
                 subitems
                     NU1 "First number"
                         item 8
-                        raw
+                            raw
                     NU2 "Second number"
                         item 8
-                        raw
+                            raw
                     LTR "Letter"
                         item 8
-                        string ascii
+                            string ascii
             CFL "Current Cleared Flight Level"
                 item 16
-                unsigned
-                fractional 2
-                unit "FL"
+                    unsigned
+                    fractional 2
+                    unit "FL"
             CTL "Current Control Position"
                 subitems
                     Centre "8-bit group Identification code"
                         item 8
-                        raw
+                            raw
                     Position "8-bit Control Position identification code"
                         item 8
-                        raw
+                            raw
             TOD "Time of Departure / Arrival"
                 repetitive
                     subitems
                         TYP ""
                             item 5
-                            discrete
-                                0: Scheduled off-block time
-                                1: Estimated off-block time
-                                2: Estimated take-off time
-                                3: Actual off-block time
-                                4: Predicted time at runway hold
-                                5: Actual time at runway hold
-                                6: Actual line-up time
-                                7: Actual take-off time
-                                8: Estimated time of arrival
-                                9: Predicted landing time
-                                10: Actual landing time
-                                11: Actual time off runway
-                                12: Predicted time to gate
-                                13: Actual on-block time
+                                discrete
+                                    0: Scheduled off-block time
+                                    1: Estimated off-block time
+                                    2: Estimated take-off time
+                                    3: Actual off-block time
+                                    4: Predicted time at runway hold
+                                    5: Actual time at runway hold
+                                    6: Actual line-up time
+                                    7: Actual take-off time
+                                    8: Estimated time of arrival
+                                    9: Predicted landing time
+                                    10: Actual landing time
+                                    11: Actual time off runway
+                                    12: Predicted time to gate
+                                    13: Actual on-block time
                         DAY ""
                             item 2
-                            discrete
-                                0: Today
-                                1: Yesterday
-                                2: Tomorrow
-                                3: Invalid
+                                discrete
+                                    0: Today
+                                    1: Yesterday
+                                    2: Tomorrow
+                                    3: Invalid
                         spare 4
                         HOR "Hours"
                             item 5
-                            unsigned
-                            unit "h"
-                            ge 0
-                            le 23
+                                unsigned
+                                unit "h"
+                                ge 0
+                                le 23
                         spare 2
                         MIN "Minutes"
                             item 6
-                            unsigned
-                            unit "min"
-                            ge 0
-                            le 59
+                                unsigned
+                                unit "min"
+                                ge 0
+                                le 59
                         AVS "Seconds Available Flag"
                             item 1
-                            discrete
-                                0: Seconds available
-                                1: Seconds not available
+                                discrete
+                                    0: Seconds available
+                                    1: Seconds not available
                         spare 1
                         SEC "Seconds"
                             item 6
-                            unsigned
-                            unit "s"
-                            ge 0
-                            le 59
+                                unsigned
+                                unit "s"
+                                ge 0
+                                le 59
             AST "Aircraft Stand"
                 item 48
-                string ascii
+                    string ascii
             STS "Stand Status"
                 subitems
                     EMP ""
                         item 2
-                        discrete
-                            0: Empty
-                            1: Occupied
-                            2: Unknown
-                            3: Invalid
+                            discrete
+                                0: Empty
+                                1: Occupied
+                                2: Unknown
+                                3: Invalid
                     AVL ""
                         item 2
-                        discrete
-                            0: Available
-                            1: Not available
-                            2: Unknown
-                            3: Invalid
+                            discrete
+                                0: Available
+                                1: Not available
+                                2: Unknown
+                                3: Invalid
                     spare 4
             STD "Standard Instrument Departure"
                 item 56
-                string ascii
+                    string ascii
             STA "Standard Instrument Arrival"
                 item 56
-                string ascii
+                    string ascii
             PEM "Pre-Emergency Mode 3/A"
                 subitems
                     spare 3
                     VA ""
                         item 1
-                        discrete
-                            0: No valid Mode 3/A available
-                            1: Valid Mode 3/A available
+                            discrete
+                                0: No valid Mode 3/A available
+                                1: Valid Mode 3/A available
                     ABCD "Mode-3/A reply in octal representation"
                         item 12
-                        raw
+                            raw
             PEC "Pre-Emergency Callsign"
                 item 56
-                string ascii
+                    string ascii
         remark
             Notes:
-            
+
                 1. The up-to-date list of SACs is published on the Eurocontrol Web Site
                    (http://www.eurocontrol.int).
                 2. Each one of the seven Octets contains an ASCII Character.
@@ -1998,7 +2006,7 @@ items
                     positions (if any) are padded with space characters
                 19. This subfield is used only when an emergency Mode 3/A is associated
                     with the track (I062/390 Subfield #17)
-    
+
     500 "Estimated Accuracies"
         optional
         definition
@@ -2008,75 +2016,75 @@ items
                 subitems
                     X "APC (X-Component)"
                         item 16
-                        unsigned
-                        fractional 1
-                        unit "m"
+                            unsigned
+                            fractional 1
+                            unit "m"
                     Y "APC (Y-Component)"
                         item 16
-                        unsigned
-                        fractional 1
-                        unit "m"
+                            unsigned
+                            fractional 1
+                            unit "m"
             COV "XY covariance component"
                 item 16
-                signed
-                fractional 1
-                unit "m"
+                    signed
+                    fractional 1
+                    unit "m"
             APW "Estimated Accuracy Of Track Position (WGS-84)"
                 subitems
                     X "APW (Latitude Component)"
                         item 16
-                        unsigned
-                        scale 180
-                        fractional 25
-                        unit "deg"
+                            unsigned
+                            scale 180
+                            fractional 25
+                            unit "deg"
                     Y "APW (Longitude Component)"
                         item 16
-                        unsigned
-                        scale 180
-                        fractional 25
-                        unit "deg"
+                            unsigned
+                            scale 180
+                            fractional 25
+                            unit "deg"
             AGA "Estimated Accuracy Of Calculated Track Geometric Altitude"
                 item 8
-                unsigned
-                scale 6.25
-                unit "ft"
+                    unsigned
+                    scale 6.25
+                    unit "ft"
             ABA "Estimated Accuracy Of Calculated Track Barometric Altitude"
                 item 8
-                unsigned
-                fractional 2
-                unit "FL"
+                    unsigned
+                    fractional 2
+                    unit "FL"
             ATW "Estimated Accuracy Of Track Velocity (Cartesian)"
                 subitems
                     ATVX "ATV (X-Component)"
                         item 8
-                        unsigned
-                        fractional 2
-                        unit "m/s"
+                            unsigned
+                            fractional 2
+                            unit "m/s"
                     ATVY "ATV (Y-Component)"
                         item 8
-                        unsigned
-                        fractional 2
-                        unit "m/s"
+                            unsigned
+                            fractional 2
+                            unit "m/s"
             AA "Estimated Accuracy Of Acceleration (Cartesian)"
                 subitems
                     AAX "AA (X-Component)"
                         item 8
-                        unsigned
-                        fractional 2
-                        unit "m/s2"
+                            unsigned
+                            fractional 2
+                            unit "m/s2"
                     AAY "AA (Y-Component)"
                         item 8
-                        unsigned
-                        fractional 2
-                        unit "m/s2"
+                            unsigned
+                            fractional 2
+                            unit "m/s2"
             ARC "Estimated Accuracy Of Rate Of Climb/Descent"
                 item 8
-                unsigned
-                scale 6.25
-                unit "ft/min"
+                    unsigned
+                    scale 6.25
+                    unit "ft/min"
         remark
             Notes:
-            
+
                 1. Maximum value means maximum value or above.
                 2. XY covariance component = sign {Cov(X,Y)} * sqrt {abs [Cov (X,Y)]}
                 3. The maximum value for the (unsigned) XY covariance component is 16.383 km
@@ -2086,7 +2094,7 @@ items
                 7. Maximum value means maximum value or above.
                 8. Maximum value means maximum value or above.
                 9. Maximum value means maximum value or above.
-    
+
     510 "Track Status"
         optional
         definition
@@ -2094,31 +2102,31 @@ items
         extended 24 24
             MIDENT "MASTER SYSTEM UNIT IDENTIFICATION"
                 item 8
-                raw
+                    raw
             MTRACK "MASTER SYSTEM TRACK NUMBER"
                 item 15
-                raw
+                    raw
             SIDENT "SLAVE SYSTEM UNIT IDENTIFICATION"
                 item 8
-                raw
+                    raw
             STRACK "SLAVE SYSTEM TRACK NUMBER"
                 item 15
-                raw
+                    raw
         remark
             Notes:
-            
+
                 - The composed track number is used by co-operating units to uniquely
                   identify a track. It consists of the unit identifier and system
                   track number for each unit involved in the co-operation. The first
                   unit identification identifies the unit that is responsible for the
                   track amalgamation.
-    
+
     RE "Reserved Expansion Field"
         optional
         definition
             Expansion
         explicit
-    
+
     SP "Special Purpose Field"
         optional
         definition
@@ -2161,4 +2169,3 @@ uap
     -
     RE
     SP
-

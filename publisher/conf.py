@@ -17,20 +17,30 @@
 # sys.path.insert(0, os.path.abspath('.'))
 
 
+import json
+
+with open('specs.json') as f:
+    obj = json.loads(f.read())
+
+cat = obj['category']
+cat_title = obj['title']
+cat_date = obj['date']
+cat_edition = obj['edition']
+
 # -- Project information -----------------------------------------------------
 
-project = 'cat062 specification'
+project = 'cat{} specification'.format(cat)
 copyright = '2019, test'
 author = 'test'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = '2014-12, v1.17'
+release = '{}, {}'.format(cat_date, cat_edition)
 
 latex_logo = 'eurocontrol-logo.png'
 
-today = '2.9.2019'
+today = cat_date
 
 # -- General configuration ---------------------------------------------------
 
@@ -131,8 +141,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'test.tex', 'cat062 specification',
-        'SDPS TRACK MESSAGES',
+    (master_doc, 'test.tex', project,
+        cat_title,
         'manual'),
 ]
 

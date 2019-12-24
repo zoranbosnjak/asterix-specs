@@ -17,9 +17,33 @@ module Data.Asterix.Types where
 import           GHC.Generics (Generic)
 import           Data.Ratio (Ratio, numerator, denominator)
 import           Data.Text
+import           Data.Char
 import qualified Text.Printf as TP
 import           Data.Word (Word8)
 import           Data.Aeson (ToJSON, toJSON, object, (.=))
+
+type ItemName = String
+type ItemTitle = Text
+type Description = Text
+type Remark = Text
+type UapName = String
+
+data Rule a
+    = ContextFree a
+    | Dependent [ItemName] [(Int, a)]
+    deriving (Generic, Eq, Show)
+
+instance ToJSON a => ToJSON (Rule a)
+  where
+    toJSON (ContextFree rule) = object
+        [ "type" .= ("ContextFree" :: String)
+        , "rule" .= rule
+        ]
+    toJSON (Dependent item rules) = object
+        [ "type" .= ("Dependent" :: String)
+        , "item" .= item
+        , "rules" .= rules
+        ]
 
 data Edition = Edition
     { editionMajor :: Int
@@ -35,7 +59,7 @@ data Date = Date
     } deriving (Generic, Eq, Show)
 
 instance ToJSON Date where
-    toJSON (Date y m) = toJSON $ show y ++ "-" ++ show m
+    toJSON (Date y m) = toJSON $ show y ++ "-" ++ TP.printf "%02d" m
 
 data Number
     = NumberZ Int
@@ -75,7 +99,7 @@ instance ToJSON Quantity where
         , "highLimit" .= limHigh
         ]
 
-data ItemContent
+data Content
     = Raw
     | Unsigned Quantity
     | Signed Quantity
@@ -84,7 +108,7 @@ data ItemContent
     | StringICAO
     deriving (Generic, Eq, Show)
 
-instance ToJSON ItemContent where
+instance ToJSON Content where
     toJSON = \case
         Raw -> object
             [ "type" .= ("Raw" :: String)
@@ -111,7 +135,7 @@ instance ToJSON ItemContent where
 type RegisterSize = Int
 
 data Variation
-    = Fixed RegisterSize ItemContent
+    = Fixed RegisterSize (Rule Content)
     | Group [Item]
     | Extended Int Int [Item]
     | Repetitive Variation
@@ -151,13 +175,7 @@ instance ToJSON Variation where
 
 data Item
     = Spare RegisterSize
-    | Item
-        { itemName          :: String
-        , itemTitle         :: Text
-        , itemDescription   :: Maybe Text
-        , itemVariation     :: Variation
-        , itemRemark        :: Maybe Text
-        }
+    | Item ItemName ItemTitle (Maybe Description) Variation (Maybe Remark)
     deriving (Generic, Eq, Show)
 
 instance ToJSON Item where
@@ -174,29 +192,46 @@ instance ToJSON Item where
         , "remark"      .= remark
         ]
 
+data Encoding = Mandatory | Optional | Absent
+    deriving (Generic, Eq, Show)
+
+instance ToJSON Encoding where
+    toJSON encoding = toJSON $ fmap Data.Char.toLower $ show encoding
+
 data Toplevel = Toplevel
-    { topMandatory      :: Bool
-    , topDefinition     :: Text
-    , topItem           :: Item
+    { topEncoding   :: Rule Encoding
+    , topDefinition :: Text
+    , topItem       :: Item
     } deriving (Generic, Eq, Show)
 
 instance ToJSON Toplevel where
     toJSON t = case topItem t of
         Spare _ -> error "spare toplevel item"
         i -> object
-            [ "mandatory"   .= topMandatory t
+            [ "encoding"    .= topEncoding t
             , "definition"  .= topDefinition t
             , "item"        .= i
             ]
 
 data Uap
-    = Uap [Maybe String]
-    | Uaps [(String, [Maybe String])]
+    = Uap [Maybe ItemName]
+    | Uaps [(UapName, [Maybe ItemName])]
     deriving (Generic, Eq, Show)
 
 instance ToJSON Uap where
-    toJSON (Uap lst) = toJSON lst
-    toJSON (Uaps _) = undefined -- TODO
+    toJSON (Uap lst) = object
+        [ "type" .= ("uap" :: String)
+        , "items" .= lst
+        ]
+    toJSON (Uaps variations) = object
+        [ "type" .= ("uaps" :: String)
+        , "variations" .= fmap variation variations
+        ]
+      where
+        variation (uapName, lst) = object
+            [ "name" .= uapName
+            , "items" .= lst
+            ]
 
 data Category = Category
     { catCat        :: Word8

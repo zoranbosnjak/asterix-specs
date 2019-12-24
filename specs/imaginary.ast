@@ -1,0 +1,235 @@
+category 000 "Imaginary category for test purposes"
+edition 1.2
+date 2000-01
+preamble
+    This is category is for demo purposes.
+    It includes all supported items and variations
+
+    Non-ascii characters are possible: el niño, češnja, žaba...
+
+    Verbatim text ::
+
+        This is verbatim...
+
+    Item list
+
+        * item1
+        * item2
+
+items
+
+    010 "Data Source Identifier"        // this is line comment
+        /*
+            and
+            this
+            is block comment
+        */
+        mandatory
+        definition
+            Identification of the system sending the data.
+        subitems
+            SAC "System Area Code"
+                item 8
+                    raw
+            SIC "System Identification code"
+                item 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    020 "Target Report Descriptor"
+        mandatory
+        definition
+            Type and characteristics of the radar data as transmitted by
+            a radar station.
+        extended 8 8
+            TYP ""
+                item 1
+                    discrete
+                        0: Plot
+                        1: Track
+            SIM ""
+                item 1
+                    discrete
+                        0: Plot
+                        1: Track
+            SSR_PSR "Radar detection in last antenna scan"
+                item 2
+                    discrete
+                        0: No detection
+                        1: Sole primary detection
+                        2: Sole secondary detection
+                        3: Combined primary and secondary detection
+            ANT ""
+                item 1
+                    discrete
+                        0: Target report from antenna 1
+                        1: Target report from antenna 2
+            SPI ""
+                item 1
+                    discrete
+                        0: Default
+                        1: Special Position Identification
+            RAB ""
+                item 1
+                    discrete
+                        0: Default
+                        1: Plot or track from a fixed transponder
+            TST ""
+                item 1
+                    discrete
+                        0: Default
+                        1: Test target indicator
+            DS1_DS2 ""
+                item 2
+                    discrete
+                        0: Default
+                        1: Unlawful interference (code 7500)
+                        2: Radio-communication failure (code 7600)
+                        3: Emergency (code 7700)
+            ME ""
+                item 1
+                    discrete
+                        0: Default
+                        1: Military emergency
+            MI ""
+                item 1
+                    discrete
+                        0: Default
+                        1: Military identification
+            spare 2
+
+    030 ""
+        mandatory
+        definition
+            Some text...
+        subitems
+            A ""
+                item 2
+                    raw
+            B ""
+                item 6
+                    raw
+
+    040 ""
+        case 030/A
+            0: mandatory
+            1: optional
+            2: absent
+        definition
+            Some text...
+        item 8
+            raw
+
+    050 "Indicated Airspeed/Mach No"
+        optional
+        definition
+            asfd
+        subitems
+            IM ""
+                item 1
+                    discrete
+                        0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
+                        1: Air Speed = Mach, LSB (Bit-1) = 0.001
+            IAS ""
+                item 15
+                    case 050/IM
+                        0:
+                            unsigned
+                            fractional 14
+                            unit "NM/s"
+                        1:
+                            unsigned
+                            scale 0.001
+                            unit "mach"
+
+    060 ""
+        optional
+        definition
+            Example of compound item
+        compound
+            A ""
+                item 8
+                    raw
+            STR ""
+                item 48
+                    string icao
+            CSN "Callsign"
+                item 56
+                    string ascii
+            I1 ""
+                item 8
+                    signed
+                    scale 10
+                    fractional 2
+                    unit "s"
+                    ge -20
+                    le 20
+            I2 ""
+                item 8
+                    unsigned
+                    scale 10
+                    fractional 2
+                    unit "s"
+                    gt -20
+                    lt 20
+
+    071 ""
+        optional
+        definition
+            Example of repetitive item
+        repetitive
+            item 8
+                raw
+
+    072 ""
+        optional
+        definition
+            Example of repetitive item
+        repetitive
+            subitems
+                A ""
+                    item 4
+                        raw
+                B ""
+                    item 4
+                        raw
+
+    RE "Reserved Expansion Field"
+        optional
+        definition
+            Expansion
+        explicit
+
+    SP "Special Purpose Field"
+        optional
+        definition
+            Special Purpose Field
+        explicit
+
+/* Example for a single uap:
+uap
+    010
+    020
+    -
+*/
+
+// Example for 2 uaps:
+uaps
+    uap1
+        010
+        020
+    uap2
+        010
+        020
+        030
+        040
+        050
+        -
+        060
+        071
+        072
+        RE
+        SP

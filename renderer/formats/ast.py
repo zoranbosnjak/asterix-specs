@@ -1,215 +1,208 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-from itertools import chain, repeat, accumulate
+"""Render json decoded object to asterix specs format."""
 
-from formats.common import RenderTextGeneric
+from formats.common import getNumber, renderRule
 
-def getNumber(s, default=None):
-    class Natural(object):
-        def __init__(self, val): self.val = val
-        def __str__(self): return '{}'.format(self.val)
-        def __bool__(self): return self.val != default
+accumulator = []
+indentLevel = 0
 
-    class Real(object):
-        def __init__(self, val): self.val = val
-        def __str__(self): return '{0:f}'.format(self.val).rstrip('0')
-        def __bool__(self): return True
+class Indent(object):
+    """Simple indent context manager."""
+    def __enter__(self):
+        global indentLevel
+        indentLevel += 1
+    def __exit__(self, exec_type, exec_val, exec_tb):
+        global indentLevel
+        indentLevel -= 1
 
-    class Ratio(object):
-        def __init__(self, a, b):
-            self.a = a
-            self.b = b
-        def __str__(self): return '{}/{}'.format(self.a, self.b)
-        def __bool__(self): return True
+indent = Indent()
 
-    (a, _space, b) = s.partition(' ')
-    if a == 'Natural':
-        return Natural(int(b))
-    elif a == 'Real':
-        return Real(float(b))
-    elif a == 'Ratio':
-        (x,y) = map(int, b.split(' '))
-        return Ratio(x, y)
-    else:
-        raise Exception('unexpected value type {}'.format(a))
+def tell(s):
+    s = ' '*indentLevel*4 + s
+    accumulator.append(s.rstrip())
 
-class RenderAst(RenderTextGeneric):
-    """Render back to the original .ast format"""
+def render(root):
+    """Rendering entry point"""
+    renderHeader(root)
+    tell('items')
+    tell('')
+    with indent:
+        [renderToplevel(item) for item in root['items']]
+    renderUap(root['uap'])
 
-    def enterRoot(self, root):
-        dl = self.dumpLn
-        dl('category {} "{}"'.format(root['category'], root['title']))
-        dl('edition {}'.format(root['edition']))
-        dl('date {}'.format(root['date']))
-        dl('preamble')
-        self.indent()
-        for i in root['preamble'].strip().splitlines():
-            dl(i)
-        self.unindent()
-        dl('')
+    return ''.join([line+'\n' for line in accumulator])
 
-    def enterToplevels(self, parent, toplevels):
-        dl = self.dumpLn
-        dl('items')
-        self.indent()
+def renderHeader(root):
+    tell('category {} "{}"'.format(root['category'], root['title']))
+    tell('edition {}'.format(root['edition']))
+    tell('date {}'.format(root['date']))
+    tell('preamble')
+    with indent:
+        [tell(i) for i in root['preamble'].splitlines()]
+    tell('')
 
-    def exitToplevels(self, rv):
-        self.unindent()
+def renderToplevel(toplevel):
+    item = toplevel['item']
+    tell('{} "{}"'.format(item['name'], item['title']))
+    with indent:
+        def case1(enc): tell(enc['rule'])
+        def case2(enc):
+            tell('case {}'.format('/'.join(enc['item'])))
+            with indent:
+                [tell('{}: {}'.format(a,b)) for (a,b) in enc['rules']]
+        renderRule(toplevel['encoding'], case1, case2)
 
-    def enterToplevel(self, parent, toplevel):
-        dl = self.dumpLn
-        item = toplevel['item']
-        dl('')
-        dl('{} "{}"'.format(item['name'], item['title']))
-        self.indent()
-        dl('{}'.format('mandatory' if toplevel['mandatory'] else 'optional'))
-        dl('definition')
-        self.indent()
-        for i in toplevel['definition'].strip().splitlines():
-            dl(i)
-        self.unindent()
-        self.renderItem(item['variation'])
+        tell('definition')
+        with indent:
+            [tell(i) for i in toplevel['definition'].strip().splitlines()]
+
+        renderItem(item['variation'])
+
         if item['remark']:
-            dl('remark')
-            self.indent()
-            for i in item['remark'].strip().splitlines():
-                dl(i)
-            self.unindent()
+            tell('remark')
+            with indent:
+                [tell(i) for i in item['remark'].strip().splitlines()]
+    tell('')
 
-        self.unindent()
+def renderItem(variation):
+    def renderQuantity(signed, q):
+        k = getNumber(q['scaling'], 1)
+        fract = q['fractionalBits']
+        unit = q.get('unit')
 
-    def renderItem(self, variation):
-        dl = self.dumpLn
+        tell('{}'.format('signed' if signed else 'unsigned'))
 
-        def renderQuantity(signed, q):
-            k = getNumber(q['scaling'], 1)
-            fract = q['fractionalBits']
-            unit = q.get('unit')
+        if k:
+            tell('scale {}'.format(k))
+        if fract != 0:
+            tell('fractional {}'.format(fract))
+        if unit is not None:
+            tell('unit "{}"'.format(unit))
 
-            dl('{}'.format('signed' if signed else 'unsigned'))
+        lim1 = q['lowLimit']
+        lim2 = q['highLimit']
 
-            if k:
-                dl('scale {}'.format(k))
-            if fract != 0:
-                dl('fractional {}'.format(fract))
-            if unit is not None:
-                dl('unit "{}"'.format(unit))
+        if lim1 is not None:
+            operator = 'ge' if lim1['including'] else 'gt'
+            lim = getNumber(lim1['limit'])
+            tell('{} {}'.format(operator, lim))
 
-            lim1 = q['lowLimit']
-            lim2 = q['highLimit']
+        if lim2 is not None:
+            operator = 'le' if lim2['including'] else 'lt'
+            lim = getNumber(lim2['limit'])
+            tell('{} {}'.format(operator, lim))
 
-            if lim1 is not None:
-                operator = 'ge' if lim1['including'] else 'gt'
-                lim = getNumber(lim1['limit'])
-                dl('{} {}'.format(operator, lim))
+    def renderFixed():
+        n = variation['size']
+        tell('item {}'.format(n))
 
-            if lim2 is not None:
-                operator = 'le' if lim2['including'] else 'lt'
-                lim = getNumber(lim2['limit'])
-                dl('{} {}'.format(operator, lim))
-
-        def renderFixed():
-            n = variation['size']
-            dl('item {}'.format(n))
-
-            value = variation['value']
+        def case1(val):
+            value = val['rule']
             t = value['type']
             if t == 'Raw':
-                dl('raw')
+                tell('raw')
             elif t == 'Unsigned':
                 renderQuantity(False, value['quantity'])
             elif t == 'Signed':
                 renderQuantity(True, value['quantity'])
             elif t == 'Table':
-                dl('discrete')
-                self.indent()
-                for key,value in value['values']:
-                    dl('{}: {}'.format(key, value))
-                self.unindent()
+                tell('discrete')
+                with indent:
+                    [tell('{}: {}'.format(key, value)) for key,value in value['values']]
             elif t == 'StringAscii':
-                dl('string ascii')
+                tell('string ascii')
             elif t == 'StringICAO':
-                dl('string icao')
+                tell('string icao')
             else:
                 raise Exception('unexpected value type {}'.format(t))
             return n
 
-        def renderMaybeItem(item):
-            if item['spare']:
-                n = item['length']
-                dl('spare {}'.format(n))
-                return n
-            tit = item['title']
-            dl('{} "{}"'.format(item['name'], tit))
-            if item['description']:
-                self.indent()
-                dl('description')
-                self.indent()
-                for i in item['description'].strip().splitlines():
-                    dl(i)
-                self.unindent()
-                self.unindent()
-            self.indent()
-            n = self.renderItem(item['variation'])
+        def case2(val):
+            tell('case {}'.format('/'.join(val['item'])))
+            with indent:
+                for (a,b) in val['rules']:
+                    tell('{}:'.format(a))
+                    with indent:
+                        case1({'rule': b})
+            return n
+
+        with indent:
+            return renderRule(variation['value'], case1, case2)
+
+    def renderMaybeItem(item):
+        if item['spare']:
+            n = item['length']
+            tell('spare {}'.format(n))
+            return n
+        tit = item['title']
+        tell('{} "{}"'.format(item['name'], tit))
+        if item['description']:
+            with indent:
+                tell('description')
+                with indent:
+                    [tell(i) for i in item['description'].strip().splitlines()]
+        with indent:
+            n = renderItem(item['variation'])
             if item['remark']:
-                dl('remark')
-                self.indent()
-                for i in item['remark'].strip().splitlines():
-                    dl(i)
-                self.unindent()
-            self.unindent()
-            return n
+                tell('remark')
+                with indent:
+                    [tell(i) for i in item['remark'].strip().splitlines()]
+        return n
 
-        def renderGroup():
-            dl('subitems')
-            n = 0
-            self.indent()
+    def renderGroup():
+        tell('subitems')
+        n = 0
+        with indent:
             for item in variation['items']:
                 n += renderMaybeItem(item)
-            self.unindent()
-            return n
+        return n
 
-        def renderExtended():
-            dl('extended {} {}'.format(variation['first'], variation['extents']))
-            n = 0
-            self.indent()
+    def renderExtended():
+        tell('extended {} {}'.format(variation['first'], variation['extents']))
+        n = 0
+        with indent:
             for item in variation['items']:
                 n += renderMaybeItem(item)
-            self.unindent()
-            return n
+        return n
 
-        def renderRepetitive():
-            dl('repetitive')
-            n = 0
-            self.indent()
-            n = self.renderItem(variation['item'])
-            self.unindent()
-            return n
+    def renderRepetitive():
+        tell('repetitive')
+        with indent:
+            return renderItem(variation['item'])
 
-        def renderExplicit():
-            dl('explicit')
-            return 0
+    def renderExplicit():
+        tell('explicit')
+        return 0
 
-        def renderCompound():
-            dl('compound')
-            self.indent()
-            n = 0
+    def renderCompound():
+        tell('compound')
+        n = 0
+        with indent:
             for item in variation['items']:
                 n += renderMaybeItem(item)
-            self.unindent()
-            return n
+        return n
 
-        return locals()['render'+variation['type']]()
+    return locals()['render'+variation['type']]()
 
-    def enterUap(self, parent, uap):
-        dl = self.dumpLn
-        dl('')
-        dl('uap')
-        self.indent()
-        for i in uap:
-            dl(i if i is not None else '-')
-        self.unindent()
+def renderUap(uap):
+    def single(items):
+        [tell(i if i is not None else '-') for i in items]
 
-    def exitRoot(self, rv):
-        dl = self.dumpLn
-        dl('')
+    t = uap['type']
+    if t == 'uap':
+        tell('uap')
+        with indent:
+            single(uap['items'])
+
+    elif t == 'uaps':
+        tell('uaps')
+        with indent:
+            for var in uap['variations']:
+                tell(var['name'])
+                with indent:
+                    single(var['items'])
+    else:
+        raise Exception('unexpected uap type {}'.format(t))
 

@@ -47,6 +47,9 @@ sc = smartSkip (void $ some (char ' ' <|> char '\t'))
 stringLiteral :: Parser String
 stringLiteral = char '"' >> manyTill L.charLiteral (char '"')
 
+pInt :: Parser Int
+pInt = L.decimal -- TODO: add support for [INT, CHR, HEX, OCT]
+
 -- | Parse with first successfull parser.
 tryOne :: [Parser a] -> Parser a
 tryOne [] = fail "empty list"
@@ -148,12 +151,23 @@ pNumber = tryOne
         b <- L.decimal
         return $ (a % b)
 
+-- | Parse item name in the form "case a/b/c...".
+pPaths :: Parser [ItemName]
+pPaths = do
+    string "case" >> sc
+    x <- pName
+    rest <- many (char '/' >> pName)
+    return $ x:rest
+
 -- | Parse (fixed) type.
 pFixed :: Parser () -> Parser Variation
 pFixed sc' = do
     string "item" >> sc'
     n <- L.decimal
-    val <- sc' >> tryOne
+    rule <- sc' >> tryOne [ContextFree <$> pContextFree, pDependent]
+    return $ Fixed n rule
+  where
+    pContextFree = tryOne
         [ string "raw" >> pure Raw
         , string "signed" >> fmap Signed pQuantity
         , string "unsigned" >> fmap Unsigned pQuantity
@@ -161,8 +175,13 @@ pFixed sc' = do
         , string "string" >> sc >> string "ascii" >> pure StringAscii
         , string "string" >> sc >> string "icao" >> pure StringICAO
         ]
-    return $ Fixed n val
-  where
+
+    pDependent = do
+        (h,lst) <- parseList pPaths pCase
+        return $ Dependent h lst
+      where
+        pCase _ = (,) <$> (pInt <* (char ':' >> (try scn <|> sc))) <*> pContextFree
+
     pQuantity = do
         scale <- try (sc' >> string "scale" >> sc' >> pNumber) <|> pure (NumberZ 1)
         fract <- try (sc' >> string "fractional" >> sc' >> (L.decimal <* sc')) <|> pure 0
@@ -179,7 +198,7 @@ pFixed sc' = do
         return $ Quantity scale fract unit lo hi
 
     parseRow _ = do
-        val <- L.decimal    -- TODO: add support for [INT, CHR, HEX, OCT]
+        val <- pInt
         char ':' >> sc
         msg <- T.strip . T.pack <$> pLine
         return (val, msg)
@@ -234,8 +253,12 @@ pVariation sc' = tryOne
     ]
 
 -- | Parser valid name.
-pName :: Parser String
+pName :: Parser ItemName
 pName = some (alphaNumChar <|> char '_')
+
+-- | Parser valid uap name.
+pUapName :: Parser ItemName
+pUapName = some (alphaNumChar <|> char '-')
 
 -- | Parse spare or regular 'item'.
 pItem :: Parser () -> Parser Item
@@ -257,15 +280,25 @@ pToplevelItem :: Parser () -> Parser Toplevel
 pToplevelItem sc' = do
     name <- pName <* sc'
     title <- (T.pack <$> stringLiteral) <* sc'
-    mandatory <-
-        (string "mandatory" *> pure True)
-        <|> (string "optional" *> pure False)
-    sc'
+    encoding <- do
+        let pEncoding = tryOne
+                [ string "mandatory" >> sc' >> pure Mandatory
+                , string "optional" >> sc' >> pure Optional
+                , string "absent" >> sc' >> pure Absent
+                ]
+        tryOne
+            [ ContextFree <$> pEncoding
+            , do
+                let pCase _ = (,) <$> (pInt <* (char ':' >> sc)) <*> pEncoding
+                (h,lst) <- parseList pPaths pCase
+                return $ Dependent h lst
+            ]
+        -- (string "optional" *> pure False)
     definition <- (T.pack <$> blockAfter "definition") <* sc'
     variation <- pVariation sc'
     remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
     return $ Toplevel
-        mandatory
+        encoding
         definition
         (Item name title Nothing variation remark)
 
@@ -275,13 +308,15 @@ pToplevelItems = snd <$> parseList (string "items") pToplevelItem
 
 -- | Parse 'UAP'.
 pUap :: Parser Uap
-pUap = uap {- <|> uaps -}
+pUap = uaps <|> uap
   where
     parseOne _sc'
         = (char '-' >> return Nothing)
       <|> (fmap Just pName)
     uap = Uap . snd <$> parseList (string "uap") parseOne
-    -- uaps = undefined -- TODO
+    uaps = do
+        (_, lst) <- parseList (string "uaps") (\_ -> parseList pUapName parseOne)
+        return $ Uaps lst
 
 -- | Parse category description.
 pCategory :: Parser Category

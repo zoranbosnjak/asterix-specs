@@ -2,10 +2,14 @@ set title "content-def"
 set spec {
     stack
         { or
+            { line
+                /case
+                { loop /item "/" }
+                { loop { line (indent) INT : content-def (unindent)} {} }
+            }
             { line /raw}
-            { line /discrete { loop { line (indent) { or INT CHR HEX OCT } : STRING (unindent)} {} } }
+            { line /discrete { loop { line (indent) INT : STRING (unindent)} {} } }
             { line /string {or /ascii /icao } }
-            { line /ssr}
             { stack
                 { line
                     { or /signed /unsigned }

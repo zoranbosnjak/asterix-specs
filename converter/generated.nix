@@ -20,7 +20,6 @@ mkDerivation {
     optparse-applicative QuickCheck stm template-haskell text
     text-format time unordered-containers
   ];
-  testHaskellDepends = [ base bytestring text ];
   description = "asterix specs converter";
   license = stdenv.lib.licenses.bsd3;
 }

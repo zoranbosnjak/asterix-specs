@@ -11,7 +11,7 @@ fi
 
 cat $1 > specs.ast
 converter -f specs.ast --json > specs.json
-render --script rst.py RenderRst specs.json > specs.rst
+render --script rst.py render specs.json > specs.rst
 make html
 make latexpdf
 

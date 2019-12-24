@@ -1,74 +1,42 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
-def underline(c, s):
-    n = len(s)
-    assert len(c) == 1, 'expecting single underline character'
-    return '{}\n{}\n'.format(s, c*n)
+def getNumber(s, default=None):
+    """Get Natural/Real/Rational number as an object."""
+    class Natural(object):
+        def __init__(self, val): self.val = val
+        def __str__(self): return '{}'.format(self.val)
+        def __bool__(self): return self.val != default
 
-def indentLines(s, n):
-    return ''.join([n*' ' + l for l in s.splitlines()])
+    class Real(object):
+        def __init__(self, val): self.val = val
+        def __str__(self): return '{0:f}'.format(self.val).rstrip('0')
+        def __bool__(self): return True
 
-def getNumber(s):
+    class Ratio(object):
+        def __init__(self, a, b):
+            self.a = a
+            self.b = b
+        def __str__(self): return '{}/{}'.format(self.a, self.b)
+        def __bool__(self): return True
+
     (a, _space, b) = s.partition(' ')
     if a == 'Natural':
-        return int(b)
+        return Natural(int(b))
     elif a == 'Real':
-        return float(b)
+        return Real(float(b))
     elif a == 'Ratio':
         (x,y) = map(int, b.split(' '))
-        return float(x) / float(y)
+        return Ratio(x, y)
     else:
         raise Exception('unexpected value type {}'.format(a))
 
-class RenderTextGeneric(object):
-    def __init__(self):
-        self.accumulator = ""
-        self.variables = {}
-        self.indentLevel = 0
-        self.onInit()
-
-    def onInit(self):
-        pass
-
-    def indent(self):
-        self.indentLevel += 1
-
-    def unindent(self):
-        self.indentLevel -= 1
-
-    def save(self, attr, value):
-        self.variables[attr] = value
-
-    def fetch(self, attr):
-        return self.variables.get(attr)
-
-    def dump(self, s):
-        self.accumulator += ' '*self.indentLevel*4 + s
-
-    def dumpLn(self, s):
-        return self.dump(s+'\n')
-
-    def __call__(self, obj):
-        rv0 = self.enterRoot(obj)
-
-        toplevels = obj['items']
-        rv1 = self.enterToplevels(obj, toplevels)
-        for toplevel in toplevels:
-            rv2 = self.enterToplevel(obj, toplevel)
-            self.exitToplevel(rv2)
-        self.exitToplevels(rv1)
-
-        rv1 = self.enterUap(obj, obj['uap'])
-        self.exitUap(rv1)
-
-        self.exitRoot(rv0)
-        return self.accumulator
-
-    def enterRoot(self, root): pass
-    def enterToplevels(self, parent, toplevels): pass
-    def enterToplevel(self, parent, toplevel): pass
-    def exitToplevel(self, rv): pass
-    def exitToplevels(self, rv): pass
-    def enterUap(self, parent, uap): pass
-    def exitUap(self, rv): pass
-    def exitRoot(self, rv): pass
+def renderRule(rule, caseContextFree, caseDependent):
+    rule_type = rule['type']
+    if rule_type == 'ContextFree':
+        return caseContextFree(rule)
+    elif rule_type == 'Dependent':
+        return caseDependent(rule)
+    else:
+        raise Exception('unexpected rule type {}'.format(rule_type))
 
