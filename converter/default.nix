@@ -1,4 +1,5 @@
 { packages ? null
+, gitrev ? "devel"
 }:
 
 let

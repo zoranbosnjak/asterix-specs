@@ -1,12 +1,44 @@
 # Asterix specifications
 
-## converter
+The all-purpose structured EUROCONTROL surveillance information exchange (ASTERIX)
+in a parsable format.
+
+## Source format (.ast)
+
+Each asterix category is described in specific `.ast` text file.
+See `syntax/*ps` files for detailed syntax.
+
+## JSON format (.json)
+
+This is an intermediate format which is directly derived from the `.ast` files,
+using a reference parser (`convert --json`). JSON is well supported format,
+so it is easy to include asterix specifications in another project.
+
+See `renderer` as an example `python` application.
+
+`.ast` and `.json` files are identical in respect to the information they contain.
+
+## Restructured text format (.rst)
+
+This is an intermediate format to generate human readable documentation (pdf, html).
+`.rst` file is automatically generated out of coresponding `.json` file, using a renderer.
+
+## Custom formats
+
+It is possible to generate (render) any other file format as required by the application,
+for example `.xml` or a `.json` with some other naming schema.
+
+In this case, a specific renderer function is required.
+
+# converter
+
+This is a reference parser for the original `.ast` file format.
 
     - validate `.ast` file
     - convert `.ast` file to `.json`
     - dump `.ast` file as a list of items
 
-## renderer
+# renderer
 
 Render `.json` file to various output formats.
 To render `.json` back to `.ast`, use builtin `renderer/formats/ast.py` file.
@@ -23,7 +55,7 @@ render --script ast.py RenderAst test.json > test.ast
 diff specs/imaginary.ast test.ast
 ```
 
-## publisher
+# publisher
 
 Render `.json` file to `.rst`, then generate documentation out of it.
 

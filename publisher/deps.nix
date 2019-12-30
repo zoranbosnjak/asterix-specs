@@ -9,12 +9,12 @@ let
       wrapfig upquote capt-of needspace etoolbox lastpage caption;
   };
 
-in
-  [
+  deps = [
     tex
     pkgs.python3
     pkgs.python3Packages.sphinx
-    pkgs.tk
     pkgs.inkscape
-  ]
+  ];
+
+in deps
 

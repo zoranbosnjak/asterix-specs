@@ -1,4 +1,5 @@
-{ inShell ? null
+{ gitrev ? "devel"
+, inShell ? null
 , packages ? null
 }:
 
@@ -22,7 +23,12 @@ let
     '';
     installPhase = ''
       mkdir -p $out
-      echo "TODO" > $out/test
+
+      mkdir -p $out/syntax/sources
+      for i in `ls *tcl | grep syntax`; do cp $i $out/syntax/sources; done
+
+      mkdir -p $out/syntax/postscript
+      for i in `ls *ps | grep syntax`; do cp $i $out/syntax/postscript; done
     '';
   } // { inherit env; };
 
