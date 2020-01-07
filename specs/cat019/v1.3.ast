@@ -1,0 +1,298 @@
+category 019 "Multilateration System Status Messages"
+edition 1.3
+date 2010-12
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        mandatory
+        definition
+            This Data Item allows for a more convenient handling of the
+            messages at the receiver side by further defining the type of
+            information.
+        item 8
+            raw
+        remark
+            NOTES:
+              1. In applications where data of various types is exchanged, the Message
+                 Type Data Item facilitates the proper message handling at the receiver
+                 side.
+              2. All Message Type values are reserved for common standard use.
+              3. The following set of Message Types are standardised for category 019
+                    records ::
+                        1: Start of Update Cycle
+                        2: Periodic Status Message
+                        3: Event-triggered Status Message
+
+    010 "Data Source Identifier"
+        mandatory
+        definition
+            Identification of the system from which the data is received.
+        subitems
+            SAC "System Area Code"
+                item 8
+                    raw
+            SIC "System Identification code"
+                item 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    140 "Time of Day"
+        mandatory
+        definition
+            Absolute time stamping expressed as UTC.
+        item 24
+            unsigned
+            fractional 7
+            unit "s"
+        remark
+            Note:
+
+                The time of day value is reset to zero each day at midnight.
+
+    550 "System Status"
+        case 000
+            1: optional
+            2: mandatory
+            3: mandatory
+        definition
+            Information concerning the configuration and status of a System.
+        subitems
+            NOGO "Operational Release Status of the System"
+                item 2
+                    discrete
+                        0: Operational
+                        1: Degraded
+                        2: NOGO
+                        3: undefined
+            OVL "Overload indicator"
+                item 1
+                    discrete
+                        0: No overload
+                        1: Overload
+            TSV "Time Source Validity"
+                item 1
+                    discrete
+                        0: valid
+                        1: invalid
+            TTF "Test Target"
+                item 1
+                    discrete
+                        0: Test Target Operative
+                        1: Test Target Failure
+            spare 3
+        remark
+            Note:
+
+                A time source is considered as valid when either externally synchronised
+                or running on a local oscillator within the required accuracy of UTC.
+
+    551 "Tracking Processor Detailed Status"
+        optional
+        definition
+            Information concerning the configuration and status of the Tracking processors.
+        subitems
+            TP1A ""
+                item 1
+                    discrete
+                        0: Standby
+                        1: Exec
+            TP1B ""
+                item 1
+                    discrete
+                        0: Faulted
+                        1: Good
+            TP2A ""
+                item 1
+                    discrete
+                        0: Standby
+                        1: Exec
+            TP2B ""
+                item 1
+                    discrete
+                        0: Faulted
+                        1: Good
+            TP3A ""
+                item 1
+                    discrete
+                        0: Standby
+                        1: Exec
+            TP3B ""
+                item 1
+                    discrete
+                        0: Faulted
+                        1: Good
+            TP4A ""
+                item 1
+                    discrete
+                        0: Standby
+                        1: Exec
+            TP4B ""
+                item 1
+                    discrete
+                        0: Faulted
+                        1: Good
+        remark
+            Note:
+
+                Both Bits of one TP set to zero means, that this TP is not used
+                in the system.
+
+    552 "Remote Sensor Detailed Status"
+        optional
+        definition
+            Information concerning the configuration and status of the Remote Sensors (RS)
+        repetitive
+            subitems
+                RSI "8-bit Identification number of RS"
+                    item 8
+                        raw
+                spare 1
+                RS1090 "Receiver 1090 MHz"
+                    item 1
+                        discrete
+                            0: Not present
+                            1: present
+                TX1030 "Transmitter 1030 MHz"
+                    item 1
+                        discrete
+                            0: Not present
+                            1: present
+                TX1090 "Transmitter 1090 MHz"
+                    item 1
+                        discrete
+                            0: Not present
+                            1: present
+                RSS "RS Status"
+                    item 1
+                        discrete
+                            0: Faulted
+                            1: Good
+                RSO "RS Operational"
+                    item 1
+                        discrete
+                            0: Offline
+                            1: Online
+                spare 2
+
+    553 "Reference Transponder Detailed Status"
+        optional
+        definition
+            Information concerning the configuration and status of the Reference Transponder.
+        extended 8 8
+            REFTr1 "Ref Trans 1 Status"
+                item 2
+                    discrete
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 2
+            REFTr2 "Ref Trans 2 Status"
+                item 2
+                    discrete
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 1
+            REFTr3 "Ref Trans 3 Status"
+                item 2
+                    discrete
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 2
+            REFTr4 "Ref Trans 4 Status"
+                item 2
+                    discrete
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 1
+
+    600 "Position of the MLT System Reference Point"
+        case 000
+            1: optional
+            2: optional
+            3: absent
+        definition
+            Position of the MLT reference point in WGS-84 Coordinates.
+        subitems
+            LAT "Latitude"
+                item 32
+                    signed
+                    scale 180
+                    fractional 30
+                    unit "deg"
+                    ge -90
+                    le 90
+            LON "Longitude"
+                item 32
+                    signed
+                    scale 180
+                    fractional 30
+                    unit "deg"
+                    ge -180
+                    lt 180
+
+    610 "Height of the MLT System Reference Point"
+        case 000
+            1: optional
+            2: optional
+            3: absent
+        definition
+            Height of the MLT system reference point in two’s complement form.
+            The height shall use mean sea level as the zero reference level.
+        item 16
+            signed
+            fractional 2
+            unit "m"
+            ge -8192
+            le 8192
+
+    620 "WGS-84 Undulation"
+        case 000
+            1: optional
+            2: optional
+            3: absent
+        definition
+            WGS-84 undulation value of the MLT system reference point, in meters.
+            Geoid undulation value is the difference between the ellipsoidal height
+            and the height above mean sea level
+        item 8
+            signed
+            unit "m"
+            ge -127
+            le 127
+
+    RE "Reserved Expansion Field"
+        optional
+        definition
+            Expansion
+        explicit
+
+    SP "Special Purpose Field"
+        optional
+        definition
+            Special Purpose Field
+        explicit
+
+uap
+    010
+    000
+    140
+    550
+    551
+    552
+    553
+    600
+    610
+    620
+    -
+    -
+    RE
+    SP

@@ -6,6 +6,7 @@ module Main where
 
 import           Control.Monad
 import           Options.Applicative as Opt
+import qualified Data.Text as T
 import           Data.Text.Encoding (decodeUtf8)
 import           System.IO as IO
 import           System.Exit (die)
@@ -204,10 +205,12 @@ validateContent category path n = \case
     validateRule = \case
         Table lst ->
             let keys = fst <$> lst
+                values = snd <$> lst
                 size = compare (length keys) (2 ^ n)
             in join
                 [ reportWhen (keys /= nub keys) path "duplicated keys"
                 , reportWhen (size == GT) path "table too big"
+                , reportWhen (any T.null values) path "empty value"
                 ]
         _ -> []
 
