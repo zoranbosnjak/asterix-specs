@@ -163,7 +163,7 @@ validateVariation category path = \case
                 in case compare (n+n'+1) a of
                     LT -> loop (n+n', problems'++problems) (a:b) is
                     EQ -> loop (n+n'+1, problems'++problems) b is
-                    GT -> loop (n+n', problems'++problems++["overflow"]) b is
+                    GT -> loop (n+n', problems' ++ problems ++ reportWhen True path "overflow") b is
     Repetitive subVariation ->
         let (n, problems) = validateVariation category path subVariation
         in (8+n, problems)

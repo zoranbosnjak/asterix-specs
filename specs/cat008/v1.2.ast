@@ -1,0 +1,292 @@
+category 008 "Monoradar Derived Weather Information"
+edition 1.2
+date 2014-08
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        optional
+        definition
+            This Data Item allows for a more convenient handling of the messages
+            at the receiver side by further defining the type of transaction.
+        item 8
+            discrete
+                1: Polar vector;
+                2: Cartesian vector of start point/ length;
+                3: Contour record;
+                4: Cartesian start point and end point vector;
+                254: SOP message;
+                255: EOP message.
+
+    010 "Data Source Identifier"
+        optional        // at least on the first record
+        definition
+            Identification of the radar station from which the data are received.
+        subitems
+            SAC "System Area Code"
+                item 8
+                    raw
+            SIC "System Identification code"
+                item 8
+                    raw
+        remark
+            Note:
+                The defined SACs are on the EUROCONTROL ASTERIX website
+                (www.eurocontrol.int/asterix)
+
+    020 "Vector Qualifier"
+        optional
+        definition
+            Precipitation intensity level, shading orientation of the vectors
+            representing the precipitation area and coordinate system used.
+        extended 8 8
+            ORG ""
+                item 1
+                    discrete
+                        0: Local Coordinates
+                        1: System Coordinates
+            I "Intensity level (range zero to seven)"
+                item 3
+                    raw
+            S "Shading orientation with respect to North, as follows:"
+                item 3
+                    discrete
+                        0: 0°
+                        1: 22.5°
+                        2: 45°
+                        3: 67.5°
+                        4: 90°
+                        5: 112.5°
+                        6: 135°
+                        7: 157.5°
+            spare 5
+            TST ""
+                item 1
+                    discrete
+                        0: Default
+                        1: Test vector
+            ER ""
+                item 1
+                    discrete
+                        0: Default
+                        1: Error condition encountered
+        remark
+            Note:
+                For polar vectors bits-4/2 are meaningless and are set to zero.
+
+    034 "Sequence of Polar Vectors in SPF Notation"
+        optional
+        definition
+            Sequence of weather vectors in local polar coordinates.
+        repetitive
+            subitems
+                STR "START RANGE"
+                    item 8
+                        raw
+                ENDR "END RANGE"
+                    item 8
+                        raw
+                AZ "AZIMUTH"
+                    item 16
+                        unsigned
+                        scale 360
+                        fractional 16
+                        unit "deg"
+        remark
+            Note:
+                f is a parameter of the SOP message.
+
+    036 "Sequence of Cartesian Vectors in SPF Notation"
+        optional
+        definition
+            Sequence of weather vectors, in the representation start point/length,
+            in local or in system cartesian coordinates.
+        repetitive
+            subitems
+                X "X-COMPONENT"
+                    item 8
+                        unsigned
+                        scale 2
+                        unit "NM"
+                        le 2
+                Y "Y-COMPONENT"
+                    item 8
+                        raw
+                L "LENGTH"
+                    item 8
+                        raw
+        remark
+            Note:
+                1. f is a parameter of the SOP message.
+                2. Negative values are expressed in 2's complement form, bit-24
+                   and bit-16 are set to 0 for positive values and 1 for negative
+                   values.
+
+    038 "Sequence of Weather Vectors in SPF Notation"
+        optional
+        definition
+            Sequence of weather vectors, in the representation start point/ end
+            point, in local or in system cartesian coordinates.
+        repetitive
+            subitems
+                X1 "X1 COMPONENT"
+                    item 8
+                        raw
+                Y1 "Y1 COMPONENT"
+                    item 8
+                        raw
+                X2 "X2 COMPONENT"
+                    item 8
+                        raw
+                Y2 "Y2 COMPONENT"
+                    item 8
+                        raw
+        remark
+            Note:
+                1. f is a parameter of the SOP message.
+                2. Negative values are expressed in 2's complement form, bits-32,
+                   24, 16 and 8 are set to 0 for positive values and 1 for negative
+                   values.
+
+    040 "Contour Identifier"
+        optional
+        definition
+            Contour serial number together with the precipitation intensity levels
+            and the coordinates system used.
+        subitems
+            ORG ""
+                item 1
+                    discrete
+                        0: Local Coordinates
+                        1: System Coordinates
+            I "Intensity level (range zero to seven)"
+                item 3
+                    raw
+            spare 2
+            FST_LST ""
+                item 2
+                    discrete
+                        0: Intermediate record of a contour
+                        1: Last record of a contour of at least two records
+                        2: First record of a contour of at least two records
+                        3: First and only record, fully defining a contour
+            CSN "Contour Serial Number"
+                item 8
+                    raw
+        remark
+            Note:
+                The Contour Serial Number provides an unambiguous identification
+                for each contour record. Within one update cycle, a serial number
+                shall never be assigned twice.
+
+    050 "Sequence of Contour Points in SPF Notation"
+        optional
+        definition
+            Cartesian coordinates of a variable number of points defining a contour.
+        repetitive
+            subitems
+                X1 ""
+                    item 8
+                        raw
+                Y1 ""
+                    item 8
+                        raw
+        remark
+            Note:
+                1. f is a parameter of the SOP message.
+                2. Negative values are expressed in 2's complement form, bit-16
+                   and bit-8 shall be set to 0 for positive values and 1 for
+                   negative values.
+
+    090 "Time of Day"
+        optional
+        definition
+            Absolute time stamping expressed as Coordinated Universal Time (UTC) time.
+        item 24
+            unsigned
+            fractional 7
+            unit "s"
+        remark
+            Notes:
+
+                1. The time of day value is reset to zero each day at midnight.
+                2. For time management in radar transmission applications, refer
+                   to Part 1, paragraph 5.4 [Ref. 1].
+
+    100 "Processing Status"
+        optional
+        definition
+            Information concerning the scaling factor currently applied, current
+            reduction step in use, etc.
+        extended 24 8
+            f "Scaling factor"
+                item 5
+                    signed
+                    fractional 0
+                    unit ""
+            R "Current reduction stage in use"
+                item 3
+                    raw
+            Q "Processing parameters"
+                item 15
+                    raw
+        remark
+            Note:
+                f: Scaling factor, negative values are represented in 2's complement
+                form, bit-24 is set to 0 for positive values and 1 for negative values.
+                R: Current reduction stage in use. Normal operation is indicated by a
+                value of zero. The actual bit signification is application dependent.
+                Q: Processing parameters. The actual bit signification isapplication dependent.
+
+    110 "Station Configuration Status"
+        optional
+        definition
+            Information concerning the use and status of some vital hardware
+            components of a radar system .
+        extended 8 8
+            DATA "Unspecified data"
+                item 7
+                    raw
+        remark
+            Note:
+                Due to the diversity in hardware design and requirements of present
+                and future radar stations, it is felt impractical to attempt to
+                define individual bits.
+
+    120 "Total Number of Items Constituting One Weather Picture"
+        optional
+        definition
+            Total number of vectors, respectively contour points, constituting
+            the total weather image, provided with the EOP message.
+        item 16
+            raw
+
+    RE "Reserved Expansion Field"
+        optional
+        definition
+            Expansion
+        explicit
+
+    SP "Special Purpose Field"
+        optional
+        definition
+            Special Purpose Field
+        explicit
+
+uap
+    010
+    000
+    020
+    036
+    034
+    040
+    050
+    090
+    100
+    110
+    120
+    038
+    RE
+    SP
