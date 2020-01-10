@@ -151,10 +151,9 @@ pNumber = tryOne
         b <- L.decimal
         return $ (a % b)
 
--- | Parse item name in the form "case a/b/c...".
+-- | Parse item name in the form "a/b/c...".
 pPaths :: Parser [ItemName]
 pPaths = do
-    string "case" >> sc
     x <- pName
     rest <- many (char '/' >> pName)
     return $ x:rest
@@ -164,7 +163,7 @@ pFixed :: Parser () -> Parser Variation
 pFixed sc' = do
     string "item" >> sc'
     n <- L.decimal
-    rule <- sc' >> tryOne [ContextFree <$> pContextFree, pDependent]
+    rule <- sc' >> tryOne [ContextFree <$> pContextFree, pItemDependent]
     return $ Fixed n rule
   where
     pContextFree = tryOne
@@ -176,10 +175,13 @@ pFixed sc' = do
         , string "string" >> sc >> string "icao" >> pure StringICAO
         ]
 
-    pDependent = do
-        (h,lst) <- parseList pPaths pCase
-        return $ Dependent h lst
+    pItemDependent = do
+        ((def,h),lst) <- parseList pHeader pCase
+        return $ ItemDependent def h lst
       where
+        pHeader = (,)
+            <$> (string "case" >> sc >> pContextFree)
+            <*> (sc >> pPaths)
         pCase _ = (,) <$> (pInt <* (char ':' >> (try scn <|> sc))) <*> pContextFree
 
     pQuantity = do
@@ -290,10 +292,12 @@ pToplevelItem sc' = do
             [ ContextFree <$> pEncoding
             , do
                 let pCase _ = (,) <$> (pInt <* (char ':' >> sc)) <*> pEncoding
-                (h,lst) <- parseList pPaths pCase
-                return $ Dependent h lst
+                    pHeader = (,)
+                        <$> (string "case" >> sc >> pEncoding)
+                        <*> (sc >> pPaths)
+                ((def,h),lst) <- parseList pHeader pCase
+                return $ ItemDependent def h lst
             ]
-        -- (string "optional" *> pure False)
     definition <- (T.pack <$> blockAfter "definition") <* sc'
     variation <- pVariation sc'
     remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))

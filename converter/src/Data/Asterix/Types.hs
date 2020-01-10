@@ -30,7 +30,7 @@ type UapName = String
 
 data Rule a
     = ContextFree a
-    | Dependent [ItemName] [(Int, a)]
+    | ItemDependent a [ItemName] [(Int, a)]
     deriving (Generic, Eq, Show)
 
 instance ToJSON a => ToJSON (Rule a)
@@ -39,8 +39,9 @@ instance ToJSON a => ToJSON (Rule a)
         [ "type" .= ("ContextFree" :: String)
         , "rule" .= rule
         ]
-    toJSON (Dependent item rules) = object
-        [ "type" .= ("Dependent" :: String)
+    toJSON (ItemDependent def item rules) = object
+        [ "type" .= ("ItemDependent" :: String)
+        , "default" .= def
         , "item" .= item
         , "rules" .= rules
         ]

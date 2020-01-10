@@ -35,7 +35,7 @@ def renderRule(rule, caseContextFree, caseDependent):
     rule_type = rule['type']
     if rule_type == 'ContextFree':
         return caseContextFree(rule)
-    elif rule_type == 'Dependent':
+    elif rule_type == 'ItemDependent':
         return caseDependent(rule)
     else:
         raise Exception('unexpected rule type {}'.format(rule_type))

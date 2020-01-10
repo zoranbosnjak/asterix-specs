@@ -4,6 +4,7 @@ set spec {
         { or
             { line
                 /case
+                content-def
                 { loop /item "/" }
                 { loop { line (indent) INT : content-def (unindent)} {} }
             }
