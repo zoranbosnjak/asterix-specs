@@ -74,8 +74,7 @@ pEdition = do
 pDate :: Parser Date
 pDate = do
     string "date" >> sc
-    (a,_,b) <- (,,) <$> L.decimal <*> char '-' <*> L.decimal
-    return $ Date a b
+    Date <$> L.decimal <*> (char '-' *> L.decimal ) <*> (char '-' *> L.decimal )
 
 -- | Parse to the end of line.
 pLine :: Parser String
@@ -151,6 +150,10 @@ pNumber = tryOne
         b <- L.decimal
         return $ (a % b)
 
+-- | Parser valid name.
+pName :: Parser ItemName
+pName = some (alphaNumChar <|> char '_')
+
 -- | Parse item name in the form "a/b/c...".
 pPaths :: Parser [ItemName]
 pPaths = do
@@ -158,57 +161,67 @@ pPaths = do
     rest <- many (char '/' >> pName)
     return $ x:rest
 
+-- | Parse Signed.
+pSigned :: Parser Signed
+pSigned = Signed <$> tryOne
+    [ string "unsigned" >> pure False
+    , string "signed" >> pure True
+    ]
+
+parseRow :: Parser () -> Parser (Int, Text)
+parseRow _ = (,)
+    <$> (pInt <* (char ':' >> sc))
+    <*> (T.strip . T.pack <$> pLine)
+
+pConstrain :: Parser Constrain
+pConstrain = tryOne
+    [ string "==" >> sc >> (EqualTo <$> pNumber)
+    , string "/=" >> sc >> (NotEqualTo <$> pNumber)
+    , string ">=" >> sc >> (GreaterThanOrEqualTo <$> pNumber)
+    , string ">" >> sc >> (GreaterThan <$> pNumber)
+    , string "<=" >> sc >> (LessThanOrEqualTo <$> pNumber)
+    , string "<" >> sc >> (LessThan <$> pNumber)
+    ]
+
+pContent :: Parser Content
+pContent = tryOne
+    [ string "raw" >> pure ContentRaw
+    , (ContentTable . snd <$> parseList (string "table") parseRow)
+    , do
+        string "string" >> sc
+        ContentString <$> tryOne
+            [ string "ascii" >> pure StringAscii
+            , string "icao" >> pure StringICAO
+            ]
+    , ContentInteger
+        <$> pSigned <* (sc >> string "integer")
+        <*> (many (sc >> pConstrain))
+    , ContentQuantity
+        <$> pSigned <* (sc >> string "quantity" >> sc)
+        <*> pNumber <* sc
+        <*> L.decimal <* sc
+        <*> (T.pack <$> stringLiteral)
+        <*> (many (sc >> pConstrain))
+    ]
+
 -- | Parse (fixed) type.
 pFixed :: Parser () -> Parser Variation
 pFixed sc' = do
     string "item" >> sc'
     n <- L.decimal
-    rule <- sc' >> tryOne [ContextFree <$> pContextFree, pItemDependent]
+    rule <- sc' >> tryOne [ContextFree <$> pContent, pItemDependent]
     return $ Fixed n rule
   where
-    pContextFree = tryOne
-        [ string "raw" >> pure Raw
-        , string "signed" >> fmap Signed pQuantity
-        , string "unsigned" >> fmap Unsigned pQuantity
-        , (Table . snd <$> parseList (string "discrete") parseRow)
-        , string "string" >> sc >> string "ascii" >> pure StringAscii
-        , string "string" >> sc >> string "icao" >> pure StringICAO
-        ]
-
     pItemDependent = do
-        ((def,h),lst) <- parseList pHeader pCase
-        return $ ItemDependent def h lst
+        (h,lst) <- parseList pHeader pCase
+        return $ ItemDependent h lst
       where
-        pHeader = (,)
-            <$> (string "case" >> sc >> pContextFree)
-            <*> (sc >> pPaths)
-        pCase _ = (,) <$> (pInt <* (char ':' >> (try scn <|> sc))) <*> pContextFree
-
-    pQuantity = do
-        scale <- try (sc' >> string "scale" >> sc' >> pNumber) <|> pure (NumberZ 1)
-        fract <- try (sc' >> string "fractional" >> sc' >> (L.decimal <* sc')) <|> pure 0
-        unit <- optional . try $
-            ( sc' >> string "unit" >> sc' >> (T.pack <$> stringLiteral) )
-        lo <- optional . try $ tryOne
-            [ sc' >> string "ge" >> sc' >> (Including <$> pNumber)
-            , sc' >> string "gt" >> sc' >> (Excluding <$> pNumber)
-            ]
-        hi <- optional . try $ tryOne
-            [ sc' >> string "le" >> sc' >> (Including <$> pNumber)
-            , sc' >> string "lt" >> sc' >> (Excluding <$> pNumber)
-            ]
-        return $ Quantity scale fract unit lo hi
-
-    parseRow _ = do
-        val <- pInt
-        char ':' >> sc
-        msg <- T.strip . T.pack <$> pLine
-        return (val, msg)
+        pHeader = string "case" >> sc >> pPaths
+        pCase _ = (,) <$> (pInt <* (char ':' >> (try scn <|> sc))) <*> pContent
 
 -- | Parse group of nested items.
 pGroup :: Parser Variation
-pGroup = do
-    Group . snd <$> parseList (string "subitems") pItem
+pGroup = Group . snd <$> parseList (string "subitems") pItem
 
 -- | Parse 'extended' item.
 pExtended :: Parser Variation
@@ -251,12 +264,8 @@ pVariation sc' = tryOne
     , pRepetitive
     , pExplicit
     , pCompound
-    --, pRFC
+    --, pRFC: TODO
     ]
-
--- | Parser valid name.
-pName :: Parser ItemName
-pName = some (alphaNumChar <|> char '_')
 
 -- | Parser valid uap name.
 pUapName :: Parser ItemName
@@ -292,11 +301,9 @@ pToplevelItem sc' = do
             [ ContextFree <$> pEncoding
             , do
                 let pCase _ = (,) <$> (pInt <* (char ':' >> sc)) <*> pEncoding
-                    pHeader = (,)
-                        <$> (string "case" >> sc >> pEncoding)
-                        <*> (sc >> pPaths)
-                ((def,h),lst) <- parseList pHeader pCase
-                return $ ItemDependent def h lst
+                    pHeader = string "case" >> sc >> pPaths
+                (h,lst) <- parseList pHeader pCase
+                return $ ItemDependent h lst
             ]
     definition <- (T.pack <$> blockAfter "definition") <* sc'
     variation <- pVariation sc'

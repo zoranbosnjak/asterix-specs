@@ -3,7 +3,7 @@
 
 """Render json decoded object to asterix specs format."""
 
-from formats.common import getNumber, renderRule
+from formats.common import getNumber, renderRule, case
 
 accumulator = []
 indentLevel = 0
@@ -66,33 +66,24 @@ def renderToplevel(toplevel):
                 [tell(i) for i in item['remark'].strip().splitlines()]
     tell('')
 
+def constrainToString(constrain):
+    return '{} {}'.format(constrain['type'], str(getNumber(constrain['value'])))
+
 def renderItem(variation):
-    def renderQuantity(signed, q):
-        k = getNumber(q['scaling'], 1)
-        fract = q['fractionalBits']
-        unit = q.get('unit')
+    def renderInteger(value):
+        sig = 'signed' if value['signed'] else 'unsigned'
+        const = ' '.join([constrainToString(const) for const in value['constraints']])
+        const = (' ' + const) if const else ''
+        tell('{} integer'.format(sig) + const)
 
-        tell('{}'.format('signed' if signed else 'unsigned'))
-
-        if k:
-            tell('scale {}'.format(k))
-        if fract != 0:
-            tell('fractional {}'.format(fract))
-        if unit is not None:
-            tell('unit "{}"'.format(unit))
-
-        lim1 = q['lowLimit']
-        lim2 = q['highLimit']
-
-        if lim1 is not None:
-            operator = 'ge' if lim1['including'] else 'gt'
-            lim = getNumber(lim1['limit'])
-            tell('{} {}'.format(operator, lim))
-
-        if lim2 is not None:
-            operator = 'le' if lim2['including'] else 'lt'
-            lim = getNumber(lim2['limit'])
-            tell('{} {}'.format(operator, lim))
+    def renderQuantity(value):
+        sig = 'signed' if value['signed'] else 'unsigned'
+        const = ' '.join([constrainToString(const) for const in value['constraints']])
+        const = (' ' + const) if const else ''
+        k = getNumber(value['scaling'])
+        fract = value['fractionalBits']
+        unit = value['unit']
+        tell('{} quantity {} {} "{}"'.format(sig, k, fract, unit) + const)
 
     def renderFixed():
         n = variation['size']
@@ -103,18 +94,20 @@ def renderItem(variation):
             t = value['type']
             if t == 'Raw':
                 tell('raw')
-            elif t == 'Unsigned':
-                renderQuantity(False, value['quantity'])
-            elif t == 'Signed':
-                renderQuantity(True, value['quantity'])
             elif t == 'Table':
-                tell('discrete')
+                tell('table')
                 with indent:
                     [tell('{}: {}'.format(key, value)) for key,value in value['values']]
-            elif t == 'StringAscii':
-                tell('string ascii')
-            elif t == 'StringICAO':
-                tell('string icao')
+            elif t == 'String':
+                var = case('string variation', value['variation'],
+                    ('StringAscii', 'ascii'),
+                    ('StringICAO', 'icao'),
+                    )
+                tell('string {}'.format(var))
+            elif t == 'Integer':
+                renderInteger(value)
+            elif t == 'Quantity':
+                renderQuantity(value)
             else:
                 raise Exception('unexpected value type {}'.format(t))
             return n
@@ -129,7 +122,7 @@ def renderItem(variation):
             return n
 
         with indent:
-            return renderRule(variation['value'], case1, case2)
+            return renderRule(variation['content'], case1, case2)
 
     def renderMaybeItem(item):
         if item['spare']:

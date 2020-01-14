@@ -1,6 +1,6 @@
 category 008 "Monoradar Derived Weather Information"
 edition 1.2
-date 2014-08
+date 2014-08-24
 preamble
     Surveillance data exchange.
 
@@ -12,13 +12,13 @@ items
             This Data Item allows for a more convenient handling of the messages
             at the receiver side by further defining the type of transaction.
         item 8
-            discrete
-                1: Polar vector;
-                2: Cartesian vector of start point/ length;
-                3: Contour record;
-                4: Cartesian start point and end point vector;
-                254: SOP message;
-                255: EOP message.
+            table
+                1: Polar vector
+                2: Cartesian vector of start point/ length
+                3: Contour record
+                4: Cartesian start point and end point vector
+                254: SOP message
+                255: EOP message
 
     010 "Data Source Identifier"
         mandatory           // not specified as such in pdf
@@ -44,7 +44,7 @@ items
         extended 8 8
             ORG ""
                 item 1
-                    discrete
+                    table
                         0: Local Coordinates
                         1: System Coordinates
             I "Intensity level (range zero to seven)"
@@ -52,7 +52,7 @@ items
                     raw
             S "Shading orientation with respect to North, as follows:"
                 item 3
-                    discrete
+                    table
                         0: 0°
                         1: 22.5°
                         2: 45°
@@ -64,12 +64,12 @@ items
             spare 5
             TST ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Test vector
             ER ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Error condition encountered
         remark
@@ -90,10 +90,7 @@ items
                         raw
                 AZ "AZIMUTH"
                     item 16
-                        unsigned
-                        scale 360
-                        fractional 16
-                        unit "deg"
+                        unsigned quantity 360 16 "deg"
         remark
             Note:
                 f is a parameter of the SOP message.
@@ -107,20 +104,18 @@ items
             subitems
                 X "X-COMPONENT"
                     item 8
-                        unsigned
-                        scale 2
-                        unit "NM"
-                        le 2
+                        raw         // formula, including 'f'
                 Y "Y-COMPONENT"
                     item 8
-                        raw
+                        raw         // formula, including 'f'
                 L "LENGTH"
                     item 8
-                        raw
+                        raw         // formula, including 'f'
         remark
             Note:
-                1. f is a parameter of the SOP message.
-                2. Negative values are expressed in 2's complement form, bit-24
+                1. LSB of [X, Y, L] is calculated as :math:`2^{-6+f}`.
+                2. f is a parameter of the SOP message.
+                3. Negative values are expressed in 2's complement form, bit-24
                    and bit-16 are set to 0 for positive values and 1 for negative
                    values.
 
@@ -145,8 +140,9 @@ items
                         raw
         remark
             Note:
-                1. f is a parameter of the SOP message.
-                2. Negative values are expressed in 2's complement form, bits-32,
+                1. LSB of [X1, Y1, X2, Y2] is calculated as :math:`2^{-6+f}`.
+                2. f is a parameter of the SOP message.
+                3. Negative values are expressed in 2's complement form, bits-32,
                    24, 16 and 8 are set to 0 for positive values and 1 for negative
                    values.
 
@@ -158,7 +154,7 @@ items
         subitems
             ORG ""
                 item 1
-                    discrete
+                    table
                         0: Local Coordinates
                         1: System Coordinates
             I "Intensity level (range zero to seven)"
@@ -167,7 +163,7 @@ items
             spare 2
             FST_LST ""
                 item 2
-                    discrete
+                    table
                         0: Intermediate record of a contour
                         1: Last record of a contour of at least two records
                         2: First record of a contour of at least two records
@@ -195,8 +191,9 @@ items
                         raw
         remark
             Note:
-                1. f is a parameter of the SOP message.
-                2. Negative values are expressed in 2's complement form, bit-16
+                1. LSB of [X1, Y1] is calculated as :math:`2^{-6+f}`.
+                2. f is a parameter of the SOP message.
+                3. Negative values are expressed in 2's complement form, bit-16
                    and bit-8 shall be set to 0 for positive values and 1 for
                    negative values.
 
@@ -205,12 +202,9 @@ items
         definition
             Absolute time stamping expressed as Coordinated Universal Time (UTC) time.
         item 24
-            unsigned
-            fractional 7
-            unit "s"
+            unsigned quantity 1 7 "s"
         remark
             Notes:
-
                 1. The time of day value is reset to zero each day at midnight.
                 2. For time management in radar transmission applications, refer
                    to Part 1, paragraph 5.4 [Ref. 1].
@@ -223,9 +217,7 @@ items
         extended 24 8
             f "Scaling factor"
                 item 5
-                    signed
-                    fractional 0
-                    unit ""
+                    signed quantity 1 0 ""
             R "Current reduction stage in use"
                 item 3
                     raw
@@ -261,7 +253,7 @@ items
             Total number of vectors, respectively contour points, constituting
             the total weather image, provided with the EOP message.
         item 16
-            raw
+            unsigned integer
 
     RE "Reserved Expansion Field"
         optional

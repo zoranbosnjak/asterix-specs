@@ -21,7 +21,8 @@ class Indent(object):
 indent = Indent()
 
 def tell(s):
-    accumulator.append(' '*indentLevel*4 + s)
+    s = ' '*indentLevel*4 + s
+    accumulator.append(s.rstrip())
 
 def underline(c, s):
     n = len(s)
@@ -51,9 +52,11 @@ def renderHeader(root):
     tell('')
     tell(underline('-', 'Preamble'))
     tell(root['preamble'])
+    tell('')
 
 def renderToplevel(cat, toplevel):
     item = toplevel['item']
+    tell('')
     tell(underline('*', 'I'+cat+'/'+item['name']+' - ' + item['title']))
 
     def case1(enc):
@@ -74,18 +77,27 @@ def renderToplevel(cat, toplevel):
     if item['remark']:
         tell(item['remark'])
 
+def constrainToString(constrain):
+    return '{} {}'.format(constrain['type'], str(getNumber(constrain['value'])))
+
+def bits(n):
+    if n == 1:
+        return '1 bit'
+    return '{} bits'.format(n)
+
 def renderItem(variation):
-    ct = variation['type']
 
-    def bits(n):
-        if n == 1: return '1 bit'
-        return '{} bits'.format(n)
+    def renderInteger(value):
+        tell('- {} integer'.format('signed' if value['signed'] else 'unsigned'))
+        for const in value['constraints']:
+            tell('- value :math:`{}`'.format(constrainToString(const)))
+        tell('')
 
-    def renderQuantity(signed, q):
-        k = getNumber(q['scaling'])
-        fract = q['fractionalBits']
-        unit = q.get('unit')
-
+    def renderQuantity(value):
+        tell('- {} quantity'.format('signed' if value['signed'] else 'unsigned'))
+        k = getNumber(value['scaling'])
+        fract = value['fractionalBits']
+        unit = value['unit']
         tell('- scaling factor: {}'.format(k))
         tell('- fractional bits: {}'.format(fract))
         if unit:
@@ -96,27 +108,15 @@ def renderItem(variation):
             tell("- LSB = {}".format(lsb))
         else:
             b = '{2^{'+str(fract)+'}}'
-            lsb1 = ":math:`{} / {}` {}".format(k, b, unit or '')
+            lsb1 = ":math:`{} / {}` {}".format(k, b, unit)
             c = '{'+str(pow(2, fract))+'}'
-            lsb2 = ":math:`{} / {}` {}".format(k, c, unit or '')
-            tell("- LSB = {} = {}".format(lsb1, lsb2))
+            d = pow(2, fract)
+            lsb2 = ":math:`{} / {}` {}".format(k, c, unit)
+            lsb3 = ":math:`\\approx {}` {}".format(float(k)/d, unit)
+            tell("- LSB = {} = {} {}".format(lsb1, lsb2, lsb3))
+        for const in value['constraints']:
+            tell('- value :math:`{}` {}'.format(constrainToString(const),unit))
 
-        lim1 = q['lowLimit']
-        lim2 = q['highLimit']
-        if lim1 or lim2:
-            rng = ''
-            if lim1:
-                rng += ('[' if lim1['including'] else '(')
-                rng += str(getNumber(lim1['limit']))
-            else:
-                rng += r'(-\infty' if signed else r'[0'
-            rng += ', '
-            if lim2:
-                rng += str(getNumber(lim2['limit']))
-                rng += (']' if lim2['including'] else ')')
-            else:
-                rng += r'\infty)'
-            tell('- range: :math:`{}` {}'.format(rng, unit or ''))
         tell('')
 
     def renderFixed():
@@ -131,12 +131,6 @@ def renderItem(variation):
             if t == 'Raw':
                 tell('- raw value')
                 tell('')
-            elif t == 'Unsigned':
-                tell('- unsigned number')
-                renderQuantity(False, value['quantity'])
-            elif t == 'Signed':
-                tell('- signed number')
-                renderQuantity(True, value['quantity'])
             elif t == 'Table':
                 tell('- values:')
                 tell('')
@@ -144,12 +138,18 @@ def renderItem(variation):
                     for key,value in value['values']:
                         tell('| {}: {}'.format(key, value))
                 tell('')
-            elif t == 'StringAscii':
-                tell('- Ascii string (8-bits per character)')
+            elif t == 'String':
+                if value['variation'] == 'StringAscii':
+                    tell('- Ascii string (8-bits per character)')
+                elif value['variation'] == 'StringICAO':
+                    tell('- Ascii ICAO (6-bits per character)')
+                else:
+                    raise Exception('unexpected string type {}'.format(value['variation']))
                 tell('')
-            elif t == 'StringICAO':
-                tell('- Ascii ICAO (6-bits per character)')
-                tell('')
+            elif t == 'Integer':
+                renderInteger(value)
+            elif t == 'Quantity':
+                renderQuantity(value)
             else:
                 raise Exception('unexpected value type {}'.format(t))
             return n
@@ -166,7 +166,7 @@ def renderItem(variation):
             tell('')
             return n
 
-        return renderRule(variation['value'], case1, case2)
+        return renderRule(variation['content'], case1, case2)
 
     def renderMaybeItem(item):
         if item['spare']:

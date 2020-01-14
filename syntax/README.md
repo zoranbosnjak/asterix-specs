@@ -3,7 +3,15 @@ Syntax source files are in .tcl format.
 On every change of the .tcl file(s), regenerate .ps files.
 Generated .ps files shall be added to the repository too.
 
-Example:
+Example (regenerate single):
+
+```bash
+<edit content-syntax.tcl>
+nix-shell --run "./bubbleToPostscript.tcl < content-syntax.tcl > content-syntax.tcl.ps"
+git add *tcl *ps
+```
+
+Example (regenerate all):
 
 ```bash
 <edit tcl files>

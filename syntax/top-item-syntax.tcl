@@ -7,7 +7,6 @@ set spec {
             /optional
             { line
                 /case
-                { or /mandatory /optional /absent}
                 { loop /item "/" }
                 { loop { line (indent) INT : { or /mandatory /optional /absent} (unindent)} {} }
             }

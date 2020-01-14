@@ -4,29 +4,22 @@ set spec {
         { or
             { line
                 /case
-                content-def
                 { loop /item "/" }
                 { loop { line (indent) INT : content-def (unindent)} {} }
             }
             { line /raw}
-            { line /discrete { loop { line (indent) INT : STRING (unindent)} {} } }
+            { line /table { loop { line (indent) INT : \"STRING\" (unindent)} {} } }
             { line /string {or /ascii /icao } }
+            { line
+                { or /signed /unsigned }
+                /integer
+                { loop {} CONSTRAIN }
+            }
             { stack
                 { line
                     { or /signed /unsigned }
-                    { or {} { line /scale NUM} }
-                    { or {} { line /fractional BITS } }
-                }
-                { line {opt /unit STRING } }
-                { line
-                    { or
-                        {}
-                        { line { or /ge /gt } NUM }
-                    }
-                    { or
-                        {}
-                        { line { or /le /lt} NUM }
-                    }
+                    { line /quantity SCALE FRACT \"UNIT\" }
+                    { loop {} CONSTRAIN }
                 }
             }
         }

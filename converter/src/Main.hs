@@ -77,7 +77,7 @@ validate category = join
     validateEncoding :: Toplevel -> [ValidationError]
     validateEncoding toplevel = case topEncoding toplevel of
         ContextFree encoding -> reportWhen (encoding == Absent) [topName] "Topitem can not be 'absent'"
-        ItemDependent _def someItem rules -> case fixedItemSize category someItem of
+        ItemDependent someItem rules -> case fixedItemSize category someItem of
             Nothing -> reportWhen True [topName] (showPath someItem ++ " not defined")
             Just m ->
                 let size = compare (length rules) (2 ^ m)
@@ -190,7 +190,7 @@ validateVariation category path = \case
 validateContent :: Category -> [ItemName] -> Int -> Rule Content -> [ValidationError]
 validateContent category path n = \case
     ContextFree rule -> validateRule rule
-    ItemDependent _def someItem rules -> join
+    ItemDependent someItem rules -> join
         [ case fixedItemSize category someItem of
             Nothing -> reportWhen True path (showPath someItem ++ " not defined")
             Just m ->
@@ -203,7 +203,7 @@ validateContent category path n = \case
         ]
   where
     validateRule = \case
-        Table lst ->
+        ContentTable lst ->
             let keys = fst <$> lst
                 values = snd <$> lst
                 size = compare (length keys) (2 ^ n)

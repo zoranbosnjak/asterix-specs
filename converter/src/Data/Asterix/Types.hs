@@ -15,7 +15,7 @@
 module Data.Asterix.Types where
 
 import           GHC.Generics (Generic)
-import           Data.Ratio (Ratio, numerator, denominator)
+import           Data.Ratio (Ratio)
 import           Data.Text
 import           Data.Char
 import qualified Text.Printf as TP
@@ -30,7 +30,7 @@ type UapName = String
 
 data Rule a
     = ContextFree a
-    | ItemDependent a [ItemName] [(Int, a)]
+    | ItemDependent [ItemName] [(Int, a)]
     deriving (Generic, Eq, Show)
 
 instance ToJSON a => ToJSON (Rule a)
@@ -39,9 +39,8 @@ instance ToJSON a => ToJSON (Rule a)
         [ "type" .= ("ContextFree" :: String)
         , "rule" .= rule
         ]
-    toJSON (ItemDependent def item rules) = object
+    toJSON (ItemDependent item rules) = object
         [ "type" .= ("ItemDependent" :: String)
-        , "default" .= def
         , "item" .= item
         , "rules" .= rules
         ]
@@ -55,82 +54,108 @@ instance ToJSON Edition where
     toJSON (Edition a b) = toJSON $ show a ++ "." ++ show b
 
 data Date = Date
-    { dateYear :: Int
+    { dateYear  :: Integer
     , dateMonth :: Int
+    , dateDay   :: Int
     } deriving (Generic, Eq, Show)
 
 instance ToJSON Date where
-    toJSON (Date y m) = toJSON $ show y ++ "-" ++ TP.printf "%02d" m
+    toJSON (Date y m d) = toJSON $
+        show y ++ "-" ++ TP.printf "%02d" m ++ "-" ++ TP.printf "%02d" d
 
 data Number
-    = NumberZ Int
+    = NumberZ Integer
     | NumberQ (Ratio Int)
     | NumberR Double
-    deriving (Generic, Eq, Show)
+    deriving (Generic, Eq, Ord, Show)
 
 instance ToJSON Number where
     toJSON = \case
-        NumberZ val -> toJSON $ "Natural " ++ show val
-        NumberQ val -> toJSON $ "Ratio " ++ show (numerator val) ++ " " ++ show (denominator val)
-        NumberR val -> toJSON $ "Real " ++ show val
+        NumberZ val -> object
+            [ "type" .= ("Integer" :: String)
+            , "value" .= val
+            ]
+        NumberQ val -> object
+            [ "type" .= ("Ratio" :: String)
+            , "value" .= val
+            ]
+        NumberR val -> object
+            [ "type" .= ("Real" :: String)
+            , "value" .= val
+            ]
 
-data Limit
-    = Including Number
-    | Excluding Number
+data Constrain
+    = EqualTo Number
+    | NotEqualTo Number
+    | GreaterThan Number
+    | GreaterThanOrEqualTo Number
+    | LessThan Number
+    | LessThanOrEqualTo Number
+    deriving (Generic, Eq, Ord, Show)
+
+instance ToJSON Constrain where
+    toJSON (EqualTo val) = object ["type" .= ("=="::String), "value" .= val]
+    toJSON (NotEqualTo val) = object ["type" .= ("/="::String), "value" .= val]
+    toJSON (GreaterThan val) = object ["type" .= (">"::String), "value" .= val]
+    toJSON (GreaterThanOrEqualTo val) = object ["type" .= (">="::String), "value" .= val]
+    toJSON (LessThan val) = object ["type" .= ("<"::String), "value" .= val]
+    toJSON (LessThanOrEqualTo val) = object ["type" .= ("<="::String), "value" .= val]
+
+newtype Signed = Signed Bool deriving (Generic, Eq, Show)
+
+instance ToJSON Signed where
+    toJSON (Signed val) = toJSON val
+
+data StringType
+    = StringAscii
+    | StringICAO
     deriving (Generic, Eq, Show)
 
-instance ToJSON Limit where
-    toJSON (Including x) = object ["including" .= True, "limit" .= x]
-    toJSON (Excluding x) = object ["including" .= False, "limit" .= x]
-
-data Quantity = Quantity
-    { qScale    :: Number   -- scaling factor
-    , qFract    :: Int      -- number of fractional bits
-    , qUnit     :: Maybe Text
-    , qLimitLo  :: Maybe Limit
-    , qLimitHi  :: Maybe Limit
-    } deriving (Generic, Eq, Show)
-
-instance ToJSON Quantity where
-    toJSON (Quantity scale fract unit limLow limHigh) = object
-        [ "scaling" .= scale
-        , "fractionalBits" .= fract
-        , "unit"    .= unit
-        , "lowLimit" .= limLow
-        , "highLimit" .= limHigh
-        ]
+instance ToJSON StringType where
+    toJSON = toJSON . show
 
 data Content
-    = Raw
-    | Unsigned Quantity
-    | Signed Quantity
-    | Table [(Int, Text)]
-    | StringAscii
-    | StringICAO
+    = ContentRaw
+    | ContentTable
+        [(Int, Text)]
+    | ContentString
+        StringType
+    | ContentInteger
+        Signed
+        [Constrain]
+    | ContentQuantity
+        Signed      -- unsigned/signed
+        Number      -- scaling factor
+        Int         -- number for fractional bits
+        Text        -- unit
+        [Constrain]
     deriving (Generic, Eq, Show)
 
 instance ToJSON Content where
     toJSON = \case
-        Raw -> object
+        ContentRaw -> object
             [ "type" .= ("Raw" :: String)
             ]
-        Unsigned q -> object
-            [ "type" .= ("Unsigned" :: String)
-            , "quantity" .= q
-            ]
-        Signed q -> object
-            [ "type" .= ("Signed" :: String)
-            , "quantity" .= q
-            ]
-        Table lst -> object
+        ContentTable lst -> object
             [ "type" .= ("Table" :: String)
             , "values" .= lst
             ]
-        StringAscii -> object
-            [ "type" .= ("StringAscii" :: String)
+        ContentString st -> object
+            [ "type" .= ("String" :: String)
+            , "variation" .= st
             ]
-        StringICAO -> object
-            [ "type" .= ("StringICAO" :: String)
+        ContentInteger signed lst -> object
+            [ "type" .= ("Integer" :: String)
+            , "signed" .= signed
+            , "constraints" .= lst
+            ]
+        ContentQuantity signed scaling fractional unit constraints -> object
+            [ "type" .= ("Quantity" :: String)
+            , "signed" .= signed
+            , "scaling" .= scaling
+            , "fractionalBits" .= fractional
+            , "unit"    .= unit
+            , "constraints" .= constraints
             ]
 
 type RegisterSize = Int
@@ -146,10 +171,10 @@ data Variation
     deriving (Generic, Eq, Show)
 
 instance ToJSON Variation where
-    toJSON (Fixed n x) = object
+    toJSON (Fixed n content) = object
         [ "type"    .= ("Fixed" :: String)
         , "size"    .= n
-        , "value"   .= x
+        , "content" .= content
         ]
     toJSON (Group lst) = object
         [ "type"    .= ("Group" :: String)

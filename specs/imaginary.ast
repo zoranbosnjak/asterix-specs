@@ -1,6 +1,6 @@
 category 000 "Imaginary category for test purposes"
 edition 1.2
-date 2000-01
+date 2000-01-01
 preamble
     This is category is for demo purposes.
     It includes all supported items and variations
@@ -47,56 +47,56 @@ items
         extended 8 8
             TYP ""
                 item 1
-                    discrete
+                    table
                         0: Plot
                         1: Track
             SIM ""
                 item 1
-                    discrete
+                    table
                         0: Plot
                         1: Track
             SSR_PSR "Radar detection in last antenna scan"
                 item 2
-                    discrete
+                    table
                         0: No detection
                         1: Sole primary detection
                         2: Sole secondary detection
                         3: Combined primary and secondary detection
             ANT ""
                 item 1
-                    discrete
+                    table
                         0: Target report from antenna 1
                         1: Target report from antenna 2
             SPI ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Special Position Identification
             RAB ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Plot or track from a fixed transponder
             TST ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Test target indicator
             DS1_DS2 ""
                 item 2
-                    discrete
+                    table
                         0: Default
                         1: Unlawful interference (code 7500)
                         2: Radio-communication failure (code 7600)
                         3: Emergency (code 7700)
             ME ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Military emergency
             MI ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Military identification
             spare 2
@@ -108,10 +108,13 @@ items
         subitems
             A ""
                 item 2
-                    raw
+                    unsigned integer
             B ""
                 item 6
-                    raw
+                    signed integer > 1/2
+            C ""
+                item 8
+                    unsigned integer >= 0 < 100
 
     040 ""
         case 030/A
@@ -130,20 +133,16 @@ items
         subitems
             IM ""
                 item 1
-                    discrete
+                    table
                         0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
                         1: Air Speed = Mach, LSB (Bit-1) = 0.001
             IAS ""
                 item 15
                     case 050/IM
                         0:
-                            unsigned
-                            fractional 14
-                            unit "NM/s"
+                            unsigned quantity 1 14 "NM/s"
                         1:
-                            unsigned
-                            scale 0.001
-                            unit "mach"
+                            unsigned quantity 0.001 0 "mach"
 
     060 ""
         optional
@@ -161,20 +160,10 @@ items
                     string ascii
             I1 ""
                 item 8
-                    signed
-                    scale 10
-                    fractional 2
-                    unit "s"
-                    ge -20
-                    le 20
+                    signed quantity 10 2 "s" >= -20 <= 20.1
             I2 ""
                 item 8
-                    unsigned
-                    scale 10
-                    fractional 2
-                    unit "s"
-                    gt -20
-                    lt 20
+                    unsigned quantity 10 2 "s" > -20 < 20
 
     071 ""
         optional

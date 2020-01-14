@@ -1,6 +1,6 @@
 category 020 "Multilateration Target Reports"
 edition 1.9
-date 2015-03
+date 2015-03-25
 preamble
     Surveillance data exchange.
 
@@ -29,72 +29,72 @@ items
         extended 8 8
             SSR ""
                 item 1
-                    discrete
+                    table
                         0: Non-Mode S 1090MHz multilateration
                         1: no Non-Mode S 1090MHz multilat.
             MS ""
                 item 1
-                    discrete
+                    table
                         0: Mode-S 1090 MHz multilateration
                         1: no Mode-S 1090 MHz multilateration
             HF ""
                 item 1
-                    discrete
+                    table
                         0: HF multilateration
                         1: no HF multilateration
             VDL4 ""
                 item 1
-                    discrete
+                    table
                         0: VDL Mode 4 multilateration
                         1: no VDL Mode 4 multilateration
             UAT ""
                 item 1
-                    discrete
+                    table
                         0: UAT multilateration
                         1: no UAT multilateration
             DME ""
                 item 1
-                    discrete
+                    table
                         0: DME/TACAN multilateration
                         1: no DME/TACAN multilateration
             OT ""
                 item 1
-                    discrete
+                    table
                         0: Other Technology Multilateration
                         1: no Other Technology Multilateration
             RAB ""
                 item 1
-                    discrete
+                    table
                         0: Report from target transponder
                         1: Report from field monitor (fixed transponder)
             SPI ""
                 item 1
-                    discrete
+                    table
                         0: Absence of SPI
                         1: Special Position Identification
             CHN ""
                 item 1
-                    discrete
+                    table
                         0: Chain 1
                         1: Chain 2
             GBS ""
                 item 1
-                    discrete
+                    table
                         0: Transponder Ground bit not set
                         1: Transponder Ground bit set
             CRT ""
                 item 1
-                    discrete
+                    table
                         0: No Corrupted reply in multilateration
                         1: Corrupted replies in multilateration
             SIM ""
                 item 1
-                    discrete
+                    table
                         0: Actual target report
                         1: Simulated target report
             TST ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Test Target
 
@@ -105,7 +105,7 @@ items
         extended 8 8
             WE ""
                 item 7
-                    discrete
+                    table
                         0: Not defined; never used.
                         1: Multipath Reply (Reflection)
                         3: Split plot
@@ -134,20 +134,10 @@ items
         subitems
             LAT "Latitude"
                 item 32
-                    signed
-                    scale 180
-                    fractional 25
-                    unit "deg"
-                    ge -90
-                    le 90
+                    signed quantity 180 25 "deg" >= -90 <= 90
             LON "Longitude"
                 item 32
-                    signed
-                    scale 180
-                    fractional 25
-                    unit "deg"
-                    ge -180
-                    lt 180
+                    signed quantity 180 25 "deg" >= -180 < 180
 
     042 "Position in Cartesian Coordinates"
         optional
@@ -157,18 +147,10 @@ items
         subitems
             X "x-coordinate"
                 item 24
-                    signed
-                    fractional 1
-                    unit "m"
-                    ge -4194300
-                    le 4194300
+                    signed quantity 1 1 "m" >= -4194300 <= 4194300
             Y "y-coordinate"
                 item 24
-                    signed
-                    fractional 1
-                    unit "m"
-                    ge -4194300
-                    le 4194300
+                    signed quantity 1 1 "m" >= -4194300 <= 4194300
 
     050 "Mode-2 Code in Octal Representation"
         optional
@@ -177,17 +159,17 @@ items
         subitems
             V "validated"
                 item 1
-                    discrete
+                    table
                         0: Code validated
                         1: Code not validated
             G "garbled"
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Garbled code
             L ""
                 item 1
-                    discrete
+                    table
                         0: Mode-2 code derived from the reply of the transponder
                         1: Smoothed Mode-2 code as provided by a local tracker n
             spare 1
@@ -202,17 +184,17 @@ items
         subitems
             V "validated"
                 item 1
-                    discrete
+                    table
                         0: Code validated
                         1: Code not validated
             G "garbled"
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Garbled code
             L ""
                 item 1
-                    discrete
+                    table
                         0: Mode-1 code derived from the reply of the transponder
                         1: Smoothed Mode-1 code as provided by a local tracker
             ABCD "Mode-1 Code in octal representation"
@@ -226,17 +208,17 @@ items
         subitems
             V "validated"
                 item 1
-                    discrete
+                    table
                         0: Code validated
                         1: Code not validated
             G "garbled"
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Garbled code
             L ""
                 item 1
-                    discrete
+                    table
                         0: Mode-3/A code derived from the reply of the transponder
                         1: Mode-3/A code not extracted during the last update period
             spare 1
@@ -258,19 +240,17 @@ items
         subitems
             V "validated"
                 item 1
-                    discrete
+                    table
                         0: Code validated
                         1: Code not validated
             G "garbled"
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Garbled code
             FL "Flight Level"
                 item 14
-                    signed
-                    fractional 2
-                    unit "FL"
+                    signed quantity 1 2 "FL"
         remark
             Notes:
 
@@ -296,12 +276,12 @@ items
         subitems
             V "validated"
                 item 1
-                    discrete
+                    table
                         0: Code validated
                         1: Code not validated
             G "garbled"
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Garbled code
             spare 2
@@ -311,62 +291,62 @@ items
             spare 4
             QC1 "Quality pulse C1"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse C1
                         1: Low quality pulse C1
             QA1 "Quality pulse A1"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse A1
                         1: Low quality pulse A1
             QC2 "Quality pulse C2"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse C2
                         1: Low quality pulse C2
             QA2 "Quality pulse A2"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse A2
                         1: Low quality pulse A2
             QC4 "Quality pulse C4"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse C4
                         1: Low quality pulse C4
             QA4 "Quality pulse A4"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse A4
                         1: Low quality pulse A4
             QB1 "Quality pulse B1"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse B1
                         1: Low quality pulse B1
             QD1 "Quality pulse D1"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse D1
                         1: Low quality pulse D1
             QB2 "Quality pulse B2"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse B2
                         1: Low quality pulse B2
             QD2 "Quality pulse D2"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse B2
                         1: Low quality pulse B2
             QB4 "Quality pulse B4"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse B4
                         1: Low quality pulse B4
             QD4 "Quality pulse D4"
                 item 1
-                    discrete
+                    table
                         0: High quality pulse D4
                         1: Low quality pulse D4
         remark
@@ -383,11 +363,7 @@ items
             Vertical distance between the target and the projection of its position
             on the earth’s ellipsoid, as defined by WGS84, in two’s complement form.
         item 16
-            signed
-            scale 6.25
-            unit "ft"
-            ge -204800
-            le 204800
+            signed quantity 6.25 0 "ft" >= -204800 <= 204800
 
     110 "Measured Height (Local Cartesian Coordinates)"
         optional
@@ -396,20 +372,14 @@ items
             Reference Point as defined in item I019/610, in two’s complement form,
             based on a direct measurement not related to barometric pressure.
         item 16
-            signed
-            scale 6.25
-            unit "ft"
-            ge -204800
-            le 204800
+            signed quantity 6.25 0 "ft" >= -204800 <= 204800
 
     140 "Time of Day"
         mandatory
         definition
             Absolute time stamping expressed as UTC.
         item 24
-            unsigned
-            fractional 7
-            unit "s"
+            unsigned quantity 1 7 "s"
 
     161 "Track Number"
         optional
@@ -429,39 +399,39 @@ items
         extended 8 8
             CNF ""
                 item 1
-                    discrete
+                    table
                         0: Confirmed track
                         1: Track in initiation phase
             TRE ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Last report for a track
             CST ""
                 item 1
-                    discrete
+                    table
                         0: Not extrapolated
                         1: Extrapolated
             CDM ""
                 item 2
-                    discrete
+                    table
                         0: Maintaining
                         1: Climbing
                         2: Descending
                         3: Invalid
             MAH ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Horizontal manoeuvre
             STH ""
                 item 1
-                    discrete
+                    table
                         0: Measured position
                         1: Smoothed position
             GHO ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: Ghost track
             spare 6
@@ -479,18 +449,10 @@ items
         subitems
             Vx ""
                 item 16
-                    signed
-                    fractional 2
-                    unit "m/s"
-                    ge -8192
-                    le 8192
+                    signed quantity 1 2 "m/s" >= -8192 <= 8192
             Vy ""
                 item 16
-                    signed
-                    fractional 2
-                    unit "m/s"
-                    ge -8192
-                    le 8192
+                    signed quantity 1 2 "m/s" >= -8192 <= 8192
 
     210 "Calculated Acceleration"
         optional
@@ -499,22 +461,13 @@ items
         subitems
             Ax ""
                 item 8
-                    signed
-                    fractional 2
-                    unit "m/s2"
-                    ge -31
-                    le 31
+                    signed quantity 1 2 "m/s2" >= -31 <= 31
             Ay ""
                 item 8
-                    signed
-                    fractional 2
-                    unit "m/s2"
-                    ge -31
-                    le 31
+                    signed quantity 1 2 "m/s2" >= -31 <= 31
         remark
             Notes:
-
-                1. Maximum value means “maximum value or above”
+                1. Maximum value means "maximum value or above"
 
     220 "Target Address"
         optional
@@ -531,7 +484,7 @@ items
         subitems
             COM "Communications capability of the transponder"
                 item 3
-                    discrete
+                    table
                         0: No communications capability (surveillance only)
                         1: Comm. A and Comm. B capability
                         2: Comm. A, Comm. B and Uplink ELM
@@ -542,7 +495,7 @@ items
                         7: Not assigned
             STAT "Flight Status"
                 item 3
-                    discrete
+                    table
                         0: No alert, no SPI, aircraft airborne
                         1: No alert, no SPI, aircraft on ground
                         2: Alert, no SPI, aircraft airborne
@@ -554,17 +507,17 @@ items
             spare 2
             MSSC "Mode-S Specific Service Capability"
                 item 1
-                    discrete
+                    table
                         0: No
                         1: Yes
             ARC "Altitude reporting capability"
                 item 1
-                    discrete
+                    table
                         0: 100 ft resolution
                         1: 25 ft resolution
             AIC "Aircraft identification capability"
                 item 1
-                    discrete
+                    table
                         0: No
                         1: Yes
             B1A "BDS 1,0 bit 16"
@@ -581,7 +534,7 @@ items
         subitems
             STI ""
                 item 2
-                    discrete
+                    table
                         0: Callsign or registration not downlinked from transponder
                         1: Registration downlinked from transponder
                         2: Callsign downlinked from transponder
@@ -635,7 +588,7 @@ items
         definition
             Vehicle fleet identification number.
         item 8
-            discrete
+            table
                 0: Unknown
                 1: ATC equipment maintenance
                 2: Airport maintenance
@@ -661,12 +614,12 @@ items
         subitems
             TRB ""
                 item 1
-                    discrete
+                    table
                         0: Default
                         1: In Trouble
             MSG ""
                 item 7
-                    discrete
+                    table
                         1: Towing aircraft
                         2: “Follow me” operation
                         3: Runway check
@@ -681,42 +634,42 @@ items
             subitems
                 BIT1 "TU1/RU1 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU1/RU1 has NOT contributed to the target detection
                             1: TU1/RU1 has contributed to the target detection
                 BIT2 "TU2/RU2 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU2/RU2 has NOT contributed to the target detection
                             1: TU2/RU2 has contributed to the target detection
                 BIT3 "TU3/RU3 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU3/RU3 has NOT contributed to the target detection
                             1: TU3/RU3 has contributed to the target detection
                 BIT4 "TU4/RU4 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU4/RU4 has NOT contributed to the target detection
                             1: TU4/RU4 has contributed to the target detection
                 BIT5 "TU5/RU5 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU5/RU5 has NOT contributed to the target detection
                             1: TU5/RU5 has contributed to the target detection
                 BIT6 "TU6/RU6 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU6/RU6 has NOT contributed to the target detection
                             1: TU6/RU6 has contributed to the target detection
                 BIT7 "TU7/RU7 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU7/RU7 has NOT contributed to the target detection
                             1: TU7/RU7 has contributed to the target detection
                 BIT8 "TU8/RU8 Contribution"
                     item 1
-                        discrete
+                        table
                             0: TU8/RU8 has NOT contributed to the target detection
                             1: TU8/RU8 has contributed to the target detection
         remark
@@ -739,41 +692,27 @@ items
                 subitems
                     X "DOP (X-Component)"
                         item 16
-                            unsigned
-                            fractional 2
-                            unit ""
+                            unsigned quantity 1 2 ""
                     Y "DOP (Y-Component)"
                         item 16
-                            unsigned
-                            fractional 2
-                            unit ""
+                            unsigned quantity 1 2 ""
                     XY "DOP (Correlation XY)"
                         item 16
-                            unsigned
-                            fractional 2
-                            unit ""
+                            unsigned quantity 1 2 ""
             SDP "Standard Deviation of Position"
                 subitems
                     X "SDP (X-Component)"
                         item 16
-                            unsigned
-                            fractional 2
-                            unit "m"
+                            unsigned quantity 1 2 "m"
                     Y "SDP (Y-Component)"
                         item 16
-                            unsigned
-                            fractional 2
-                            unit "m"
+                            unsigned quantity 1 2 "m"
                     XY "SDP (Correlation XY)"
                         item 16
-                            unsigned
-                            fractional 2
-                            unit ""
+                            unsigned quantity 1 2 ""
             SDH "Standard Deviation of Geometric Height (WGS 84)"
                 item 16
-                    unsigned
-                    fractional 1
-                    unit "m"
+                    unsigned quantity 1 1 "m"
         remark
             Note:
 
