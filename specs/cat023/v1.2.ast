@@ -1,0 +1,268 @@
+category 023 "CNS/ATM Ground Station and Service Status Reports"
+edition 1.2
+date 2009-03-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Report Type"
+        mandatory
+        definition
+            This Data Item allows for a more convenient handling of the
+            reports at the receiver side by further defining the type of
+            transaction.
+        item 8
+            table
+                1: Ground Station Status report
+                2: Service Status report
+                3: Service Statistics report
+        remark
+            NOTES:
+                1. In applications where transactions of various types are exchanged, the
+                   Report Type Data Item facilitates the proper report handling at the
+                   receiver side.
+                2. All Report Type values are reserved for common standard use.                
+
+    010 "Data Source Identifier"
+        mandatory
+        definition
+            Identification of the Ground Station from which the data is received.
+        subitems
+            SAC "System Area Code"
+                item 8
+                    raw
+            SIC "System Identification code"
+                item 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    015 "Service Type and Identification"
+        case 000
+            1: absent
+            2: mandatory
+            3: mandatory
+        definition
+            Identifies the type of service being reported.
+        subitems
+            SID "Service Identification"
+                item 4
+                raw
+            STYP "Type of Service"
+                item 4
+                    table
+                        1: ADS-B VDL4
+                        2: ADS-B Ext Squitter
+                        3: ADS-B UAT
+                        4: TIS-B VDL4
+                        5: TIS-B Ext Squitter
+                        6: TIS-B UAT
+                        7: FIS-B VDL4
+                        8: GRAS VDL4
+                        9: MLT
+        remark
+            Note:
+                - The service identification is allocated by the system.
+                - The service identification is also available in item I021/015.
+
+
+    070 "Time of Day"
+        mandatory
+        definition
+            Absolute time stamping expressed as UTC time.
+        item 24
+            unsigned quantity 1 7 "s"
+        remark
+            Notes:
+
+                1. The time of day value is reset to zero each day at midnight.
+
+    100 "Ground Station Status"
+        case 000
+            1: mandatory
+            2: absent
+            3: absent
+        definition
+            Information concerning the status of a Ground Station.
+        extended 8 8
+            NOGO "Operational Release Status of the Data"
+                item 1
+                    table
+                        0: Data is released for operational use
+                        1: Data must not be used operationally
+            ODP "Data Processor Overload Indicator"
+                item 1
+                    table
+                        0: Default, no overload
+                        1: Overload in DP
+            OXT "Ground Interface Data Communications Overload"
+                item 1
+                    table
+                        0: Default, no overload
+                        1: Overload in transmission subsystem
+            MSC "Monitoring System Connected Status"
+                item 1
+                    table
+                        0: Monitoring system not connected or unknown
+                        1: Monitoring system connected
+            TSV "Time Source Validity"
+                item 1
+                    table
+                        0: valid
+                        1: invalid
+            SPO "Indication of spoofing attack"
+                item 1
+                    table
+                        0: no spoofing detected
+                        1: potential spoofing attack
+            RN "Renumbering Indication for Track ID"
+                item 1
+                    table
+                        0: default
+                        1: track numbering has restarted
+            GSSP "Ground Station Status Reporting Period"
+                item 7
+                    signed quantity 1 0 "s" >= 1 <= 127
+        remark
+            Notes:
+
+                1. A time source is considered as valid when either externally
+                   synchronised or running on a local oscillator within the
+                   required accuracy of UTC.
+                2. Bit 8 (NOGO), when set to “1” indicates that the data transmitted
+                   by the GS is not released for operational use.
+                3. Bit 2 indicates that the allocation of Track-IDs (Item I021/161)
+                   was re-started.
+
+    101 "Service Configuration"
+        case 000
+            1: absent
+            2: mandatory            
+            3: absent        
+        definition
+            Information concerning the configuration of a Service.
+        extended 16 8
+            RP "Report Period for Category 021 Reports"
+                item 8
+                    table
+                        0: Data driven mode
+            SC "Service Class"
+                item 3
+                    table
+                        0: No information
+                        1: NRA class
+                        2: reserved for future use
+                        3: reserved for future use
+                        4: reserved for future use
+                        5: reserved for future use
+                        6: reserved for future use
+                        7: reserved for future use
+            spare 4
+            SSSP "Service Status Reporting Period"
+                item 7
+                    signed quantity 1 0 "s" >= 1 <= 127
+
+    110 "Service Status"
+        case 000
+            1: absent
+            2: mandatory            
+            3: absent          
+        definition
+            Information concerning the status of the Service provided by a Ground Station.
+        extended 8 8
+            spare 4
+            STAT "Status of the Service"
+                item 3
+                    table
+                        0: Unknown
+                        1: Failed
+                        2: Disabled
+                        3: Degraded
+                        4: Normal
+                        5: Initialisation
+
+    120 "Service Statistics"
+        case 000
+            1: absent            
+            2: absent              
+            3: mandatory                        
+        definition
+            Statistics concerning the service. Provides counts of various ADS-B 
+            message types that have been received since the report was last sent.
+        repetitive
+            subitems
+                TYPE "Type of report counter"
+                    item 8
+                    table
+                        0: Number of unknown messages received
+                        1: Number of ‘too old’ messages received
+                        2: Number of failed message conversions
+                        3: Total Number of messages received
+                        20: Number of TIS-B management messages received
+                        21: Number of ‘Basic’ messages received
+                        22: Number of ‘High Dynamic’ messages received
+                        23: Number of ‘ Full Position’messages received
+                        24: Number of ‘Basic Ground ‘ messages received
+                        25: Number of ‘TCP’ messages received
+                        26: Number of ‘UTC time ‘ messages received
+                        27: Number of “Data’ messages received
+                        28: Number of ‘High Resolution’ messages received
+                        29: Number of ‘Aircraft Target Airborne’ messages received.
+                        30: Number of ‘Aircraft Target ‘Ground’ messages received.
+                        31: Number of ‘Ground Vehicle Target’ messages received.
+                        32: Number of ‘2 slots TCP messages received.
+                REF "Reference from which the messages are countered"
+                    item 1
+                    table
+                        0: From midnight
+                        1: From the last report
+                spare 7
+                CV "32-bit counter value"
+                    item 32
+                        raw
+
+    200 "Operational Range"
+        case 000
+            1: optional
+            2: optional            
+            3: absent        
+        definition
+            Currently active operational range of the Ground Station.
+        item 8
+            unsigned quantity 1 0 "NM"
+        remark
+            Notes:
+
+                1. Maximum value indicates “maximum value or above”.
+
+    RE "Reserved Expansion Field"
+        optional
+        definition
+            Expansion
+        explicit
+
+    SP "Special Purpose Field"
+        optional
+        definition
+            Special Purpose Field
+        explicit
+        
+uap
+    010
+    000
+    015
+    070
+    100
+    101
+    200
+    110
+    120
+    -
+    -
+    -
+    RE
+    SP
+ 
