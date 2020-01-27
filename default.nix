@@ -41,11 +41,26 @@ let
           html=$out/specs/$cat/$edition.html
           pdf=$out/specs/$cat/$edition.pdf
           echo $level2
+
+          echo "validate, copy original"
           ${converter}/bin/converter --validate -f $level2
           cp $level2 $out/specs/$cat/$edition
+
+          echo "convert to .json"
           ${converter}/bin/converter --json -f $level2 > $json
+
+          echo "pretify, convert again..."
+          # convert back to ast, then to json again, expect the same .json file
+          rm -rf $TMP/check
+          mkdir $TMP/check
+          ${renderer}/bin/render --script renderer/formats/ast.py render $json > $TMP/check/ast2.ast
+          ${converter}/bin/converter --json -f $TMP/check/ast2.ast > $TMP/check/json2.json
+          diff -q $json $TMP/check/json2.json
+
+          echo "render to .rst"
           ${renderer}/bin/render --script publisher/rst.py render $json > $rst
 
+          echo "generate html and pdf version"
           current=$PWD
           rm -rf $TMP/publisher
           cp -a publisher $TMP
