@@ -50,7 +50,7 @@ Example:
 converter -f specs/imaginary.ast --json > test.json
 
 # convert from .json to .ast
-render --script ast.py RenderAst test.json > test.ast
+render --script ast.py render test.json > test.ast
 
 diff specs/imaginary.ast test.ast
 ```
