@@ -37,6 +37,7 @@ let
         for level2 in $(find $level1 -type f | grep ast); do
           edition=$(basename $level2)
           json=$out/specs/$cat/$edition.json
+          pretty=$out/specs/$cat/$edition.pretty
           rst=$out/specs/$cat/$edition.rst
           html=$out/specs/$cat/$edition.html
           pdf=$out/specs/$cat/$edition.pdf
@@ -49,12 +50,14 @@ let
           echo "convert to .json"
           ${converter}/bin/converter --json -f $level2 > $json
 
-          echo "pretify, convert again..."
+          echo "pretify"
+          ${renderer}/bin/render --script renderer/formats/ast.py render $json > $pretty
+
+          echo "convert again, check"
           # convert back to ast, then to json again, expect the same .json file
           rm -rf $TMP/check
           mkdir $TMP/check
-          ${renderer}/bin/render --script renderer/formats/ast.py render $json > $TMP/check/ast2.ast
-          ${converter}/bin/converter --json -f $TMP/check/ast2.ast > $TMP/check/json2.json
+          ${converter}/bin/converter --json -f $pretty > $TMP/check/json2.json
           diff -q $json $TMP/check/json2.json
 
           echo "render to .rst"
