@@ -5,7 +5,7 @@ set spec {
         {line /edition INT.INT}
         {line /date YYYY-MM-DD}
         {line /preamble TEXT}
-        {line /items {loop {line (newline) (indent) top-item-def (unindent)} {}}}
+        {line /items {loop {line (newline) (indent) item-def (unindent)} {}}}
         uap-def
 }
 

@@ -29,10 +29,10 @@ items
             Identification of the system sending the data.
         subitems
             SAC "System Area Code"
-                item 8
+                fixed 8
                     raw
             SIC "System Identification code"
-                item 8
+                fixed 8
                     raw
         remark
             Note:
@@ -46,56 +46,56 @@ items
             a radar station.
         extended 8 8
             TYP ""
-                item 1
+                fixed 1
                     table
                         0: Plot
                         1: Track
             SIM ""
-                item 1
+                fixed 1
                     table
                         0: Plot
                         1: Track
             SSR_PSR "Radar detection in last antenna scan"
-                item 2
+                fixed 2
                     table
                         0: No detection
                         1: Sole primary detection
                         2: Sole secondary detection
                         3: Combined primary and secondary detection
             ANT ""
-                item 1
+                fixed 1
                     table
                         0: Target report from antenna 1
                         1: Target report from antenna 2
             SPI ""
-                item 1
+                fixed 1
                     table
                         0: Default
                         1: Special Position Identification
             RAB ""
-                item 1
+                fixed 1
                     table
                         0: Default
                         1: Plot or track from a fixed transponder
             TST ""
-                item 1
+                fixed 1
                     table
                         0: Default
                         1: Test target indicator
             DS1_DS2 ""
-                item 2
+                fixed 2
                     table
                         0: Default
                         1: Unlawful interference (code 7500)
                         2: Radio-communication failure (code 7600)
                         3: Emergency (code 7700)
             ME ""
-                item 1
+                fixed 1
                     table
                         0: Default
                         1: Military emergency
             MI ""
-                item 1
+                fixed 1
                     table
                         0: Default
                         1: Military identification
@@ -107,13 +107,13 @@ items
             Some text...
         subitems
             A ""
-                item 2
+                fixed 2
                     unsigned integer
             B ""
-                item 6
+                fixed 6
                     signed integer > 1/2
             C ""
-                item 8
+                fixed 8
                     unsigned integer >= 0 < 100
 
     040 ""
@@ -123,7 +123,7 @@ items
             2: absent
         definition
             Some text...
-        item 8
+        fixed 8
             raw
 
     050 "Indicated Airspeed/Mach No"
@@ -132,12 +132,12 @@ items
             asfd
         subitems
             IM ""
-                item 1
+                fixed 1
                     table
                         0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
                         1: Air Speed = Mach, LSB (Bit-1) = 0.001
             IAS ""
-                item 15
+                fixed 15
                     case 050/IM
                         0:
                             unsigned quantity 1 14 "NM/s"
@@ -150,19 +150,19 @@ items
             Example of compound item
         compound
             A ""
-                item 8
+                fixed 8
                     raw
             STR ""
-                item 48
+                fixed 48
                     string icao
             CSN "Callsign"
-                item 56
+                fixed 56
                     string ascii
             I1 ""
-                item 8
+                fixed 8
                     signed quantity 10 2 "s" >= -20 <= 20.1
             I2 ""
-                item 8
+                fixed 8
                     unsigned quantity 10 2 "s" > -20 < 20
 
     071 ""
@@ -170,20 +170,20 @@ items
         definition
             Example of repetitive item
         repetitive
-            item 8
+            fixed 8
                 raw
 
     072 ""
-        optional
+        unspecified
         definition
             Example of repetitive item
         repetitive
             subitems
                 A ""
-                    item 4
+                    fixed 4
                         raw
                 B ""
-                    item 4
+                    fixed 4
                         raw
 
     RE "Reserved Expansion Field"

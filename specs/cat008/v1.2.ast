@@ -11,7 +11,7 @@ items
         definition
             This Data Item allows for a more convenient handling of the messages
             at the receiver side by further defining the type of transaction.
-        item 8
+        fixed 8
             table
                 1: Polar vector
                 2: Cartesian vector of start point/ length
@@ -26,10 +26,10 @@ items
             Identification of the radar station from which the data are received.
         subitems
             SAC "System Area Code"
-                item 8
+                fixed 8
                     raw
             SIC "System Identification code"
-                item 8
+                fixed 8
                     raw
         remark
             Note:
@@ -43,15 +43,15 @@ items
             representing the precipitation area and coordinate system used.
         extended 8 8
             ORG ""
-                item 1
+                fixed 1
                     table
                         0: Local Coordinates
                         1: System Coordinates
             I "Intensity level (range zero to seven)"
-                item 3
+                fixed 3
                     raw
             S "Shading orientation with respect to North, as follows:"
-                item 3
+                fixed 3
                     table
                         0: 0°
                         1: 22.5°
@@ -63,12 +63,12 @@ items
                         7: 157.5°
             spare 5
             TST ""
-                item 1
+                fixed 1
                     table
                         0: Default
                         1: Test vector
             ER ""
-                item 1
+                fixed 1
                     table
                         0: Default
                         1: Error condition encountered
@@ -83,13 +83,13 @@ items
         repetitive
             subitems
                 STR "START RANGE"
-                    item 8
+                    fixed 8
                         raw
                 ENDR "END RANGE"
-                    item 8
+                    fixed 8
                         raw
                 AZ "AZIMUTH"
-                    item 16
+                    fixed 16
                         unsigned quantity 360 16 "deg"
         remark
             Note:
@@ -103,13 +103,13 @@ items
         repetitive
             subitems
                 X "X-COMPONENT"
-                    item 8
+                    fixed 8
                         raw         // formula, including 'f'
                 Y "Y-COMPONENT"
-                    item 8
+                    fixed 8
                         raw         // formula, including 'f'
                 L "LENGTH"
-                    item 8
+                    fixed 8
                         raw         // formula, including 'f'
         remark
             Note:
@@ -127,16 +127,16 @@ items
         repetitive
             subitems
                 X1 "X1 COMPONENT"
-                    item 8
+                    fixed 8
                         raw
                 Y1 "Y1 COMPONENT"
-                    item 8
+                    fixed 8
                         raw
                 X2 "X2 COMPONENT"
-                    item 8
+                    fixed 8
                         raw
                 Y2 "Y2 COMPONENT"
-                    item 8
+                    fixed 8
                         raw
         remark
             Note:
@@ -153,23 +153,23 @@ items
             and the coordinates system used.
         subitems
             ORG ""
-                item 1
+                fixed 1
                     table
                         0: Local Coordinates
                         1: System Coordinates
             I "Intensity level (range zero to seven)"
-                item 3
+                fixed 3
                     raw
             spare 2
             FST_LST ""
-                item 2
+                fixed 2
                     table
                         0: Intermediate record of a contour
                         1: Last record of a contour of at least two records
                         2: First record of a contour of at least two records
                         3: First and only record, fully defining a contour
             CSN "Contour Serial Number"
-                item 8
+                fixed 8
                     raw
         remark
             Note:
@@ -184,10 +184,10 @@ items
         repetitive
             subitems
                 X1 ""
-                    item 8
+                    fixed 8
                         raw
                 Y1 ""
-                    item 8
+                    fixed 8
                         raw
         remark
             Note:
@@ -201,7 +201,7 @@ items
         optional
         definition
             Absolute time stamping expressed as Coordinated Universal Time (UTC) time.
-        item 24
+        fixed 24
             unsigned quantity 1 7 "s"
         remark
             Notes:
@@ -216,13 +216,13 @@ items
             reduction step in use, etc.
         extended 24 8
             f "Scaling factor"
-                item 5
+                fixed 5
                     signed quantity 1 0 ""
             R "Current reduction stage in use"
-                item 3
+                fixed 3
                     raw
             Q "Processing parameters"
-                item 15
+                fixed 15
                     raw
         remark
             Note:
@@ -239,7 +239,7 @@ items
             components of a radar system .
         extended 8 8
             DATA "Unspecified data"
-                item 7
+                fixed 7
                     raw
         remark
             Note:
@@ -252,7 +252,7 @@ items
         definition
             Total number of vectors, respectively contour points, constituting
             the total weather image, provided with the EOP message.
-        item 16
+        fixed 16
             unsigned integer
 
     RE "Reserved Expansion Field"

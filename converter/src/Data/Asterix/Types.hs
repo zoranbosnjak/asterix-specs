@@ -22,26 +22,30 @@ import qualified Text.Printf as TP
 import           Data.Word (Word8)
 import           Data.Aeson (ToJSON, toJSON, object, (.=))
 
-type ItemName = String
-type ItemTitle = Text
+type Name = String
+type Title = Text
 type Description = Text
 type Remark = Text
 type UapName = String
 
 data Rule a
-    = ContextFree a
-    | ItemDependent [ItemName] [(Int, a)]
+    = Unspecified
+    | ContextFree a
+    | Dependent [Name] [(Int, a)]
     deriving (Generic, Eq, Show)
 
 instance ToJSON a => ToJSON (Rule a)
   where
+    toJSON (Unspecified) = object
+        [ "type" .= ("Unspecified" :: String)
+        ]
     toJSON (ContextFree rule) = object
         [ "type" .= ("ContextFree" :: String)
         , "rule" .= rule
         ]
-    toJSON (ItemDependent item rules) = object
-        [ "type" .= ("ItemDependent" :: String)
-        , "item" .= item
+    toJSON (Dependent name rules) = object
+        [ "type" .= ("Dependent" :: String)
+        , "name" .= name
         , "rules" .= rules
         ]
 
@@ -49,6 +53,10 @@ data Edition = Edition
     { editionMajor :: Int
     , editionMinor :: Int
     } deriving (Generic, Eq, Show)
+
+instance Ord Edition where
+    compare (Edition a1 b1) (Edition a2 b2) =
+        compare a1 a2 <> compare b1 b2
 
 instance ToJSON Edition where
     toJSON (Edition a b) = toJSON $ show a ++ "." ++ show b
@@ -115,8 +123,7 @@ instance ToJSON StringType where
     toJSON = toJSON . show
 
 data Content
-    = ContentRaw
-    | ContentTable
+    = ContentTable
         [(Int, Text)]
     | ContentString
         StringType
@@ -133,9 +140,6 @@ data Content
 
 instance ToJSON Content where
     toJSON = \case
-        ContentRaw -> object
-            [ "type" .= ("Raw" :: String)
-            ]
         ContentTable lst -> object
             [ "type" .= ("Table" :: String)
             , "values" .= lst
@@ -160,17 +164,17 @@ instance ToJSON Content where
 
 type RegisterSize = Int
 
-data Variation
+data Element
     = Fixed RegisterSize (Rule Content)
-    | Group [Item]
-    | Extended Int Int [Item]
-    | Repetitive Variation
+    | Group [Subitem]
+    | Extended Int Int [Subitem]
+    | Repetitive Element
     | Explicit
-    | Compound [Item]
+    | Compound [Subitem]
     | Rfs
     deriving (Generic, Eq, Show)
 
-instance ToJSON Variation where
+instance ToJSON Element where
     toJSON (Fixed n content) = object
         [ "type"    .= ("Fixed" :: String)
         , "size"    .= n
@@ -178,43 +182,43 @@ instance ToJSON Variation where
         ]
     toJSON (Group lst) = object
         [ "type"    .= ("Group" :: String)
-        , "items"   .= lst
+        , "subitems" .= lst
         ]
     toJSON (Extended n1 n2 lst) = object
         [ "type"    .= ("Extended" :: String)
         , "first"   .= n1
         , "extents" .= n2
-        , "items"   .= lst
+        , "subitems" .= lst
         ]
-    toJSON (Repetitive i) = object
+    toJSON (Repetitive el) = object
         [ "type"    .= ("Repetitive" :: String)
-        , "item"    .= i
+        , "element" .= el
         ]
     toJSON Explicit = object
         [ "type"    .= ("Explicit" :: String)
         ]
     toJSON (Compound lst) = object
         [ "type"    .= ("Compound" :: String)
-        , "items"   .= lst
+        , "subitems" .= lst
         ]
     toJSON _ = undefined -- TODO
 
-data Item
+data Subitem
     = Spare RegisterSize
-    | Item ItemName ItemTitle (Maybe Description) Variation (Maybe Remark)
+    | Subitem Name Title (Maybe Description) Element (Maybe Remark)
     deriving (Generic, Eq, Show)
 
-instance ToJSON Item where
+instance ToJSON Subitem where
     toJSON (Spare n) = object
         [ "spare"       .= True
         , "length"      .= n
         ]
-    toJSON (Item name tit dsc var remark) = object
+    toJSON (Subitem name tit dsc el remark) = object
         [ "spare"       .= False
         , "name"        .= name
         , "title"       .= tit
         , "description" .= dsc
-        , "variation"   .= var
+        , "element"     .= el
         , "remark"      .= remark
         ]
 
@@ -224,24 +228,24 @@ data Encoding = Mandatory | Optional | Absent
 instance ToJSON Encoding where
     toJSON encoding = toJSON $ fmap Data.Char.toLower $ show encoding
 
-data Toplevel = Toplevel
-    { topEncoding   :: Rule Encoding
-    , topDefinition :: Text
-    , topItem       :: Item
+data Item = Item
+    { itemEncoding  :: Rule Encoding
+    , itemDefinition :: Text
+    , itemSubitem   :: Subitem
     } deriving (Generic, Eq, Show)
 
-instance ToJSON Toplevel where
-    toJSON t = case topItem t of
+instance ToJSON Item where
+    toJSON t = case itemSubitem t of
         Spare _ -> error "spare toplevel item"
-        i -> object
-            [ "encoding"    .= topEncoding t
-            , "definition"  .= topDefinition t
-            , "item"        .= i
+        si -> object
+            [ "encoding"    .= itemEncoding t
+            , "definition"  .= itemDefinition t
+            , "subitem"     .= si
             ]
 
 data Uap
-    = Uap [Maybe ItemName]
-    | Uaps [(UapName, [Maybe ItemName])]
+    = Uap [Maybe Name]
+    | Uaps [(UapName, [Maybe Name])]
     deriving (Generic, Eq, Show)
 
 instance ToJSON Uap where
@@ -265,7 +269,7 @@ data Category = Category
     , catEdition    :: Edition
     , catDate       :: Date
     , catPreamble   :: Maybe Text
-    , catItems      :: [Toplevel]
+    , catCatalogue  :: [Item]
     , catUap        :: Uap
     } deriving (Generic, Eq, Show)
 
@@ -276,7 +280,7 @@ instance ToJSON Category where
         , "edition"     .= catEdition c
         , "date"        .= catDate c
         , "preamble"    .= catPreamble c
-        , "items"       .= catItems c
+        , "catalogue"   .= catCatalogue c
         , "uap"         .= catUap c
         ]
 

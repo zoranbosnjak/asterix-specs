@@ -151,11 +151,11 @@ pNumber = tryOne
         return $ (a % b)
 
 -- | Parser valid name.
-pName :: Parser ItemName
+pName :: Parser Name
 pName = some (alphaNumChar <|> char '_')
 
--- | Parse item name in the form "a/b/c...".
-pPaths :: Parser [ItemName]
+-- | Parse name in the form "a/b/c...".
+pPaths :: Parser [Name]
 pPaths = do
     x <- pName
     rest <- many (char '/' >> pName)
@@ -185,8 +185,7 @@ pConstrain = tryOne
 
 pContent :: Parser Content
 pContent = tryOne
-    [ string "raw" >> pure ContentRaw
-    , (ContentTable . snd <$> parseList (string "table") parseRow)
+    [ (ContentTable . snd <$> parseList (string "table") parseRow)
     , do
         string "string" >> sc
         ContentString <$> tryOne
@@ -205,28 +204,32 @@ pContent = tryOne
     ]
 
 -- | Parse (fixed) type.
-pFixed :: Parser () -> Parser Variation
+pFixed :: Parser () -> Parser Element
 pFixed sc' = do
-    string "item" >> sc'
+    string "fixed" >> sc'
     n <- L.decimal
-    rule <- sc' >> tryOne [ContextFree <$> pContent, pItemDependent]
+    rule <- sc' >> tryOne
+        [ ContextFree <$> pContent
+        , string "raw" >> pure Unspecified
+        , pDependent
+        ]
     return $ Fixed n rule
   where
-    pItemDependent = do
+    pDependent = do
         (h,lst) <- parseList pHeader pCase
-        return $ ItemDependent h lst
+        return $ Dependent h lst
       where
         pHeader = string "case" >> sc >> pPaths
         pCase _ = (,) <$> (pInt <* (char ':' >> (try scn <|> sc))) <*> pContent
 
--- | Parse group of nested items.
-pGroup :: Parser Variation
-pGroup = Group . snd <$> parseList (string "subitems") pItem
+-- | Parse group of nested subitems.
+pGroup :: Parser Element
+pGroup = Group . snd <$> parseList (string "subitems") pSubItem
 
--- | Parse 'extended' item.
-pExtended :: Parser Variation
+-- | Parse 'extended' subitem.
+pExtended :: Parser Element
 pExtended = do
-    ((n1,n2), lst) <- parseList parseHeader pItem
+    ((n1,n2), lst) <- parseList parseHeader pSubItem
     return $ Extended n1 n2 lst
   where
     parseHeader = do
@@ -235,8 +238,8 @@ pExtended = do
         n2 <- L.decimal
         return (n1, n2)
 
--- | Parse 'repetitive' item.
-pRepetitive :: Parser Variation
+-- | Parse 'repetitive' subitem.
+pRepetitive :: Parser Element
 pRepetitive = do
     void $ string "repetitive"
     i <- lookAhead (scn >> L.indentLevel)
@@ -245,19 +248,19 @@ pRepetitive = do
             j <- L.indentLevel
             end <- atEnd
             bool (fail "unexpected indent") (return ()) ((j > i) || end)
-    scn >> fmap Repetitive (pVariation sc')
+    scn >> fmap Repetitive (pElement sc')
 
--- | Parse 'explicit' item.
-pExplicit :: Parser Variation
+-- | Parse 'explicit' subitem.
+pExplicit :: Parser Element
 pExplicit = string "explicit" *> pure Explicit
 
--- | Parse 'compound' item.
-pCompound :: Parser Variation
-pCompound = Compound . snd <$> parseList (string "compound") pItem
+-- | Parse 'compound' subitem.
+pCompound :: Parser Element
+pCompound = Compound . snd <$> parseList (string "compound") pSubItem
 
--- | Parse item 'variation'.
-pVariation :: Parser () -> Parser Variation
-pVariation sc' = tryOne
+-- | Parse 'element'.
+pElement :: Parser () -> Parser Element
+pElement sc' = tryOne
     [ pFixed sc'
     , pGroup
     , pExtended
@@ -268,12 +271,12 @@ pVariation sc' = tryOne
     ]
 
 -- | Parser valid uap name.
-pUapName :: Parser ItemName
+pUapName :: Parser Name
 pUapName = some (alphaNumChar <|> char '-')
 
--- | Parse spare or regular 'item'.
-pItem :: Parser () -> Parser Item
-pItem sc' = try pSpare <|> pRegular
+-- | Parse spare or regular 'subitem'.
+pSubItem :: Parser () -> Parser Subitem
+pSubItem sc' = try pSpare <|> pRegular
   where
     pRegular = do
         name <- pName <* sc'
@@ -281,14 +284,14 @@ pItem sc' = try pSpare <|> pRegular
         description <- optional . try $ do
             sc'
             (T.pack <$> blockAfter "description")
-        variation <- sc' >> pVariation sc'
+        element <- sc' >> pElement sc'
         remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
-        return $ Item name title description variation remark
+        return $ Subitem name title description element remark
     pSpare = string "spare" >> sc' >> fmap Spare L.decimal
 
 -- | Parse toplevel item.
-pToplevelItem :: Parser () -> Parser Toplevel
-pToplevelItem sc' = do
+pItem :: Parser () -> Parser Item
+pItem sc' = do
     name <- pName <* sc'
     title <- (T.pack <$> stringLiteral) <* sc'
     encoding <- do
@@ -299,23 +302,24 @@ pToplevelItem sc' = do
                 ]
         tryOne
             [ ContextFree <$> pEncoding
+            , string "unspecified" >> sc' >> pure Unspecified
             , do
                 let pCase _ = (,) <$> (pInt <* (char ':' >> sc)) <*> pEncoding
                     pHeader = string "case" >> sc >> pPaths
                 (h,lst) <- parseList pHeader pCase
-                return $ ItemDependent h lst
+                return $ Dependent h lst
             ]
     definition <- (T.pack <$> blockAfter "definition") <* sc'
-    variation <- pVariation sc'
+    element <- pElement sc'
     remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
-    return $ Toplevel
+    return $ Item
         encoding
         definition
-        (Item name title Nothing variation remark)
+        (Subitem name title Nothing element remark)
 
 -- | Parse toplevel items.
-pToplevelItems :: Parser [Toplevel]
-pToplevelItems = snd <$> parseList (string "items") pToplevelItem
+pItems :: Parser [Item]
+pItems = snd <$> parseList (string "items") pItem
 
 -- | Parse 'UAP'.
 pUap :: Parser Uap
@@ -337,6 +341,6 @@ pCategory = Category
     <*> (scn >> pEdition)
     <*> (scn >> pDate)
     <*> optional (try (scn >> pPreamble))
-    <*> (scn >> pToplevelItems)
+    <*> (scn >> pItems)
     <*> (scn >> pUap)
 

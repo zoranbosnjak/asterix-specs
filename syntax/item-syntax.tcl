@@ -1,27 +1,19 @@
 set title "item-def"
 set spec {
     stack
-        { or
-            { stack
-                { line { or
-                    { line /subitems }
-                    { line /compound }
-                    { line /extended BITS-fst BITS-ext }
-                    }
-                }
-                { line
-                    { loop { line
-                        (indent) NAME {''} TITLE {''}
-                        { or {} {line /description TEXT } }
-                        item-def (unindent) {}
-                        }
-                    }
-                }
+        {line NAME {''} TITLE {''}}
+        {or
+            /unspecified
+            /mandatory
+            /optional
+            { line
+                /case
+                { loop /name "/" }
+                { loop { line (indent) INT : { or /mandatory /optional /absent} (unindent)} {} }
             }
-            { line /repetitive item-def }
-            { line /explicit }
-            { line /item BITS content-def }
-            { line /spare BITS }
         }
+        {line /definition TEXT }
+        {line subitem-def}
+        {opt /remark TEXT }
 }
 

@@ -58,34 +58,35 @@ options = Options
         outList = flag' OutputList ( long "list" <> help "list output" )
         json = flag' OutputJson ( long "json" <> help "JSON format" )
 
-fixedItemSize :: Category -> [ItemName] -> Maybe RegisterSize
-fixedItemSize category path = findItemByName category path >>= \case
+fixedSubitemSize :: Category -> [Name] -> Maybe RegisterSize
+fixedSubitemSize category path = findSubitemByName category path >>= \case
     Spare _ -> Nothing
-    Item _ _ _ variation _ -> case variation of
+    Subitem _ _ _ element _ -> case element of
         Fixed size _ -> Just size
         _ -> Nothing
 
 validate :: Category -> [ValidationError]
 validate category = join
-    [ allToplevelDefined
-    , join (validateEncoding <$> catItems category)
-    , join $ (snd . validateItem category [] . topItem <$> catItems category)
+    [ allItemsDefined
+    , join (validateEncoding <$> catCatalogue category)
+    , join $ (snd . validateSubitem category [] . itemSubitem <$> catCatalogue category)
     , validateUap
     ]
   where
 
-    validateEncoding :: Toplevel -> [ValidationError]
-    validateEncoding toplevel = case topEncoding toplevel of
-        ContextFree encoding -> reportWhen (encoding == Absent) [topName] "Topitem can not be 'absent'"
-        ItemDependent someItem rules -> case fixedItemSize category someItem of
-            Nothing -> reportWhen True [topName] (showPath someItem ++ " not defined")
+    validateEncoding :: Item -> [ValidationError]
+    validateEncoding item = case itemEncoding item of
+        Unspecified -> []
+        ContextFree encoding -> reportWhen (encoding == Absent) [itemName] "Item can not be 'absent'"
+        Dependent someSubitem rules -> case fixedSubitemSize category someSubitem of
+            Nothing -> reportWhen True [itemName] (showPath someSubitem ++ " not defined")
             Just m ->
                 let size = compare (length rules) (2 ^ m)
-                in reportWhen (size == GT) [topName] "too many encoding variations"
+                in reportWhen (size == GT) [itemName] "too many encoding variations"
       where
-        topName = case topItem toplevel of
+        itemName = case itemSubitem item of
             Spare _ -> ""
-            Item name _ _ _ _ -> name
+            Subitem name _ _ _ _ -> name
 
     validateUap :: [ValidationError]
     validateUap = case catUap category of
@@ -104,16 +105,16 @@ validate category = join
             let x = catMaybes lst
             in reportWhen (nub x /= x) path "duplicated items"
 
-    allToplevelDefined :: [ValidationError]
-    allToplevelDefined = join [requiredNotDefined, definedNotRequired, noDups]
+    allItemsDefined :: [ValidationError]
+    allItemsDefined = join [requiredNotDefined, definedNotRequired, noDups]
       where
         required = catMaybes $ case catUap category of
             Uap lst -> lst
             Uaps lst -> nub $ join $ fmap snd lst
 
-        defined = (topItem <$> catItems category) >>= \case
+        defined = (itemSubitem <$> catCatalogue category) >>= \case
             Spare _ -> return []
-            Item name _ _ _ _ -> [name]
+            Subitem name _ _ _ _ -> [name]
 
         requiredNotDefined = do
             x <- required
@@ -127,22 +128,22 @@ validate category = join
 
         noDups =
             let dups = defined \\ (nub defined)
-            in reportWhen (not $ null dups) ["topitems"] ("duplicate names: " ++ show dups)
+            in reportWhen (not $ null dups) ["items"] ("duplicate names: " ++ show dups)
 
-showPath :: [ItemName] -> String
+showPath :: [Name] -> String
 showPath = intercalate "/"
 
-reportWhen :: Bool -> [ItemName] -> ValidationError -> [ValidationError]
+reportWhen :: Bool -> [Name] -> ValidationError -> [ValidationError]
 reportWhen False _ _ = []
 reportWhen True path msg = [showPath path ++ " -> " ++ msg]
 
-validateItem :: Category -> [ItemName] -> Item -> (Int, [ValidationError])
-validateItem category path = \case
+validateSubitem :: Category -> [Name] -> Subitem -> (Int, [ValidationError])
+validateSubitem category path = \case
     Spare n -> (n, reportWhen (n <= 0) (path++["spare"]) "size")
-    Item name _ _ variation _ -> validateVariation category (path++[name]) variation
+    Subitem name _ _ element _ -> validateElement category (path++[name]) element
 
-validateVariation :: Category -> [ItemName] -> Variation -> (Int, [ValidationError])
-validateVariation category path = \case
+validateElement :: Category -> [Name] -> Element -> (Int, [ValidationError])
+validateElement category path = \case
     Fixed n content -> (n, join
         [ reportWhen (n <= 0) path "size"
         , validateContent category path n content
@@ -159,13 +160,13 @@ validateVariation category path = \case
                 ])
             (i:is) ->
                 let (a,b) = (head fx, tail fx)
-                    (n', problems') = validateItem category path i
+                    (n', problems') = validateSubitem category path i
                 in case compare (n+n'+1) a of
                     LT -> loop (n+n', problems'++problems) (a:b) is
                     EQ -> loop (n+n'+1, problems'++problems) b is
                     GT -> loop (n+n', problems' ++ problems ++ reportWhen True path "overflow") b is
-    Repetitive subVariation ->
-        let (n, problems) = validateVariation category path subVariation
+    Repetitive subElement ->
+        let (n, problems) = validateElement category path subElement
         in (8+n, problems)
     Explicit -> (0, [])
     Compound lst -> checkSubitems lst
@@ -174,11 +175,11 @@ validateVariation category path = \case
     dupNames lst =
         let getName = \case
                 Spare _ -> Nothing
-                Item name' _ _ _ _ -> Just name'
+                Subitem name' _ _ _ _ -> Just name'
             names = catMaybes (fmap getName lst)
         in names /= nub names
     checkSubitems lst =
-        let result = fmap (validateItem category path) lst
+        let result = fmap (validateSubitem category path) lst
             n = sum (fst <$> result)
         in (n, join
             [ mconcat (snd <$> result)
@@ -187,12 +188,13 @@ validateVariation category path = \case
             , reportWhen (dupNames lst) path "duplicated names"
             ])
 
-validateContent :: Category -> [ItemName] -> Int -> Rule Content -> [ValidationError]
+validateContent :: Category -> [Name] -> Int -> Rule Content -> [ValidationError]
 validateContent category path n = \case
+    Unspecified -> []
     ContextFree rule -> validateRule rule
-    ItemDependent someItem rules -> join
-        [ case fixedItemSize category someItem of
-            Nothing -> reportWhen True path (showPath someItem ++ " not defined")
+    Dependent someSubitem rules -> join
+        [ case fixedSubitemSize category someSubitem of
+            Nothing -> reportWhen True path (showPath someSubitem ++ " not defined")
             Just m ->
                 let size = compare (length rules) (2 ^ m)
                 in reportWhen (size == GT) path "too many variations"
@@ -231,7 +233,7 @@ main = do
                     IO.hPutStrLn stderr ""
                     die "Validation error(s) present!"
             OutputList -> do
-                mapM_ (dumpItem []) (topItem <$> catItems category)
+                mapM_ (dumpItem []) (itemSubitem <$> catCatalogue category)
                 case validate category of
                     [] -> return ()
                     _ -> die "Validation error(s) present, run 'validate' for details!"
@@ -245,7 +247,7 @@ main = do
   where
     dumpItem parent = \case
         Spare _ -> return ()
-        Item name _title _dsc variation _remark -> do
+        Subitem name _title _dsc element _remark -> do
             let path = parent ++ [name]
                 next = \case
                     Fixed size _ -> ("Fixed " ++ show size, return ())
@@ -255,7 +257,7 @@ main = do
                     Explicit -> ("Explicit", return ())
                     Compound lst -> ("Compound", mapM_ (dumpItem path) lst)
                     Rfs -> ("Rfs", return ())
-                (details, act) = next variation
+                (details, act) = next element
             IO.putStrLn $ showPath path ++ ": " ++ details
             act
 

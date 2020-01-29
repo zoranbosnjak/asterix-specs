@@ -29,7 +29,7 @@ def render(root):
     tell('items')
     tell('')
     with indent:
-        [renderToplevel(item) for item in root['items']]
+        [renderItem(item) for item in root['catalogue']]
     renderUap(root['uap'])
 
     return ''.join([line+'\n' for line in accumulator])
@@ -43,33 +43,34 @@ def renderHeader(root):
         [tell(i) for i in root['preamble'].splitlines()]
     tell('')
 
-def renderToplevel(toplevel):
-    item = toplevel['item']
-    tell('{} "{}"'.format(item['name'], item['title']))
+def renderItem(item):
+    subitem = item['subitem']
+    tell('{} "{}"'.format(subitem['name'], subitem['title']))
     with indent:
+        def case0(): tell('unspecified')
         def case1(enc): tell(enc['rule'])
         def case2(enc):
-            tell('case {}'.format('/'.join(enc['item'])))
+            tell('case {}'.format('/'.join(enc['name'])))
             with indent:
                 [tell('{}: {}'.format(a,b)) for (a,b) in enc['rules']]
-        renderRule(toplevel['encoding'], case1, case2)
+        renderRule(item['encoding'], case0, case1, case2)
 
         tell('definition')
         with indent:
-            [tell(i) for i in toplevel['definition'].strip().splitlines()]
+            [tell(i) for i in item['definition'].strip().splitlines()]
 
-        renderItem(item['variation'])
+        renderSubitem(subitem['element'])
 
-        if item['remark']:
+        if subitem['remark']:
             tell('remark')
             with indent:
-                [tell(i) for i in item['remark'].strip().splitlines()]
+                [tell(i) for i in subitem['remark'].strip().splitlines()]
     tell('')
 
 def constrainToString(constrain):
     return '{} {}'.format(constrain['type'], str(getNumber(constrain['value'])))
 
-def renderItem(variation):
+def renderSubitem(element):
     def renderInteger(value):
         sig = 'signed' if value['signed'] else 'unsigned'
         const = ' '.join([constrainToString(const) for const in value['constraints']])
@@ -86,15 +87,17 @@ def renderItem(variation):
         tell('{} quantity {} {} "{}"'.format(sig, k, fract, unit) + const)
 
     def renderFixed():
-        n = variation['size']
-        tell('item {}'.format(n))
+        n = element['size']
+        tell('fixed {}'.format(n))
+
+        def case0():
+            tell ('raw')
+            return n
 
         def case1(val):
             value = val['rule']
             t = value['type']
-            if t == 'Raw':
-                tell('raw')
-            elif t == 'Table':
+            if t == 'Table':
                 tell('table')
                 with indent:
                     [tell('{}: {}'.format(key, value)) for key,value in value['values']]
@@ -113,7 +116,7 @@ def renderItem(variation):
             return n
 
         def case2(val):
-            tell('case {}'.format('/'.join(val['item'])))
+            tell('case {}'.format('/'.join(val['name'])))
             with indent:
                 for (a,b) in val['rules']:
                     tell('{}:'.format(a))
@@ -122,48 +125,48 @@ def renderItem(variation):
             return n
 
         with indent:
-            return renderRule(variation['content'], case1, case2)
+            return renderRule(element['content'], case0, case1, case2)
 
-    def renderMaybeItem(item):
-        if item['spare']:
-            n = item['length']
+    def renderMaybeSubitem(subitem):
+        if subitem['spare']:
+            n = subitem['length']
             tell('spare {}'.format(n))
             return n
-        tit = item['title']
-        tell('{} "{}"'.format(item['name'], tit))
-        if item['description']:
+        tit = subitem['title']
+        tell('{} "{}"'.format(subitem['name'], tit))
+        if subitem['description']:
             with indent:
                 tell('description')
                 with indent:
-                    [tell(i) for i in item['description'].strip().splitlines()]
+                    [tell(i) for i in subitem['description'].strip().splitlines()]
         with indent:
-            n = renderItem(item['variation'])
-            if item['remark']:
+            n = renderSubitem(subitem['element'])
+            if subitem['remark']:
                 tell('remark')
                 with indent:
-                    [tell(i) for i in item['remark'].strip().splitlines()]
+                    [tell(i) for i in subitem['remark'].strip().splitlines()]
         return n
 
     def renderGroup():
         tell('subitems')
         n = 0
         with indent:
-            for item in variation['items']:
-                n += renderMaybeItem(item)
+            for subitem in element['subitems']:
+                n += renderMaybeSubitem(subitem)
         return n
 
     def renderExtended():
-        tell('extended {} {}'.format(variation['first'], variation['extents']))
+        tell('extended {} {}'.format(element['first'], element['extents']))
         n = 0
         with indent:
-            for item in variation['items']:
-                n += renderMaybeItem(item)
+            for subitem in element['subitems']:
+                n += renderMaybeSubitem(subitem)
         return n
 
     def renderRepetitive():
         tell('repetitive')
         with indent:
-            return renderItem(variation['item'])
+            return renderSubitem(element['element'])
 
     def renderExplicit():
         tell('explicit')
@@ -173,11 +176,11 @@ def renderItem(variation):
         tell('compound')
         n = 0
         with indent:
-            for item in variation['items']:
-                n += renderMaybeItem(item)
+            for subitem in element['subitems']:
+                n += renderMaybeSubitem(subitem)
         return n
 
-    return locals()['render'+variation['type']]()
+    return locals()['render'+element['type']]()
 
 def renderUap(uap):
     def single(items):
