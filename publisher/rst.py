@@ -50,7 +50,7 @@ def renderHeader(root):
     tell('**edition**: {}.{}'.format(edition['major'], edition['minor']))
     tell('')
     date = root['date']
-    tell('**date**: {}-{}-{}'.format(date['year'], date['month'], date['day']))
+    tell('**date**: {}-{:02d}-{:02d}'.format(date['year'], date['month'], date['day']))
     tell('')
     tell(underline('-', 'Preamble'))
     tell(root['preamble'])

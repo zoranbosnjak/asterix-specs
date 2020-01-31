@@ -39,7 +39,7 @@ def renderHeader(root):
     edition = root['edition']
     tell('edition {}.{}'.format(edition['major'], edition['minor']))
     date = root['date']
-    tell('date {}-{}-{}'.format(date['year'], date['month'], date['day']))
+    tell('date {}-{:02d}-{:02d}'.format(date['year'], date['month'], date['day']))
     tell('preamble')
     with indent:
         [tell(i) for i in root['preamble'].splitlines()]
