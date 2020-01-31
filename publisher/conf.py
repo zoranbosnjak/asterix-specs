@@ -25,7 +25,7 @@ with open('specs.json') as f:
 cat = obj['category']
 cat_title = obj['title']
 date = obj['date']
-cat_date = '{}-{}-{}'.format(date['year'], date['month'], date['day'])
+cat_date = '{}-{:02d}-{:02d}'.format(date['year'], date['month'], date['day'])
 edition = obj['edition']
 cat_edition = '{}.{}'.format(edition['major'], edition['minor'])
 
@@ -54,6 +54,7 @@ today = cat_date
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.githubpages'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

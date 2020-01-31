@@ -30,53 +30,85 @@ let
       ln -s ${converter}/bin/converter $out/bin/converter
       ln -s ${renderer}/bin/render $out/bin/render
 
+      cp publisher/style.css $out
+
+      ix=$out/index.html
+      echo "<!DOCTYPE html>" >> $ix
+      echo "<head><link href="style.css" rel="stylesheet" type="text/css"></head>" >> $ix
+      echo "<html>" >> $ix
+      echo "<body>" >> $ix
+
+      echo "Asterix specifications generated from repository revision <code>#${gitrev}</code>." >> $ix
+
       mkdir -p $out/specs
       for level1 in $(find specs/* -maxdepth 1 -type d); do
         cat=$(basename $level1)
         mkdir -p $out/specs/$cat
-        for level2 in $(find $level1 -type f | grep ast); do
-          edition=$(basename $level2)
-          json=$out/specs/$cat/$edition.json
-          pretty=$out/specs/$cat/$edition.pretty
-          rst=$out/specs/$cat/$edition.rst
-          html=$out/specs/$cat/$edition.html
-          pdf=$out/specs/$cat/$edition.pdf
-          echo $level2
+
+        echo "<h2>$cat</h2>" >> $ix
+        echo "<ul>" >> $ix
+
+        for level2 in $(find $level1 -type f | grep ast | cut -c 2- | sort -t. -k1,1n -k2,2n); do
+          edition=$(basename v$level2 .ast)
+          echo $cat $edition
+
+          dst=$out/specs/$cat/$edition
+          mkdir $dst
+
+          orig=specs/$cat/$edition.ast
+          base=$dst/$cat-$edition
 
           echo "validate, copy original"
-          ${converter}/bin/converter --validate -f $level2
-          cp $level2 $out/specs/$cat/$edition
+          ${converter}/bin/converter --validate -f $orig
+          cp $orig $base.ast
 
           echo "convert to .json"
-          ${converter}/bin/converter --json -f $level2 > $json
+          ${converter}/bin/converter --json -f $orig > $base.json
 
           echo "pretify"
-          ${renderer}/bin/render --script renderer/formats/ast.py render $json > $pretty
+          ${renderer}/bin/render --script renderer/formats/ast.py render $base.json > $base.txt
 
           echo "convert again, check"
           # convert back to ast, then to json again, expect the same .json file
-          rm -rf $TMP/check
-          mkdir $TMP/check
-          ${converter}/bin/converter --json -f $pretty > $TMP/check/json2.json
-          diff -q $json $TMP/check/json2.json
+          ${converter}/bin/converter --json -f $base.txt > $base.json2
+          diff -q $base.json $base.json2
+          rm $base.json2
 
           echo "render to .rst"
-          ${renderer}/bin/render --script publisher/rst.py render $json > $rst
+          ${renderer}/bin/render --script publisher/rst.py render $base.json > $base.rst
 
-          echo "generate html and pdf version"
           current=$PWD
+          echo "generate html and pdf version"
           rm -rf $TMP/publisher
           cp -a publisher $TMP
-          cat $json > $TMP/publisher/specs.json
-          cat $rst > $TMP/publisher/specs.rst
+          cp $base.json $TMP/publisher/specs.json
+          cp $base.rst $TMP/publisher/specs.rst
           cd $TMP/publisher
           make html
           make latexpdf
-          cp -a $TMP/publisher/_build/html $html
-          cp -a $TMP/publisher/_build/latex/test.pdf $pdf
+          mkdir $base.html
+          cp -a $TMP/publisher/_build/html/. $base.html
+          cp $TMP/publisher/_build/latex/test.pdf $base.pdf
           cd $current
+
+          echo "<li> $edition" >> $ix
+          ref=specs/$cat/$edition/$cat-$edition
+          echo "<a href=\"$ref.ast\">[ast]</a>" >> $ix
+          echo "<a href=\"$ref.txt\">[txt]</a>" >> $ix
+          echo "<a href=\"$ref.json\">[json]</a>" >> $ix
+          echo "<a href=\"$ref.rst\">[rst]</a>" >> $ix
+          echo "<a href=\"$ref.pdf\">[pdf]</a>" >> $ix
+          echo "<a href=\"$ref.html/index.html\">[html]</a>" >> $ix
+          echo "</li>" >> $ix
+
         done
+        echo "</ul>" >> $ix
+
       done
+
+      echo "</body>" >> $ix
+      echo "</html>" >> $ix
+
     '';
   } // { inherit env; };
 

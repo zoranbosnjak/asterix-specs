@@ -1,5 +1,4 @@
-{ inShell ? null
-, packages ? null
+{ packages ? null
 }:
 
 let
@@ -15,17 +14,6 @@ let
 
   deps = import ./deps.nix { inherit pkgs; } ++ [converter renderer];
 
-  drv = pkgs.stdenv.mkDerivation rec {
-    name = "publisher";
-    src = ./.;
-    propagatedBuildInputs = deps;
-    dontBuild = true;
-    installPhase = ''
-      mkdir -p $out
-      echo "TODO..." > $out/testfile
-    '';
-  } // { inherit env; };
-
   env = pkgs.stdenv.mkDerivation rec {
     name = "publisher-envorinment";
     buildInputs = deps;
@@ -34,7 +22,5 @@ let
   };
 
 in
-  if inShell == false
-    then drv
-    else if pkgs.lib.inNixShell then drv.env else drv
+  env
 
