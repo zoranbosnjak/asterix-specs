@@ -98,7 +98,7 @@ let
           echo "<a href=\"$ref.json\">[json]</a>" >> $ix
           echo "<a href=\"$ref.rst\">[rst]</a>" >> $ix
           echo "<a href=\"$ref.pdf\">[pdf]</a>" >> $ix
-          echo "<a href=\"$ref.html/index.html\">[html]</a>" >> $ix
+          echo "<a href=\"$ref.html/specs.html\">[html]</a>" >> $ix
           echo "</li>" >> $ix
 
         done
