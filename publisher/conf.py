@@ -24,8 +24,10 @@ with open('specs.json') as f:
 
 cat = obj['category']
 cat_title = obj['title']
-cat_date = obj['date']
-cat_edition = obj['edition']
+date = obj['date']
+cat_date = '{}-{}-{}'.format(date['year'], date['month'], date['day'])
+edition = obj['edition']
+cat_edition = '{}.{}'.format(edition['major'], edition['minor'])
 
 # -- Project information -----------------------------------------------------
 

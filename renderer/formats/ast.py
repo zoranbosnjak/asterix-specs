@@ -36,8 +36,10 @@ def render(root):
 
 def renderHeader(root):
     tell('category {} "{}"'.format(root['category'], root['title']))
-    tell('edition {}'.format(root['edition']))
-    tell('date {}'.format(root['date']))
+    edition = root['edition']
+    tell('edition {}.{}'.format(edition['major'], edition['minor']))
+    date = root['date']
+    tell('date {}-{}-{}'.format(date['year'], date['month'], date['day']))
     tell('preamble')
     with indent:
         [tell(i) for i in root['preamble'].splitlines()]

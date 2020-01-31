@@ -46,9 +46,11 @@ def renderHeader(root):
     tell(underline('=', "Asterix category " + cat + ' - {}'.format(root['title'])))
     tell('**category**: {}'.format(cat))
     tell('')
-    tell('**edition**: {}'.format(root['edition']))
+    edition = root['edition']
+    tell('**edition**: {}.{}'.format(edition['major'], edition['minor']))
     tell('')
-    tell('**date**: {}'.format(root['date']))
+    date = root['date']
+    tell('**date**: {}-{}-{}'.format(date['year'], date['month'], date['day']))
     tell('')
     tell(underline('-', 'Preamble'))
     tell(root['preamble'])

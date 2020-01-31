@@ -59,7 +59,10 @@ instance Ord Edition where
         compare a1 a2 <> compare b1 b2
 
 instance ToJSON Edition where
-    toJSON (Edition a b) = toJSON $ show a ++ "." ++ show b
+    toJSON (Edition a b) = object
+        [ "major" .= a
+        , "minor" .= b
+        ]
 
 data Date = Date
     { dateYear  :: Integer
@@ -68,8 +71,11 @@ data Date = Date
     } deriving (Generic, Eq, Show)
 
 instance ToJSON Date where
-    toJSON (Date y m d) = toJSON $
-        show y ++ "-" ++ TP.printf "%02d" m ++ "-" ++ TP.printf "%02d" d
+    toJSON (Date y m d) = object
+        [ "year"    .= y
+        , "month"   .= m
+        , "day"     .= d
+        ]
 
 data Number
     = NumberZ Integer
