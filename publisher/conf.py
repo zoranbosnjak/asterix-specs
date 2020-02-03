@@ -22,7 +22,7 @@ import json
 with open('specs.json') as f:
     obj = json.loads(f.read())
 
-cat = obj['category']
+cat = obj['number']
 cat_title = obj['title']
 date = obj['date']
 cat_date = '{}-{:02d}-{:02d}'.format(date['year'], date['month'], date['day'])
@@ -31,7 +31,7 @@ cat_edition = '{}.{}'.format(edition['major'], edition['minor'])
 
 # -- Project information -----------------------------------------------------
 
-project = 'cat{} specification'.format(cat)
+project = 'cat{:03d} specification'.format(cat)
 copyright = '2019, test'
 author = 'test'
 

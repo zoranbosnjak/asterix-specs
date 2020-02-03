@@ -4,12 +4,12 @@ module Data.Asterix where
 import           Data.List
 import           Data.Asterix.Types
 
-findSubitemByName :: Category -> [Name] -> Maybe Subitem
+findSubitemByName :: Asterix -> [Name] -> Maybe Subitem
 findSubitemByName _ [] = Nothing
-findSubitemByName category (x:xs) = do
+findSubitemByName asterix (x:xs) = do
     let f (Spare _) = False
         f (Subitem name _ _ _ _) = name == x
-    subitem <- find f (itemSubitem <$> catCatalogue category)
+    subitem <- find f (itemSubitem <$> astCatalogue asterix)
     go subitem xs
   where
     go subitem [] = Just subitem

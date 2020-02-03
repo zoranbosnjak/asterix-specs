@@ -35,7 +35,7 @@ def render(root):
     return ''.join([line+'\n' for line in accumulator])
 
 def renderHeader(root):
-    tell('category {} "{}"'.format(root['category'], root['title']))
+    tell('asterix {:03d} "{}"'.format(root['number'], root['title']))
     edition = root['edition']
     tell('edition {}.{}'.format(edition['major'], edition['minor']))
     date = root['date']

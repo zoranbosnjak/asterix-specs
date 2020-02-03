@@ -7,6 +7,7 @@ module Main where
 import           Control.Monad
 import           Options.Applicative as Opt
 import qualified Data.Text as T
+import qualified Data.Text.IO
 import           Data.Text.Encoding (decodeUtf8)
 import           System.IO as IO
 import           System.Exit (die)
@@ -21,7 +22,7 @@ import           Data.Asterix
 import           Data.Asterix.Parser
 import           Data.Asterix.Types
 
-type ValidationError = String
+type ValidationError = T.Text
 
 data Input
     = FileInput FilePath
@@ -58,18 +59,25 @@ options = Options
         outList = flag' OutputList ( long "list" <> help "list output" )
         json = flag' OutputJson ( long "json" <> help "JSON format" )
 
-fixedSubitemSize :: Category -> [Name] -> Maybe RegisterSize
-fixedSubitemSize category path = findSubitemByName category path >>= \case
+fixedSubitemSize :: Asterix -> [Name] -> Maybe RegisterSize
+fixedSubitemSize asterix path = findSubitemByName asterix path >>= \case
     Spare _ -> Nothing
     Subitem _ _ _ element _ -> case element of
         Fixed size _ -> Just size
         _ -> Nothing
 
-validate :: Category -> [ValidationError]
-validate category = join
+showPath :: [Name] -> T.Text
+showPath = T.intercalate "/"
+
+reportWhen :: Bool -> [Name] -> ValidationError -> [ValidationError]
+reportWhen False _ _ = []
+reportWhen True path msg = [mconcat [showPath path, " -> ", msg]]
+
+validate :: Asterix -> [ValidationError]
+validate asterix = join
     [ allItemsDefined
-    , join (validateEncoding <$> catCatalogue category)
-    , join $ (snd . validateSubitem category [] . itemSubitem <$> catCatalogue category)
+    , join (validateEncoding <$> astCatalogue asterix)
+    , join $ (snd . validateSubitem asterix [] . itemSubitem <$> astCatalogue asterix)
     , validateUap
     ]
   where
@@ -78,8 +86,8 @@ validate category = join
     validateEncoding item = case itemEncoding item of
         Unspecified -> []
         ContextFree encoding -> reportWhen (encoding == Absent) [itemName] "Item can not be 'absent'"
-        Dependent someSubitem rules -> case fixedSubitemSize category someSubitem of
-            Nothing -> reportWhen True [itemName] (showPath someSubitem ++ " not defined")
+        Dependent someSubitem rules -> case fixedSubitemSize asterix someSubitem of
+            Nothing -> reportWhen True [itemName] (showPath someSubitem <> " not defined")
             Just m ->
                 let size = compare (length rules) (2 ^ m)
                 in reportWhen (size == GT) [itemName] "too many encoding variations"
@@ -89,7 +97,7 @@ validate category = join
             Subitem name _ _ _ _ -> name
 
     validateUap :: [ValidationError]
-    validateUap = case catUap category of
+    validateUap = case astUap asterix of
         Uap lst -> validateList ["uap"] lst
         Uaps lst -> join
             [ reportWhen (length lst /= 2) ["uap"] "expecting 2 uap variations"
@@ -108,49 +116,48 @@ validate category = join
     allItemsDefined :: [ValidationError]
     allItemsDefined = join [requiredNotDefined, definedNotRequired, noDups]
       where
-        required = catMaybes $ case catUap category of
+        required :: [Name]
+        required = catMaybes $ case astUap asterix of
             Uap lst -> lst
             Uaps lst -> nub $ join $ fmap snd lst
 
-        defined = (itemSubitem <$> catCatalogue category) >>= \case
-            Spare _ -> return []
+        defined :: [Name]
+        defined = (itemSubitem <$> astCatalogue asterix) >>= \case
+            Spare _ -> []
             Subitem name _ _ _ _ -> [name]
 
+        requiredNotDefined :: [ValidationError]
         requiredNotDefined = do
             x <- required
             guard $ x `notElem` defined
-            return $ show x ++ " required, but not defined."
+            return (T.pack (show x) <> " required, but not defined.")
 
+        definedNotRequired :: [ValidationError]
         definedNotRequired = do
             x <- defined
             guard $ x `notElem` required
-            return $ show x ++ " defined, but not required."
+            return (T.pack (show x) <> " defined, but not required.")
 
+        noDups :: [ValidationError]
         noDups =
             let dups = defined \\ (nub defined)
-            in reportWhen (not $ null dups) ["items"] ("duplicate names: " ++ show dups)
+            in reportWhen (not $ null dups) ["items"]
+                ("duplicate names: " <> T.pack (show dups))
 
-showPath :: [Name] -> String
-showPath = intercalate "/"
-
-reportWhen :: Bool -> [Name] -> ValidationError -> [ValidationError]
-reportWhen False _ _ = []
-reportWhen True path msg = [showPath path ++ " -> " ++ msg]
-
-validateSubitem :: Category -> [Name] -> Subitem -> (Int, [ValidationError])
-validateSubitem category path = \case
+validateSubitem :: Asterix -> [Name] -> Subitem -> (Int, [ValidationError])
+validateSubitem asterix path = \case
     Spare n -> (n, reportWhen (n <= 0) (path++["spare"]) "size")
-    Subitem name _ _ element _ -> validateElement category (path++[name]) element
+    Subitem name _ _ element _ -> validateElement asterix (path++[name]) element
 
-validateElement :: Category -> [Name] -> Element -> (Int, [ValidationError])
-validateElement category path = \case
+validateElement :: Asterix -> [Name] -> Element -> (Int, [ValidationError])
+validateElement asterix path = \case
     Fixed n content -> (n, join
         [ reportWhen (n <= 0) path "size"
-        , validateContent category path n content
+        , validateContent asterix path n content
         ])
     Group lst -> checkSubitems lst
     Extended n1 n2 lst -> loop (0, join [check n1, check n2]) fxPositions lst where
-        check n = reportWhen (mod n 8 /= 0) path ("extended size: " ++ show n)
+        check n = reportWhen (mod n 8 /= 0) path ("extended size: " <> T.pack (show n))
         fxPositions = tail (sum <$> inits (n1:repeat n2))
         loop (n,problems) fx = \case
             [] -> (n, join
@@ -160,13 +167,13 @@ validateElement category path = \case
                 ])
             (i:is) ->
                 let (a,b) = (head fx, tail fx)
-                    (n', problems') = validateSubitem category path i
+                    (n', problems') = validateSubitem asterix path i
                 in case compare (n+n'+1) a of
                     LT -> loop (n+n', problems'++problems) (a:b) is
                     EQ -> loop (n+n'+1, problems'++problems) b is
                     GT -> loop (n+n', problems' ++ problems ++ reportWhen True path "overflow") b is
     Repetitive subElement ->
-        let (n, problems) = validateElement category path subElement
+        let (n, problems) = validateElement asterix path subElement
         in (8+n, problems)
     Explicit -> (0, [])
     Compound lst -> checkSubitems lst
@@ -179,7 +186,7 @@ validateElement category path = \case
             names = catMaybes (fmap getName lst)
         in names /= nub names
     checkSubitems lst =
-        let result = fmap (validateSubitem category path) lst
+        let result = fmap (validateSubitem asterix path) lst
             n = sum (fst <$> result)
         in (n, join
             [ mconcat (snd <$> result)
@@ -188,13 +195,13 @@ validateElement category path = \case
             , reportWhen (dupNames lst) path "duplicated names"
             ])
 
-validateContent :: Category -> [Name] -> Int -> Rule Content -> [ValidationError]
-validateContent category path n = \case
+validateContent :: Asterix -> [Name] -> Int -> Rule Content -> [ValidationError]
+validateContent asterix path n = \case
     Unspecified -> []
     ContextFree rule -> validateRule rule
     Dependent someSubitem rules -> join
-        [ case fixedSubitemSize category someSubitem of
-            Nothing -> reportWhen True path (showPath someSubitem ++ " not defined")
+        [ case fixedSubitemSize asterix someSubitem of
+            Nothing -> reportWhen True path (showPath someSubitem <> " not defined")
             Just m ->
                 let size = compare (length rules) (2 ^ m)
                 in reportWhen (size == GT) path "too many variations"
@@ -223,24 +230,24 @@ main = do
         FileInput f -> (,) <$> BS.readFile f <*> pure f
         StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
 
-    case parse pCategory filename (decodeUtf8 s) of
+    case parse pAsterix filename (decodeUtf8 s) of
         Left e -> die $ errorBundlePretty e
-        Right category -> case optOutputFormat opt of
-            ValidateOnly -> case validate category of
+        Right asterix -> case optOutputFormat opt of
+            ValidateOnly -> case validate asterix of
                 [] -> print ("ok" :: String)
                 lst -> do
-                    mapM_ (IO.hPutStrLn stderr) lst
+                    mapM_ (Data.Text.IO.hPutStrLn stderr) lst
                     IO.hPutStrLn stderr ""
                     die "Validation error(s) present!"
             OutputList -> do
-                mapM_ (dumpItem []) (itemSubitem <$> catCatalogue category)
-                case validate category of
+                mapM_ (dumpItem []) (itemSubitem <$> astCatalogue asterix)
+                case validate asterix of
                     [] -> return ()
                     _ -> die "Validation error(s) present, run 'validate' for details!"
             OutputJson -> do
                 BSL.putStr $ JsonP.encodePretty'
-                    JsonP.defConfig {JsonP.confCompare = compare} category
-                case validate category of
+                    JsonP.defConfig {JsonP.confCompare = compare} asterix
+                case validate asterix of
                     [] -> return ()
                     _ -> die "Validation error(s) present, run 'validate' for details!"
 
@@ -250,7 +257,7 @@ main = do
         Subitem name _title _dsc element _remark -> do
             let path = parent ++ [name]
                 next = \case
-                    Fixed size _ -> ("Fixed " ++ show size, return ())
+                    Fixed size _ -> ("Fixed " <> T.pack (show size), return ())
                     Group lst -> ("Group", mapM_ (dumpItem path) lst)
                     Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
                     Repetitive var -> ("Repetitive", snd $ next var)
@@ -258,6 +265,6 @@ main = do
                     Compound lst -> ("Compound", mapM_ (dumpItem path) lst)
                     Rfs -> ("Rfs", return ())
                 (details, act) = next element
-            IO.putStrLn $ showPath path ++ ": " ++ details
+            Data.Text.IO.putStrLn (showPath path <> ": " <> details)
             act
 

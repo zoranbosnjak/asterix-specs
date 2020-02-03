@@ -33,7 +33,7 @@ def render(root):
     """Rendering entry point"""
     renderHeader(root)
 
-    cat = root['category']
+    cat = root['number']
     tell(underline('-', 'Description of standard data items'))
     [renderItem(cat, item) for item in root['catalogue']]
 
@@ -42,9 +42,9 @@ def render(root):
     return ''.join([line+'\n' for line in accumulator])
 
 def renderHeader(root):
-    cat = root['category']
-    tell(underline('=', "Asterix category " + cat + ' - {}'.format(root['title'])))
-    tell('**category**: {}'.format(cat))
+    cat = root['number']
+    tell(underline('=', "Asterix category " + '{:03d}'.format(cat) + ' - {}'.format(root['title'])))
+    tell('**category**: {:03d}'.format(cat))
     tell('')
     edition = root['edition']
     tell('**edition**: {}.{}'.format(edition['major'], edition['minor']))
@@ -59,7 +59,7 @@ def renderHeader(root):
 def renderItem(cat, item):
     subitem = item['subitem']
     tell('')
-    tell(underline('*', 'I'+cat+'/'+subitem['name']+' - ' + subitem['title']))
+    tell(underline('*', 'I'+'{:03d}'.format(cat)+'/'+subitem['name']+' - ' + subitem['title']))
 
     def case0():
         tell('*Encoding rule:* Unspecified')
@@ -259,7 +259,7 @@ def renderSubitem(element):
     return locals()['render'+element['type']]()
 
 def renderUap(root):
-    cat = root['category']
+    cat = root['number']
     uap = root['uap']
 
     def findItem(name):
@@ -280,7 +280,7 @@ def renderUap(root):
             if name is None:
                 s += '``(spare)``'
             else:
-                s += '``I{}/{}`` - {}'.format(cat, name, findItem(name))
+                s += '``I{:03d}/{}`` - {}'.format(cat, name, findItem(name))
             tell(s)
 
             if cnt >= 7:
@@ -288,7 +288,7 @@ def renderUap(root):
                 tell('- ``(FX)`` - Field extension indicator')
         tell('')
 
-    tell(underline('=', "User Application Profile for Category {}".format(cat)))
+    tell(underline('=', "User Application Profile for Category {:03d}".format(cat)))
     t = uap['type']
     if t == 'uap':
         dumpUap(uap['items'])

@@ -18,15 +18,14 @@ import           GHC.Generics (Generic)
 import           Data.Ratio (Ratio)
 import           Data.Text
 import           Data.Char
-import qualified Text.Printf as TP
 import           Data.Word (Word8)
 import           Data.Aeson (ToJSON, toJSON, object, (.=))
 
-type Name = String
+type Name = Text
 type Title = Text
 type Description = Text
 type Remark = Text
-type UapName = String
+type UapName = Text
 
 data Rule a
     = Unspecified
@@ -269,24 +268,24 @@ instance ToJSON Uap where
             , "items" .= lst
             ]
 
-data Category = Category
-    { catCat        :: Word8
-    , catTitle      :: Text
-    , catEdition    :: Edition
-    , catDate       :: Date
-    , catPreamble   :: Maybe Text
-    , catCatalogue  :: [Item]
-    , catUap        :: Uap
+data Asterix = Asterix
+    { astCategory   :: Word8
+    , astTitle      :: Text
+    , astEdition    :: Edition
+    , astDate       :: Date
+    , astPreamble   :: Maybe Text
+    , astCatalogue  :: [Item]
+    , astUap        :: Uap
     } deriving (Generic, Eq, Show)
 
-instance ToJSON Category where
+instance ToJSON Asterix where
     toJSON c = object
-        [ "category"    .= (TP.printf "%03d" (catCat c) :: String)
-        , "title"       .= catTitle c
-        , "edition"     .= catEdition c
-        , "date"        .= catDate c
-        , "preamble"    .= catPreamble c
-        , "catalogue"   .= catCatalogue c
-        , "uap"         .= catUap c
+        [ "number"      .= astCategory c
+        , "title"       .= astTitle c
+        , "edition"     .= astEdition c
+        , "date"        .= astDate c
+        , "preamble"    .= astPreamble c
+        , "catalogue"   .= astCatalogue c
+        , "uap"         .= astUap c
         ]
 

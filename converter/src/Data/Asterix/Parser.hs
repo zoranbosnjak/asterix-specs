@@ -56,10 +56,10 @@ tryOne [] = fail "empty list"
 tryOne [x] = x
 tryOne (x:xs) = try x <|> tryOne xs
 
--- | Parse 'category'.
+-- | Parse 'asterix category'.
 pCat :: Parser Word8
 pCat = do
-    string "category" >> sc
+    string "asterix" >> sc
     (a,b,c) <- (,,) <$> digitChar <*> digitChar <*> digitChar
     return (read [a,b,c] :: Word8)
 
@@ -152,7 +152,7 @@ pNumber = tryOne
 
 -- | Parser valid name.
 pName :: Parser Name
-pName = some (alphaNumChar <|> char '_')
+pName = T.pack <$> some (alphaNumChar <|> char '_')
 
 -- | Parse name in the form "a/b/c...".
 pPaths :: Parser [Name]
@@ -272,7 +272,7 @@ pElement sc' = tryOne
 
 -- | Parser valid uap name.
 pUapName :: Parser Name
-pUapName = some (alphaNumChar <|> char '-')
+pUapName = T.pack <$> some (alphaNumChar <|> char '-')
 
 -- | Parse spare or regular 'subitem'.
 pSubItem :: Parser () -> Parser Subitem
@@ -333,9 +333,9 @@ pUap = uaps <|> uap
         (_, lst) <- parseList (string "uaps") (\_ -> parseList pUapName parseOne)
         return $ Uaps lst
 
--- | Parse category description.
-pCategory :: Parser Category
-pCategory = Category
+-- | Parse asterix category description.
+pAsterix :: Parser Asterix
+pAsterix = Asterix
     <$> pCat
     <*> (scn >> (T.pack <$> stringLiteral))
     <*> (scn >> pEdition)
