@@ -1,7 +1,7 @@
 set title "asterix-def"
 set spec {
     stack
-        {line /category 3-DIGIT-NUMBER {''} {TITLE} {''}}
+        {line /asterix 3-DIGIT-NUMBER {''} {TITLE} {''}}
         {line /edition INT.INT}
         {line /date YYYY-MM-DD}
         {line /preamble TEXT}
