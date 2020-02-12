@@ -106,6 +106,17 @@ let
 
       done
 
+	  echo "<hr>" >> $ix
+	  echo "Format description:" >> $ix
+	  echo "<ul>" >> $ix
+	  echo "    <li><code>ast</code> source format</li>" >> $ix
+	  echo "    <li><code>txt</code> reformated (same as source), generated from <code>json</code></li>" >> $ix
+	  echo "    <li><code>json</code> representation, generated from <code>ast</code></li>" >> $ix
+	  echo "    <li><code>rst</code> documentation format, generated from <code>json</code></li>" >> $ix
+	  echo "    <li><code>pdf</code> documentation, generated from <code>rst</code></li>" >> $ix
+	  echo "    <li><code>html</code> documentation, generated from <code>rst</code></li>" >> $ix
+	  echo "</ul>" >> $ix
+
       echo "</body>" >> $ix
       echo "</html>" >> $ix
 
