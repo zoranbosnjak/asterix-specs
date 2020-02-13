@@ -74,6 +74,9 @@ let
           diff -q $base.json $base.json2
           rm $base.json2
 
+          echo "render to minimal .json"
+          ${renderer}/bin/render --script renderer/formats/minimal.py render $base.json > $base-minimal.json
+
           echo "render to .rst"
           ${renderer}/bin/render --script publisher/rst.py render $base.json > $base.rst
 
@@ -96,6 +99,7 @@ let
           echo "<a href=\"$ref.ast\">[ast]</a>" >> $ix
           echo "<a href=\"$ref.txt\">[txt]</a>" >> $ix
           echo "<a href=\"$ref.json\">[json]</a>" >> $ix
+          echo "<a href=\"$ref-minimal.json\">[minimal-json]</a>" >> $ix
           echo "<a href=\"$ref.rst\">[rst]</a>" >> $ix
           echo "<a href=\"$ref.pdf\">[pdf]</a>" >> $ix
           echo "<a href=\"$ref.html/specs.html\">[html]</a>" >> $ix
@@ -112,6 +116,7 @@ let
 	  echo "    <li><code>ast</code> source format</li>" >> $ix
 	  echo "    <li><code>txt</code> reformated (same as source), generated from <code>json</code></li>" >> $ix
 	  echo "    <li><code>json</code> representation, generated from <code>ast</code></li>" >> $ix
+	  echo "    <li><code>minimal-json</code> minimal json representation, generated from <code>json</code></li>" >> $ix
 	  echo "    <li><code>rst</code> documentation format, generated from <code>json</code></li>" >> $ix
 	  echo "    <li><code>pdf</code> documentation, generated from <code>rst</code></li>" >> $ix
 	  echo "    <li><code>html</code> documentation, generated from <code>rst</code></li>" >> $ix

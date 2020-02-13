@@ -55,5 +55,5 @@ def renderRule(rule, caseUnspecified, caseContextFree, caseDependent):
 def case(msg, val, *cases):
     for (a,b) in cases:
         if val == a: return b
-    raise Exception('unexpected {}'.format(val))
+    raise Exception('unexpected {}: {}'.format(msg, val))
 
