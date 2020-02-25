@@ -234,7 +234,8 @@ def renderSubitem(element):
         return n
 
     def renderRepetitive():
-        tell('Repetitive item')
+        rep = element['rep']
+        tell('Repetitive item, repetition factor {} octet(s).'.format(rep))
         tell('')
         with indent:
             x = renderSubitem(element['element'])

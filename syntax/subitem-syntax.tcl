@@ -18,7 +18,7 @@ set spec {
                     }
                 }
             }
-            { line /repetitive subitem-def }
+            { line /repetitive BYTES subitem-def }
             { line /explicit }
             { line /fixed BITS content-def }
             { line /spare BITS }

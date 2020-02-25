@@ -172,9 +172,9 @@ validateElement asterix path = \case
                     LT -> loop (n+n', problems'++problems) (a:b) is
                     EQ -> loop (n+n'+1, problems'++problems) b is
                     GT -> loop (n+n', problems' ++ problems ++ reportWhen True path "overflow") b is
-    Repetitive subElement ->
+    Repetitive rep subElement ->
         let (n, problems) = validateElement asterix path subElement
-        in (8+n, problems)
+        in (8*rep+n, problems)
     Explicit -> (0, [])
     Compound lst -> checkSubitems lst
     Rfs -> (0, [])
@@ -260,7 +260,7 @@ main = do
                     Fixed size _ -> ("Fixed " <> T.pack (show size), return ())
                     Group lst -> ("Group", mapM_ (dumpItem path) lst)
                     Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
-                    Repetitive var -> ("Repetitive", snd $ next var)
+                    Repetitive _ var -> ("Repetitive", snd $ next var)
                     Explicit -> ("Explicit", return ())
                     Compound lst -> ("Compound", mapM_ (dumpItem path) lst)
                     Rfs -> ("Rfs", return ())

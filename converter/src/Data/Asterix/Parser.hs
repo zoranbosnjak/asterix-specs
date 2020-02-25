@@ -241,14 +241,14 @@ pExtended = do
 -- | Parse 'repetitive' subitem.
 pRepetitive :: Parser Element
 pRepetitive = do
-    void $ string "repetitive"
+    n <- string "repetitive" >> sc >> L.decimal
     i <- lookAhead (scn >> L.indentLevel)
     let sc' = do
             scn
             j <- L.indentLevel
             end <- atEnd
             bool (fail "unexpected indent") (return ()) ((j > i) || end)
-    scn >> fmap Repetitive (pElement sc')
+    scn >> Repetitive <$> pure n <*> pElement sc'
 
 -- | Parse 'explicit' subitem.
 pExplicit :: Parser Element

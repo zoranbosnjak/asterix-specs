@@ -166,7 +166,7 @@ def renderSubitem(element):
         return n
 
     def renderRepetitive():
-        tell('repetitive')
+        tell('repetitive {}'.format(element['rep']))
         with indent:
             return renderSubitem(element['element'])
 

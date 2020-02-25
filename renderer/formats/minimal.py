@@ -17,7 +17,9 @@ def stripElement(element):
         ('Extended', lambda: {
             'first': element['first'], 'extents': element['extents'],
             'subitems': [stripSubitem(subitem) for subitem in element['subitems']]}),
-        ('Repetitive', lambda: stripElement(element['element'])),
+        ('Repetitive', lambda: {
+            'rep': element['rep'],
+            'element': stripElement(element['element'])}),
         ('Explicit', lambda: {}),
         ('Compound', lambda: {
             'subitems': [stripSubitem(subitem) for subitem in element['subitems']]}),

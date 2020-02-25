@@ -173,7 +173,7 @@ data Element
     = Fixed RegisterSize (Rule Content)
     | Group [Subitem]
     | Extended Int Int [Subitem]
-    | Repetitive Element
+    | Repetitive Int Element
     | Explicit
     | Compound [Subitem]
     | Rfs
@@ -195,8 +195,9 @@ instance ToJSON Element where
         , "extents" .= n2
         , "subitems" .= lst
         ]
-    toJSON (Repetitive el) = object
+    toJSON (Repetitive n el) = object
         [ "type"    .= ("Repetitive" :: String)
+        , "rep"     .= n
         , "element" .= el
         ]
     toJSON Explicit = object
