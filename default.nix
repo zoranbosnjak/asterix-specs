@@ -38,7 +38,7 @@ let
       echo "<html>" >> $ix
       echo "<body>" >> $ix
 
-      echo "Asterix specifications generated from repository revision <code>#${gitrev}</code>." >> $ix
+      echo "Asterix specifications generated from <a href="https://github.com/zoranbosnjak/asterix-specs">repository</a> revision <code>#${gitrev}</code>." >> $ix
 
       mkdir -p $out/specs
       for level1 in $(find specs/* -maxdepth 1 -type d); do
