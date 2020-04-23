@@ -3,14 +3,13 @@
 
 import sys
 import argparse
-import json
 import importlib.util
 import inspect
 
 parser = argparse.ArgumentParser(description='Render asterix specs from json format, using provided script.')
 parser.add_argument('--script', required=True, nargs=2,
     metavar=('filename', 'func'), help='rendering script')
-parser.add_argument('infile', nargs='?', type=argparse.FileType('r'), default=sys.stdin)
+parser.add_argument('infile', nargs='?', type=argparse.FileType('rb'), default=sys.stdin.buffer)
 parser.add_argument('outfile', nargs='?', type=argparse.FileType('w'), default=sys.stdout)
 
 args = parser.parse_args()
@@ -23,12 +22,12 @@ module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 func = module.__dict__[funcname]
 
-# load input file and decode from json
-obj = json.loads(args.infile.read())
+# load input file
+s = args.infile.read()
 
 # render with provided function, if it's a class, make an instance first.
 if inspect.isclass(func):
     func = func()
-result = func(obj)
+result = func(s)
 args.outfile.write(result)
 

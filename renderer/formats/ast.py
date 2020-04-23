@@ -3,6 +3,7 @@
 
 """Render json decoded object to asterix specs format."""
 
+import json
 from formats.common import getNumber, renderRule, case
 
 accumulator = []
@@ -23,8 +24,9 @@ def tell(s):
     s = ' '*indentLevel*4 + s
     accumulator.append(s.rstrip())
 
-def render(root):
+def render(s):
     """Rendering entry point"""
+    root = json.loads(s)
     renderHeader(root)
     tell('items')
     tell('')

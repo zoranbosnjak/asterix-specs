@@ -36,7 +36,8 @@ def stripSubitem(subitem):
         'element': stripElement(subitem['element']),
     }
 
-def render(root):
+def render(s):
+    root = json.loads(s)
     catalogue = [stripSubitem(item['subitem']) for item in root['catalogue']]
     dst = root.copy()
     dst['catalogue'] = catalogue

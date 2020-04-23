@@ -3,6 +3,7 @@
 
 """Render json decoded object to rst format."""
 
+import json
 from itertools import chain, accumulate, repeat
 from formats.common import getNumber, renderRule
 
@@ -29,8 +30,9 @@ def underline(c, s):
     assert len(c) == 1, 'expecting single underline character'
     return '{}\n{}\n'.format(s, c*n)
 
-def render(root):
+def render(s):
     """Rendering entry point"""
+    root = json.loads(s)
     renderHeader(root)
 
     cat = root['number']
