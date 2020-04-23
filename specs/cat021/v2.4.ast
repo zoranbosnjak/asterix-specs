@@ -305,7 +305,7 @@ items
             Note:
                 - The time of message reception value is reset to zero at every midnight.
 
-    074 "Time of Message Reception of Position–High Precision"
+    074 "Time of Message Reception of Position-High Precision"
         optional
         definition
             Time at which the latest ADS-B position information was received by
@@ -333,7 +333,7 @@ items
             Note:
                 - The time of message reception value is reset to zero at every midnight.
 
-    076 "Time of Message Reception of Velocity–High Precision"
+    076 "Time of Message Reception of Velocity-High Precision"
         optional
         definition
             Time at which the latest ADS-B velocity information was received by
@@ -343,7 +343,7 @@ items
                 fixed 2
                     table
                         3: Reserved
-                        2: TOMRp whole seconds = (I021/075) Whole seconds – 1
+                        2: TOMRp whole seconds = (I021/075) Whole seconds - 1
                         1: TOMRp whole seconds = (I021/075) Whole seconds + 1
                         0: TOMRp whole seconds = (I021/075) Whole seconds
             TOMRP "Fractional part of the time of message reception for position in the ground station."
@@ -447,7 +447,7 @@ items
             Reports indicating the 4D intended trajectory of the aircraft.
         compound
             TIS "Trajectory Intent Status"
-                subitems
+                extended 8 8
                     NAV ""
                         fixed 1
                             table
@@ -458,7 +458,7 @@ items
                             table
                                 0: Trajectory Intent Data is valid
                                 1: Trajectory Intent Data is not valid
-                    spare 6
+                    spare 5
             TID "Trajectory Intent Data"
                 repetitive 1
                     subitems
@@ -780,10 +780,10 @@ items
                     table
                         0: Value in defined range
                         1: Value exceeds defined range
-            GSR "Ground Speed referenced to WGS-84"
+            GS "Ground Speed referenced to WGS-84"
                 fixed 15
-                    signed quantity 1 14 "NM/s" >= 0 < 2
-            TAC "Track Angle clockwise reference to True North"
+                    unsigned quantity 1 14 "NM/s" >= 0 < 2
+            TA "Track Angle clockwise reference to True North"
                 fixed 16
                     unsigned quantity 360 16 "deg"
         remark
@@ -937,7 +937,7 @@ items
                     signed quantity 1 2 "degC" >= -100 <= 100
             TRB "Turbulence"
                 fixed 8
-                    raw
+                    unsigned integer >= 0 <= 15
 
     230 "Roll Angle"
         optional
@@ -1040,7 +1040,7 @@ items
                     table
                         0: Aircraft not receiving ATC-services
                         1: Aircraft receiving ATC services
-            IDENT "Setting of “IDENT”-switch"
+            IDENT "Setting of 'IDENT'-switch"
                 fixed 1
                     table
                         0: IDENT switch not active
