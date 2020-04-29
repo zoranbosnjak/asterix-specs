@@ -29,7 +29,10 @@ def stripElement(element):
     return d
 
 def stripSubitem(subitem):
-    if subitem['spare']: return subitem
+    if subitem is None:
+        return None
+    if subitem['spare']:
+        return subitem
     return {
         'spare': False,
         'name': subitem['name'],

@@ -181,7 +181,10 @@ def renderSubitem(element):
         n = 0
         with indent:
             for subitem in element['subitems']:
-                n += renderMaybeSubitem(subitem)
+                if subitem is None:
+                    tell('-')
+                else:
+                    n += renderMaybeSubitem(subitem)
         return n
 
     return locals()['render'+element['type']]()

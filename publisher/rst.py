@@ -252,11 +252,13 @@ def renderSubitem(element):
         tell('Compound item')
         tell('')
         n = 0
-        m = 0
         with indent:
             for subitem in element['subitems']:
-                n += renderMaybeSubitem(subitem)
-                m += 1
+                if subitem is None:
+                    tell('(empty subitem)')
+                    tell('')
+                else:
+                    n += renderMaybeSubitem(subitem)
         return n
 
     return locals()['render'+element['type']]()

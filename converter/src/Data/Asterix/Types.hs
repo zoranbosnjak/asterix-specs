@@ -175,7 +175,7 @@ data Element
     | Extended Int Int [Subitem]
     | Repetitive Int Element
     | Explicit
-    | Compound [Subitem]
+    | Compound [Maybe Subitem]
     | Rfs
     deriving (Generic, Eq, Show)
 

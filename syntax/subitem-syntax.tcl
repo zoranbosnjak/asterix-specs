@@ -5,7 +5,6 @@ set spec {
             { stack
                 { line { or
                     { line /subitems }
-                    { line /compound }
                     { line /extended BITS-fst BITS-ext }
                     }
                 }
@@ -15,6 +14,19 @@ set spec {
                         { or {} {line /description TEXT } }
                         subitem-def (unindent) {}
                         }
+                    }
+                }
+            }
+            { stack
+                { line /compound }
+                { line
+                    { loop { line (indent)
+                        { or -
+                            { line NAME {''} TITLE {''}
+                                { or {} {line /description TEXT } }
+                                subitem-def
+                            }
+                        } (unindent) {} }
                     }
                 }
             }

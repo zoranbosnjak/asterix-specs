@@ -2,6 +2,7 @@
 module Data.Asterix where
 
 import           Data.List
+import           Data.Maybe (catMaybes)
 import           Data.Asterix.Types
 
 findSubitemByName :: Asterix -> [Name] -> Maybe Subitem
@@ -19,7 +20,7 @@ findSubitemByName asterix (x:xs) = do
             let candidates = case element of
                     Group lst -> lst
                     Extended _ _ lst -> lst
-                    Compound lst -> lst
+                    Compound lst -> catMaybes lst
                     _ -> []
                 byName (Spare _) = False
                 byName (Subitem n _ _ _ _) = n == y

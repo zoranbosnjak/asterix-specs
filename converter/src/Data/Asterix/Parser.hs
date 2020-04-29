@@ -256,7 +256,10 @@ pExplicit = string "explicit" *> pure Explicit
 
 -- | Parse 'compound' subitem.
 pCompound :: Parser Element
-pCompound = Compound . snd <$> parseList (string "compound") pSubItem
+pCompound = Compound . snd <$> parseList (string "compound") pListElement
+  where
+    pListElement sc' = try pDash <|> (Just <$> pSubItem sc')
+    pDash = char '-' >> pure Nothing
 
 -- | Parse 'element'.
 pElement :: Parser () -> Parser Element

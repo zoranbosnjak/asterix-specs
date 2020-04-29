@@ -176,7 +176,7 @@ validateElement asterix path = \case
         let (n, problems) = validateElement asterix path subElement
         in (8*rep+n, problems)
     Explicit -> (0, [])
-    Compound lst -> checkSubitems lst
+    Compound lst -> checkSubitems $ catMaybes lst
     Rfs -> (0, [])
   where
     dupNames lst =
@@ -262,7 +262,7 @@ main = do
                     Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
                     Repetitive _ var -> ("Repetitive", snd $ next var)
                     Explicit -> ("Explicit", return ())
-                    Compound lst -> ("Compound", mapM_ (dumpItem path) lst)
+                    Compound lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
                     Rfs -> ("Rfs", return ())
                 (details, act) = next element
             Data.Text.IO.putStrLn (showPath path <> ": " <> details)
