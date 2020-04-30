@@ -12,6 +12,7 @@ let
 
   deps = with pkgs; [
     tk
+    ghostscript
   ];
 
   drv = pkgs.stdenv.mkDerivation rec {
@@ -28,7 +29,11 @@ let
       for i in `ls *tcl | grep syntax`; do cp $i $out/syntax/sources; done
 
       mkdir -p $out/syntax/postscript
-      for i in `ls *ps | grep syntax`; do cp $i $out/syntax/postscript; done
+      mkdir -p $out/syntax/png
+      for i in `ls *ps | grep syntax`; do
+        cp $i $out/syntax/postscript;
+        gs -dSAFER -dBATCH -dNOPAUSE -dEPSCrop -r600 -sDEVICE=pngalpha -sOutputFile=$out/syntax/png/$i.png $i
+      done
     '';
   } // { inherit env; };
 

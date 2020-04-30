@@ -19,3 +19,9 @@ nix-shell --run "./convertAll.sh"
 git add *tcl *ps
 ```
 
+Conversion from postscript to png, using `gs`.
+
+```bash
+gs -dSAFER -dBATCH -dNOPAUSE -dEPSCrop -r600 -sDEVICE=pngalpha -sOutputFile=outfile.png infile.ps
+```
+
