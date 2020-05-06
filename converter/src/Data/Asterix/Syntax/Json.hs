@@ -15,10 +15,12 @@
 
 module Data.Asterix.Syntax.Json (syntax) where
 
-import           Data.Char (toLower)
-import           Data.Aeson (ToJSON, toJSON, object, (.=))
+import           Data.Char (toUpper, toLower)
+import           Data.Aeson hiding (Encoding)
+import           Data.Aeson.Types (typeMismatch)
 import qualified Data.Aeson.Encode.Pretty as JsonP
 import           Data.ByteString.Lazy (toStrict)
+import qualified Data.HashMap.Strict as HMS
 
 import           Data.Asterix
 
@@ -37,11 +39,26 @@ instance ToJSON a => ToJSON (Rule a)
         , "rules" .= rules
         ]
 
+instance FromJSON a => FromJSON (Rule a) where
+    parseJSON = withObject "Rule" $ \v -> case HMS.lookup "type" v of
+        Just "Unspecified" -> pure Unspecified
+        Just "ContextFree" -> ContextFree
+            <$> v .: "rule"
+        Just "Dependent" -> Dependent
+            <$> v .: "name"
+            <*> v .: "rules"
+        _ -> typeMismatch "Rule" $ String "wrong type"
+
 instance ToJSON Edition where
     toJSON (Edition a b) = object
         [ "major" .= a
         , "minor" .= b
         ]
+
+instance FromJSON Edition where
+    parseJSON = withObject "Edition" $ \v -> Edition
+        <$> v .: "major"
+        <*> v .: "minor"
 
 instance ToJSON Date where
     toJSON (Date y m d) = object
@@ -49,6 +66,12 @@ instance ToJSON Date where
         , "month"   .= m
         , "day"     .= d
         ]
+
+instance FromJSON Date where
+    parseJSON = withObject "Date" $ \v -> Date
+        <$> v .: "year"
+        <*> v .: "month"
+        <*> v .: "day"
 
 instance ToJSON Number where
     toJSON = \case
@@ -65,6 +88,13 @@ instance ToJSON Number where
             , "value" .= val
             ]
 
+instance FromJSON Number where
+    parseJSON = withObject "Number" $ \v -> case HMS.lookup "type" v of
+        Just "Integer" -> NumberZ <$> v .: "value"
+        Just "Ratio" -> NumberQ <$> v .: "value"
+        Just "Real" -> NumberR <$> v .: "value"
+        _ -> typeMismatch "Number" $ String "wrong type"
+
 instance ToJSON Constrain where
     toJSON (EqualTo val) = object ["type" .= ("=="::String), "value" .= val]
     toJSON (NotEqualTo val) = object ["type" .= ("/="::String), "value" .= val]
@@ -73,11 +103,27 @@ instance ToJSON Constrain where
     toJSON (LessThan val) = object ["type" .= ("<"::String), "value" .= val]
     toJSON (LessThanOrEqualTo val) = object ["type" .= ("<="::String), "value" .= val]
 
+instance FromJSON Constrain where
+    parseJSON = withObject "Constrain" $ \v -> case HMS.lookup "type" v of
+        Just "==" -> EqualTo <$> v .: "value"
+        Just "/=" -> NotEqualTo <$> v .: "value"
+        Just ">" -> GreaterThan <$> v .: "value"
+        Just ">=" -> GreaterThanOrEqualTo <$> v .: "value"
+        Just "<" -> LessThan <$> v .: "value"
+        Just "<=" -> LessThanOrEqualTo <$> v .: "value"
+        _ -> typeMismatch "Constrain" $ String "wrong type"
+
 instance ToJSON Signed where
     toJSON (Signed val) = toJSON val
 
+instance FromJSON Signed  where
+    parseJSON s = Signed <$> parseJSON s
+
 instance ToJSON StringType where
     toJSON = toJSON . show
+
+instance FromJSON StringType  where
+    parseJSON s = read <$> parseJSON s
 
 instance ToJSON Content where
     toJSON = \case
@@ -102,6 +148,23 @@ instance ToJSON Content where
             , "unit"    .= unit
             , "constraints" .= constraints
             ]
+
+instance FromJSON Content  where
+    parseJSON = withObject "Content" $ \v -> case HMS.lookup "type" v of
+        Just "Table" -> ContentTable
+            <$> v .: "values"
+        Just "String" -> ContentString
+            <$> v .: "variation"
+        Just "Integer" -> ContentInteger
+            <$> v .: "signed"
+            <*> v .: "constraints"
+        Just "Quantity" -> ContentQuantity
+            <$> v .: "signed"
+            <*> v .: "scaling"
+            <*> v .: "fractionalBits"
+            <*> v .: "unit"
+            <*> v .: "constraints"
+        _ -> typeMismatch "Content" $ String "wrong type"
 
 instance ToJSON Element where
     toJSON (Fixed n content) = object
@@ -133,6 +196,26 @@ instance ToJSON Element where
         ]
     toJSON _ = undefined -- TODO
 
+instance FromJSON Element  where
+    parseJSON = withObject "Element" $ \v -> case HMS.lookup "type" v of
+        Just "Fixed" -> Fixed
+            <$> v .: "size"
+            <*> v .: "content"
+        Just "Group" -> Group
+            <$> v .: "subitems"
+        Just "Extended" -> Extended
+            <$> v .: "first"
+            <*> v .: "extents"
+            <*> v .: "subitems"
+        Just "Repetitive" -> Repetitive
+            <$> v .: "rep"
+            <*> v .: "element"
+        Just "Explicit" -> pure Explicit
+        Just "Compound" -> Compound
+            <$> v .: "subitems"
+        -- TODO
+        _ -> typeMismatch "Element" $ String "wrong type"
+
 instance ToJSON Subitem where
     toJSON (Spare n) = object
         [ "spare"       .= True
@@ -147,8 +230,25 @@ instance ToJSON Subitem where
         , "remark"      .= remark
         ]
 
+instance FromJSON Subitem  where
+    parseJSON = withObject "Subitem" $ \v -> case HMS.lookup "spare" v of
+        Just (Bool True) -> Spare
+            <$> v .: "length"
+        Just (Bool False) -> Subitem
+            <$> v .: "name"
+            <*> v .: "title"
+            <*> v .: "description"
+            <*> v .: "element"
+            <*> v .: "remark"
+        _ -> typeMismatch "Subitem" $ String "spare field not present"
+
 instance ToJSON Encoding where
     toJSON encoding = toJSON $ fmap toLower $ show encoding
+
+instance FromJSON Encoding  where
+    parseJSON s = read . capitalize <$> parseJSON s where
+        capitalize [] = []
+        capitalize (x:xs) = toUpper x:xs
 
 instance ToJSON Item where
     toJSON t = case itemSubitem t of
@@ -158,6 +258,12 @@ instance ToJSON Item where
             , "definition"  .= itemDefinition t
             , "subitem"     .= si
             ]
+
+instance FromJSON Item  where
+    parseJSON = withObject "Item" $ \v -> Item
+        <$> v .: "encoding"
+        <*> v .: "definition"
+        <*> v .: "subitem"
 
 instance ToJSON Uap where
     toJSON (Uap lst) = object
@@ -174,6 +280,12 @@ instance ToJSON Uap where
             , "items" .= lst
             ]
 
+instance FromJSON Uap  where
+    parseJSON = withObject "Uap" $ \v -> case HMS.lookup "type" v of
+        Just "uap" -> Uap <$> v .: "items"
+        Just "uaps" -> Uap <$> v .: "variations"
+        _ -> typeMismatch "Uap" $ String "wrong type"
+
 instance ToJSON Asterix where
     toJSON c = object
         [ "number"      .= astCategory c
@@ -185,14 +297,27 @@ instance ToJSON Asterix where
         , "uap"         .= astUap c
         ]
 
+instance FromJSON Asterix  where
+    parseJSON = withObject "Asterix" $ \v -> Asterix
+        <$> v .: "number"
+        <*> v .: "title"
+        <*> v .: "edition"
+        <*> v .: "date"
+        <*> v .: "preamble"
+        <*> v .: "catalogue"
+        <*> v .: "uap"
+
 -- | Syntax implementation
 syntax :: Syntax
 syntax = Syntax
     { syntaxDescription = "JSON asterix syntax."
     , encodeAsterix = Just encoder
-    , decodeAsterix = Nothing       -- decoding not supported
+    , decodeAsterix = Just decoder
     }
   where
     encoder = toStrict
         . JsonP.encodePretty' JsonP.defConfig {JsonP.confCompare = compare}
+    decoder filename s = case eitherDecodeStrict' s of
+        Left e -> Left $ filename ++ ": " ++ e
+        Right val -> Right val
 

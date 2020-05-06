@@ -66,7 +66,7 @@ newtype Signed = Signed Bool deriving (Generic, Eq, Show)
 data StringType
     = StringAscii
     | StringICAO
-    deriving (Generic, Eq, Show)
+    deriving (Generic, Eq, Show, Read)
 
 data Content
     = ContentTable
@@ -102,7 +102,7 @@ data Subitem
     deriving (Generic, Eq, Show)
 
 data Encoding = Mandatory | Optional | Absent
-    deriving (Generic, Eq, Show)
+    deriving (Generic, Eq, Show, Read)
 
 data Item = Item
     { itemEncoding  :: Rule Encoding
