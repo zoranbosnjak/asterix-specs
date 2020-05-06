@@ -13,6 +13,7 @@
 module Data.Asterix
 ( module Data.Asterix
 , module Data.Asterix.Types
+, module Data.Asterix.Syntax
 ) where
 
 import           Data.List
@@ -21,6 +22,7 @@ import           Data.ByteString (ByteString)
 import qualified Data.Text as T
 
 import           Data.Asterix.Types
+import           Data.Asterix.Syntax
 
 type EncodeAsterix = Asterix -> ByteString
 type DecodeAsterix = FilePath -> ByteString -> Either String Asterix

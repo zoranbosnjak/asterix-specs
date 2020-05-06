@@ -26,7 +26,8 @@ import           Text.Megaparsec hiding (State)
 import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
-import           Data.Asterix
+import           Data.Asterix.Types
+import           Data.Asterix.Common
 
 type Parser = Parsec Void Text
 

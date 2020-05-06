@@ -22,7 +22,8 @@ import qualified Data.Aeson.Encode.Pretty as JsonP
 import           Data.ByteString.Lazy (toStrict)
 import qualified Data.HashMap.Strict as HMS
 
-import           Data.Asterix
+import           Data.Asterix.Types
+import           Data.Asterix.Common
 
 instance ToJSON a => ToJSON (Rule a)
   where
