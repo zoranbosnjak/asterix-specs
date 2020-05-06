@@ -59,18 +59,18 @@ let
           base=$dst/$cat-$edition
 
           echo "validate, copy original"
-          ${converter}/bin/converter --validate -f $orig
+          ${converter}/bin/converter -f $orig --ast --validate
           cp $orig $base.ast
 
           echo "convert to .json"
-          ${converter}/bin/converter --json -f $orig > $base.json
+          ${converter}/bin/converter --ast --json -f $orig > $base.json
 
           echo "pretify"
           ${renderer}/bin/render --script renderer/formats/ast.py render $base.json > $base.txt
 
           echo "convert again, check"
           # convert back to ast, then to json again, expect the same .json file
-          ${converter}/bin/converter --json -f $base.txt > $base.json2
+          ${converter}/bin/converter --ast --json -f $base.txt > $base.json2
           diff -q $base.json $base.json2
           rm $base.json2
 
@@ -131,8 +131,6 @@ let
   env = pkgs.stdenv.mkDerivation {
     name = "asterix-specs-environment";
     buildInputs = [];
-      #converter.env.nativeBuildInputs
-      #++ renderer.env.nativeBuildInputs;
     shellHook = ''
       echo "Run nix-shell inside individual sub-directory!"
       exit 1

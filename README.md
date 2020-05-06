@@ -11,7 +11,7 @@ See `syntax/*ps` files for detailed syntax.
 ## JSON format (.json)
 
 This is an intermediate format which is directly derived from the `.ast` files,
-using a reference parser (`convert --json`). JSON is well supported format,
+using a reference parser (`convert --ast --json`). JSON is well supported format,
 so it is easy to include asterix specifications in another project.
 
 See `renderer` as an example `python` application.
@@ -32,11 +32,11 @@ In this case, a specific renderer function is required.
 
 # converter
 
-This is a reference parser for the original `.ast` file format.
+This is a reference parser for various file formats (`.ast`, `.json`,...).
 
-    - validate `.ast` file
-    - convert `.ast` file to `.json`
-    - dump `.ast` file as a list of items
+    - validate file
+    - convert from one format to another
+    - dump file as a list of items
 
 # renderer
 
@@ -47,7 +47,7 @@ Example:
 
 ```bash
 # convert from .ast to .json
-converter -f specs/imaginary.ast --json > test.json
+converter -f specs/imaginary.ast --ast --json > test.json
 
 # convert from .json to .ast
 render --script ast.py render test.json > test.ast
@@ -63,7 +63,7 @@ Example:
 
 ```bash
 cat some_specs_file > specs.ast
-converter -f specs.ast --json > specs.json
+converter -f specs.ast --ast --json > specs.json
 render --script rst.py render specs.json > specs.rst
 make html
 make latexpdf

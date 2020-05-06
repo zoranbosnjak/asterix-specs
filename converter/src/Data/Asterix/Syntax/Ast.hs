@@ -1,31 +1,32 @@
 {-# LANGUAGE LambdaCase         #-}
 {-# LANGUAGE OverloadedStrings  #-}
-{-# LANGUAGE TypeFamilies       #-}
 
 -- |
--- Module:      Data.Asterix.Parser
+-- Module:      Data.Asterix.Syntax.Ast
 -- Copyright:   (c) 2019 Zoran Bošnjak
 --              (c) 2019 Sloveniacontrol Ltd. (www.sloveniacontrol.si)
 -- License:     GPL-3
 -- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
 --
--- This module defines Asterix parsers.
+-- This module defines '.ast' syntax.
 --
 
-module Data.Asterix.Parser where
+module Data.Asterix.Syntax.Ast (syntax) where
 
 import           Control.Monad
 import           Data.Void
 import           Data.Bool
+import           Data.Bifunctor (first)
 import           Data.Ratio ((%))
 import           Data.Word (Word8)
 import           Data.Text (Text)
 import qualified Data.Text as T
+import           Data.Text.Encoding (decodeUtf8)
 import           Text.Megaparsec hiding (State)
 import           Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
-import           Data.Asterix.Types
+import           Data.Asterix
 
 type Parser = Parsec Void Text
 
@@ -346,4 +347,15 @@ pAsterix = Asterix
     <*> optional (try (scn >> pPreamble))
     <*> (scn >> pItems)
     <*> (scn >> pUap)
+
+-- | Syntax implementation
+syntax :: Syntax
+syntax = Syntax
+    { syntaxDescription = "Compact asterix syntax."
+    , encodeAsterix = Nothing       -- encoding not supported
+    , decodeAsterix = Just decoder
+    }
+  where
+    decoder filename s = first errorBundlePretty $
+        parse pAsterix filename (decodeUtf8 s)
 

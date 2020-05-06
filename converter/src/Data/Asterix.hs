@@ -1,9 +1,41 @@
+{-# LANGUAGE OverloadedStrings #-}
 
-module Data.Asterix where
+-- |
+-- Module:      Data.Asterix
+-- Copyright:   (c) 2019 Zoran Bošnjak
+--              (c) 2019 Sloveniacontrol Ltd. (www.sloveniacontrol.si)
+-- License:     GPL-3
+-- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
+--
+-- Common asterix data types and functions.
+--
+
+module Data.Asterix
+( module Data.Asterix
+, module Data.Asterix.Types
+) where
 
 import           Data.List
 import           Data.Maybe (catMaybes)
+import           Data.ByteString (ByteString)
+import qualified Data.Text as T
+
 import           Data.Asterix.Types
+
+type EncodeAsterix = Asterix -> ByteString
+type DecodeAsterix = FilePath -> ByteString -> Either String Asterix
+
+data Syntax = Syntax
+    { syntaxDescription :: String
+    , encodeAsterix :: Maybe EncodeAsterix
+    , decodeAsterix :: Maybe DecodeAsterix
+    }
+
+instance Show Syntax where
+    show = syntaxDescription
+
+showPath :: [Name] -> T.Text
+showPath = T.intercalate "/"
 
 findSubitemByName :: Asterix -> [Name] -> Maybe Subitem
 findSubitemByName _ [] = Nothing
