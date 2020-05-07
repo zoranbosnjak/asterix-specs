@@ -165,9 +165,9 @@ pPaths = do
 
 -- | Parse Signed.
 pSigned :: Parser Signed
-pSigned = Signed <$> tryOne
-    [ string "unsigned" >> pure False
-    , string "signed" >> pure True
+pSigned = tryOne
+    [ string "unsigned" >> pure Unsigned
+    , string "signed" >> pure Signed
     ]
 
 parseRow :: Parser () -> Parser (Int, Text)

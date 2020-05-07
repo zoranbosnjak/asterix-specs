@@ -17,6 +17,7 @@ module Data.Asterix.Syntax.Json (syntax) where
 
 import           Data.Char (toUpper, toLower)
 import           Data.Aeson hiding (Encoding)
+import           Data.Bool
 import           Data.Aeson.Types (typeMismatch)
 import qualified Data.Aeson.Encode.Pretty as JsonP
 import           Data.ByteString.Lazy (toStrict)
@@ -115,10 +116,12 @@ instance FromJSON Constrain where
         _ -> typeMismatch "Constrain" $ String "wrong type"
 
 instance ToJSON Signed where
-    toJSON (Signed val) = toJSON val
+    toJSON = \case
+        Unsigned -> toJSON False
+        Signed -> toJSON True
 
 instance FromJSON Signed  where
-    parseJSON s = Signed <$> parseJSON s
+    parseJSON s = bool Unsigned Signed <$> parseJSON s
 
 instance ToJSON StringType where
     toJSON = toJSON . show

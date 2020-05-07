@@ -61,7 +61,7 @@ data Constrain
     | LessThanOrEqualTo Number
     deriving (Generic, Eq, Ord, Show)
 
-newtype Signed = Signed Bool deriving (Generic, Eq, Show)
+data Signed = Signed | Unsigned deriving (Generic, Eq, Show)
 
 data StringType
     = StringAscii
