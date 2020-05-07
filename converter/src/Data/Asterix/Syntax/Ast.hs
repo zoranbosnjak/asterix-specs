@@ -14,20 +14,213 @@
 module Data.Asterix.Syntax.Ast (syntax) where
 
 import           Control.Monad
+import           Control.Monad.Trans.State
 import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
-import           Data.Ratio ((%))
+import qualified Data.Ratio
+import           Numeric
+import           Formatting as F
+import           Data.Char (toLower)
 import           Data.Word (Word8)
 import           Data.Text (Text)
 import qualified Data.Text as T
-import           Data.Text.Encoding (decodeUtf8)
+import           Data.Text.Encoding (encodeUtf8, decodeUtf8)
 import           Text.Megaparsec hiding (State)
-import           Text.Megaparsec.Char
+import           Text.Megaparsec.Char as MC
 import qualified Text.Megaparsec.Char.Lexer as L
 
 import           Data.Asterix.Types
 import           Data.Asterix.Common
+
+-- | Dump to Text
+
+type Accumulator = State (Int, Text)
+
+-- | Dump some line of text to accumulator.
+tell :: Text -> Accumulator ()
+tell s = modify $ \(indent, buffer) ->
+    let spaces = T.pack $ Prelude.take (4*indent) $ repeat ' '
+        lst = [ T.stripEnd (spaces <> x) <> "\n" | x <- T.lines s]
+        line = case s of
+            "" -> T.pack "\n"
+            _ -> mconcat lst
+    in (indent, buffer <> line)
+
+-- | Indented block.
+block :: Accumulator a -> Accumulator a
+block act = do
+    modify $ \(a,b) -> (succ a, b)
+    result <- act
+    modify $ \(a,b) -> (pred a, b)
+    return result
+
+showNumber :: Number -> Text
+showNumber = \case
+    NumberZ i -> sformat (int) i
+    NumberQ q -> sformat (int % "/" % int)
+        (Data.Ratio.numerator q) (Data.Ratio.denominator q)
+    NumberR r -> sformat (F.string) (showFFloat Nothing r "")
+
+showConstrain :: Constrain -> Text
+showConstrain = \case
+    EqualTo num -> "== " <> showNumber num
+    NotEqualTo num -> "/= " <> showNumber num
+    GreaterThan num -> "> " <> showNumber num
+    GreaterThanOrEqualTo num -> ">= " <> showNumber num
+    LessThan num -> "< " <> showNumber num
+    LessThanOrEqualTo num -> "<= " <> showNumber num
+
+showName :: [Name] -> Text
+showName = T.intercalate "/"
+
+-- | Dump element.
+dumpElement :: Element -> Accumulator ()
+dumpElement = \case
+    Fixed n rule -> do
+        tell $ sformat ("fixed " % int) n
+        block $ do
+            let dumpContent = \case
+                    ContentTable lst -> do
+                        tell "table"
+                        block $ forM_ lst $ \(key, value) -> do
+                            tell $ sformat (int % ": " % stext) key value
+                    ContentString st -> tell $ "string " <> case st of
+                        StringAscii -> "ascii"
+                        StringICAO -> "icao"
+                    ContentInteger signed constraints -> do
+                        let sig = toLower <$> show signed
+                            cst = case constraints of
+                                [] -> ""
+                                lst -> " " <> T.intercalate " " (fmap showConstrain lst)
+                        tell $ sformat (F.string % " integer" % stext) sig cst
+                    ContentQuantity signed scaling fract unit constraints -> do
+                        let sig = toLower <$> show signed
+                            cst = case constraints of
+                                [] -> ""
+                                lst -> " " <> T.intercalate " " (fmap showConstrain lst)
+                        tell $ sformat
+                            (F.string % " quantity " % stext % " " % int % " " % F.string % stext )
+                            sig (showNumber scaling) fract (show unit) cst
+            case rule of
+                Unspecified -> tell "raw"
+                ContextFree cont -> dumpContent cont
+                Dependent name lst -> do
+                    tell $ sformat ("case " % stext) (showName name)
+                    block $ forM_ lst $ \(x,a) -> do
+                        tell $ sformat (int % ":") x
+                        block $ dumpContent a
+
+    Group lst -> do
+        tell "subitems"
+        block $ mapM_ dumpMaybeSubitem lst
+
+    Extended n1 n2 lst -> do
+        tell $ sformat ("extended " % int % " " % int) n1 n2
+        block $ mapM_ dumpMaybeSubitem lst
+
+    Repetitive rep element -> do
+        tell $ sformat ("repetitive " % int) rep
+        block $ dumpElement element
+
+    Explicit -> do
+        tell "explicit"
+
+    Compound lst -> do
+        tell "compound"
+        block $ forM_ lst $ \case
+            Nothing -> tell "-"
+            Just subitem -> dumpMaybeSubitem subitem
+
+    _ -> error "unexpected element"
+  where
+    dumpMaybeSubitem = \case
+        Spare n -> tell $ sformat ("spare " % int) n
+        Subitem name title mDesc element mRemark -> do
+            tell $ sformat (stext % " " % F.string) name (show title)
+            case mDesc of
+                Nothing -> return ()
+                Just desc -> block $ do
+                    tell "description"
+                    block $ tell desc
+            block $ do
+                dumpElement element
+                case mRemark of
+                    Nothing -> return ()
+                    Just remark -> do
+                        tell "remark"
+                        block $ tell remark
+
+-- | Dump toplevel item.
+dumpItem :: Item -> Accumulator ()
+dumpItem (Item rule definition si) = case si of
+    Spare _ -> error "unexpected toplevel spare item"
+    Subitem name title _mDesc element mRemark -> do
+        tell $ sformat (stext % " " % F.string) name (show title)
+        block $ do
+            case rule of
+                Unspecified -> tell "unspecified"
+                ContextFree r -> tell $ sformat (F.string) (toLower <$> show r)
+                Dependent _x _lst -> do
+                    tell "case ..."
+                    block $ return ()   -- TODO
+
+            tell "definition"
+            block $ tell definition
+
+            dumpElement element
+
+            case mRemark of
+                Nothing -> return ()
+                Just remark -> do
+                    tell "remark"
+                    block $ tell remark
+
+-- | Encode Uap.
+dumpUap :: Uap -> Accumulator ()
+dumpUap = \case
+    Uap lst -> do
+        tell "uap"
+        dumpList lst
+    Uaps variations -> do
+        tell "uaps"
+        block $ forM_ variations $ \(name, lst) -> do
+            tell name
+            dumpList lst
+  where
+    dumpList lst = block $ forM_ lst $ \item -> do
+        tell $ maybe "-" id item
+
+-- | Encode asterix category description.
+dumpAsterix :: Asterix -> Accumulator ()
+dumpAsterix asterix = do
+    tell $ sformat ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
+    tell $ sformat ("edition " % int % "." % int) ed1 ed2
+    tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+    case astPreamble asterix of
+        Nothing -> return ()
+        Just preamble -> do
+            tell "preamble"
+            block $ do
+                tell preamble
+    tell ""
+
+    tell "items"
+    block $ forM_ (astCatalogue asterix) $ \item -> do
+        tell ""
+        dumpItem item
+
+    tell ""
+    dumpUap $ astUap asterix
+  where
+    cat = astCategory asterix
+    title = astTitle asterix
+    edition = astEdition asterix
+    ed1 = editionMajor edition
+    ed2 = editionMinor edition
+    (Date year month day) = astDate asterix
+
+-- | Parse from Text
 
 type Parser = Parsec Void Text
 
@@ -44,10 +237,10 @@ scn = smartSkip space1
 
 -- | Skip whitespace without newline.
 sc :: Parser ()
-sc = smartSkip (void $ some (char ' ' <|> char '\t'))
+sc = smartSkip (void $ some (MC.char ' ' <|> MC.char '\t'))
 
 stringLiteral :: Parser String
-stringLiteral = char '"' >> manyTill L.charLiteral (char '"')
+stringLiteral = MC.char '"' >> manyTill L.charLiteral (MC.char '"')
 
 pInt :: Parser Int
 pInt = L.decimal -- TODO: add support for [INT, CHR, HEX, OCT]
@@ -61,22 +254,22 @@ tryOne (x:xs) = try x <|> tryOne xs
 -- | Parse 'asterix category'.
 pCat :: Parser Word8
 pCat = do
-    string "asterix" >> sc
+    MC.string "asterix" >> sc
     (a,b,c) <- (,,) <$> digitChar <*> digitChar <*> digitChar
     return (read [a,b,c] :: Word8)
 
 -- | Parse 'edition'.
 pEdition :: Parser Edition
 pEdition = do
-    string "edition" >> sc
-    (a,_,b) <- (,,) <$> L.decimal <*> char '.' <*> L.decimal
+    MC.string "edition" >> sc
+    (a,_,b) <- (,,) <$> L.decimal <*> MC.char '.' <*> L.decimal
     return $ Edition a b
 
 -- | Parse 'date'.
 pDate :: Parser Date
 pDate = do
-    string "date" >> sc
-    Date <$> L.decimal <*> (char '-' *> L.decimal ) <*> (char '-' *> L.decimal )
+    MC.string "date" >> sc
+    Date <$> L.decimal <*> (MC.char '-' *> L.decimal ) <*> (MC.char '-' *> L.decimal )
 
 -- | Parse to the end of line.
 pLine :: Parser String
@@ -93,7 +286,7 @@ skipEmptyLines = do
 blockAfter :: Text -> Parser String
 blockAfter hdr = do
     i <- L.indentLevel
-    void $ string hdr >> many (char ' ') >> newline
+    void $ MC.string hdr >> many (MC.char ' ') >> newline
     skipEmptyLines
     unlines . leftIndent . dropEmpty <$> consumeUntilIndent i
   where
@@ -148,57 +341,57 @@ pNumber = tryOne
   where
     pRatio = do
         a <- L.decimal
-        void $ string "/"
+        void $ MC.string "/"
         b <- L.decimal
-        return $ (a % b)
+        return $ (a Data.Ratio.% b)
 
 -- | Parser valid name.
 pName :: Parser Name
-pName = T.pack <$> some (alphaNumChar <|> char '_')
+pName = T.pack <$> some (alphaNumChar <|> MC.char '_')
 
 -- | Parse name in the form "a/b/c...".
 pPaths :: Parser [Name]
 pPaths = do
     x <- pName
-    rest <- many (char '/' >> pName)
+    rest <- many (MC.char '/' >> pName)
     return $ x:rest
 
 -- | Parse Signed.
 pSigned :: Parser Signed
 pSigned = tryOne
-    [ string "unsigned" >> pure Unsigned
-    , string "signed" >> pure Signed
+    [ MC.string "unsigned" >> pure Unsigned
+    , MC.string "signed" >> pure Signed
     ]
 
 parseRow :: Parser () -> Parser (Int, Text)
 parseRow _ = (,)
-    <$> (pInt <* (char ':' >> sc))
+    <$> (pInt <* (MC.char ':' >> sc))
     <*> (T.strip . T.pack <$> pLine)
 
 pConstrain :: Parser Constrain
 pConstrain = tryOne
-    [ string "==" >> sc >> (EqualTo <$> pNumber)
-    , string "/=" >> sc >> (NotEqualTo <$> pNumber)
-    , string ">=" >> sc >> (GreaterThanOrEqualTo <$> pNumber)
-    , string ">" >> sc >> (GreaterThan <$> pNumber)
-    , string "<=" >> sc >> (LessThanOrEqualTo <$> pNumber)
-    , string "<" >> sc >> (LessThan <$> pNumber)
+    [ MC.string "==" >> sc >> (EqualTo <$> pNumber)
+    , MC.string "/=" >> sc >> (NotEqualTo <$> pNumber)
+    , MC.string ">=" >> sc >> (GreaterThanOrEqualTo <$> pNumber)
+    , MC.string ">" >> sc >> (GreaterThan <$> pNumber)
+    , MC.string "<=" >> sc >> (LessThanOrEqualTo <$> pNumber)
+    , MC.string "<" >> sc >> (LessThan <$> pNumber)
     ]
 
 pContent :: Parser Content
 pContent = tryOne
-    [ (ContentTable . snd <$> parseList (string "table") parseRow)
+    [ (ContentTable . snd <$> parseList (MC.string "table") parseRow)
     , do
-        string "string" >> sc
+        MC.string "string" >> sc
         ContentString <$> tryOne
-            [ string "ascii" >> pure StringAscii
-            , string "icao" >> pure StringICAO
+            [ MC.string "ascii" >> pure StringAscii
+            , MC.string "icao" >> pure StringICAO
             ]
     , ContentInteger
-        <$> pSigned <* (sc >> string "integer")
+        <$> pSigned <* (sc >> MC.string "integer")
         <*> (many (sc >> pConstrain))
     , ContentQuantity
-        <$> pSigned <* (sc >> string "quantity" >> sc)
+        <$> pSigned <* (sc >> MC.string "quantity" >> sc)
         <*> pNumber <* sc
         <*> L.decimal <* sc
         <*> (T.pack <$> stringLiteral)
@@ -208,11 +401,11 @@ pContent = tryOne
 -- | Parse (fixed) type.
 pFixed :: Parser () -> Parser Element
 pFixed sc' = do
-    string "fixed" >> sc'
+    MC.string "fixed" >> sc'
     n <- L.decimal
     rule <- sc' >> tryOne
         [ ContextFree <$> pContent
-        , string "raw" >> pure Unspecified
+        , MC.string "raw" >> pure Unspecified
         , pDependent
         ]
     return $ Fixed n rule
@@ -221,12 +414,12 @@ pFixed sc' = do
         (h,lst) <- parseList pHeader pCase
         return $ Dependent h lst
       where
-        pHeader = string "case" >> sc >> pPaths
-        pCase _ = (,) <$> (pInt <* (char ':' >> (try scn <|> sc))) <*> pContent
+        pHeader = MC.string "case" >> sc >> pPaths
+        pCase _ = (,) <$> (pInt <* (MC.char ':' >> (try scn <|> sc))) <*> pContent
 
 -- | Parse group of nested subitems.
 pGroup :: Parser Element
-pGroup = Group . snd <$> parseList (string "subitems") pSubItem
+pGroup = Group . snd <$> parseList (MC.string "subitems") pSubItem
 
 -- | Parse 'extended' subitem.
 pExtended :: Parser Element
@@ -235,7 +428,7 @@ pExtended = do
     return $ Extended n1 n2 lst
   where
     parseHeader = do
-        string "extended" >> sc
+        MC.string "extended" >> sc
         n1 <- L.decimal <* sc
         n2 <- L.decimal
         return (n1, n2)
@@ -243,7 +436,7 @@ pExtended = do
 -- | Parse 'repetitive' subitem.
 pRepetitive :: Parser Element
 pRepetitive = do
-    n <- string "repetitive" >> sc >> L.decimal
+    n <- MC.string "repetitive" >> sc >> L.decimal
     i <- lookAhead (scn >> L.indentLevel)
     let sc' = do
             scn
@@ -254,14 +447,14 @@ pRepetitive = do
 
 -- | Parse 'explicit' subitem.
 pExplicit :: Parser Element
-pExplicit = string "explicit" *> pure Explicit
+pExplicit = MC.string "explicit" *> pure Explicit
 
 -- | Parse 'compound' subitem.
 pCompound :: Parser Element
-pCompound = Compound . snd <$> parseList (string "compound") pListElement
+pCompound = Compound . snd <$> parseList (MC.string "compound") pListElement
   where
     pListElement sc' = try pDash <|> (Just <$> pSubItem sc')
-    pDash = char '-' >> pure Nothing
+    pDash = MC.char '-' >> pure Nothing
 
 -- | Parse 'element'.
 pElement :: Parser () -> Parser Element
@@ -277,7 +470,7 @@ pElement sc' = tryOne
 
 -- | Parser valid uap name.
 pUapName :: Parser Name
-pUapName = T.pack <$> some (alphaNumChar <|> char '-')
+pUapName = T.pack <$> some (alphaNumChar <|> MC.char '-')
 
 -- | Parse spare or regular 'subitem'.
 pSubItem :: Parser () -> Parser Subitem
@@ -292,7 +485,7 @@ pSubItem sc' = try pSpare <|> pRegular
         element <- sc' >> pElement sc'
         remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
         return $ Subitem name title description element remark
-    pSpare = string "spare" >> sc' >> fmap Spare L.decimal
+    pSpare = MC.string "spare" >> sc' >> fmap Spare L.decimal
 
 -- | Parse toplevel item.
 pItem :: Parser () -> Parser Item
@@ -301,16 +494,16 @@ pItem sc' = do
     title <- (T.pack <$> stringLiteral) <* sc'
     encoding <- do
         let pEncoding = tryOne
-                [ string "mandatory" >> sc' >> pure Mandatory
-                , string "optional" >> sc' >> pure Optional
-                , string "absent" >> sc' >> pure Absent
+                [ MC.string "mandatory" >> sc' >> pure Mandatory
+                , MC.string "optional" >> sc' >> pure Optional
+                , MC.string "absent" >> sc' >> pure Absent
                 ]
         tryOne
             [ ContextFree <$> pEncoding
-            , string "unspecified" >> sc' >> pure Unspecified
+            , MC.string "unspecified" >> sc' >> pure Unspecified
             , do
-                let pCase _ = (,) <$> (pInt <* (char ':' >> sc)) <*> pEncoding
-                    pHeader = string "case" >> sc >> pPaths
+                let pCase _ = (,) <$> (pInt <* (MC.char ':' >> sc)) <*> pEncoding
+                    pHeader = MC.string "case" >> sc >> pPaths
                 (h,lst) <- parseList pHeader pCase
                 return $ Dependent h lst
             ]
@@ -324,18 +517,18 @@ pItem sc' = do
 
 -- | Parse toplevel items.
 pItems :: Parser [Item]
-pItems = snd <$> parseList (string "items") pItem
+pItems = snd <$> parseList (MC.string "items") pItem
 
 -- | Parse 'UAP'.
 pUap :: Parser Uap
 pUap = uaps <|> uap
   where
     parseOne _sc'
-        = (char '-' >> return Nothing)
+        = (MC.char '-' >> return Nothing)
       <|> (fmap Just pName)
-    uap = Uap . snd <$> parseList (string "uap") parseOne
+    uap = Uap . snd <$> parseList (MC.string "uap") parseOne
     uaps = do
-        (_, lst) <- parseList (string "uaps") (\_ -> parseList pUapName parseOne)
+        (_, lst) <- parseList (MC.string "uaps") (\_ -> parseList pUapName parseOne)
         return $ Uaps lst
 
 -- | Parse asterix category description.
@@ -353,10 +546,11 @@ pAsterix = Asterix
 syntax :: Syntax
 syntax = Syntax
     { syntaxDescription = "Compact asterix syntax."
-    , encodeAsterix = Nothing       -- encoding not supported
+    , encodeAsterix = Just encoder
     , decodeAsterix = Just decoder
     }
   where
+    encoder = encodeUtf8 . snd . flip execState (0,"") . dumpAsterix
     decoder filename s = first errorBundlePretty $
         parse pAsterix filename (decodeUtf8 s)
 
