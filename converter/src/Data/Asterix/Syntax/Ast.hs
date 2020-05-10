@@ -22,7 +22,6 @@ import qualified Data.Ratio
 import           Numeric
 import           Formatting as F
 import           Data.Char (toLower)
-import           Data.Word (Word8)
 import           Data.Text (Text)
 import qualified Data.Text as T
 import           Data.Text.Encoding (encodeUtf8, decodeUtf8)
@@ -252,11 +251,11 @@ tryOne [x] = x
 tryOne (x:xs) = try x <|> tryOne xs
 
 -- | Parse 'asterix category'.
-pCat :: Parser Word8
+pCat :: Parser Int
 pCat = do
     MC.string "asterix" >> sc
     (a,b,c) <- (,,) <$> digitChar <*> digitChar <*> digitChar
-    return (read [a,b,c] :: Word8)
+    return (read [a,b,c])
 
 -- | Parse 'edition'.
 pEdition :: Parser Edition

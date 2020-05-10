@@ -13,7 +13,8 @@
 --
 
 module Data.Asterix.Validation
-( validate
+( validationErrors
+, isValid
 ) where
 
 import           Control.Monad
@@ -36,14 +37,25 @@ reportWhen :: Bool -> [Name] -> ValidationError -> [ValidationError]
 reportWhen False _ _ = []
 reportWhen True path msg = [mconcat [showPath path, " -> ", msg]]
 
-validate :: Asterix -> [ValidationError]
-validate asterix = join
+reportUnless :: Bool -> [Name] -> ValidationError -> [ValidationError]
+reportUnless condition = reportWhen (not condition)
+
+isValid :: Asterix -> Bool
+isValid = null . validationErrors
+
+validationErrors :: Asterix -> [ValidationError]
+validationErrors asterix = join
     [ allItemsDefined
     , join (validateEncoding <$> astCatalogue asterix)
     , join $ (snd . validateSubitem asterix [] . itemSubitem <$> astCatalogue asterix)
     , validateUap
+    , validateCat
     ]
   where
+
+    validateCat :: [ValidationError]
+    validateCat = reportUnless (astCategory asterix `elem` [0..255]) ["cat"]
+        "Category number out of range"
 
     validateEncoding :: Item -> [ValidationError]
     validateEncoding item = case itemEncoding item of

@@ -17,7 +17,6 @@ module Data.Asterix.Types where
 import           GHC.Generics (Generic)
 import           Data.Ratio (Ratio)
 import           Data.Text
-import           Data.Word (Word8)
 
 type Name = Text
 type Title = Text
@@ -116,7 +115,7 @@ data Uap
     deriving (Generic, Eq, Show)
 
 data Asterix = Asterix
-    { astCategory   :: Word8
+    { astCategory   :: Int
     , astTitle      :: Text
     , astEdition    :: Edition
     , astDate       :: Date

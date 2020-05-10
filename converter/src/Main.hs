@@ -13,7 +13,7 @@ import qualified Data.ByteString as BS
 import           Data.Maybe
 
 import           Data.Asterix
-import           Data.Asterix.Validation (validate)
+import           Data.Asterix.Validation (validationErrors)
 
 data Input
     = FileInput FilePath
@@ -66,7 +66,7 @@ main = do
     case astDecoder filename s of
         Left e -> die e
         Right asterix -> case optOutput opt of
-            ValidateOnly -> case validate asterix of
+            ValidateOnly -> case validationErrors asterix of
                 [] -> print ("ok" :: String)
                 lst -> do
                     mapM_ (Data.Text.IO.hPutStrLn stderr) lst
@@ -74,12 +74,12 @@ main = do
                     die "Validation error(s) present!"
             OutputList -> do
                 mapM_ (dumpItem []) (itemSubitem <$> astCatalogue asterix)
-                case validate asterix of
+                case validationErrors asterix of
                     [] -> return ()
                     _ -> die "Validation error(s) present, run 'validate' for details!"
             OutputSyntax astEncoder -> do
                 BS.putStr $ astEncoder asterix
-                case validate asterix of
+                case validationErrors asterix of
                     [] -> return ()
                     _ -> die "Validation error(s) present, run 'validate' for details!"
   where
