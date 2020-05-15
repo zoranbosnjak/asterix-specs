@@ -22,6 +22,9 @@ let
     src = builtins.filterSource
       (path: type: type != "directory" || baseNameOf path != ".git")
       ./.;
+
+    FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = pkgs.texlive.dejavu.pkgs; };
+
     installPhase = ''
       mkdir -p $out
       mkdir -p $out/bin
@@ -67,12 +70,6 @@ let
 
           echo "pretify"
           ${renderer}/bin/render --script renderer/formats/ast.py render $base.json > $base.txt
-
-          echo "convert again, check"
-          # convert back to ast, then to json again, expect the same .json file
-          ${converter}/bin/converter --ast --json -f $base.txt > $base.json2
-          diff -q $base.json $base.json2
-          rm $base.json2
 
           echo "render to minimal .json"
           ${renderer}/bin/render --script renderer/formats/minimal.py render $base.json > $base-minimal.json

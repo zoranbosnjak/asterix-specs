@@ -6,7 +6,8 @@ let
     inherit (pkgs.texlive)
       scheme-basic latexmk cmap collection-fontsrecommended
       fncychap titlesec tabulary varwidth framed fancyvrb float parskip
-      wrapfig upquote capt-of needspace etoolbox lastpage caption;
+      wrapfig upquote capt-of needspace etoolbox lastpage caption
+      xetex fontspec polyglossia dejavu;
   };
 
   deps = [

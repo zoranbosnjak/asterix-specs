@@ -4,13 +4,13 @@
 
 set -e
 
-if [[ $# -eq 0 ]]; then
-    echo 'Input spec file is required.'
+if [[ $# -ne 2 ]]; then
+    echo 'Required arguments: [filename] [fileformat]'
     exit 1
 fi
 
-cat $1 > specs.ast
-converter -f specs.ast --json > specs.json
+cat $1 > specs.input
+converter -f specs.input $2 --json > specs.json
 render --script rst.py render specs.json > specs.rst
 make html
 make latexpdf
