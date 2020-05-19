@@ -58,10 +58,10 @@ items
         subitems
             Lat "Latitude in WGS-84 in two's complement"
                 fixed 32
-                    signed quantity 0.00000008381903171539306640625 0 "deg" >= -90 <= 90
+                    signed quantity 180 31 "deg" >= -90 <= 90
             Lon "Longitude in WGS-84 in two's complement"
                 fixed 32
-                    signed quantity 0.00000008381903171539306640625 0 "deg" >= -90 <= 90
+                    signed quantity 180 31 "deg" >= -90 <= 90
 
     042 "Calculated Position in Cartesian Co-ordinates"
         mandatory           // not specified as such in pdf
@@ -70,10 +70,10 @@ items
         subitems
             X "X-Component"
                 fixed 32
-                    signed quantity 0.00000008381903171539306640625 0 "m" >= -32768 <= 32768
+                    signed quantity 180 31 "m" >= -32768 <= 32768
             Y "X-Component"
                 fixed 32
-                    signed quantity 0.00000008381903171539306640625 0 "m" >= -32768 <= 32768
+                    signed quantity 180 31 "m" >= -32768 <= 32768
 
     060 "Mode-3/A Code in Octal Representation"
         optional
@@ -411,19 +411,16 @@ items
         definition
             Data specific to Mode-S ADS-B.
         compound 
-            // TODO: length of primary part: 2
-            // TODO: subfield 1
             MB "BDS"
                 repetitive 8
                     subitems
                         MB "Mode S MB Data"
                             fixed 8
                                 raw // TODO: BDS format
-            // TODO: subfield 1
             ADR "24 bits Aircraft address"
                 fixed 24
                     unsigned integer
-            // TODO: subfield 4
+            -
             COM "Communications capability of the transponder"
                 fixed 3
                     table
@@ -435,63 +432,65 @@ items
                         5: Not assigned
                         6: Not assigned
                         7: Not assigned
-            STAT "Flight Status"
-                fixed 4
-                    table
-                        0: No alert, no SPI, aircraft airborne
-                        1: No alert, no SPI, aircraft on ground
-                        2: Alert, no SPI, aircraft airborne
-                        3: Alert, no SPI, aircraft on ground
-                        4: Alert, SPI, aircraft airborne or on ground
-                        5: No alert, SPI, aircraft airborne or on ground
-                        6: General Emergency
-                        7: Lifeguard / medical
-                        8: Minimum fuel
-                        9: No communications
-                        10: Unlawful
-            spare 1
-            SSC "Specific service capability"
-                fixed 1
-                    table
-                        0: No
-                        1: Yes
-            ARC "Altitude reporting capability"
-               fixed 1
-                   table
-                       0: 100 ft resolution
-                       1: 25 ft resolution
-            AIC "Aircraft identification capability"
-               fixed 1
-                   table
-                       0: No
-                       1: Yes
-            B1A "BDS 1,0 bit 16"
-               fixed 1
-                   unsigned integer
-            B1B "BDS 1,0 bit 37/40"
-               fixed 4
-                   unsigned integer
-            AC "ACAS operational"
-               fixed 1
-                   table
-                       0: No
-                       1: Yes
-            MN "Multiple navigational aids operating"
-               fixed 1
-                   table
-                       0: No
-                       1: Yes
-            DC "Differential correction"
-                fixed 1
-                    table
-                        0: Yes
-                        1: No
-            spare 5
-            // TODO: subfield 8
+            -
+            -
+            -
+            subitems
+                STAT "Flight Status"
+                    fixed 4
+                        table
+                            0: No alert, no SPI, aircraft airborne
+                            1: No alert, no SPI, aircraft on ground
+                            2: Alert, no SPI, aircraft airborne
+                            3: Alert, no SPI, aircraft on ground
+                            4: Alert, SPI, aircraft airborne or on ground
+                            5: No alert, SPI, aircraft airborne or on ground
+                            6: General Emergency
+                            7: Lifeguard / medical
+                            8: Minimum fuel
+                            9: No communications
+                            10: Unlawful
+                spare 1
+                SSC "Specific service capability"
+                    fixed 1
+                        table
+                            0: No
+                            1: Yes
+                ARC "Altitude reporting capability"
+                   fixed 1
+                       table
+                           0: 100 ft resolution
+                           1: 25 ft resolution
+                AIC "Aircraft identification capability"
+                   fixed 1
+                       table
+                           0: No
+                           1: Yes
+                B1A "BDS 1,0 bit 16"
+                   fixed 1
+                       unsigned integer
+                B1B "BDS 1,0 bit 37/40"
+                   fixed 4
+                       unsigned integer
+                AC "ACAS operational"
+                   fixed 1
+                       table
+                           0: No
+                           1: Yes
+                MN "Multiple navigational aids operating"
+                   fixed 1
+                       table
+                           0: No
+                           1: Yes
+                DC "Differential correction"
+                    fixed 1
+                        table
+                            0: Yes
+                            1: No
+                spare 5
             AircraftType "Aircraft Derived Aircraft Type"
                 fixed 32
                     string ascii
-            // TODO: subfield 9
             ECAT "Emitter category"
                 fixed 8
                     table
@@ -519,85 +518,84 @@ items
                         22: fixed ground or tethered obstruction 
                         23: reserved 
                         24: reserved 
-            // TODO: subfield 11
-            VDL "VDL Mode 4"
-                fixed 1
-                    table
-                        0: VDL Mode 4 available 
-                        1: VDL Mode 4 not available 
-            MDS "Mode S"
-                fixed 1
-                    table
-                        0: Mode S available
-                        1: Mode S not available
-            UAT "UAT"
-                fixed 1
-                    table
-                        0: UAT available
-                        1: UAT not available
-            spare 5
+            -
+            subitems
+                VDL "VDL Mode 4"
+                    fixed 1
+                        table
+                            0: VDL Mode 4 available 
+                            1: VDL Mode 4 not available 
+                MDS "Mode S"
+                    fixed 1
+                        table
+                            0: Mode S available
+                            1: Mode S not available
+                UAT "UAT"
+                    fixed 1
+                        table
+                            0: UAT available
+                            1: UAT not available
+                spare 5
+            -
 
     390 "Flight Plan Related Data"
         optional
         definition
             All flight plan related information.
-        compound // TODO: length of primary part: 2
-            // TODO: subfield 1
-            SAC "System Area Code"
-                fixed 8
-                    unsigned integer
-            SIC "System Identity Code"
-                fixed 8
-                    unsigned integer
-            // TODO: subfield 2
+        compound
+            subitems
+              SAC "System Area Code"
+                  fixed 8
+                      unsigned integer
+              SIC "System Identity Code"
+                  fixed 8
+                      unsigned integer
             CSN "Callsign"
                 fixed 56
                     string ascii
-            // TODO: subfield 3
-            TYP "IFPS Flight ID Type"
-                fixed 2
-                    table
-                        0: Plan number 
-                        1: Unit 1 internal flight number
-                        2: Unit 2 internal flight number
-                        3: Unit 3 internal flight number
-            spare 3
-            NBR "IFPS Flight ID Number"
-                fixed 27
-                    unsigned integer
-            // TODO: subfield 4
-            GAT_OAT "Flight type"
-                fixed 2
-                    table
-                        0: Unknown
-                        1: General Air Traffic
-                        2: Operational Air Traffic
-                        3: Not applicable
-            FR1_FR2 "Flight rules"
-                fixed 2
-                    table
-                        0: Instrument Flight Rules
-                        1: Visual Flight rules
-                        2: Not applicable
-                        3: Controlled Visual Flight Rules
-            RVSM "RVSM"
-                fixed 2
-                    table
-                        0: Unknown Instrument Flight Rules
-                        1: Approved
-                        2: Exempt
-                        3: Not Approved
-            HPR "Flight priority"
-                fixed 1
-                    table
-                        0: Normal Priority Flight
-                        1: High Priority Flight
-            spare 1
-            // TODO: subfield 5
+            subitems
+                TYP "IFPS Flight ID Type"
+                    fixed 2
+                        table
+                            0: Plan number 
+                            1: Unit 1 internal flight number
+                            2: Unit 2 internal flight number
+                            3: Unit 3 internal flight number
+                spare 3
+                NBR "IFPS Flight ID Number"
+                    fixed 27
+                        unsigned integer
+            subitems
+                GAT_OAT "Flight type"
+                    fixed 2
+                        table
+                            0: Unknown
+                            1: General Air Traffic
+                            2: Operational Air Traffic
+                            3: Not applicable
+                FR1_FR2 "Flight rules"
+                    fixed 2
+                        table
+                            0: Instrument Flight Rules
+                            1: Visual Flight rules
+                            2: Not applicable
+                            3: Controlled Visual Flight Rules
+                RVSM "RVSM"
+                    fixed 2
+                        table
+                            0: Unknown Instrument Flight Rules
+                            1: Approved
+                            2: Exempt
+                            3: Not Approved
+                HPR "Flight priority"
+                    fixed 1
+                        table
+                            0: Normal Priority Flight
+                            1: High Priority Flight
+                spare 1
             TOA "Type of Aircraft"
                 fixed 32
                     string ascii
-            // TODO: subfield 6
             WTC "Wake Turbulence Category"
                 fixed 8
                     table
@@ -605,78 +603,70 @@ items
                         77: Medium
                         72: Heavy
                         74: Super
-            // TODO: subfield 7
             ADEP "Departure Airport"
                 fixed 32
                     string ascii
-            // TODO: subfield 8
             ADES "Destination Airport"
                 fixed 32
                     string ascii
-            // TODO: subfield 9
             RWY "DRunway Designation"
                 fixed 24
                     string ascii
-            // TODO: subfield 10
             CFL "Current Cleared Flight Level"
                 fixed 16
                     unsigned quantity 0.25 0 "FL"
-            // TODO: subfield 11
-            Centre "8-bit group Identification code"
-                fixed 8
-                    unsigned integer
-            Position "8-bit Control Position identification code"
-                fixed 8
-                    unsigned integer
-            // TODO: subfield 12
-            SUB12 "TODO: Subfield 12"
-                repetitive 5
-                    subitems
-                        TYP "Time Type"
-                            fixed 5
-                                table
-                                    0: Scheduled off-block time
-                                    1: Estimated off-block time
-                                    2: Estimated take-off time
-                                    3: Actual off-block time
-                                    4: Predicted time at runway hold
-                                    5: Actual time at runway hold
-                                    6: Actual line-up time
-                                    7: Actual take-off time
-                                    8: Estimated time of arrival
-                                    9: Predicted landing time
-                                    10: Actual landing time
-                                    11: Actual time off runway
-                                    12: Predicted time to gate
-                                    13: Actual on-block time
-                        DAY "Day"
-                            fixed 2
-                                table
-                                    0: Today
-                                    1: Yesterday
-                                    2: Tomorrow
-                        spare 4
-                        HOR "Hours, from 0 to 23"
-                            fixed 5
-                                unsigned integer
-                        spare 2
-                        MIN "Minutes, from 0 to 59"
-                            fixed 6
-                                unsigned integer
-                        AVS "Seconds available"
-                            fixed 1
-                                table
-                                    0: Seconds available
-                                    1: Seconds not available
-                        spare 1
-                        SEC "Seconds, from 0 to 59"
-                            fixed 6
-                                unsigned integer
-            // TODO: subfield 13
+            subitems
+                Centre "8-bit group Identification code"
+                    fixed 8
+                        unsigned integer
+                Position "8-bit Control Position identification code"
+                    fixed 8
+                        unsigned integer
+            repetitive 1
+                subitems
+                    TYP "Time Type"
+                        fixed 5
+                            table
+                                0: Scheduled off-block time
+                                1: Estimated off-block time
+                                2: Estimated take-off time
+                                3: Actual off-block time
+                                4: Predicted time at runway hold
+                                5: Actual time at runway hold
+                                6: Actual line-up time
+                                7: Actual take-off time
+                                8: Estimated time of arrival
+                                9: Predicted landing time
+                                10: Actual landing time
+                                11: Actual time off runway
+                                12: Predicted time to gate
+                                13: Actual on-block time
+                    DAY "Day"
+                        fixed 2
+                            table
+                                0: Today
+                                1: Yesterday
+                                2: Tomorrow
+                    spare 4
+                    HOR "Hours, from 0 to 23"
+                        fixed 5
+                            unsigned integer
+                    spare 2
+                    MIN "Minutes, from 0 to 59"
+                        fixed 6
+                            unsigned integer
+                    AVS "Seconds available"
+                        fixed 1
+                            table
+                                0: Seconds available
+                                1: Seconds not available
+                    spare 1
+                    SEC "Seconds, from 0 to 59"
+                        fixed 6
+                            unsigned integer
             STAND "Aircraft Stand"
                 fixed 48
                     string ascii
-            // TODO: subfield 14
             EMP "Stand empty"
                 fixed 2
                     table
@@ -714,45 +704,41 @@ items
         optional
         definition
             Overview of all important accuracies (standard deviations).
-        compound // TODO: length of primary part: 2
-            // TODO: subfield 1
-            APC_X "Estimated accuracy of the calculated position of X Component"
-                fixed 8
-                    unsigned quantity 0.25 0 "m"
-            APC_Y "Estimated accuracy of the calculated position of Y Component"
-                fixed 8
-                    unsigned quantity 0.25 0 "m"
-            // TODO: subfield 2
-            APW_Lat "APW Latitude Component Accuracy"
-                fixed 16
-                    signed quantity 8.38190317153 8 "deg"
-                    // TODO should be -8
-            APW_Lon "APW Longitude Component Accuracy"
-                fixed 16
-                    signed quantity 8.38190317153 8 "deg"
-                    // TODO should be -8
-            // TODO: subfield 3
+        compound
+            subitems
+              APC_X "Estimated accuracy of the calculated position of X Component"
+                  fixed 8
+                      unsigned quantity 0.25 0 "m"
+              APC_Y "Estimated accuracy of the calculated position of Y Component"
+                  fixed 8
+                      unsigned quantity 0.25 0 "m"
+            subitems
+              APW_Lat "APW Latitude Component Accuracy"
+                  fixed 16
+                      signed quantity 180 31 "deg"
+              APW_Lon "APW Longitude Component Accuracy"
+                  fixed 16
+                      signed quantity 180 31 "deg"
             ATH "Estimated Accuracy Of Track Height"
                 fixed 16
                     signed quantity 0.5 0 "m"
-            // TODO: subfield 4
-            AVC_X "Estimated accuracy of the calculated velocity of X Component"
-                fixed 8
-                    unsigned quantity 0.1 0 "m/s"
-            AVC_Y "Estimated accuracy of the calculated velocity of Y Component"
-                fixed 8
-                    unsigned quantity 0.1 0 "m/s"
-            // TODO: subfield 5
+            subitems
+                AVC_X "Estimated accuracy of the calculated velocity of X Component"
+                    fixed 8
+                        unsigned quantity 0.1 0 "m/s"
+                AVC_Y "Estimated accuracy of the calculated velocity of Y Component"
+                    fixed 8
+                        unsigned quantity 0.1 0 "m/s"
             ARC "Estimated Accuracy Of Rate Of Climb / Descent"
                 fixed 16
                     signed quantity 0.1 0 "m/s"
-            // TODO: subfield 6
-            AAC_X "Estimated Accuracy Of Acceleration of X Component"
-                fixed 8
-                    unsigned quantity 0.01 0 "m/s2"
-            AAC_Y "Estimated Accuracy Of Acceleration of Y Component"
-                fixed 8
-                    unsigned quantity 0.01 0 "m/s2"
+            subitems
+                AAC_X "Estimated Accuracy Of Acceleration of X Component"
+                    fixed 8
+                        unsigned quantity 0.01 0 "m/s2"
+                AAC_Y "Estimated Accuracy Of Acceleration of Y Component"
+                    fixed 8
+                        unsigned quantity 0.01 0 "m/s2"
 
     600 "Alert messages"
         optional
