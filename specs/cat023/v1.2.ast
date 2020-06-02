@@ -7,12 +7,11 @@ preamble
 items
 
     000 "Report Type"
-        mandatory
         definition
             This Data Item allows for a more convenient handling of the
             reports at the receiver side by further defining the type of
             transaction.
-        fixed 8
+        element 8
             table
                 1: Ground Station Status report
                 2: Service Status report
@@ -25,15 +24,14 @@ items
                 2. All Report Type values are reserved for common standard use.
 
     010 "Data Source Identifier"
-        mandatory
         definition
             Identification of the Ground Station from which the data is received.
-        subitems
+        items
             SAC "System Area Code"
-                fixed 8
+                element 8
                     raw
             SIC "System Identification code"
-                fixed 8
+                element 8
                     raw
         remark
             Note:
@@ -41,18 +39,14 @@ items
                   EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
 
     015 "Service Type and Identification"
-        case 000
-            1: absent
-            2: mandatory
-            3: mandatory
         definition
             Identifies the type of service being reported.
-        subitems
+        items
             SID "Service Identification"
-                fixed 4
+                element 4
                     raw
             STYP "Type of Service"
-                fixed 4
+                element 4
                     table
                         1: ADS-B VDL4
                         2: ADS-B Ext Squitter
@@ -69,10 +63,9 @@ items
                 - The service identification is also available in item I021/015.
 
     070 "Time of Day"
-        mandatory
         definition
             Absolute time stamping expressed as UTC time.
-        fixed 24
+        element 24
             unsigned quantity 1 7 "s"
         remark
             Notes:
@@ -80,50 +73,46 @@ items
                 1. The time of day value is reset to zero each day at midnight.
 
     100 "Ground Station Status"
-        case 000
-            1: mandatory
-            2: absent
-            3: absent
         definition
             Information concerning the status of a Ground Station.
         extended 8 8
             NOGO "Operational Release Status of the Data"
-                fixed 1
+                element 1
                     table
                         0: Data is released for operational use
                         1: Data must not be used operationally
             ODP "Data Processor Overload Indicator"
-                fixed 1
+                element 1
                     table
                         0: Default, no overload
                         1: Overload in DP
             OXT "Ground Interface Data Communications Overload"
-                fixed 1
+                element 1
                     table
                         0: Default, no overload
                         1: Overload in transmission subsystem
             MSC "Monitoring System Connected Status"
-                fixed 1
+                element 1
                     table
                         0: Monitoring system not connected or unknown
                         1: Monitoring system connected
             TSV "Time Source Validity"
-                fixed 1
+                element 1
                     table
                         0: valid
                         1: invalid
             SPO "Indication of spoofing attack"
-                fixed 1
+                element 1
                     table
                         0: no spoofing detected
                         1: potential spoofing attack
             RN "Renumbering Indication for Track ID"
-                fixed 1
+                element 1
                     table
                         0: default
                         1: track numbering has restarted
             GSSP "Ground Station Status Reporting Period"
-                fixed 7
+                element 7
                     signed quantity 1 0 "s" >= 1 <= 127
         remark
             Notes:
@@ -137,19 +126,15 @@ items
                    was re-started.
 
     101 "Service Configuration"
-        case 000
-            1: absent
-            2: mandatory
-            3: absent
         definition
             Information concerning the configuration of a Service.
         extended 16 8
             RP "Report Period for Category 021 Reports"
-                fixed 8
+                element 8
                     table
                         0: Data driven mode
             SC "Service Class"
-                fixed 3
+                element 3
                     table
                         0: No information
                         1: NRA class
@@ -161,20 +146,16 @@ items
                         7: reserved for future use
             spare 4
             SSSP "Service Status Reporting Period"
-                fixed 7
+                element 7
                     signed quantity 1 0 "s" >= 1 <= 127
 
     110 "Service Status"
-        case 000
-            1: absent
-            2: mandatory
-            3: absent
         definition
             Information concerning the status of the Service provided by a Ground Station.
         extended 8 8
             spare 4
             STAT "Status of the Service"
-                fixed 3
+                element 3
                     table
                         0: Unknown
                         1: Failed
@@ -184,17 +165,13 @@ items
                         5: Initialisation
 
     120 "Service Statistics"
-        case 000
-            1: absent
-            2: absent
-            3: mandatory
         definition
             Statistics concerning the service. Provides counts of various ADS-B
             message types that have been received since the report was last sent.
-        repetitive 1
-            subitems
+        repetitive 8
+            items
                 TYPE "Type of report counter"
-                    fixed 8
+                    element 8
                         table
                             0: Number of unknown messages received
                             1: Number of ‘too old’ messages received
@@ -214,23 +191,19 @@ items
                             31: Number of ‘Ground Vehicle Target’ messages received.
                             32: Number of ‘2 slots TCP messages received.
                 REF "Reference from which the messages are countered"
-                    fixed 1
+                    element 1
                         table
                             0: From midnight
                             1: From the last report
                 spare 7
                 CV "32-bit counter value"
-                    fixed 32
+                    element 32
                         raw
 
     200 "Operational Range"
-        case 000
-            1: optional
-            2: optional
-            3: absent
         definition
             Currently active operational range of the Ground Station.
-        fixed 8
+        element 8
             unsigned quantity 1 0 "NM"
         remark
             Notes:
@@ -238,13 +211,11 @@ items
                 1. Maximum value indicates “maximum value or above”.
 
     RE "Reserved Expansion Field"
-        optional
         definition
             Expansion
         explicit
 
     SP "Special Purpose Field"
-        optional
         definition
             Special Purpose Field
         explicit

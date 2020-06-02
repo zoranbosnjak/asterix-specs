@@ -1,6 +1,4 @@
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
 
 -- |
 -- Module:   	Data.Asterix.Types
@@ -18,11 +16,22 @@ import           GHC.Generics (Generic)
 import           Data.Ratio (Ratio)
 import           Data.Text
 
+type RegisterSize = Int
+type PrimarySize = Int
+type ExtensionSize = Int
+type RepetitionSize = Int
+type FractBits = Int
+
 type Name = Text
 type Title = Text
-type Description = Text
-type Remark = Text
 type UapName = Text
+type Unit = Text
+
+data Documentation = Documentation
+    { docDefinition     :: Maybe Text
+    , docDescription    :: Maybe Text
+    , docRemark         :: Maybe Text
+    } deriving (Generic, Eq, Show)
 
 data Rule a
     = Unspecified
@@ -78,36 +87,24 @@ data Content
     | ContentQuantity
         Signed      -- unsigned/signed
         Number      -- scaling factor
-        Int         -- number for fractional bits
-        Text        -- unit
+        FractBits   -- number for fractional bits
+        Unit        -- unit
         [Constrain]
     deriving (Generic, Eq, Show)
 
-type RegisterSize = Int
-
-data Element
-    = Fixed RegisterSize (Rule Content)
-    | Group [Subitem]
-    | Extended Int Int [Subitem]
-    | Repetitive Int Element
+data Variation
+    = Element RegisterSize (Rule Content)
+    | Group [Item]
+    | Extended PrimarySize ExtensionSize [Item]
+    | Repetitive RepetitionSize Variation
     | Explicit
-    | Compound [Maybe Subitem]
-    | Rfs
+    | Compound [Maybe Item]
     deriving (Generic, Eq, Show)
 
-data Subitem
+data Item
     = Spare RegisterSize
-    | Subitem Name Title (Maybe Description) Element (Maybe Remark)
+    | Item Name Title Variation Documentation
     deriving (Generic, Eq, Show)
-
-data Encoding = Mandatory | Optional | Absent
-    deriving (Generic, Eq, Show, Read)
-
-data Item = Item
-    { itemEncoding  :: Rule Encoding
-    , itemDefinition :: Text
-    , itemSubitem   :: Subitem
-    } deriving (Generic, Eq, Show)
 
 data Uap
     = Uap [Maybe Name]
@@ -122,5 +119,6 @@ data Asterix = Asterix
     , astPreamble   :: Maybe Text
     , astCatalogue  :: [Item]
     , astUap        :: Uap
+    -- TODO: encoding rules
     } deriving (Generic, Eq, Show)
 

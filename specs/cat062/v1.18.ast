@@ -7,15 +7,14 @@ preamble
 items
 
     010 "Data Source Identifier"
-        mandatory
         definition
             Identification of the system sending the data
-        subitems
+        items
             SAC "System Area Code"
-                fixed 8
+                element 8
                     raw
             SIC "System Identification code"
-                fixed 8
+                element 8
                     raw
         remark
             Note:
@@ -23,51 +22,47 @@ items
                   EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
 
     015 "Service Identification"
-        optional
         definition
             Identification of the service provided to one or more users.
-        fixed 8
+        element 8
             raw
 
     040 "Track Number"
-        mandatory
         definition
             Identification of a track
-        fixed 16
+        element 16
             raw
 
     060 "Track Mode 3/A Code"
-        optional
         definition
             Mode-3/A code converted into octal representation.
-        subitems
+        items
             V "validated"
-                fixed 1
+                element 1
                     table
                         0: Code validated
                         1: Code not validated
             G "garbled"
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Garbled code
             CH "Change in Mode 3/A"
-                fixed 1
+                element 1
                     table
                         0: No Change
                         1: Mode 3/A has changed
             spare 1
             ABCD "Mode-3/A reply in octal representation"
-                fixed 12
+                element 12
                     raw
 
     070 "Time Of Track Information"
-        mandatory
         definition
             Absolute time stamping of the information provided
             in the track message, in the form of elapsed time since
             last mid night, expressed as UTC.
-        fixed 24
+        element 24
             unsigned quantity 1 7 "s"
         remark
             Notes:
@@ -76,27 +71,26 @@ items
                 2. The time is reset to zero at every midnight.
 
     080 "Track Status"
-        mandatory
         definition
             Status of a track.
         extended 8 8
             MON ""
-                fixed 1
+                element 1
                     table
                         0: Multisensor track
                         1: Monosensor track
             SPI ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: SPI present in the last report received from a sensor capable of decoding this data
             MRH "Most Reliable Height"
-                fixed 1
+                element 1
                     table
                         0: Barometric altitude (Mode C) more reliable
                         1: Geometric altitude more reliable
             SRC "Source of calculated track altitude for I062/130"
-                fixed 3
+                element 3
                     table
                         0: no source
                         1: GNSS
@@ -107,118 +101,118 @@ items
                         6: default height
                         7: multilateration
             CNF ""
-                fixed 1
+                element 1
                     table
                         0: Confirmed track
                         1: Tentative track
             SIM ""
-                fixed 1
+                element 1
                     table
                         0: Actual track
                         1: Simulated track
             TSE ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: last message transmitted to the user for the track
             TSB ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: first message transmitted to the user for the track
             FPC ""
-                fixed 1
+                element 1
                     table
                         0: Not flight-plan correlated
                         1: Flight plan correlated
             AFF ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: ADS-B data inconsistent with other surveillance information
             STP ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Slave Track Promotion
             KOS ""
-                fixed 1
+                element 1
                     table
                         0: Complementary service used
                         1: Background service used
             AMA ""
-                fixed 1
+                element 1
                     table
                         0: track not resulting from amalgamation process
                         1: track resulting from amalgamation process
             MD4 ""
-                fixed 2
+                element 2
                     table
                         0: No Mode 4 interrogation
                         1: Friendly target
                         2: Unknown target
                         3: No reply
             ME ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Military Emergency present in the last report received from a sensor capable of decoding this data
             MI ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Military Identification present in the last report received from a sensor capable of decoding this data
             MD5 ""
-                fixed 2
+                element 2
                     table
                         0: No Mode 5 interrogation
                         1: Friendly target
                         2: Unknown target
                         3: No reply
             CST ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Age of the last received track update is higher than system dependent threshold (coasting)
             PSR ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Age of the last received PSR track update is higher than system dependent threshold
             SSR ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Age of the last received SSR track update is higher than system dependent threshold
             MDS ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Age of the last received Mode S track update is higher than system dependent threshold
             ADS ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Age of the last received ADS-B track update is higher than system dependent threshold
             SUC ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Special Used Code (Mode A codes to be defined in the system to mark a track with special interest)
             AAC ""
-                fixed 1
+                element 1
                     table
                         0: default value
                         1: Assigned Mode A Code Conflict (same discrete Mode A Code assigned to another track)
             SDS ""
-                fixed 2
+                element 2
                     table
                         0: Combined
                         1: Co-operative only
                         2: Non-Cooperative only
                         3: Not defined
             EMS ""
-                fixed 3
+                element 3
                     table
                         0: No emergency
                         1: General emergency
@@ -229,42 +223,42 @@ items
                         6: "Downed" Aircraft
                         7: Undefined
             PFT ""
-                fixed 1
+                element 1
                     table
                         0: No indication
                         1: Potential False Track Indication
             FPLT ""
-                fixed 1
+                element 1
                     table
                         0: Default value
                         1: Track created / updated with FPL data
             DUPT ""
-                fixed 1
+                element 1
                     table
                         0: Default value
                         1: Duplicate Mode 3/A Code
             DUPF ""
-                fixed 1
+                element 1
                     table
                         0: Default value
                         1: Duplicate Flight Plan
             DUPM ""
-                fixed 1
+                element 1
                     table
                         0: Default value
                         1: Duplicate Flight Plan due to manual correlation
             SFC ""
-                fixed 1
+                element 1
                     table
                         0: Default value
                         1: Surface target
             IDD ""
-                fixed 1
+                element 1
                     table
                         0: No indication
                         1: Duplicate Flight-ID
             IEC ""
-                fixed 1
+                element 1
                     table
                         0: Default value
                         1: Inconsistent Emergency Code
@@ -319,29 +313,27 @@ items
                     independent from the value transmitted on I062/080 (MRH).
 
     100 "Calculated Track Position"
-        optional
         definition
             Calculated position in Cartesian co-ordinates with a resolution of
             0.5m, in two's complement form.
-        subitems
+        items
             X "x-coordinate"
-                fixed 24
+                element 24
                     signed quantity 1 1 "m"
             Y "y-coordinate"
-                fixed 24
+                element 24
                     signed quantity 1 1 "m"
 
     105 "Calculated Position In WGS-84 Co-ordinates"
-        optional
         definition
             Calculated Position in WGS-84 Co-ordinates with a resolution of
             :math:`180/2^{25}` degrees.
-        subitems
+        items
             LAT "Latitude"
-                fixed 32
+                element 32
                     signed quantity 180 25 "deg" >= -90 <= 90
             LON "Longitude"
-                fixed 32
+                element 32
                     signed quantity 180 25 "deg" >= -180 < 180
         remark
             Notes:
@@ -349,90 +341,89 @@ items
                 - The LSB provides a resolution at least better than 0.6m.
 
     110 "Mode 5 Data reports & Extended Mode 1 Code"
-        optional
         definition
             Mode 5 Data reports & Extended Mode 1 Code.
         compound
             SUM "Mode 5 Summary"
-                subitems
+                items
                     M5 ""
-                        fixed 1
+                        element 1
                             table
                                 0: No Mode 5 interrogation
                                 1: Mode 5 interrogation
                     ID ""
-                        fixed 1
+                        element 1
                             table
                                 0: No authenticated Mode 5 ID reply
                                 1: Authenticated Mode 5 ID reply
                     DA ""
-                        fixed 1
+                        element 1
                             table
                                 0: No authenticated Mode 5 Data reply or Repor
                                 1: Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply type other than ID)
                     M1 ""
-                        fixed 1
+                        element 1
                             table
                                 0: Mode 1 code not present or not from Mode 5 reply
                                 1: Mode 1 code from Mode 5 reply
                     M2 ""
-                        fixed 1
+                        element 1
                             table
                                 0: Mode 2 code not present or not from Mode 5 reply
                                 1: Mode 2 code from Mode 5 reply
                     M3 ""
-                        fixed 1
+                        element 1
                             table
                                 0: Mode 3 code not present or not from Mode 5 reply
                                 1: Mode 3 code from Mode 5 reply
                     MC ""
-                        fixed 1
+                        element 1
                             table
                                 0: Mode C altitude code not present or not from Mode 5 reply
                                 1: Mode C altitude from Mode 5 reply
                     X "X-pulse from Mode 5 Data reply or Report"
-                        fixed 1
+                        element 1
                             table
                                 0: X-pulse set to zero or no authenticated Data reply or Report received.
                                 1: X-pulse set to one
             PMN "Mode 5 PIN/ National Origin/Mission Code"
-                subitems
+                items
                     spare 2
                     PIN "PIN Code"
-                        fixed 14
+                        element 14
                             raw
                     spare 3
                     NAT "National Origin"
-                        fixed 5
+                        element 5
                             raw
                     spare 2
                     MIS "Mission Code"
-                        fixed 6
+                        element 6
                             raw
             POS "Mode 5 Reported Position"
-                subitems
+                items
                     LAT "Latitude"
-                        fixed 24
+                        element 24
                             signed quantity 180 23 "deg" >= -90 <= 90
                     LON "Longitude"
-                        fixed 24
+                        element 24
                             signed quantity 180 23 "deg" >= -180 < 180
             GA "Mode 5 GNSS-derived Altitude"
-                subitems
+                items
                     spare 1
                     RES "Resolution with which the GNSS-derived Altitude (GA) is reported"
-                        fixed 1
+                        element 1
                             table
                                 0: GA reported in 100 ft increments.
                                 1: GA reported in 25 ft increments.
                     GA "GNSS-derived Altitude of target, expressed as height above WGS 84 ellipsoid."
-                        fixed 14
+                        element 14
                             signed quantity 25 0 "ft" >= -1000
             EM1 "Extended Mode 1 Code in Octal Representation"
-                subitems
+                items
                     spare 4
                     EM1 "Extended Mode 1 reply in octal representation"
-                        fixed 12
+                        element 12
                             raw
             TOS "Time Offset for POS and GA"
                 description
@@ -440,33 +431,33 @@ items
                     The time at which the Mode 5 Reported Position (Subfield #3)
                     and Mode 5 GNSS-derived Altitude (Subfield #4) are valid is given
                     by Time of Day (I048/140) plus Time Offset.
-                fixed 8
+                element 8
                     signed quantity 1 7 "s"
             XP "X Pulse Presence"
-                subitems
+                items
                     spare 3
                     X5 "X-pulse from Mode 5 Data reply or Report"
-                        fixed 1
+                        element 1
                             table
                                 0: X-pulse set to zero or no authenticated Data reply or Report received.
                                 1: X-pulse set to one (present).
                     XC "X-pulse from Mode C reply"
-                        fixed 1
+                        element 1
                             table
                                 0: X-pulse set to zero or no Mode C reply.
                                 1: X-pulse set to one (present).
                     X3 "X-pulse from Mode 3/A reply"
-                        fixed 1
+                        element 1
                             table
                                 0: X-pulse set to zero or no Mode 3/A reply.
                                 1: X-pulse set to one (present).
                     X2 "X-pulse from Mode 2 reply"
-                        fixed 1
+                        element 1
                             table
                                 0: X-pulse set to zero or no Mode 2 reply.
                                 1: X-pulse set to one (present).
                     X1 "X-pulse from Mode 1 reply"
-                        fixed 1
+                        element 1
                             table
                                 0: X-pulse set to zero or no Mode 1 reply.
                                 1: X-pulse set to one (present).
@@ -495,21 +486,19 @@ items
                 8. TOS shall be assumed to be zero if Subfield #6 is not present.
 
     120 "Track Mode 2 Code"
-        optional
         definition
             Mode 2 code associated to the track
-        subitems
+        items
             spare 4
             ABCD "Mode-2 code in octal representation"
-                fixed 12
+                element 12
                     raw
 
     130 "Calculated Track Geometric Altitude"
-        optional
         definition
             Vertical distance between the target and the projection of its position
             on the earth's ellipsoid, as defined by WGS84, in two's complement form.
-        fixed 16
+        element 16
             unsigned quantity 6.25 0 "ft" >= -1500 <= 150000
         remark
             Notes:
@@ -519,17 +508,16 @@ items
                    I062/080 Track Status.
 
     135 "Calculated Track Barometric Altitude"
-        optional
         definition
             Calculated Barometric Altitude of the track, in two's complement form.
-        subitems
+        items
             QNH ""
-                fixed 1
+                element 1
                     table
                         0: No QNH correction applied
                         1: QNH correction applied
             CTB "Calculated Track Barometric Altitude"
-                fixed 15
+                element 15
                     signed quantity 1 2 "FL" >= -15 <= 1500
         remark
             Notes:
@@ -537,11 +525,10 @@ items
                 1) ICAO specifies a range between -10 FL and 1267 FL for Mode C
 
     136 "Measured Flight Level"
-        optional
         definition
             Last valid and credible flight level used to update the track, in two's
             complement form.
-        fixed 16
+        element 16
             signed quantity 1 2 "FL" >= -15 <= 1500
         remark
             Notes:
@@ -554,16 +541,15 @@ items
                 4. This item includes the barometric altitude received from ADS-B.
 
     185 "Calculated Track Velocity (Cartesian)"
-        optional
         definition
             Calculated track velocity expressed in Cartesian co-ordinates,in
             two's complement form.
-        subitems
+        items
             VX ""
-                fixed 16
+                element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8191.75
             VY ""
-                fixed 16
+                element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8191.75
         remark
             Notes:
@@ -572,33 +558,32 @@ items
                   the target.
 
     200 "Mode of Movement"
-        optional
         definition
             Calculated Mode of Movement of a target.
-        subitems
+        items
             TRANS "Transversal Acceleration"
-                fixed 2
+                element 2
                     table
                         0: Constant Course
                         1: Right Turn
                         2: Left Turn
                         3: Undetermined
             LONG "Longitudinal Acceleration"
-                fixed 2
+                element 2
                     table
                         0: Constant Groundspeed
                         1: Increasing Groundspeed
                         2: Decreasing Groundspeed
                         3: Undetermined
             VERT "Transversal Acceleration"
-                fixed 2
+                element 2
                     table
                         0: Level
                         1: Climb
                         2: Descent
                         3: Undetermined
             ADF "Altitude Discrepancy Flag"
-                fixed 1
+                element 1
                     table
                         0: No altitude discrepancy
                         1: Altitude discrepancy
@@ -611,16 +596,15 @@ items
                   other technologies (such as ADS-B).
 
     210 "Calculated Acceleration (Cartesian)"
-        optional
         definition
             Calculated Acceleration of the target expressed in Cartesian co-ordinates,
             in two's complement form.
-        subitems
+        items
             Ax ""
-                fixed 8
+                element 8
                     signed quantity 1 2 "m/s2"
             Ay ""
-                fixed 8
+                element 8
                     signed quantity 1 2 "m/s2"
         remark
             Notes:
@@ -629,10 +613,9 @@ items
                 2. Maximum value means maximum value or above.
 
     220 "Calculated Rate Of Climb/Descent"
-        optional
         definition
             Calculated rate of Climb/Descent of an aircraft in two's complement form.
-        fixed 16
+        element 16
             signed quantity 6.25 0 "ft/min"
         remark
             Notes:
@@ -641,12 +624,11 @@ items
                    indicates a descent.
 
     245 "Target Identification"
-        optional
         definition
             Target (aircraft or vehicle) identification in 8 characters.
-        subitems
+        items
             STI ""
-                fixed 2
+                element 2
                     table
                         0: Callsign or registration downlinked from target
                         1: Callsign not downlinked from target
@@ -654,7 +636,7 @@ items
                         3: Invalid
             spare 6
             CHR "Characters 1-8 (coded on 6 bits each) defining target identification"
-                fixed 48
+                element 48
                     string icao
         remark
             Notes:
@@ -667,24 +649,23 @@ items
                    confusion at end user's side, this item SHALL not be used.
 
     270 "Target Size & Orientation"
-        optional
         definition
             Target size defined as length and width of the detected target, and orientation.
         extended 8 8
             LENGTH "Length"
                 description
                     Length
-                fixed 7
+                element 7
                     unsigned quantity 1 0 "m"
             ORIENTATION "Orientation"
                 description
                     Length
-                fixed 7
+                element 7
                     unsigned quantity 360 7 "deg"
             WIDTH "Width"
                 description
                     Length
-                fixed 7
+                element 7
                     unsigned quantity 1 0 "m"
         remark
             Notes:
@@ -694,59 +675,58 @@ items
                 2. When the length only is sent, the largest dimension is provided.
 
     290 "System Track Update Ages"
-        optional
         definition
             Ages of the last plot/local track/target report update for each sensor type.
         compound
             TRK ""
                 description
                     Actual track age since occurence
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 255/4
             PSR ""
                 description
                     Age of the last primary detection used to update the track
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             SSR ""
                 description
                     Age of the last secondary detection used to update the track
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MDS ""
                 description
                     Age of the last Mode S detection used to update the track
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             ADS ""
                 description
                     Age of the last ADS-C report used to update the track
-                fixed 16
+                element 16
                     unsigned quantity 1 2 "s" <= 16383.75
             ES ""
                 description
                     Age of the last 1090 Extended Squitter ADS-B report used to update the track
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             VDL ""
                 description
                     Age of the last VDL Mode 4 ADS-B report used to update the track
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             UAT ""
                 description
                     Age of the last UAT ADS-B report used to update the track
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             LOP ""
                 description
                     Age of the last magnetic loop detection
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MLT ""
                 description
                     Age of the last MLT detection
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
         remark
             Notes:
@@ -761,7 +741,6 @@ items
                 4. Maximum value means maximum value or above.
 
     295 "Track Data Ages"
-        optional
         definition
             Ages of the data provided.
         compound
@@ -769,73 +748,73 @@ items
                 description
                     Age of the last valid and credible Mode C code or barometric altitude
                     from ADS-B used to update the track (I062/136).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MD1 "Mode 1 Age"
                 description
                     Age of the last valid and credible Mode 1 code used to update the
                     track (I062/110).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MD2 "Mode 2 Age"
                 description
                     Age of the last valid and credible Mode 2 code used to update the
                     track (I062/120).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MDA "Mode 3/A Age"
                 description
                     Age of the last valid and credible Mode 3/A code used to update the
                     track (I062/060).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MD4 "Mode 4 Age"
                 description
                     Age of the last valid and credible Mode 4 code used to update the
                     track.
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MD5 "Mode 5 Age"
                 description
                     Age of the last valid and credible Mode 5 code used to update the
                     track (I062/110).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MHG "Magnetic Heading Age"
                 description
                     Age of the DAP "Magnetic Heading"
                     in item 062/380 (Subfield #3).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             IAS "Indicated Airspeed / Mach Nb age"
                 description
                     Age of the DAP "Indicated Airspeed/Mach Number"
                     in item 062/380 (Subfield #4).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             TAS "True Airspeed Age"
                 description
                     Age of the DAP "True Airspeed"
                     in item 062/380 (Subfield #5).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             SAL "Selected Altitude Age"
                 description
                     Age of the DAP "Selected Altitude"
                     in item 062/380 (Subfield #6).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             FSS "Final State Selected Altitude Age"
                 description
                     Age of the DAP "Final State Selected Altitude Age"
                     in item 062/380 (Subfield #7).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             TID "Trajectory Intent Age"
                 description
                     Age of the DAP "Trajectory Intent"
                     in item 062/380 (Subfield #8).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             COM "Communication/ACAS Capability and Flight Status Age"
                 description
@@ -843,119 +822,119 @@ items
                     "Communication/ACAS
                     Capability and Flight Status"
                     in item 062/380 (Subfield #10).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             SAB "Status Reported by ADS-B Age"
                 description
                     Age of the DAP "Status Reported
                     by ADS-B"
                     in item 062/380 (Subfield #11).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             ACS "ACAS Resolution Advisory Report Age"
                 description
                     Age of the DAP "ACAS Resolution
                     Advisory Report"
                     in item 062/380 (Subfield #12).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             BVR "Barometric Vertical Rate Age"
                 description
                     Age of the DAP "Barometric
                     Vertical Rate"
                     in item 062/380 (Subfield #13).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             GVR "Geometrical Vertical Rate Age"
                 description
                     Age of the DAP "Geometrical
                     Vertical Rate"
                     in item 062/380 (Subfield #14).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             RAN "Roll Angle Age"
                 description
                     Age of the DAP "Roll Angle"
                     in item 062/380 (Subfield #15).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             TAR "Track Angle Rate Age"
                 description
                     Age of the DAP "Track Angle
                     Rate" in item 062/380 (Subfield #16).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             TAN "Track Angle Age"
                 description
                     Age of the DAP "Track Angle"
                     in item 062/380 (Subfield #17).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             GSP "Ground Speed Age"
                 description
                     Age of the DAP "Ground Speed" in item 062/380 (Subfield #18).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             VUN "Velocity Uncertainty Age"
                 description
                     Age of the DAP "Velocity
                     Uncertainty" in item 062/380 (Subfield #19).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MET "Meteorological Data Age"
                 description
                     Age of the DAP "Meteorological
                     Data" in item 062/380 (Subfield #20).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             EMC "Emitter Category Age"
                 description
                     Age of the DAP "Emitter Category"
                     in item 062/380 (Subfield #21).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             POS "Position Age"
                 description
                     Age of the DAP "Position"
                     in item 062/380 (Subfield #23).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             GAL "Geometric Altitude Age"
                 description
                     Age of the DAP "Geometric
                     Altitude" in item 062/380 (Subfield #24).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             PUN "Position Uncertainty Age"
                 description
                     Age of the DAP "Position
                     Uncertainty" in item 062/380 (Subfield #25).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MB "Mode S MB Data Age"
                 description
                     Age of the DAP "Mode S MB
                     Data" in item 062/380 (Subfield #22).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             IAR "Indicated Airspeed Data Age"
                 description
                     Age of the DAP "Indicated
                     Airspeed" in item 062/380 (Subfield #26).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             MAC "Mach Number Data Age"
                 description
                     Age of the DAP "Mach Number"
                     in item 062/380 (Subfield #27).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
             BPS "Barometric Pressure Setting Data Age"
                 description
                     Age of the DAP "Barometric
                     Pressure Setting" in item 062/380
                     (Subfield #28).
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "s" <= 63.75
         remark
             Notes:
@@ -969,10 +948,9 @@ items
                    measured
 
     300 "Vehicle Fleet Identification"
-        optional
         definition
             Vehicle fleet identification number.
-        fixed 8
+        element 8
             table
                 0: Unknown
                 1: ATC equipment maintenance
@@ -993,72 +971,71 @@ items
                 16: Flyco (follow me)
 
     340 "Measured Information"
-        optional
         definition
             All measured data related to the last report used to update the track.
             These data are not used for ADS-B.
         compound
             SID "Sensor Identification"
-                subitems
+                items
                     SAC "System Area Code"
-                        fixed 8
+                        element 8
                             raw
                     SIC "System Identification code"
-                        fixed 8
+                        element 8
                             raw
             POS "Measured Position"
-                subitems
+                items
                     RHO "Measured distance"
-                        fixed 16
+                        element 16
                             unsigned quantity 1 8 "NM" <= 256
                     THETA "Measured azimuth"
-                        fixed 16
+                        element 16
                             unsigned quantity 360 16 "deg"
             HEIGHT "Measured 3-D Height"
-                fixed 16
+                element 16
                     unsigned quantity 25 0 "ft"
             MDC ""
-                subitems
+                items
                     V ""
-                        fixed 1
+                        element 1
                             table
                                 0: Code validated
                                 1: Code not validated
                     G ""
-                        fixed 1
+                        element 1
                             table
                                 0: Default
                                 1: Garbled code
                     LMC ""
                         description
                             Last Measured Mode C Code, in two's complement form
-                        fixed 14
+                        element 14
                             signed quantity 1 2 "FL" >= -12 <= 1270
             MDA ""
-                subitems
+                items
                     V ""
-                        fixed 1
+                        element 1
                             table
                                 0: Code validated
                                 1: Code not validated
                     G ""
-                        fixed 1
+                        element 1
                             table
                                 0: Default
                                 1: Garbled code
                     L ""
-                        fixed 1
+                        element 1
                             table
                                 0: MODE 3/A code as derived from the reply of the transponder,
                                 1: MODE 3/A code as provided by a sensor local tracker.
                     spare 1
                     ABCD "Mode-3/A reply under the form of 4 digits in octal representation"
-                        fixed 12
+                        element 12
                             raw
             TYP ""
-                subitems
+                items
                     TYP ""
-                        fixed 3
+                        element 3
                             table
                                 0: No detection
                                 1: Single PSR detection
@@ -1069,17 +1046,17 @@ items
                                 6: ModeS All-Call + PSR
                                 7: ModeS Roll-Call +PSR
                     SIM ""
-                        fixed 1
+                        element 1
                             table
                                 0: Actual target report
                                 1: Simulated target report
                     RAB ""
-                        fixed 1
+                        element 1
                             table
                                 0: Report from target transponder
                                 1: Report from field monitor (item transponder)
                     TST ""
-                        fixed 1
+                        element 1
                             table
                                 0: Real target report
                                 1: Test target report
@@ -1097,12 +1074,11 @@ items
                    between plot and sensor local track MODE 3/A code information.
 
     380 "Aircraft Derived Data"
-        optional
         definition
             Data derived directly by the aircraft.
         compound
             ADR "Target address"
-                fixed 24
+                element 24
                     raw
             ID "Target Identification"
                 description
@@ -1110,113 +1086,113 @@ items
                     identification when flight plan is available or the registration
                     marking when no flight plan is available. Coding rules are
                     provided in [3] Section 3.1.2.9.1.2 and Table 3-9"
-                fixed 48
+                element 48
                     raw
             MHG "Magnetic Heading"
-                fixed 16
+                element 16
                     unsigned quantity 360 16 "deg"
             IAS "Indicated Airspeed/Mach No"
-                subitems
+                items
                     IM ""
-                        fixed 1
+                        element 1
                             table
                                 0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
                                 1: Air Speed = Mach, LSB (Bit-1) = 0.001
                     IAS ""
-                        fixed 15
+                        element 15
                             case 380/IAS/IM
                                 0:
                                     unsigned quantity 1 14 "NM/s"
                                 1:
                                     unsigned quantity 0.001 0 "mach"
             TAS "True Air Speed"
-                fixed 16
+                element 16
                     unsigned quantity 1 0 "kt" >= 0 <= 2046
             SAL "Selected Altitude"
-                subitems
+                items
                     SAS ""
-                        fixed 1
+                        element 1
                             table
                                 0: No source information provided
                                 1: Source information provided
                     SRC ""
-                        fixed 2
+                        element 2
                             table
                                 0: Unknown
                                 1: Aircraft Altitude
                                 2: FCU/MCP Selected Altitude
                                 3: FMS Selected Altitude
                     ALT "Altitude in two's complement form"
-                        fixed 13
+                        element 13
                             signed quantity 25 0 "ft" >= -1300 <= 100000
             FSS "Final State Selected Altitude"
-                subitems
+                items
                     MV ""
                         description
                             Manage Vertical Mode
-                        fixed 1
+                        element 1
                             table
                                 0: Not active
                                 1: Active
                     AH ""
                         description
                             Altitude Hold
-                        fixed 1
+                        element 1
                             table
                                 0: Not active
                                 1: Active
                     AM ""
                         description
                             Approach Mode
-                        fixed 1
+                        element 1
                             table
                                 0: Not active
                                 1: Active
                     Altitude "Altitude in two's complement form"
-                        fixed 13
+                        element 13
                             signed quantity 25 0 "ft" >= -1300 <= 100000
             TIS "Trajectory Intent Status"
                 extended 8 8
                     NAV ""
-                        fixed 1
+                        element 1
                             table
                                 0: Trajectory Intent Data is available for this aircraft
                                 1: Trajectory Intent Data is not available for this aircraft
                     NVB ""
-                        fixed 1
+                        element 1
                             table
                                 0: Trajectory Intent Data is valid
                                 1: Trajectory Intent Data is not valid
                     spare 5
             TID "Trajectory Intent Data"
-                repetitive 1
-                    subitems
+                repetitive 8
+                    items
                         TCA ""
-                            fixed 1
+                            element 1
                                 table
                                     0: TCP number available
                                     1: TCP number not available
                         NC ""
-                            fixed 1
+                            element 1
                                 table
                                     0: TCP compliance
                                     1: TCP non-compliance
                         TCPNumber ""
                             description
                                 Trajectory Change Point number
-                            fixed 6
+                            element 6
                                 raw
                         Altitude "Altitude in two's complement form"
-                            fixed 16
+                            element 16
                                 signed quantity 10 0 "ft" >= -1500 <= 150000
                         Latitude "In WGS.84 in rwo's complementde in two's complement."
-                            fixed 24
+                            element 24
                                 unsigned quantity 180 23 "deg" >= -90 <= 90
                         Longitude "In WGS.84 in rwo's complementde in two's complement."
-                            fixed 24
+                            element 24
                                 unsigned quantity 180 23 "deg" >= -180 < 180
                         PT "Point Type"
-                            fixed 4
+                            element 4
                                 table
                                     0: Unknown
                                     1: Fly by waypoint (LT)
@@ -1231,7 +1207,7 @@ items
                                     10: Cross-over altitude (VT)
                                     11: Transition altitude (VT)
                         TD ""
-                            fixed 2
+                            element 2
                                 table
                                     0: N/A
                                     1: Turn right
@@ -1240,25 +1216,25 @@ items
                         TRA ""
                             description
                                 Turn Radius Availability
-                            fixed 1
+                            element 1
                                 table
                                     0: TTR not available
                                     1: TTR available
                         TOA ""
-                            fixed 1
+                            element 1
                                 table
                                     0: TOV available
                                     1: TOV not available
                         TOV "Time Over Point"
-                            fixed 24
+                            element 24
                                 unsigned quantity 1 0 "s"
                         TTR "TCP Turn radius"
-                            fixed 16
+                            element 16
                                 unsigned quantity 0.01 0 "Nm" >= 0 <= 655.35
             COM "Communications/ACAS Capability and Flight Status"
-                subitems
+                items
                     COM "Communications capability of the transponder"
-                        fixed 3
+                        element 3
                             table
                                 0: No communications capability (surveillance only)
                                 1: Comm. A and Comm. B capability
@@ -1269,7 +1245,7 @@ items
                                 6: Not assigned
                                 7: Not assigned
                     STAT "Flight Status"
-                        fixed 3
+                        element 3
                             table
                                 0: No alert, no SPI, aircraft airborne
                                 1: No alert, no SPI, aircraft on ground
@@ -1281,57 +1257,57 @@ items
                                 7: Unknown or not yet extracted
                     spare 2
                     SSC "Specific service capability"
-                        fixed 1
+                        element 1
                             table
                                 0: No
                                 1: Yes
                     ARC "Altitude reporting capability"
-                        fixed 1
+                        element 1
                             table
                                 0: 100 ft resolution
                                 1: 25 ft resolution
                     AIC "Aircraft identification capability"
-                        fixed 1
+                        element 1
                             table
                                 0: No
                                 1: Yes
                     B1A "BDS 1,0 bit 16"
-                        fixed 1
+                        element 1
                             raw
                     B1B "BDS BDS 1,0 bits 37/40"
-                        fixed 4
+                        element 4
                             raw
             SAB "Status reported by ADS-B"
-                subitems
+                items
                     AC ""
-                        fixed 2
+                        element 2
                             table
                                 0: unknown
                                 1: ACAS not operational
                                 2: ACAS operational
                                 3: invalid
                     MN ""
-                        fixed 2
+                        element 2
                             table
                                 0: unknown
                                 1: Multiple navigational aids not operating
                                 2: Multiple navigational aids operating
                                 3: invalid
                     DC ""
-                        fixed 2
+                        element 2
                             table
                                 0: unknown
                                 1: Differential correction
                                 2: No differential correction
                                 3: invalid
                     GBS ""
-                        fixed 1
+                        element 1
                             table
                                 0: Transponder Ground Bit not set or unknown
                                 1: Transponder Ground Bit set
                     spare 6
                     STAT "Flight Status"
-                        fixed 3
+                        element 3
                             table
                                 0: No emergency
                                 1: General emergency
@@ -1348,27 +1324,27 @@ items
                     report and threat identity data.
                     (MB Data) 56-bit message
                     conveying Mode S Comm B message data of BDS Register 3,0
-                fixed 56
+                element 56
                     raw
             BVR "Barometric Vertical Rate"
                 description
                     Barometric Vertical Rate in two's complement form
-                fixed 16
+                element 16
                     signed quantity 6.25 0 "ft/min"
             GVR "Geometric Vertical Rate"
                 description
                     Geometric Vertical Rate in two's complement form
-                fixed 16
+                element 16
                     signed quantity 6.25 0 "ft/min"
             RAN "Roll Angle"
                 description
                     Roll Angle in two's complement form
-                fixed 16
+                element 16
                     signed quantity 0.01 0 "deg" >= -180 <= 180
             TAR "Track Angle Rate"
-                subitems
+                items
                     TI ""
-                        fixed 2
+                        element 2
                             table
                                 0: Not available
                                 1: Left
@@ -1376,57 +1352,57 @@ items
                                 3: Straight
                     spare 6
                     ROT "Rate of Turn in two's complement form"
-                        fixed 7
+                        element 7
                             signed quantity 1 2 "deg/s" >= -15 <= 15
                     spare 1
             TAN "Track Angle"
-                fixed 16
+                element 16
                     unsigned quantity 360 16 "deg"
             GSP "Ground Speed"
                 description
                     Ground Speed in two's complement form referenced to WGS84
-                fixed 16
+                element 16
                     signed quantity 1 14 "NM/s" >= -2 < 2
             VUN "Velocity Uncertainty"
-                fixed 8
+                element 8
                     raw
             MET "Meteorogical Data"
-                subitems
+                items
                     WS "Wind Speed Valid Flag"
-                        fixed 1
+                        element 1
                             table
                                 0: Not valid Wind Speed
                                 1: Valid Wind Speed
                     WD "Wind Direction Valid Flag"
-                        fixed 1
+                        element 1
                             table
                                 0: Not valid Wind Direction
                                 1: Valid Wind Direction
                     TMP "Temperature Valid Flag"
-                        fixed 1
+                        element 1
                             table
                                 0: Not valid Temperature
                                 1: Valid Temperature
                     TRB "Turbolence Valid Flag"
-                        fixed 1
+                        element 1
                             table
                                 0: Not valid Turbulence
                                 1: Valid Turbulence
                     spare 4
                     WS_D "Wind Speed"
-                        fixed 16
+                        element 16
                             unsigned quantity 1 0 "kt" >= 0 <= 300
                     WD_D "Wind Direction"
-                        fixed 16
+                        element 16
                             unsigned quantity 1 0 "deg" >= 1 <= 360
                     TMP_D "Temperature in degrees celsius"
-                        fixed 16
+                        element 16
                             signed quantity 1 2 "degC" >= -100 <= 100
                     TRB_D "Turbulence"
-                        fixed 8
+                        element 8
                             unsigned integer >= 0 <= 15
             EMC "Emitter Category"
-                fixed 8
+                element 8
                     table
                         1: light aircraft =< 7000 kg
                         2: reserved
@@ -1453,47 +1429,47 @@ items
                         23: reserved
                         24: reserved
             POS "Position"
-                subitems
+                items
                     Latitude "In WGS.84 in two's complement form."
-                        fixed 24
+                        element 24
                             signed quantity 180 23 "deg" >= -90 <= 90
                     Longitude "In WGS.84 in two's complement form."
-                        fixed 24
+                        element 24
                             signed quantity 180 23 "deg" >= -180 < 180
                 remark
                     This corresponds to a resolution of at least 2.4 meters.
             GAL "Geometric Altitude"
-                fixed 16
+                element 16
                     signed quantity 6.25 0 "ft" >= -1500 <= 150000
             PUN "Position Uncertainty"
-                subitems
+                items
                     spare 4
                     PUN "Position Uncertainty"
-                        fixed 4
+                        element 4
                             raw
             MB "MODE S MB DATA"
-                repetitive 1
-                    subitems
+                repetitive 8
+                    items
                         MBdata "56 bit message conveying Mode S B message data"
-                            fixed 56
+                            element 56
                                 raw
                         BDS1 "Comm B data Buffer Store 1 Address"
-                            fixed 4
+                            element 4
                                 raw
                         BDS2 "Comm B data Buffer Store 2 Address"
-                            fixed 4
+                            element 4
                                 raw
             IAR "Indicated Airspeed"
-                fixed 16
+                element 16
                     signed quantity 1 0 "kt" >= 0 <= 1100
             MAC "Mach Number"
-                fixed 16
+                element 16
                     signed quantity 0.008 0 "Mach" >= 0 <= 4.096
             BPS "Barometric Pressure Setting (derived from Mode S BDS 4,0)"
-                subitems
+                items
                     spare 4
                     BPS ""
-                        fixed 12
+                        element 12
                             unsigned quantity 0.1 0 "mb" >= 0 <= 409.5
         remark
             Notes:
@@ -1518,25 +1494,24 @@ items
                 14. BPS is the barometric pressure setting of the aircraft minus 800 mb.
 
     390 "Flight Plan Related Data"
-        optional
         definition
             All flight plan related information, provided by ground-based systems.
         compound
             TAG "FPPS Identification Tag"
-                subitems
+                items
                     SAC "System Area Code"
-                        fixed 8
+                        element 8
                             raw
                     SIC "System Identification code"
-                        fixed 8
+                        element 8
                             raw
             CSN "Callsign"
-                fixed 56
+                element 56
                     string ascii
             IFI "IFPS_FLIGHT_ID"
-                subitems
+                items
                     TYP ""
-                        fixed 2
+                        element 2
                             table
                                 0: Plan Number
                                 1: Unit 1 internal flight number
@@ -1544,76 +1519,76 @@ items
                                 3: Unit 3 internal flight number
                     spare 3
                     NBR "Number from 0 to 99 999 999"
-                        fixed 27
+                        element 27
                             unsigned integer >= 0 <= 99999999
             FCT "Flight Category"
-                subitems
+                items
                     GATOAT ""
-                        fixed 2
+                        element 2
                             table
                                 0: Unknown
                                 1: General Air Traffic
                                 2: Operational Air Traffic
                                 3: Not applicable
                     FR1FR2 ""
-                        fixed 2
+                        element 2
                             table
                                 0: Instrument Flight Rules
                                 1: Visual Flight Rules
                                 2: Not applicable
                                 3: Controlled Visual Flight Rules
                     RVSM ""
-                        fixed 2
+                        element 2
                             table
                                 0: Unknown
                                 1: Approved
                                 2: Exempt
                                 3: Not Approved
                     HPR ""
-                        fixed 1
+                        element 1
                             table
                                 0: Normal Priority Flight
                                 1: High Priority Flight
                     spare 1
             TAC "Type of Aircraft"
-                fixed 32
+                element 32
                     string ascii
             WTC "Wake Turbulence Category"
-                fixed 8
+                element 8
                     string ascii
             DEP "Departure Airport"
-                fixed 32
+                element 32
                     string ascii
             DST "Destination Airport"
-                fixed 32
+                element 32
                     string ascii
             RDS "Runway Designation"
-                subitems
+                items
                     NU1 "First number"
-                        fixed 8
+                        element 8
                             raw
                     NU2 "Second number"
-                        fixed 8
+                        element 8
                             raw
                     LTR "Letter"
-                        fixed 8
+                        element 8
                             string ascii
             CFL "Current Cleared Flight Level"
-                fixed 16
+                element 16
                     unsigned quantity 1 2 "FL"
             CTL "Current Control Position"
-                subitems
+                items
                     Centre "8-bit group Identification code"
-                        fixed 8
+                        element 8
                             raw
                     Position "8-bit Control Position identification code"
-                        fixed 8
+                        element 8
                             raw
             TOD "Time of Departure / Arrival"
-                repetitive 1
-                    subitems
+                repetitive 8
+                    items
                         TYP ""
-                            fixed 5
+                            element 5
                                 table
                                     0: Scheduled off-block time
                                     1: Estimated off-block time
@@ -1630,7 +1605,7 @@ items
                                     12: Predicted time to gate
                                     13: Actual on-block time
                         DAY ""
-                            fixed 2
+                            element 2
                                 table
                                     0: Today
                                     1: Yesterday
@@ -1638,35 +1613,35 @@ items
                                     3: Invalid
                         spare 4
                         HOR "Hours"
-                            fixed 5
+                            element 5
                                 unsigned integer >= 0 <= 23
                         spare 2
                         MIN "Minutes"
-                            fixed 6
+                            element 6
                                 unsigned integer >= 0 <= 59
                         AVS "Seconds Available Flag"
-                            fixed 1
+                            element 1
                                 table
                                     0: Seconds available
                                     1: Seconds not available
                         spare 1
                         SEC "Seconds"
-                            fixed 6
+                            element 6
                                 unsigned integer >= 0 <= 59
             AST "Aircraft Stand"
-                fixed 48
+                element 48
                     string ascii
             STS "Stand Status"
-                subitems
+                items
                     EMP ""
-                        fixed 2
+                        element 2
                             table
                                 0: Empty
                                 1: Occupied
                                 2: Unknown
                                 3: Invalid
                     AVL ""
-                        fixed 2
+                        element 2
                             table
                                 0: Available
                                 1: Not available
@@ -1674,24 +1649,24 @@ items
                                 3: Invalid
                     spare 4
             STD "Standard Instrument Departure"
-                fixed 56
+                element 56
                     string ascii
             STA "Standard Instrument Arrival"
-                fixed 56
+                element 56
                     string ascii
             PEM "Pre-Emergency Mode 3/A"
-                subitems
+                items
                     spare 3
                     VA ""
-                        fixed 1
+                        element 1
                             table
                                 0: No valid Mode 3/A available
                                 1: Valid Mode 3/A available
                     ABCD "Mode-3/A reply in octal representation"
-                        fixed 12
+                        element 12
                             raw
             PEC "Pre-Emergency Callsign"
-                fixed 56
+                element 56
                     string ascii
         remark
             Notes:
@@ -1742,53 +1717,52 @@ items
                     with the track (I062/390 Subfield #17)
 
     500 "Estimated Accuracies"
-        optional
         definition
             Overview of all important accuracies
         compound
             APC "Estimated Accuracy Of Track Position (Cartesian)"
-                subitems
+                items
                     X "APC (X-Component)"
-                        fixed 16
+                        element 16
                             unsigned quantity 1 1 "m"
                     Y "APC (Y-Component)"
-                        fixed 16
+                        element 16
                             unsigned quantity 1 1 "m"
             COV "XY covariance component"
-                fixed 16
+                element 16
                     signed quantity 1 1 "m"
             APW "Estimated Accuracy Of Track Position (WGS-84)"
-                subitems
+                items
                     X "APW (Latitude Component)"
-                        fixed 16
+                        element 16
                             unsigned quantity 180 25 "deg"
                     Y "APW (Longitude Component)"
-                        fixed 16
+                        element 16
                             unsigned quantity 180 25 "deg"
             AGA "Estimated Accuracy Of Calculated Track Geometric Altitude"
-                fixed 8
+                element 8
                     unsigned quantity 6.25 0 "ft"
             ABA "Estimated Accuracy Of Calculated Track Barometric Altitude"
-                fixed 8
+                element 8
                     unsigned quantity 1 2 "FL"
             ATW "Estimated Accuracy Of Track Velocity (Cartesian)"
-                subitems
+                items
                     ATVX "ATV (X-Component)"
-                        fixed 8
+                        element 8
                             unsigned quantity 1 2 "m/s"
                     ATVY "ATV (Y-Component)"
-                        fixed 8
+                        element 8
                             unsigned quantity 1 2 "m/s"
             AA "Estimated Accuracy Of Acceleration (Cartesian)"
-                subitems
+                items
                     AAX "AA (X-Component)"
-                        fixed 8
+                        element 8
                             unsigned quantity 1 2 "m/s2"
                     AAY "AA (Y-Component)"
-                        fixed 8
+                        element 8
                             unsigned quantity 1 2 "m/s2"
             ARC "Estimated Accuracy Of Rate Of Climb/Descent"
-                fixed 8
+                element 8
                     unsigned quantity 6.25 0 "ft/min"
         remark
             Notes:
@@ -1804,21 +1778,20 @@ items
                 9. Maximum value means maximum value or above.
 
     510 "Track Status"
-        optional
         definition
             Identification of a system track
         extended 24 24
             MIDENT "MASTER SYSTEM UNIT IDENTIFICATION"
-                fixed 8
+                element 8
                     raw
             MTRACK "MASTER SYSTEM TRACK NUMBER"
-                fixed 15
+                element 15
                     raw
             SIDENT "SLAVE SYSTEM UNIT IDENTIFICATION"
-                fixed 8
+                element 8
                     raw
             STRACK "SLAVE SYSTEM TRACK NUMBER"
-                fixed 15
+                element 15
                     raw
         remark
             Notes:
@@ -1830,13 +1803,11 @@ items
                   track amalgamation.
 
     RE "Reserved Expansion Field"
-        optional
         definition
             Expansion
         explicit
 
     SP "Special Purpose Field"
-        optional
         definition
             Special Purpose Field
         explicit

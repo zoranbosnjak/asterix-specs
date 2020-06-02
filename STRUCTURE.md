@@ -37,32 +37,27 @@ Asterix specifications contain recursive definition of (sub)items.
 
 **Item** is a structure containing:
 
-- encoding rule (mandatory or optional)
-- definition text
-- (sub)item details
-
-**Subitem** is a structure containing:
-
 - name or identifier (String, normaly short)
 - title (Text)
+- definition (Optional Text)
 - description (Optional Text)
-- ItemType
+- Variation
 - remark (Optional Text)
 
-**Subitem** can also be empty (occupying defined number of spare bits).
+**Item** can also be empty (occupying defined number of spare bits).
 
-**ItemType** is one of:
+**Variation** (or **ItemType**) is one of:
 
 - Element (containing number of bits and content definition)
-- Group (containing list of Subitems)
-- Extended (containing list of Subitems and position of FX bits)
+- Group (containing list of Items)
+- Extended (containing list of Items and position of FX bits)
 - Repetitive (containing number of bits for the first part and recursive ItemType definition)
 - Explicit (no further information attached)
-- Compound (containing list of Subitems where some subitems may be missing)
+- Compound (containing list of Items where some items may be missing)
 
 Remark:
 
-> **Subitem** and **ItemType** are defined in terms of mutual recursion.
+> **Item** and **Variation** are defined in terms of mutual recursion.
 
 ## Formal asterix model definition in `haskell` syntax
 
@@ -75,16 +70,27 @@ The rest of the structures definition is either:
 
 See [Wikipedia article][adt] for more information about algebraic data types.
 
-The essence of asterix definition is recursively encoded in `Subitem` and it's `Variation`.
+The essence of asterix definition is recursively encoded in `Item` and it's `Variation`.
 
 ```haskell
 -- Asterix structure definition
 
+type RegisterSize = Int
+type PrimarySize = Int
+type ExtensionSize = Int
+type RepetitionSize = Int
+type FractBits = Int
+
 type Name = Text
 type Title = Text
-type Description = Text
-type Remark = Text
 type UapName = Text
+type Unit = Text
+
+data Documentation = Documentation
+    { docDefinition     :: Maybe Text
+    , docDescription    :: Maybe Text
+    , docRemark         :: Maybe Text
+    }
 
 data Edition = Edition
     { editionMajor :: Int
@@ -97,55 +103,36 @@ data Date = Date
     , dateDay   :: Int
     }
 
-type RegisterSize = Int
-
 data Content
     = Number
     | TableOfValues
     -- some more
 
 data Variation
-
     -- leaf of the structure
-    = Element RegisterSize Content
+    = Element RegisterSize (Rule Content)
 
     -- concatinated subitems, example:
-    -- subitem 010 is concatinated list of subitems SAC and SIC
-    | Group [Subitem]
+    -- item 010 is concatinated list of subitems SAC and SIC
+    | Group [Item]
 
-    -- number of always present bits (ending with FX)
-    -- followed by number of extension bits (ending with FX)
-    -- followed by list of subitems
-    -- FX extension mechanism is in use
-    | Extended Int Int [Subitem]
+    -- extended item with FX extension mechanism
+    | Extended PrimarySize ExtensionSize [Item]
 
-    -- N bytes reserved for size, followed by recursive variation
-    | Repetitive Int Variation
+    -- N bits reserved for REP lengt field, followed by recursive variation
+    | Repetitive RepetitionSize Variation
 
-    -- subitem with explicit size (leaf of the structure)
+    -- item with explicit size
     | Explicit
 
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective
     -- presence bit in the first part is always zero
-    | Compound [Maybe Subitem]
+    | Compound [Maybe Item]
 
-data Subitem
+data Item
     = Spare RegisterSize
-    | Subitem Name Title (Maybe Description) Variation (Maybe Remark)
-
--- Encoding rule
-data Encoding
-    = Mandatory
-    | Optional
-
--- Item is a non-spare subitem,
--- with additional definition text and encoding rule.
-data Item = Item
-    { itemEncoding  :: Encoding
-    , itemDefinition :: Text
-    , itemSubitem   :: Subitem
-    }
+    | Item Name Title Variation Documentation
 
 -- User applicaton profile type
 data Uap

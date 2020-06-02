@@ -65,11 +65,9 @@ let
           ${converter}/bin/converter -f $orig --ast --validate
           cp $orig $base.ast
 
-          echo "convert to .json"
+          echo "convert to .json and pretify to .txt"
           ${converter}/bin/converter --ast --json -f $orig > $base.json
-
-          echo "pretify"
-          ${renderer}/bin/render --script renderer/formats/ast.py render $base.json > $base.txt
+          ${converter}/bin/converter --ast --ast -f $orig > $base.txt
 
           echo "render to minimal .json"
           ${renderer}/bin/render --script renderer/formats/minimal.py render $base.json > $base-minimal.json

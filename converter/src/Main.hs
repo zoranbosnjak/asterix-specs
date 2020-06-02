@@ -4,6 +4,7 @@
 
 module Main where
 
+import           Control.Monad
 import           Options.Applicative as Opt
 import qualified Data.Text as T
 import qualified Data.Text.IO
@@ -13,7 +14,7 @@ import qualified Data.ByteString as BS
 import           Data.Maybe
 
 import           Data.Asterix
-import           Data.Asterix.Validation (validationErrors)
+import           Data.Asterix.Validation (validate, isValid)
 
 data Input
     = FileInput FilePath
@@ -56,46 +57,43 @@ options = Options
 main :: IO ()
 main = do
     opt <- execParser (info (options <**> helper) idm)
-    (s, filename, astDecoder) <- do
+    result <- do
         let (i, astDecoder) = optInput opt
         (s, filename) <- case i of
-                FileInput f -> (,) <$> BS.readFile f <*> pure f
-                StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
-        return (s, filename, astDecoder)
+            FileInput f -> (,) <$> BS.readFile f <*> pure f
+            StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
+        return $ astDecoder filename s
 
-    case astDecoder filename s of
+    case result of
         Left e -> die e
         Right asterix -> case optOutput opt of
-            ValidateOnly -> case validationErrors asterix of
+            ValidateOnly -> case validate asterix of
                 [] -> print ("ok" :: String)
                 lst -> do
                     mapM_ (Data.Text.IO.hPutStrLn stderr) lst
                     IO.hPutStrLn stderr ""
                     die "Validation error(s) present!"
             OutputList -> do
-                mapM_ (dumpItem []) (itemSubitem <$> astCatalogue asterix)
-                case validationErrors asterix of
-                    [] -> return ()
-                    _ -> die "Validation error(s) present, run 'validate' for details!"
+                mapM_ (dumpItem []) (astCatalogue asterix)
+                unless (isValid asterix) $ do
+                    die "Validation error(s) present, run 'validate' for details!"
             OutputSyntax astEncoder -> do
                 BS.putStr $ astEncoder asterix
-                case validationErrors asterix of
-                    [] -> return ()
-                    _ -> die "Validation error(s) present, run 'validate' for details!"
+                unless (isValid asterix) $ do
+                    die "Validation error(s) present, run 'validate' for details!"
   where
     dumpItem parent = \case
         Spare _ -> return ()
-        Subitem name _title _dsc element _remark -> do
+        Item name _title variation _doc -> do
             let path = parent ++ [name]
                 next = \case
-                    Fixed size _ -> ("Fixed " <> T.pack (show size), return ())
+                    Element size _ -> ("Element " <> T.pack (show size), return ())
                     Group lst -> ("Group", mapM_ (dumpItem path) lst)
                     Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
                     Repetitive _ var -> ("Repetitive", snd $ next var)
                     Explicit -> ("Explicit", return ())
                     Compound lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
-                    Rfs -> ("Rfs", return ())
-                (details, act) = next element
+                (details, act) = next variation
             Data.Text.IO.putStrLn (showPath path <> ": " <> details)
             act
 

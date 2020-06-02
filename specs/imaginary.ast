@@ -24,15 +24,14 @@ items
             this
             is block comment
         */
-        mandatory
         definition
             Identification of the system sending the data.
-        subitems
+        items
             SAC "System Area Code"
-                fixed 8
+                element 8
                     raw
             SIC "System Identification code"
-                fixed 8
+                element 8
                     raw
         remark
             Note:
@@ -40,104 +39,97 @@ items
                   EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
 
     020 "Target Report Descriptor"
-        mandatory
         definition
             Type and characteristics of the radar data as transmitted by
             a radar station.
         extended 8 8
             TYP ""
-                fixed 1
+                element 1
                     table
                         0: Plot
                         1: Track
             SIM ""
-                fixed 1
+                element 1
                     table
                         0: Plot
                         1: Track
             SSR_PSR "Radar detection in last antenna scan"
-                fixed 2
+                element 2
                     table
                         0: No detection
                         1: Sole primary detection
                         2: Sole secondary detection
                         3: Combined primary and secondary detection
             ANT ""
-                fixed 1
+                element 1
                     table
                         0: Target report from antenna 1
                         1: Target report from antenna 2
             SPI ""
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Special Position Identification
             RAB ""
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Plot or track from a fixed transponder
             TST ""
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Test target indicator
             DS1_DS2 ""
-                fixed 2
+                element 2
                     table
                         0: Default
                         1: Unlawful interference (code 7500)
                         2: Radio-communication failure (code 7600)
                         3: Emergency (code 7700)
             ME ""
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Military emergency
             MI ""
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Military identification
             spare 2
 
     030 ""
-        mandatory
         definition
             Some text...
-        subitems
+        items
             A ""
-                fixed 2
+                element 2
                     unsigned integer
             B ""
-                fixed 6
+                element 6
                     signed integer > 1/2
             C ""
-                fixed 8
+                element 8
                     unsigned integer >= 0 < 100
 
     040 ""
-        case 030/A
-            0: mandatory
-            1: optional
-            2: absent
         definition
             Some text...
-        fixed 8
+        element 8
             raw
 
     050 "Indicated Airspeed/Mach No"
-        optional
         definition
             asfd
-        subitems
+        items
             IM ""
-                fixed 1
+                element 1
                     table
                         0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
                         1: Air Speed = Mach, LSB (Bit-1) = 0.001
             IAS ""
-                fixed 15
+                element 15
                     case 050/IM
                         0:
                             unsigned quantity 1 14 "NM/s"
@@ -145,56 +137,51 @@ items
                             unsigned quantity 0.001 0 "mach"
 
     060 ""
-        optional
         definition
             Example of compound item
         compound
             A ""
-                fixed 8
+                element 8
                     raw
             -
             STR ""
-                fixed 48
+                element 48
                     string icao
             CSN "Callsign"
-                fixed 56
+                element 56
                     string ascii
             I1 ""
-                fixed 8
+                element 8
                     signed quantity 10 2 "s" >= -20 <= 20.1
             I2 ""
-                fixed 8
+                element 8
                     unsigned quantity 10 2 "s" > -20 < 20
 
     071 ""
-        optional
         definition
             Example of repetitive item
-        repetitive 1
-            fixed 8
+        repetitive 8
+            element 8
                 raw
 
     072 ""
-        unspecified
         definition
             Example of repetitive item
-        repetitive 1
-            subitems
+        repetitive 8
+            items
                 A ""
-                    fixed 4
+                    element 4
                         raw
                 B ""
-                    fixed 4
+                    element 4
                         raw
 
     RE "Reserved Expansion Field"
-        optional
         definition
             Expansion
         explicit
 
     SP "Special Purpose Field"
-        optional
         definition
             Special Purpose Field
         explicit
