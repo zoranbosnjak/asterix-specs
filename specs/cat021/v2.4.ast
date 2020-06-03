@@ -11,7 +11,7 @@ items
         definition
             Identification of the operational services available in the aircraft
             while airborne.
-        items
+        group
             RA "TCAS Resolution Advisory active"
                 element 1
                     table
@@ -57,7 +57,7 @@ items
     010 "Data Source Identification"
         definition
             Identification of the ADS-B station providing information.
-        items
+        group
             SAC "System Area Code"
                 element 8
                     raw
@@ -252,7 +252,7 @@ items
     070 "Mode 3/A Code in Octal Representation"
         definition
             Mode-3/A code converted into octal representation.
-        items
+        group
             spare 4
             ABCD "Mode-3/A reply in octal representation"
                 element 12
@@ -299,7 +299,7 @@ items
         definition
             Time at which the latest ADS-B position information was received by
             the ground station, expressed as fraction of the second of the UTC Time.
-        items
+        group
             FSI "Full Second Indication"
                 element 2
                     table
@@ -325,7 +325,7 @@ items
         definition
             Time at which the latest ADS-B velocity information was received by
             the ground station, expressed as fraction of the second of the UTC Time.
-        items
+        group
             FSI "Full Second Indication"
                 element 2
                     table
@@ -444,7 +444,7 @@ items
                     spare 5
             TID "Trajectory Intent Data"
                 repetitive 8
-                    items
+                    group
                         TCA ""
                             element 1
                                 table
@@ -524,7 +524,7 @@ items
     130 "Position in WGS-84 Co-ordinates"
         definition
             Position in WGS-84 Co-ordinates.
-        items
+        group
             LAT "Latitude"
                 element 24
                     signed quantity 180 23 "deg" >= -90 <= 90
@@ -539,7 +539,7 @@ items
     131 "High-Resolution Position in WGS-84 Co-ordinates"
         definition
             Position in WGS-84 Co-ordinates in high resolution.
-        items
+        group
             LAT "Latitude"
                 element 32
                     signed quantity 180 30 "deg" >= -90 <= 90
@@ -585,7 +585,7 @@ items
             The Selected Altitude as provided by the avionics and corresponding
             either to the MCP/FCU Selected Altitude (the ATC cleared altitude
             entered by the flight crew into the avionics) or to the FMS Selected Altitude.
-        items
+        group
             SAS "Source Availability"
                 element 1
                     table
@@ -618,7 +618,7 @@ items
         definition
             The vertical intent value that corresponds with the ATC cleared altitude,
             as derived from the Altitude Control Panel (MCP/FCU).
-        items
+        group
             MV "Manage Vertical Mode"
                 element 1
                     table
@@ -650,7 +650,7 @@ items
     150 "Air Speed"
         definition
             Calculated Air Speed (Element of Air Vector).
-        items
+        group
             IM ""
                 element 1
                     table
@@ -667,7 +667,7 @@ items
     151 "True Airspeed"
         definition
             True Air Speed.
-        items
+        group
             RE "Range Exceeded Indicator"
                 element 1
                     table
@@ -700,7 +700,7 @@ items
     155 "Barometric Vertical Rate"
         definition
             Barometric Vertical Rate, in two’s complement form.
-        items
+        group
             RE "Range Exceeded Indicator"
                 element 1
                     table
@@ -722,7 +722,7 @@ items
     157 "Geometric Vertical Rate"
         definition
             Geometric Vertical Rate, in two’s complement form, with reference to WGS-84.
-        items
+        group
             RE "Range Exceeded Indicator"
                 element 1
                     table
@@ -744,7 +744,7 @@ items
     160 "Airborne Ground Vector"
         definition
             Ground Speed and Track Angle elements of Airborne Ground Vector.
-        items
+        group
             RE "Range Exceeded Indicator"
                 element 1
                     table
@@ -772,7 +772,7 @@ items
         definition
             An integer value representing a unique reference to a track record
             within a particular track file.
-        items
+        group
             spare 4
             TRNUM "Track number"
                 element 12
@@ -781,7 +781,7 @@ items
     165 "Track Angle Rate"
         definition
             Rate of Turn, in two’s complement form.
-        items
+        group
             spare 6
             TAR "Track Angle Rate"
                 element 10
@@ -805,7 +805,7 @@ items
     200 "Target Status"
         definition
             Status of the target
-        items
+        group
             ICF "Intent Change Flag (see Note)"
                 element 1
                     table
@@ -847,7 +847,7 @@ items
     210 "MOPS Version"
         definition
             Identification of the MOPS version used by a/c to supply ADS-B information.
-        items
+        group
             spare 1
             VNS "Version Not Supported"
                 element 1
@@ -919,7 +919,7 @@ items
         definition
             Mode S Comm B data as extracted from the aircraft transponder.
         repetitive 8
-            items
+            group
                 MBDATA "56-bit message conveying Mode S Comm B message data"
                     element 56
                         raw
@@ -940,7 +940,7 @@ items
             Currently active Resolution Advisory (RA), if any, generated by the ACAS
             associated with the transponder transmitting the RA message and threat
             identity data.
-        items
+        group
             TYP "Message Type (= 28 for 1090 ES, version 2)"
                 element 5
                     raw

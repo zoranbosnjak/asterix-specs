@@ -111,7 +111,7 @@ dumpVariation = \case
                         block $ dumpContent a
 
     Group lst -> do
-        tell "items"
+        tell "group"
         block $ mapM_ dumpItem lst
 
     Extended n1 n2 lst -> do
@@ -391,7 +391,7 @@ pElement sc' = do
 
 -- | Parse group of nested items.
 pGroup :: Parser Variation
-pGroup = Group . snd <$> parseList (MC.string "items") pItem
+pGroup = Group . snd <$> parseList (MC.string "group") pItem
 
 -- | Parse 'extended' item.
 pExtended :: Parser Variation

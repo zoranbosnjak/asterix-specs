@@ -9,7 +9,7 @@ items
     010 "Data Source Identifier"
         definition
             Identification of the system from which the data are received
-        items
+        group
             SAC "System Area Code"
                 element 8
                     raw
@@ -127,7 +127,7 @@ items
     041 "Position In WGS-84 Coordinates"
         definition
             Position of a target in WGS-84 Coordinates.
-        items
+        group
             LAT "Latitude"
                 element 32
                     signed quantity 180 25 "deg" >= -90 <= 90
@@ -139,7 +139,7 @@ items
         definition
             Calculated position in Cartesian Coordinates, in two’s complement
             representation.
-        items
+        group
             X "x-coordinate"
                 element 24
                     signed quantity 1 1 "m" >= -4194300 <= 4194300
@@ -150,7 +150,7 @@ items
     050 "Mode-2 Code in Octal Representation"
         definition
             Mode-2 code converted into octal representation.
-        items
+        group
             V "validated"
                 element 1
                     table
@@ -174,7 +174,7 @@ items
     055 "Mode-1 Code in Octal Representation"
         definition
             Mode-1 code converted into octal representation.
-        items
+        group
             V "validated"
                 element 1
                     table
@@ -197,7 +197,7 @@ items
     070 "Mode-3/A Code in Octal Representation"
         definition
             Mode-3/A code converted into octal representation.
-        items
+        group
             V "validated"
                 element 1
                     table
@@ -228,7 +228,7 @@ items
     090 "Flight Level in Binary Representation"
         definition
             Flight Level (Mode S Altitude) converted into binary two's complement representation.
-        items
+        group
             V "validated"
                 element 1
                     table
@@ -263,7 +263,7 @@ items
             Mode-C height in Gray notation as received from the transponder together
             with the confidence level for each reply bit as provided by a MSSR/Mode-S
             station.
-        items
+        group
             V "validated"
                 element 1
                     table
@@ -372,7 +372,7 @@ items
         definition
             An integer value representing a unique reference to a track record
             within a particular track file.
-        items
+        group
             spare 4
             TRN "Track Number"
                 element 12
@@ -430,7 +430,7 @@ items
         definition
             Calculated track velocity expressed in Cartesian Coordinates, in two’s
             complement representation.
-        items
+        group
             Vx ""
                 element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8192
@@ -441,7 +441,7 @@ items
     210 "Calculated Acceleration"
         definition
             Calculated Acceleration of the target, in two’s complement form.
-        items
+        group
             Ax ""
                 element 8
                     signed quantity 1 2 "m/s2" >= -31 <= 31
@@ -462,7 +462,7 @@ items
         definition
             Communications capability of the transponder, capability of the on-board
             ACAS equipment and flight status.
-        items
+        group
             COM "Communications capability of the transponder"
                 element 3
                     table
@@ -511,7 +511,7 @@ items
     245 "Target Identification"
         definition
             Target (aircraft or vehicle) identification in 8 characters.
-        items
+        group
             STI ""
                 element 2
                     table
@@ -533,7 +533,7 @@ items
         definition
             Mode S Comm B data as extracted from the aircraft transponder.
         repetitive 8
-            items
+            group
                 MBData "56-bit message conveying Mode S Comm B message data"
                     element 56
                         raw
@@ -587,7 +587,7 @@ items
     310 "Pre-programmed Message"
         definition
             Number related to a pre-programmed message that can be transmitted by a vehicle.
-        items
+        group
             TRB ""
                 element 1
                     table
@@ -606,7 +606,7 @@ items
         definition
             Overview of Receiver Units, which have contributed to the Target Detection.
         repetitive 8
-            items
+            group
                 BIT1 "TU1/RU1 Contribution"
                     element 1
                         table
@@ -663,7 +663,7 @@ items
             Standard Deviation of Position
         compound
             DOP "DOP of position"
-                items
+                group
                     X "DOP (X-Component)"
                         element 16
                             unsigned quantity 1 2 ""
@@ -674,7 +674,7 @@ items
                         element 16
                             unsigned quantity 1 2 ""
             SDP "Standard Deviation of Position"
-                items
+                group
                     X "SDP (X-Component)"
                         element 16
                             unsigned quantity 1 2 "m"

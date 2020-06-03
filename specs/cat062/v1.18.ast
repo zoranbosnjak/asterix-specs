@@ -9,7 +9,7 @@ items
     010 "Data Source Identifier"
         definition
             Identification of the system sending the data
-        items
+        group
             SAC "System Area Code"
                 element 8
                     raw
@@ -36,7 +36,7 @@ items
     060 "Track Mode 3/A Code"
         definition
             Mode-3/A code converted into octal representation.
-        items
+        group
             V "validated"
                 element 1
                     table
@@ -316,7 +316,7 @@ items
         definition
             Calculated position in Cartesian co-ordinates with a resolution of
             0.5m, in two's complement form.
-        items
+        group
             X "x-coordinate"
                 element 24
                     signed quantity 1 1 "m"
@@ -328,7 +328,7 @@ items
         definition
             Calculated Position in WGS-84 Co-ordinates with a resolution of
             :math:`180/2^{25}` degrees.
-        items
+        group
             LAT "Latitude"
                 element 32
                     signed quantity 180 25 "deg" >= -90 <= 90
@@ -345,7 +345,7 @@ items
             Mode 5 Data reports & Extended Mode 1 Code.
         compound
             SUM "Mode 5 Summary"
-                items
+                group
                     M5 ""
                         element 1
                             table
@@ -387,7 +387,7 @@ items
                                 0: X-pulse set to zero or no authenticated Data reply or Report received.
                                 1: X-pulse set to one
             PMN "Mode 5 PIN/ National Origin/Mission Code"
-                items
+                group
                     spare 2
                     PIN "PIN Code"
                         element 14
@@ -401,7 +401,7 @@ items
                         element 6
                             raw
             POS "Mode 5 Reported Position"
-                items
+                group
                     LAT "Latitude"
                         element 24
                             signed quantity 180 23 "deg" >= -90 <= 90
@@ -409,7 +409,7 @@ items
                         element 24
                             signed quantity 180 23 "deg" >= -180 < 180
             GA "Mode 5 GNSS-derived Altitude"
-                items
+                group
                     spare 1
                     RES "Resolution with which the GNSS-derived Altitude (GA) is reported"
                         element 1
@@ -420,7 +420,7 @@ items
                         element 14
                             signed quantity 25 0 "ft" >= -1000
             EM1 "Extended Mode 1 Code in Octal Representation"
-                items
+                group
                     spare 4
                     EM1 "Extended Mode 1 reply in octal representation"
                         element 12
@@ -434,7 +434,7 @@ items
                 element 8
                     signed quantity 1 7 "s"
             XP "X Pulse Presence"
-                items
+                group
                     spare 3
                     X5 "X-pulse from Mode 5 Data reply or Report"
                         element 1
@@ -488,7 +488,7 @@ items
     120 "Track Mode 2 Code"
         definition
             Mode 2 code associated to the track
-        items
+        group
             spare 4
             ABCD "Mode-2 code in octal representation"
                 element 12
@@ -510,7 +510,7 @@ items
     135 "Calculated Track Barometric Altitude"
         definition
             Calculated Barometric Altitude of the track, in two's complement form.
-        items
+        group
             QNH ""
                 element 1
                     table
@@ -544,7 +544,7 @@ items
         definition
             Calculated track velocity expressed in Cartesian co-ordinates,in
             two's complement form.
-        items
+        group
             VX ""
                 element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8191.75
@@ -560,7 +560,7 @@ items
     200 "Mode of Movement"
         definition
             Calculated Mode of Movement of a target.
-        items
+        group
             TRANS "Transversal Acceleration"
                 element 2
                     table
@@ -599,7 +599,7 @@ items
         definition
             Calculated Acceleration of the target expressed in Cartesian co-ordinates,
             in two's complement form.
-        items
+        group
             Ax ""
                 element 8
                     signed quantity 1 2 "m/s2"
@@ -626,7 +626,7 @@ items
     245 "Target Identification"
         definition
             Target (aircraft or vehicle) identification in 8 characters.
-        items
+        group
             STI ""
                 element 2
                     table
@@ -976,7 +976,7 @@ items
             These data are not used for ADS-B.
         compound
             SID "Sensor Identification"
-                items
+                group
                     SAC "System Area Code"
                         element 8
                             raw
@@ -984,7 +984,7 @@ items
                         element 8
                             raw
             POS "Measured Position"
-                items
+                group
                     RHO "Measured distance"
                         element 16
                             unsigned quantity 1 8 "NM" <= 256
@@ -995,7 +995,7 @@ items
                 element 16
                     unsigned quantity 25 0 "ft"
             MDC ""
-                items
+                group
                     V ""
                         element 1
                             table
@@ -1012,7 +1012,7 @@ items
                         element 14
                             signed quantity 1 2 "FL" >= -12 <= 1270
             MDA ""
-                items
+                group
                     V ""
                         element 1
                             table
@@ -1033,7 +1033,7 @@ items
                         element 12
                             raw
             TYP ""
-                items
+                group
                     TYP ""
                         element 3
                             table
@@ -1092,7 +1092,7 @@ items
                 element 16
                     unsigned quantity 360 16 "deg"
             IAS "Indicated Airspeed/Mach No"
-                items
+                group
                     IM ""
                         element 1
                             table
@@ -1109,7 +1109,7 @@ items
                 element 16
                     unsigned quantity 1 0 "kt" >= 0 <= 2046
             SAL "Selected Altitude"
-                items
+                group
                     SAS ""
                         element 1
                             table
@@ -1126,7 +1126,7 @@ items
                         element 13
                             signed quantity 25 0 "ft" >= -1300 <= 100000
             FSS "Final State Selected Altitude"
-                items
+                group
                     MV ""
                         description
                             Manage Vertical Mode
@@ -1166,7 +1166,7 @@ items
                     spare 5
             TID "Trajectory Intent Data"
                 repetitive 8
-                    items
+                    group
                         TCA ""
                             element 1
                                 table
@@ -1232,7 +1232,7 @@ items
                             element 16
                                 unsigned quantity 0.01 0 "Nm" >= 0 <= 655.35
             COM "Communications/ACAS Capability and Flight Status"
-                items
+                group
                     COM "Communications capability of the transponder"
                         element 3
                             table
@@ -1278,7 +1278,7 @@ items
                         element 4
                             raw
             SAB "Status reported by ADS-B"
-                items
+                group
                     AC ""
                         element 2
                             table
@@ -1342,7 +1342,7 @@ items
                 element 16
                     signed quantity 0.01 0 "deg" >= -180 <= 180
             TAR "Track Angle Rate"
-                items
+                group
                     TI ""
                         element 2
                             table
@@ -1367,7 +1367,7 @@ items
                 element 8
                     raw
             MET "Meteorogical Data"
-                items
+                group
                     WS "Wind Speed Valid Flag"
                         element 1
                             table
@@ -1429,7 +1429,7 @@ items
                         23: reserved
                         24: reserved
             POS "Position"
-                items
+                group
                     Latitude "In WGS.84 in two's complement form."
                         element 24
                             signed quantity 180 23 "deg" >= -90 <= 90
@@ -1442,14 +1442,14 @@ items
                 element 16
                     signed quantity 6.25 0 "ft" >= -1500 <= 150000
             PUN "Position Uncertainty"
-                items
+                group
                     spare 4
                     PUN "Position Uncertainty"
                         element 4
                             raw
             MB "MODE S MB DATA"
                 repetitive 8
-                    items
+                    group
                         MBdata "56 bit message conveying Mode S B message data"
                             element 56
                                 raw
@@ -1466,7 +1466,7 @@ items
                 element 16
                     signed quantity 0.008 0 "Mach" >= 0 <= 4.096
             BPS "Barometric Pressure Setting (derived from Mode S BDS 4,0)"
-                items
+                group
                     spare 4
                     BPS ""
                         element 12
@@ -1498,7 +1498,7 @@ items
             All flight plan related information, provided by ground-based systems.
         compound
             TAG "FPPS Identification Tag"
-                items
+                group
                     SAC "System Area Code"
                         element 8
                             raw
@@ -1509,7 +1509,7 @@ items
                 element 56
                     string ascii
             IFI "IFPS_FLIGHT_ID"
-                items
+                group
                     TYP ""
                         element 2
                             table
@@ -1522,7 +1522,7 @@ items
                         element 27
                             unsigned integer >= 0 <= 99999999
             FCT "Flight Category"
-                items
+                group
                     GATOAT ""
                         element 2
                             table
@@ -1563,7 +1563,7 @@ items
                 element 32
                     string ascii
             RDS "Runway Designation"
-                items
+                group
                     NU1 "First number"
                         element 8
                             raw
@@ -1577,7 +1577,7 @@ items
                 element 16
                     unsigned quantity 1 2 "FL"
             CTL "Current Control Position"
-                items
+                group
                     Centre "8-bit group Identification code"
                         element 8
                             raw
@@ -1586,7 +1586,7 @@ items
                             raw
             TOD "Time of Departure / Arrival"
                 repetitive 8
-                    items
+                    group
                         TYP ""
                             element 5
                                 table
@@ -1632,7 +1632,7 @@ items
                 element 48
                     string ascii
             STS "Stand Status"
-                items
+                group
                     EMP ""
                         element 2
                             table
@@ -1655,7 +1655,7 @@ items
                 element 56
                     string ascii
             PEM "Pre-Emergency Mode 3/A"
-                items
+                group
                     spare 3
                     VA ""
                         element 1
@@ -1721,7 +1721,7 @@ items
             Overview of all important accuracies
         compound
             APC "Estimated Accuracy Of Track Position (Cartesian)"
-                items
+                group
                     X "APC (X-Component)"
                         element 16
                             unsigned quantity 1 1 "m"
@@ -1732,7 +1732,7 @@ items
                 element 16
                     signed quantity 1 1 "m"
             APW "Estimated Accuracy Of Track Position (WGS-84)"
-                items
+                group
                     X "APW (Latitude Component)"
                         element 16
                             unsigned quantity 180 25 "deg"
@@ -1746,7 +1746,7 @@ items
                 element 8
                     unsigned quantity 1 2 "FL"
             ATW "Estimated Accuracy Of Track Velocity (Cartesian)"
-                items
+                group
                     ATVX "ATV (X-Component)"
                         element 8
                             unsigned quantity 1 2 "m/s"
@@ -1754,7 +1754,7 @@ items
                         element 8
                             unsigned quantity 1 2 "m/s"
             AA "Estimated Accuracy Of Acceleration (Cartesian)"
-                items
+                group
                     AAX "AA (X-Component)"
                         element 8
                             unsigned quantity 1 2 "m/s2"
