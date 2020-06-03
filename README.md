@@ -6,6 +6,39 @@ in a parsable format.
 ## Abstract structure
 
 This project assumes speciffic abstract structure for asterix definition.
+Basic elements are **Item** and **Variation**, which are defined
+in terms of mutual recursion.
+
+```
+RegisterSize = Int
+PrimarySize = Int
+ExtensionSize = Int
+RepetitionSize = Int
+
+Name = Text
+Title = Text
+
+Content is one of: ...
+
+Item is one of:
+    * (SpareItem, RegisterSize)
+    * (RegularItem, Name, Title, Variation)
+
+Variation is one of:
+    * (Element, RegisterSize, Content)
+    * (Group, list_of[Item])
+    * (Extended, PrimarySize, ExtensionSize, list_of[Item])
+    * (Repetitive, RepetitionSize, Variation)
+    * (Explicit)
+    * (Compound, list_of[Optional Item])
+
+Catalogue = list_of [Item]
+Uap = list_of [Name]
+```
+
+### Example
+
+![asterix example](/doc/asterix-example.svg.png)
 
 See [structure description][structure] for details.
 

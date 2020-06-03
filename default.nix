@@ -16,6 +16,8 @@ let
 
   deps = import ./publisher/deps.nix { inherit pkgs; };
 
+  shortGitrev = builtins.substring 0 7 gitrev;
+
   drv = pkgs.stdenv.mkDerivation {
     name = "asterix-specs";
     propagatedBuildInputs = deps;
@@ -41,7 +43,7 @@ let
       echo "<html>" >> $ix
       echo "<body>" >> $ix
 
-      echo "Asterix specifications generated from <a href="https://github.com/zoranbosnjak/asterix-specs">repository</a> revision <code>#${gitrev}</code>." >> $ix
+      echo "Asterix specifications generated from <a href="https://github.com/zoranbosnjak/asterix-specs">repository</a> revision <code>#${shortGitrev}</code>." >> $ix
 
       mkdir -p $out/specs
       for level1 in $(find specs/* -maxdepth 1 -type d); do
