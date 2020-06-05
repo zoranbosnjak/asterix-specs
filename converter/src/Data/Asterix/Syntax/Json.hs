@@ -293,8 +293,8 @@ instance FromJSON Asterix  where
 syntax :: Syntax
 syntax = Syntax
     { syntaxDescription = "JSON asterix syntax."
-    , encodeAsterix = Just encoder
-    , decodeAsterix = Just decoder
+    , syntaxEncoder = Just encoder
+    , syntaxDecoder = Just decoder
     }
   where
     encoder = toStrict

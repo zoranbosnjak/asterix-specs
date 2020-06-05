@@ -19,7 +19,6 @@ import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
 import qualified Data.Ratio
-import           Numeric
 import           Formatting as F
 import           Data.Char (toLower)
 import           Data.Text (Text)
@@ -31,47 +30,9 @@ import qualified Text.Megaparsec.Char.Lexer as L
 
 import           Data.Asterix.Types
 import           Data.Asterix.Common
+import           Data.Asterix.Indent
 
 -- | Dump to Text
-
-type Accumulator = State (Int, Text)
-
--- | Dump some line of text to accumulator.
-tell :: Text -> Accumulator ()
-tell s = modify $ \(indent, buffer) ->
-    let spaces = T.pack $ Prelude.take (4*indent) $ repeat ' '
-        lst = [ T.stripEnd (spaces <> x) <> "\n" | x <- T.lines s]
-        line = case s of
-            "" -> T.pack "\n"
-            _ -> mconcat lst
-    in (indent, buffer <> line)
-
--- | Indented block.
-block :: Accumulator a -> Accumulator a
-block act = do
-    modify $ \(a,b) -> (succ a, b)
-    result <- act
-    modify $ \(a,b) -> (pred a, b)
-    return result
-
-showNumber :: Number -> Text
-showNumber = \case
-    NumberZ i -> sformat (int) i
-    NumberQ q -> sformat (int % "/" % int)
-        (Data.Ratio.numerator q) (Data.Ratio.denominator q)
-    NumberR r -> sformat (F.string) (showFFloat Nothing r "")
-
-showConstrain :: Constrain -> Text
-showConstrain = \case
-    EqualTo num -> "== " <> showNumber num
-    NotEqualTo num -> "/= " <> showNumber num
-    GreaterThan num -> "> " <> showNumber num
-    GreaterThanOrEqualTo num -> ">= " <> showNumber num
-    LessThan num -> "< " <> showNumber num
-    LessThanOrEqualTo num -> "<= " <> showNumber num
-
-showName :: [Name] -> Text
-showName = T.intercalate "/"
 
 -- | Dump variation.
 dumpVariation :: Variation -> Accumulator ()
@@ -175,8 +136,8 @@ dumpAsterix asterix = do
             tell "preamble"
             block $ do
                 tell preamble
-    tell ""
 
+    tell ""
     tell "items"
     block $ forM_ (astCatalogue asterix) $ \item -> do
         tell ""
@@ -493,11 +454,11 @@ pAsterix = Asterix
 syntax :: Syntax
 syntax = Syntax
     { syntaxDescription = "Compact asterix syntax."
-    , encodeAsterix = Just encoder
-    , decodeAsterix = Just decoder
+    , syntaxEncoder = Just encoder
+    , syntaxDecoder = Just decoder
     }
   where
-    encoder = encodeUtf8 . snd . flip execState (0,"") . dumpAsterix
+    encoder = encodeUtf8 . renderBuffer 4 . snd . flip execState (0,[]) . dumpAsterix
     decoder filename s = first errorBundlePretty $
         parse pAsterix filename (decodeUtf8 s)
 
