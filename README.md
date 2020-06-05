@@ -60,6 +60,9 @@ in another project.
 See `renderer` as an example `python` application, extracting information out
 of the `.json` format.
 
+## XML format (.xml)
+
+XML is well supported standard file format.
 
 # converter
 
