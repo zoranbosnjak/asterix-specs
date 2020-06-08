@@ -11,7 +11,9 @@ import qualified Data.Text.IO
 import           System.IO as IO
 import           System.Exit (die)
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BS8
 import           Data.Maybe
+import           Crypto.Hash
 
 import           Data.Asterix
 import           Data.Asterix.Validation (validate, isValid)
@@ -22,6 +24,7 @@ data Input
 
 data Output
     = ValidateOnly
+    | Sha1
     | OutputList
     | OutputSyntax EncodeAsterix
 
@@ -47,8 +50,10 @@ options = Options
         decoderOpt = foldr (<|>) empty $ do
             (shortName, description, f) <- availableDecoders
             return $ flag' f (long shortName <> help ("input syntax: " ++ description))
-    outputOpts = (validateOnly <|> outList <|> (fmap OutputSyntax astEncoder)) where
+    outputOpts = (validateOnly <|> fp_sha1 <|> outList <|> (fmap OutputSyntax astEncoder))
+      where
         validateOnly = flag' ValidateOnly ( long "validate" <> help "validate only" )
+        fp_sha1 = flag' Sha1 ( long "sha1" <> help "show sha1 fingerprint" )
         outList = flag' OutputList ( long "list" <> help "list output" )
         astEncoder = foldr (<|>) empty $ do
             (shortName, description, f) <- availableEncoders
@@ -73,6 +78,12 @@ main = do
                     mapM_ (Data.Text.IO.hPutStrLn stderr) lst
                     IO.hPutStrLn stderr ""
                     die "Validation error(s) present!"
+            Sha1 -> do
+                let sha1 :: BS.ByteString -> Digest SHA1
+                    sha1 = hash
+                print $ sha1 $ BS8.pack $ show asterix
+                unless (isValid asterix) $ do
+                    die "Validation error(s) present, run 'validate' for details!"
             OutputList -> do
                 mapM_ (dumpItem []) (astCatalogue asterix)
                 unless (isValid asterix) $ do
