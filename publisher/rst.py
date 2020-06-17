@@ -225,7 +225,7 @@ def renderVariation(variation):
 
     def renderRepetitive():
         rep = variation['rep']
-        tell('Repetitive item, repetition factor {} octet(s).'.format(rep))
+        tell('Repetitive item, repetition factor {} bits.'.format(rep))
         tell('')
         with indent:
             x = renderVariation(variation['variation'])
