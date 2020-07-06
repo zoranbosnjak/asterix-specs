@@ -7,41 +7,41 @@ just to be able to decode/encode, using raw bits."""
 
 import json
 
-from formats.common import getNumber, renderRule, case
+from formats.common import case
 
-def stripElement(element):
-    f = case('element type', element['type'],
-        ('Fixed', lambda: {'size': element['size']}),
+def stripVariation(variation):
+    f = case('variation type', variation['type'],
+        ('Element', lambda: {'size': variation['size']}),
         ('Group', lambda: {
-            'subitems': [stripSubitem(subitem) for subitem in element['subitems']]}),
+            'items': [stripItem(item) for item in variation['items']]}),
         ('Extended', lambda: {
-            'first': element['first'], 'extents': element['extents'],
-            'subitems': [stripSubitem(subitem) for subitem in element['subitems']]}),
+            'first': variation['first'], 'extents': variation['extents'],
+            'items': [stripItem(item) for item in variation['items']]}),
         ('Repetitive', lambda: {
-            'rep': element['rep'],
-            'element': stripElement(element['element'])}),
+            'rep': variation['rep'],
+            'element': stripVariation(variation['variation'])}),
         ('Explicit', lambda: {}),
         ('Compound', lambda: {
-            'subitems': [stripSubitem(subitem) for subitem in element['subitems']]}),
+            'items': [stripItem(item) for item in variation['items']]}),
         )
     d = f()
-    d.update({'type': element['type']})
+    d.update({'type': variation['type']})
     return d
 
-def stripSubitem(subitem):
-    if subitem is None:
+def stripItem(item):
+    if item is None:
         return None
-    if subitem['spare']:
-        return subitem
+    if item['spare']:
+        return item
     return {
         'spare': False,
-        'name': subitem['name'],
-        'element': stripElement(subitem['element']),
+        'name': item['name'],
+        'variation': stripVariation(item['variation']),
     }
 
 def render(s):
     root = json.loads(s)
-    catalogue = [stripSubitem(item['subitem']) for item in root['catalogue']]
+    catalogue = [stripItem(item) for item in root['catalogue']]
     dst = root.copy()
     dst['catalogue'] = catalogue
     return json.dumps(dst, indent=4)

@@ -37,7 +37,7 @@ def render(s):
 
     cat = root['number']
     tell(underline('-', 'Description of standard data items'))
-    [renderItem(cat, item) for item in root['catalogue']]
+    [renderTopItem(cat, item) for item in root['catalogue']]
 
     renderUap(root)
 
@@ -58,30 +58,18 @@ def renderHeader(root):
     tell(root['preamble'])
     tell('')
 
-def renderItem(cat, item):
-    subitem = item['subitem']
+def renderTopItem(cat, item):
     tell('')
-    tell(underline('*', 'I'+'{:03d}'.format(cat)+'/'+subitem['name']+' - ' + subitem['title']))
-
-    def case0():
-        tell('*Encoding rule:* Unspecified')
-    def case1(enc):
-        tell('*Encoding rule:* This item is ``{}``.'.format(enc['rule']))
-    def case2(enc):
-        tell('*Encoding rule:* Presence of this item depends on the value of item ``{}``. ::'.format('/'.join(enc['name'])))
-        tell('')
-        with indent:
-            [tell('{} -> {}'.format(a,b)) for (a,b) in enc['rules']]
-    renderRule(item['encoding'], case0, case1, case2)
+    tell(underline('*', 'I'+'{:03d}'.format(cat)+'/'+item['name']+' - ' + item['title']))
     tell('')
-
     tell('*Definition*: {}'.format(item['definition']))
+    tell('')
     tell('*Structure*: ')
     tell('')
-    renderSubitem(subitem['element'])
+    renderVariation(item['variation'])
     tell('')
-    if subitem['remark']:
-        tell(subitem['remark'])
+    if item['remark']:
+        tell(item['remark'])
 
 def constrainToString(constrain):
     return '{} {}'.format(constrain['type'], str(getNumber(constrain['value'])))
@@ -91,7 +79,7 @@ def bits(n):
         return '1 bit'
     return '{} bits'.format(n)
 
-def renderSubitem(element):
+def renderVariation(variation):
 
     def renderInteger(value):
         tell('- {} integer'.format('signed' if value['signed'] else 'unsigned'))
@@ -125,8 +113,8 @@ def renderSubitem(element):
 
         tell('')
 
-    def renderFixed():
-        n = element['size']
+    def renderElement():
+        n = variation['size']
         tell('- {} [``{}``]'.format(bits(n), '.'*n))
         tell('')
 
@@ -174,28 +162,28 @@ def renderSubitem(element):
             tell('')
             return n
 
-        return renderRule(element['content'], case0, case1, case2)
+        return renderRule(variation['content'], case0, case1, case2)
 
-    def renderMaybeSubitem(subitem):
-        if subitem['spare']:
-            n = subitem['length']
+    def renderMaybeItem(item):
+        if item['spare']:
+            n = item['length']
             tell('``(spare)``')
             tell('')
             tell('- {} [``{}``]'.format(bits(n), '.'*n))
             tell('')
             return n
-        tit = subitem['title']
-        tell('``{}``{}'.format(subitem['name'], ' - *{}*'.format(tit) if tit else ''))
+        tit = item['title']
+        tell('**{}**{}'.format(item['name'], ' - *{}*'.format(tit) if tit else ''))
         tell('')
-        if subitem['description']:
-            tell(' '.join(subitem['description'].splitlines()))
+        if item['description']:
+            tell(' '.join(item['description'].splitlines()))
             tell('')
-        n = renderSubitem(subitem['element'])
-        if subitem['remark']:
+        n = renderVariation(item['variation'])
+        if item['remark']:
             with indent:
                 tell('remark')
                 with indent:
-                    for i in subitem['remark'].strip().splitlines():
+                    for i in item['remark'].strip().splitlines():
                         tell(i)
             tell('')
         return n
@@ -203,13 +191,13 @@ def renderSubitem(element):
     def renderGroup():
         n = 0
         with indent:
-            for subitem in element['subitems']:
-                n += renderMaybeSubitem(subitem)
+            for item in variation['items']:
+                n += renderMaybeItem(item)
         return n
 
     def renderExtended():
-        n1 = element['first']
-        n2 = element['extents']
+        n1 = variation['first']
+        n2 = variation['extents']
         fx = accumulate(chain(repeat(n1,1), repeat(n2)))
         nextFx = next(fx)
         tell('Extended item with first part ``{} bits`` long and optional ``{} bits`` extends.'.format(n1, n2))
@@ -217,8 +205,8 @@ def renderSubitem(element):
         n = 0
         terminated = False
         with indent:
-            for subitem in element['subitems']:
-                n += renderMaybeSubitem(subitem)
+            for item in variation['items']:
+                n += renderMaybeItem(item)
                 terminated = False
                 if (n+1) == nextFx:
                     tell('``(FX)``')
@@ -236,11 +224,11 @@ def renderSubitem(element):
         return n
 
     def renderRepetitive():
-        rep = element['rep']
-        tell('Repetitive item, repetition factor {} octet(s).'.format(rep))
+        rep = variation['rep']
+        tell('Repetitive item, repetition factor {} bits.'.format(rep))
         tell('')
         with indent:
-            x = renderSubitem(element['element'])
+            x = renderVariation(variation['variation'])
         return x
 
     def renderExplicit():
@@ -253,15 +241,15 @@ def renderSubitem(element):
         tell('')
         n = 0
         with indent:
-            for subitem in element['subitems']:
-                if subitem is None:
+            for item in variation['items']:
+                if item is None:
                     tell('(empty subitem)')
                     tell('')
                 else:
-                    n += renderMaybeSubitem(subitem)
+                    n += renderMaybeItem(item)
         return n
 
-    return locals()['render'+element['type']]()
+    return locals()['render'+variation['type']]()
 
 def renderUap(root):
     cat = root['number']
@@ -269,9 +257,8 @@ def renderUap(root):
 
     def findItem(name):
         for item in root['catalogue']:
-            subitem = item['subitem']
-            if subitem['name'] == name:
-                return subitem['title']
+            if item['name'] == name:
+                return item['title']
         return '??'
 
     def dumpUap(items):

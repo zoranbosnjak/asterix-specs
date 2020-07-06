@@ -1,6 +1,8 @@
 
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleContexts  #-}
 
 -- |
 -- Module:      Data.Asterix.Validation
@@ -9,13 +11,10 @@
 -- License:     GPL-3
 -- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
 --
--- This module defines validates asterix data types.
+-- This module defines validators for asterix data types.
 --
 
-module Data.Asterix.Validation
-( validationErrors
-, isValid
-) where
+module Data.Asterix.Validation where
 
 import           Control.Monad
 import qualified Data.Text as T
@@ -26,175 +25,234 @@ import           Data.Asterix
 
 type ValidationError = T.Text
 
-fixedSubitemSize :: Asterix -> [Name] -> Maybe RegisterSize
-fixedSubitemSize asterix path = findSubitemByName asterix path >>= \case
-    Spare _ -> Nothing
-    Subitem _ _ _ element _ -> case element of
-        Fixed size _ -> Just size
-        _ -> Nothing
+-- A priori known size.
+class Fixed a where
+    size :: a -> Maybe Int
 
-reportWhen :: Bool -> [Name] -> ValidationError -> [ValidationError]
-reportWhen False _ _ = []
-reportWhen True path msg = [mconcat [showPath path, " -> ", msg]]
+instance Fixed Variation where
+    size (Element n _content) = Just n
+    size (Group items) = sum <$> sequence (fmap size items)
+    size _ = Nothing
 
-reportUnless :: Bool -> [Name] -> ValidationError -> [ValidationError]
-reportUnless condition = reportWhen (not condition)
+instance Fixed Item where
+    size (Spare n) = Just n
+    size (Item _name _title variation _doc) = size variation
 
-isValid :: Asterix -> Bool
-isValid = null . validationErrors
+isFixed :: Fixed a => a -> Bool
+isFixed = isJust . size
 
-validationErrors :: Asterix -> [ValidationError]
-validationErrors asterix = join
-    [ allItemsDefined
-    , join (validateEncoding <$> astCatalogue asterix)
-    , join $ (snd . validateSubitem asterix [] . itemSubitem <$> astCatalogue asterix)
-    , validateUap
-    , validateCat
-    ]
-  where
+-- Bit alignment property.
+class IsAligned a where
+    isAligned :: a -> Bool
 
-    validateCat :: [ValidationError]
-    validateCat = reportUnless (astCategory asterix `elem` [0..255]) ["cat"]
-        "Category number out of range"
+instance IsAligned RegisterSize where
+    isAligned n = (n `mod` 8) == 0
 
-    validateEncoding :: Item -> [ValidationError]
-    validateEncoding item = case itemEncoding item of
-        Unspecified -> []
-        ContextFree encoding -> reportWhen (encoding == Absent) [itemName] "Item can not be 'absent'"
-        Dependent someSubitem rules -> case fixedSubitemSize asterix someSubitem of
-            Nothing -> reportWhen True [itemName] (showPath someSubitem <> " not defined")
-            Just m ->
-                let size = compare (length rules) (2 ^ m)
-                in reportWhen (size == GT) [itemName] "too many encoding variations"
-      where
-        itemName = case itemSubitem item of
-            Spare _ -> ""
-            Subitem name _ _ _ _ -> name
-
-    validateUap :: [ValidationError]
-    validateUap = case astUap asterix of
-        Uap lst -> validateList ["uap"] lst
-        Uaps lst -> join
-            [ reportWhen (length lst /= 2) ["uap"] "expecting 2 uap variations"
-            , do
-                let dupNames = nub x /= x where x = fst <$> lst
-                reportWhen dupNames ["uap"] "duplicated names"
-            , do
-                (uapName, lst') <- lst
-                validateList [uapName] lst'
-            ]
-      where
-        validateList path lst =
-            let x = catMaybes lst
-            in reportWhen (nub x /= x) path "duplicated items"
-
-    allItemsDefined :: [ValidationError]
-    allItemsDefined = join [requiredNotDefined, definedNotRequired, noDups]
-      where
-        required :: [Name]
-        required = catMaybes $ case astUap asterix of
-            Uap lst -> lst
-            Uaps lst -> nub $ join $ fmap snd lst
-
-        defined :: [Name]
-        defined = (itemSubitem <$> astCatalogue asterix) >>= \case
-            Spare _ -> []
-            Subitem name _ _ _ _ -> [name]
-
-        requiredNotDefined :: [ValidationError]
-        requiredNotDefined = do
-            x <- required
-            guard $ x `notElem` defined
-            return (T.pack (show x) <> " required, but not defined.")
-
-        definedNotRequired :: [ValidationError]
-        definedNotRequired = do
-            x <- defined
-            guard $ x `notElem` required
-            return (T.pack (show x) <> " defined, but not required.")
-
-        noDups :: [ValidationError]
-        noDups =
-            let dups = defined \\ (nub defined)
-            in reportWhen (not $ null dups) ["items"]
-                ("duplicate names: " <> T.pack (show dups))
-
-validateSubitem :: Asterix -> [Name] -> Subitem -> (Int, [ValidationError])
-validateSubitem asterix path = \case
-    Spare n -> (n, reportWhen (n <= 0) (path++["spare"]) "size")
-    Subitem name _ _ element _ -> validateElement asterix (path++[name]) element
-
-validateElement :: Asterix -> [Name] -> Element -> (Int, [ValidationError])
-validateElement asterix path = \case
-    Fixed n content -> (n, join
-        [ reportWhen (n <= 0) path "size"
-        , validateContent asterix path n content
-        ])
-    Group lst -> checkSubitems lst
-    Extended n1 n2 lst -> loop (0, join [check n1, check n2]) fxPositions lst where
-        check n = reportWhen (mod n 8 /= 0) path ("extended size: " <> T.pack (show n))
-        fxPositions = tail (sum <$> inits (n1:repeat n2))
-        loop (n,problems) fx = \case
-            [] -> (n, join
-                [ problems
-                , reportWhen ((mod n 8) /= 0) path "not aligned"
-                , reportWhen (dupNames lst) path "duplicated names"
-                ])
-            (i:is) ->
-                let (a,b) = (head fx, tail fx)
-                    (n', problems') = validateSubitem asterix path i
-                in case compare (n+n'+1) a of
-                    LT -> loop (n+n', problems'++problems) (a:b) is
-                    EQ -> loop (n+n'+1, problems'++problems) b is
-                    GT -> loop (n+n', problems' ++ problems ++ reportWhen True path "overflow") b is
-    Repetitive rep subElement ->
-        let (n, problems) = validateElement asterix path subElement
-        in (8*rep+n, problems)
-    Explicit -> (0, [])
-    Compound lst -> checkSubitems $ catMaybes lst
-    Rfs -> (0, [])
-  where
-    dupNames lst =
-        let getName = \case
-                Spare _ -> Nothing
-                Subitem name' _ _ _ _ -> Just name'
-            names = catMaybes (fmap getName lst)
-        in names /= nub names
-    checkSubitems lst =
-        let result = fmap (validateSubitem asterix path) lst
-            n = sum (fst <$> result)
-        in (n, join
-            [ mconcat (snd <$> result)
-            , reportWhen (null lst) path "empty"
-            , reportWhen ((mod n 8) /= 0) path "size reminder error"
-            , reportWhen (dupNames lst) path "duplicated names"
-            ])
-
-validateContent :: Asterix -> [Name] -> Int -> Rule Content -> [ValidationError]
-validateContent asterix path n = \case
-    Unspecified -> []
-    ContextFree rule -> validateRule rule
-    Dependent someSubitem rules -> join
-        [ case fixedSubitemSize asterix someSubitem of
-            Nothing -> reportWhen True path (showPath someSubitem <> " not defined")
-            Just m ->
-                let size = compare (length rules) (2 ^ m)
-                in reportWhen (size == GT) path "too many variations"
-        , do
-            let keys = fst <$> rules
-            reportWhen (keys /= nub keys) path "duplicated keys"
-        , join (validateRule . snd <$> rules )
+instance IsAligned Variation where
+    isAligned (Element n _content) = isAligned n
+    isAligned (Group lst) = check notAlignedParts where
+        notAlignedParts = filter (not . isAligned) lst
+        check items = case size (Group items) of
+            Nothing -> False
+            Just n -> isAligned n
+    isAligned (Extended n1 n2 lst) = and
+        [ isAligned n1
+        , isAligned n2
+        , loop 0 fxPositions lst
         ]
-  where
-    validateRule = \case
-        ContentTable lst ->
-            let keys = fst <$> lst
-                values = snd <$> lst
-                size = compare (length keys) (2 ^ n)
-            in join
-                [ reportWhen (keys /= nub keys) path "duplicated keys"
-                , reportWhen (size == GT) path "table too big"
-                , reportWhen (any T.null values) path "empty value"
+      where
+        fxPositions = tail (sum <$> inits (n1:repeat n2))
+        loop _n _fx [] = True
+        loop _n [] _items = False
+        loop n (fx:fxs) (item:items) = case size item of
+            Nothing -> False
+            Just n' -> case compare (n+n'+1) fx of
+                LT -> loop (n+n') (fx:fxs) items
+                EQ -> loop (n+n'+1) fxs items
+                GT -> False
+    isAligned (Repetitive repSize variation) = eachAligned || sumAligned
+      where
+        eachAligned = and
+            [ isAligned repSize
+            , isAligned variation
+            ]
+        sumAligned = case size variation of
+            Nothing -> False
+            Just n -> isAligned (repSize + n)
+    isAligned Explicit = True
+    isAligned (Compound lst) = all check lst where
+        check Nothing = True
+        check (Just item) = isAligned item
+
+instance IsAligned Item where
+    isAligned (Spare n) = isAligned n
+    isAligned (Item _name _title variation _doc) = isAligned variation
+
+-- Validations
+class Validate a where
+    validate :: a -> [ValidationError]
+
+isValid :: Validate a => a -> Bool
+isValid = null . validate
+
+instance Validate a => Validate [a] where
+    validate lst = join (fmap validate lst)
+
+instance Validate a => Validate (Maybe a) where
+    validate Nothing = []
+    validate (Just a) = validate a
+
+reportWhen :: Bool -> ValidationError -> [ValidationError]
+reportWhen False _ = []
+reportWhen True msg = [msg]
+
+reportUnless :: Bool -> ValidationError -> [ValidationError]
+reportUnless = reportWhen . not
+
+instance Validate (RegisterSize, Content) where
+    validate (n, ContentTable lst) = join
+        [ reportWhen (keys /= nub keys) "duplicated keys"
+        , reportWhen (any T.null values) "empty value"
+        , reportWhen (sizeCheck == GT) "table too big"
+        ]
+      where
+        keys = fst <$> lst
+        values = snd <$> lst
+        sizeCheck = compare (length keys) (2 ^ n)
+    validate _ = []
+
+instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
+    validate (_n, Unspecified) = []
+    validate (n, ContextFree a) = validate (n,a)
+    validate (n, Dependent _someItem rules) = join
+        [ reportWhen (keys /= nub keys) "duplicated keys"
+        , join $ do
+            rule <- fmap snd rules
+            return $ validate (n, rule)
+        ]
+      where
+        keys = fst <$> rules
+
+instance Validate Variation where
+    validate (Element n content) = join
+        [ reportUnless (n > 0) "element size"
+        , validate (n, content)
+        ]
+    validate x@(Group items) = join
+        [ reportUnless (isAligned x) "bit alignment"
+        , validate items
+        ]
+    validate x@(Extended _n1 _n2 items) = join
+        [ reportUnless (isAligned x) "bit alignment"
+        , join $ do
+            item <- items
+            return $ maybe ["item size not fixed"] (const []) (size item)
+        , let
+            dupNames lst =
+                let getName = \case
+                        Spare _ -> Nothing
+                        Item name' _title _variation _doc -> Just name'
+                    names = catMaybes (fmap getName lst)
+                in names /= nub names
+            in reportWhen (dupNames items) "duplicated names"
+        , validate items
+        ]
+    validate (Repetitive m variation) = join
+        [ reportUnless (m > 0) "REP size"
+        , reportUnless (isAligned m) "REP alignment"
+        , reportUnless (isAligned variation) "variation alignment"
+        , validate variation
+        ]
+    validate Explicit = []
+    validate x@(Compound items) = join
+        [ reportUnless (isAligned x) "alignment error"
+        , validate items
+        ]
+
+instance Validate Item where
+    validate (Spare n) = reportUnless (n > 0) "size error"
+    validate (Item name _title variation _doc) = do
+        err <- validate variation
+        return (name <> ":" <> err)
+
+instance Validate Asterix where
+    validate asterix = join
+        [ validateCat
+        , join (validate <$> astCatalogue asterix)
+        , allItemsDefined
+        , validateUap
+        , join (validateDepItem <$> astCatalogue asterix)
+        ]
+      where
+        validateCat :: [ValidationError]
+        validateCat = reportUnless (astCategory asterix `elem` [0..255])
+            "category number out of range"
+
+        allItemsDefined :: [ValidationError]
+        allItemsDefined = join [requiredNotDefined, definedNotRequired, noDups]
+          where
+            required :: [Name]
+            required = catMaybes $ case astUap asterix of
+                Uap lst -> lst
+                Uaps lst -> nub $ join $ fmap snd lst
+
+            defined :: [Name]
+            defined = astCatalogue asterix >>= \case
+                Spare _n -> []
+                Item name _title _variation _doc -> [name]
+
+            requiredNotDefined :: [ValidationError]
+            requiredNotDefined = do
+                x <- required
+                guard $ x `notElem` defined
+                return (T.pack (show x) <> " required, but not defined.")
+
+            definedNotRequired :: [ValidationError]
+            definedNotRequired = do
+                x <- defined
+                guard $ x `notElem` required
+                return (T.pack (show x) <> " defined, but not required.")
+
+            noDups :: [ValidationError]
+            noDups = reportWhen (not $ null dups)
+                ("duplicate names: " <> T.pack (show dups))
+              where
+                dups = defined \\ (nub defined)
+
+        validateUap :: [ValidationError]
+        validateUap = case astUap asterix of
+            Uap lst -> validateList lst
+            Uaps lst -> join
+                [ do
+                    let dupNames = nub x /= x where x = fst <$> lst
+                    reportWhen dupNames "duplicated UAP names"
+                , do
+                    (uapName, lst') <- lst
+                    do
+                        x <- validateList lst'
+                        return (uapName <> ":" <> x)
                 ]
-        _ -> []
+          where
+            validateList lst =
+                let x = catMaybes lst
+                in reportWhen (nub x /= x) "duplicated items in UAP"
+
+        validateDepItem :: Item -> [ValidationError]
+        validateDepItem (Spare _n) = []
+        validateDepItem (Item name title variation doc) = case variation of
+            Element _n rule -> case rule of
+                Unspecified -> []
+                ContextFree _ -> []
+                Dependent someItemName rules -> case findItemByName asterix someItemName of
+                    Nothing -> [showPath someItemName <> " not defined"]
+                    Just someItem -> case size someItem of
+                        Nothing -> [showPath someItemName <> " unknown size"]
+                        Just m ->
+                            let ln = compare (length rules) (2 ^ m)
+                            in reportWhen (ln == GT) (showPath [name] <> " too many variations")
+            Group items -> join $ fmap validateDepItem items
+            Extended _n1 _n2 items -> join $ fmap validateDepItem items
+            Repetitive _n variation' -> validateDepItem (Item name title variation' doc)
+            Explicit -> []
+            Compound lst -> join (fmap validateDepItem $ catMaybes lst)
 

@@ -7,11 +7,10 @@ preamble
 items
 
     000 "Message Type"
-        mandatory           // not specified as such in pdf
         definition
             This Data Item allows for a more convenient handling of the messages
             at the receiver side by further defining the type of transaction.
-        fixed 8
+        element 8
             table
                 1: Polar vector
                 2: Cartesian vector of start point/ length
@@ -21,15 +20,14 @@ items
                 255: EOP message
 
     010 "Data Source Identifier"
-        mandatory           // not specified as such in pdf
         definition
             Identification of the radar station from which the data are received.
-        subitems
+        group
             SAC "System Area Code"
-                fixed 8
+                element 8
                     raw
             SIC "System Identification code"
-                fixed 8
+                element 8
                     raw
         remark
             Note:
@@ -37,21 +35,20 @@ items
                 (www.eurocontrol.int/asterix)
 
     020 "Vector Qualifier"
-        optional
         definition
             Precipitation intensity level, shading orientation of the vectors
             representing the precipitation area and coordinate system used.
         extended 8 8
             ORG ""
-                fixed 1
+                element 1
                     table
                         0: Local Coordinates
                         1: System Coordinates
             I "Intensity level (range zero to seven)"
-                fixed 3
+                element 3
                     raw
             S "Shading orientation with respect to North, as follows:"
-                fixed 3
+                element 3
                     table
                         0: 0°
                         1: 22.5°
@@ -63,12 +60,12 @@ items
                         7: 157.5°
             spare 5
             TST ""
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Test vector
             ER ""
-                fixed 1
+                element 1
                     table
                         0: Default
                         1: Error condition encountered
@@ -77,39 +74,37 @@ items
                 For polar vectors bits-4/2 are meaningless and are set to zero.
 
     034 "Sequence of Polar Vectors in SPF Notation"
-        optional
         definition
             Sequence of weather vectors in local polar coordinates.
-        repetitive 1
-            subitems
+        repetitive 8
+            group
                 STR "START RANGE"
-                    fixed 8
+                    element 8
                         raw
                 ENDR "END RANGE"
-                    fixed 8
+                    element 8
                         raw
                 AZ "AZIMUTH"
-                    fixed 16
+                    element 16
                         unsigned quantity 360 16 "deg"
         remark
             Note:
                 f is a parameter of the SOP message.
 
     036 "Sequence of Cartesian Vectors in SPF Notation"
-        optional
         definition
             Sequence of weather vectors, in the representation start point/length,
             in local or in system cartesian coordinates.
-        repetitive 1
-            subitems
+        repetitive 8
+            group
                 X "X-COMPONENT"
-                    fixed 8
+                    element 8
                         raw         // formula, including 'f'
                 Y "Y-COMPONENT"
-                    fixed 8
+                    element 8
                         raw         // formula, including 'f'
                 L "LENGTH"
-                    fixed 8
+                    element 8
                         raw         // formula, including 'f'
         remark
             Note:
@@ -120,23 +115,22 @@ items
                    values.
 
     038 "Sequence of Weather Vectors in SPF Notation"
-        optional
         definition
             Sequence of weather vectors, in the representation start point/ end
             point, in local or in system cartesian coordinates.
-        repetitive 1
-            subitems
+        repetitive 8
+            group
                 X1 "X1 COMPONENT"
-                    fixed 8
+                    element 8
                         raw
                 Y1 "Y1 COMPONENT"
-                    fixed 8
+                    element 8
                         raw
                 X2 "X2 COMPONENT"
-                    fixed 8
+                    element 8
                         raw
                 Y2 "Y2 COMPONENT"
-                    fixed 8
+                    element 8
                         raw
         remark
             Note:
@@ -147,29 +141,28 @@ items
                    values.
 
     040 "Contour Identifier"
-        optional
         definition
             Contour serial number together with the precipitation intensity levels
             and the coordinates system used.
-        subitems
+        group
             ORG ""
-                fixed 1
+                element 1
                     table
                         0: Local Coordinates
                         1: System Coordinates
             I "Intensity level (range zero to seven)"
-                fixed 3
+                element 3
                     raw
             spare 2
             FST_LST ""
-                fixed 2
+                element 2
                     table
                         0: Intermediate record of a contour
                         1: Last record of a contour of at least two records
                         2: First record of a contour of at least two records
                         3: First and only record, fully defining a contour
             CSN "Contour Serial Number"
-                fixed 8
+                element 8
                     raw
         remark
             Note:
@@ -178,16 +171,15 @@ items
                 shall never be assigned twice.
 
     050 "Sequence of Contour Points in SPF Notation"
-        optional
         definition
             Cartesian coordinates of a variable number of points defining a contour.
-        repetitive 1
-            subitems
+        repetitive 8
+            group
                 X1 ""
-                    fixed 8
+                    element 8
                         raw
                 Y1 ""
-                    fixed 8
+                    element 8
                         raw
         remark
             Note:
@@ -198,10 +190,9 @@ items
                    negative values.
 
     090 "Time of Day"
-        optional
         definition
             Absolute time stamping expressed as Coordinated Universal Time (UTC) time.
-        fixed 24
+        element 24
             unsigned quantity 1 7 "s"
         remark
             Notes:
@@ -210,19 +201,18 @@ items
                    to Part 1, paragraph 5.4 [Ref. 1].
 
     100 "Processing Status"
-        optional
         definition
             Information concerning the scaling factor currently applied, current
             reduction step in use, etc.
         extended 24 8
             f "Scaling factor"
-                fixed 5
+                element 5
                     signed quantity 1 0 ""
             R "Current reduction stage in use"
-                fixed 3
+                element 3
                     raw
             Q "Processing parameters"
-                fixed 15
+                element 15
                     raw
         remark
             Note:
@@ -233,13 +223,12 @@ items
                 Q: Processing parameters. The actual bit signification isapplication dependent.
 
     110 "Station Configuration Status"
-        optional
         definition
             Information concerning the use and status of some vital hardware
             components of a radar system .
         extended 8 8
             DATA "Unspecified data"
-                fixed 7
+                element 7
                     raw
         remark
             Note:
@@ -248,21 +237,18 @@ items
                 define individual bits.
 
     120 "Total Number of Items Constituting One Weather Picture"
-        optional
         definition
             Total number of vectors, respectively contour points, constituting
             the total weather image, provided with the EOP message.
-        fixed 16
+        element 16
             unsigned integer
 
     RE "Reserved Expansion Field"
-        optional
         definition
             Expansion
         explicit
 
     SP "Special Purpose Field"
-        optional
         definition
             Special Purpose Field
         explicit

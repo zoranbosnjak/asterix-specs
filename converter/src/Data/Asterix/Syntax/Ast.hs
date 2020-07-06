@@ -19,7 +19,6 @@ import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
 import qualified Data.Ratio
-import           Numeric
 import           Formatting as F
 import           Data.Char (toLower)
 import           Data.Text (Text)
@@ -31,53 +30,15 @@ import qualified Text.Megaparsec.Char.Lexer as L
 
 import           Data.Asterix.Types
 import           Data.Asterix.Common
+import           Data.Asterix.Indent
 
 -- | Dump to Text
 
-type Accumulator = State (Int, Text)
-
--- | Dump some line of text to accumulator.
-tell :: Text -> Accumulator ()
-tell s = modify $ \(indent, buffer) ->
-    let spaces = T.pack $ Prelude.take (4*indent) $ repeat ' '
-        lst = [ T.stripEnd (spaces <> x) <> "\n" | x <- T.lines s]
-        line = case s of
-            "" -> T.pack "\n"
-            _ -> mconcat lst
-    in (indent, buffer <> line)
-
--- | Indented block.
-block :: Accumulator a -> Accumulator a
-block act = do
-    modify $ \(a,b) -> (succ a, b)
-    result <- act
-    modify $ \(a,b) -> (pred a, b)
-    return result
-
-showNumber :: Number -> Text
-showNumber = \case
-    NumberZ i -> sformat (int) i
-    NumberQ q -> sformat (int % "/" % int)
-        (Data.Ratio.numerator q) (Data.Ratio.denominator q)
-    NumberR r -> sformat (F.string) (showFFloat Nothing r "")
-
-showConstrain :: Constrain -> Text
-showConstrain = \case
-    EqualTo num -> "== " <> showNumber num
-    NotEqualTo num -> "/= " <> showNumber num
-    GreaterThan num -> "> " <> showNumber num
-    GreaterThanOrEqualTo num -> ">= " <> showNumber num
-    LessThan num -> "< " <> showNumber num
-    LessThanOrEqualTo num -> "<= " <> showNumber num
-
-showName :: [Name] -> Text
-showName = T.intercalate "/"
-
--- | Dump element.
-dumpElement :: Element -> Accumulator ()
-dumpElement = \case
-    Fixed n rule -> do
-        tell $ sformat ("fixed " % int) n
+-- | Dump variation.
+dumpVariation :: Variation -> Accumulator ()
+dumpVariation = \case
+    Element n rule -> do
+        tell $ sformat ("element " % int) n
         block $ do
             let dumpContent = \case
                     ContentTable lst -> do
@@ -111,16 +72,16 @@ dumpElement = \case
                         block $ dumpContent a
 
     Group lst -> do
-        tell "subitems"
-        block $ mapM_ dumpMaybeSubitem lst
+        tell "group"
+        block $ mapM_ dumpItem lst
 
     Extended n1 n2 lst -> do
         tell $ sformat ("extended " % int % " " % int) n1 n2
-        block $ mapM_ dumpMaybeSubitem lst
+        block $ mapM_ dumpItem lst
 
-    Repetitive rep element -> do
+    Repetitive rep variation -> do
         tell $ sformat ("repetitive " % int) rep
-        block $ dumpElement element
+        block $ dumpVariation variation
 
     Explicit -> do
         tell "explicit"
@@ -129,51 +90,24 @@ dumpElement = \case
         tell "compound"
         block $ forM_ lst $ \case
             Nothing -> tell "-"
-            Just subitem -> dumpMaybeSubitem subitem
+            Just item -> dumpItem item
 
-    _ -> error "unexpected element"
-  where
-    dumpMaybeSubitem = \case
-        Spare n -> tell $ sformat ("spare " % int) n
-        Subitem name title mDesc element mRemark -> do
-            tell $ sformat (stext % " " % F.string) name (show title)
-            case mDesc of
-                Nothing -> return ()
-                Just desc -> block $ do
-                    tell "description"
-                    block $ tell desc
-            block $ do
-                dumpElement element
-                case mRemark of
-                    Nothing -> return ()
-                    Just remark -> do
-                        tell "remark"
-                        block $ tell remark
-
--- | Dump toplevel item.
 dumpItem :: Item -> Accumulator ()
-dumpItem (Item rule definition si) = case si of
-    Spare _ -> error "unexpected toplevel spare item"
-    Subitem name title _mDesc element mRemark -> do
+dumpItem = \case
+    Spare n -> tell $ sformat ("spare " % int) n
+    Item name title variation doc -> do
         tell $ sformat (stext % " " % F.string) name (show title)
+        block $ dumpText "definition" (docDefinition doc)
+        block $ dumpText "destription" (docDescription doc)
         block $ do
-            case rule of
-                Unspecified -> tell "unspecified"
-                ContextFree r -> tell $ sformat (F.string) (toLower <$> show r)
-                Dependent _x _lst -> do
-                    tell "case ..."
-                    block $ return ()   -- TODO
-
-            tell "definition"
-            block $ tell definition
-
-            dumpElement element
-
-            case mRemark of
-                Nothing -> return ()
-                Just remark -> do
-                    tell "remark"
-                    block $ tell remark
+            dumpVariation variation
+            dumpText "remark" (docRemark doc)
+  where
+    dumpText title = \case
+        Nothing -> return ()
+        Just t -> do
+            tell title
+            block $ tell t
 
 -- | Encode Uap.
 dumpUap :: Uap -> Accumulator ()
@@ -202,8 +136,8 @@ dumpAsterix asterix = do
             tell "preamble"
             block $ do
                 tell preamble
-    tell ""
 
+    tell ""
     tell "items"
     block $ forM_ (astCatalogue asterix) $ \item -> do
         tell ""
@@ -398,16 +332,16 @@ pContent = tryOne
     ]
 
 -- | Parse (fixed) type.
-pFixed :: Parser () -> Parser Element
-pFixed sc' = do
-    MC.string "fixed" >> sc'
+pElement :: Parser () -> Parser Variation
+pElement sc' = do
+    MC.string "element" >> sc'
     n <- L.decimal
     rule <- sc' >> tryOne
         [ ContextFree <$> pContent
         , MC.string "raw" >> pure Unspecified
         , pDependent
         ]
-    return $ Fixed n rule
+    return $ Element n rule
   where
     pDependent = do
         (h,lst) <- parseList pHeader pCase
@@ -416,14 +350,14 @@ pFixed sc' = do
         pHeader = MC.string "case" >> sc >> pPaths
         pCase _ = (,) <$> (pInt <* (MC.char ':' >> (try scn <|> sc))) <*> pContent
 
--- | Parse group of nested subitems.
-pGroup :: Parser Element
-pGroup = Group . snd <$> parseList (MC.string "subitems") pSubItem
+-- | Parse group of nested items.
+pGroup :: Parser Variation
+pGroup = Group . snd <$> parseList (MC.string "group") pItem
 
--- | Parse 'extended' subitem.
-pExtended :: Parser Element
+-- | Parse 'extended' item.
+pExtended :: Parser Variation
 pExtended = do
-    ((n1,n2), lst) <- parseList parseHeader pSubItem
+    ((n1,n2), lst) <- parseList parseHeader pItem
     return $ Extended n1 n2 lst
   where
     parseHeader = do
@@ -432,8 +366,8 @@ pExtended = do
         n2 <- L.decimal
         return (n1, n2)
 
--- | Parse 'repetitive' subitem.
-pRepetitive :: Parser Element
+-- | Parse 'repetitive' item.
+pRepetitive :: Parser Variation
 pRepetitive = do
     n <- MC.string "repetitive" >> sc >> L.decimal
     i <- lookAhead (scn >> L.indentLevel)
@@ -442,77 +376,52 @@ pRepetitive = do
             j <- L.indentLevel
             end <- atEnd
             bool (fail "unexpected indent") (return ()) ((j > i) || end)
-    scn >> Repetitive <$> pure n <*> pElement sc'
+    scn >> Repetitive <$> pure n <*> pVariation sc'
 
--- | Parse 'explicit' subitem.
-pExplicit :: Parser Element
+-- | Parse 'explicit' item.
+pExplicit :: Parser Variation
 pExplicit = MC.string "explicit" *> pure Explicit
 
--- | Parse 'compound' subitem.
-pCompound :: Parser Element
+-- | Parse 'compound' item.
+pCompound :: Parser Variation
 pCompound = Compound . snd <$> parseList (MC.string "compound") pListElement
   where
-    pListElement sc' = try pDash <|> (Just <$> pSubItem sc')
+    pListElement sc' = try pDash <|> (Just <$> pItem sc')
     pDash = MC.char '-' >> pure Nothing
 
 -- | Parse 'element'.
-pElement :: Parser () -> Parser Element
-pElement sc' = tryOne
-    [ pFixed sc'
+pVariation :: Parser () -> Parser Variation
+pVariation sc' = tryOne
+    [ pElement sc'
     , pGroup
     , pExtended
     , pRepetitive
     , pExplicit
     , pCompound
-    --, pRFC: TODO
     ]
 
 -- | Parser valid uap name.
 pUapName :: Parser Name
 pUapName = T.pack <$> some (alphaNumChar <|> MC.char '-')
 
--- | Parse spare or regular 'subitem'.
-pSubItem :: Parser () -> Parser Subitem
-pSubItem sc' = try pSpare <|> pRegular
+-- | Parse spare or regular item.
+pItem :: Parser () -> Parser Item
+pItem sc' = try pSpare <|> pRegular
   where
+    pSpare = MC.string "spare" >> sc' >> fmap Spare L.decimal
     pRegular = do
         name <- pName <* sc'
         title <- (T.pack <$> stringLiteral)
+        definition <- optional . try $ do
+            sc'
+            (T.pack <$> blockAfter "definition")
         description <- optional . try $ do
             sc'
             (T.pack <$> blockAfter "description")
-        element <- sc' >> pElement sc'
+        variation <- sc' >> pVariation sc'
         remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
-        return $ Subitem name title description element remark
-    pSpare = MC.string "spare" >> sc' >> fmap Spare L.decimal
-
--- | Parse toplevel item.
-pItem :: Parser () -> Parser Item
-pItem sc' = do
-    name <- pName <* sc'
-    title <- (T.pack <$> stringLiteral) <* sc'
-    encoding <- do
-        let pEncoding = tryOne
-                [ MC.string "mandatory" >> sc' >> pure Mandatory
-                , MC.string "optional" >> sc' >> pure Optional
-                , MC.string "absent" >> sc' >> pure Absent
-                ]
-        tryOne
-            [ ContextFree <$> pEncoding
-            , MC.string "unspecified" >> sc' >> pure Unspecified
-            , do
-                let pCase _ = (,) <$> (pInt <* (MC.char ':' >> sc)) <*> pEncoding
-                    pHeader = MC.string "case" >> sc >> pPaths
-                (h,lst) <- parseList pHeader pCase
-                return $ Dependent h lst
-            ]
-    definition <- (T.pack <$> blockAfter "definition") <* sc'
-    element <- pElement sc'
-    remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
-    return $ Item
-        encoding
-        definition
-        (Subitem name title Nothing element remark)
+        let doc = Documentation definition description remark
+        return $ Item name title variation doc
 
 -- | Parse toplevel items.
 pItems :: Parser [Item]
@@ -545,11 +454,11 @@ pAsterix = Asterix
 syntax :: Syntax
 syntax = Syntax
     { syntaxDescription = "Compact asterix syntax."
-    , encodeAsterix = Just encoder
-    , decodeAsterix = Just decoder
+    , syntaxEncoder = Just encoder
+    , syntaxDecoder = Just decoder
     }
   where
-    encoder = encodeUtf8 . snd . flip execState (0,"") . dumpAsterix
+    encoder = encodeUtf8 . renderBuffer 4 . snd . flip execState (0,[]) . dumpAsterix
     decoder filename s = first errorBundlePretty $
         parse pAsterix filename (decodeUtf8 s)
 

@@ -15,7 +15,6 @@
 
 module Data.Asterix.Syntax.Json (syntax) where
 
-import           Data.Char (toUpper, toLower)
 import           Data.Aeson hiding (Encoding)
 import           Data.Bool
 import           Data.Aeson.Types (typeMismatch)
@@ -170,104 +169,83 @@ instance FromJSON Content  where
             <*> v .: "constraints"
         _ -> typeMismatch "Content" $ String "wrong type"
 
-instance ToJSON Element where
-    toJSON (Fixed n content) = object
-        [ "type"    .= ("Fixed" :: String)
+instance ToJSON Variation where
+    toJSON (Element n content) = object
+        [ "type"    .= ("Element" :: String)
         , "size"    .= n
         , "content" .= content
         ]
     toJSON (Group lst) = object
         [ "type"    .= ("Group" :: String)
-        , "subitems" .= lst
+        , "items"   .= lst
         ]
     toJSON (Extended n1 n2 lst) = object
         [ "type"    .= ("Extended" :: String)
         , "first"   .= n1
         , "extents" .= n2
-        , "subitems" .= lst
+        , "items"   .= lst
         ]
     toJSON (Repetitive n el) = object
         [ "type"    .= ("Repetitive" :: String)
         , "rep"     .= n
-        , "element" .= el
+        , "variation" .= el
         ]
     toJSON Explicit = object
         [ "type"    .= ("Explicit" :: String)
         ]
     toJSON (Compound lst) = object
         [ "type"    .= ("Compound" :: String)
-        , "subitems" .= lst
+        , "items"   .= lst
         ]
-    toJSON _ = undefined -- TODO
 
-instance FromJSON Element  where
-    parseJSON = withObject "Element" $ \v -> case HMS.lookup "type" v of
-        Just "Fixed" -> Fixed
+instance FromJSON Variation  where
+    parseJSON = withObject "Variation" $ \v -> case HMS.lookup "type" v of
+        Just "Element" -> Element
             <$> v .: "size"
             <*> v .: "content"
         Just "Group" -> Group
-            <$> v .: "subitems"
+            <$> v .: "items"
         Just "Extended" -> Extended
             <$> v .: "first"
             <*> v .: "extents"
-            <*> v .: "subitems"
+            <*> v .: "items"
         Just "Repetitive" -> Repetitive
             <$> v .: "rep"
-            <*> v .: "element"
+            <*> v .: "variation"
         Just "Explicit" -> pure Explicit
         Just "Compound" -> Compound
-            <$> v .: "subitems"
-        -- TODO
+            <$> v .: "items"
         _ -> typeMismatch "Element" $ String "wrong type"
 
-instance ToJSON Subitem where
+instance ToJSON Item where
     toJSON (Spare n) = object
         [ "spare"       .= True
         , "length"      .= n
         ]
-    toJSON (Subitem name tit dsc el remark) = object
+    toJSON (Item name title variation doc) = object
         [ "spare"       .= False
         , "name"        .= name
-        , "title"       .= tit
-        , "description" .= dsc
-        , "element"     .= el
-        , "remark"      .= remark
+        , "title"       .= title
+        , "definition"  .= docDefinition doc
+        , "description" .= docDescription doc
+        , "variation"   .= variation
+        , "remark"      .= docRemark doc
         ]
 
-instance FromJSON Subitem  where
-    parseJSON = withObject "Subitem" $ \v -> case HMS.lookup "spare" v of
+instance FromJSON Item  where
+    parseJSON = withObject "Item" $ \v -> case HMS.lookup "spare" v of
         Just (Bool True) -> Spare
             <$> v .: "length"
-        Just (Bool False) -> Subitem
+        Just (Bool False) -> Item
             <$> v .: "name"
             <*> v .: "title"
-            <*> v .: "description"
-            <*> v .: "element"
-            <*> v .: "remark"
-        _ -> typeMismatch "Subitem" $ String "spare field not present"
-
-instance ToJSON Encoding where
-    toJSON encoding = toJSON $ fmap toLower $ show encoding
-
-instance FromJSON Encoding  where
-    parseJSON s = read . capitalize <$> parseJSON s where
-        capitalize [] = []
-        capitalize (x:xs) = toUpper x:xs
-
-instance ToJSON Item where
-    toJSON t = case itemSubitem t of
-        Spare _ -> error "spare toplevel item"
-        si -> object
-            [ "encoding"    .= itemEncoding t
-            , "definition"  .= itemDefinition t
-            , "subitem"     .= si
-            ]
-
-instance FromJSON Item  where
-    parseJSON = withObject "Item" $ \v -> Item
-        <$> v .: "encoding"
-        <*> v .: "definition"
-        <*> v .: "subitem"
+            <*> v .: "variation"
+            <*> (Documentation
+                <$> v .: "definition"
+                <*> v .: "description"
+                <*> v .: "remark"
+                )
+        _ -> typeMismatch "Item" $ String "spare field not present"
 
 instance ToJSON Uap where
     toJSON (Uap lst) = object
@@ -315,8 +293,8 @@ instance FromJSON Asterix  where
 syntax :: Syntax
 syntax = Syntax
     { syntaxDescription = "JSON asterix syntax."
-    , encodeAsterix = Just encoder
-    , decodeAsterix = Just decoder
+    , syntaxEncoder = Just encoder
+    , syntaxDecoder = Just decoder
     }
   where
     encoder = toStrict

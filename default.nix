@@ -16,6 +16,8 @@ let
 
   deps = import ./publisher/deps.nix { inherit pkgs; };
 
+  shortGitrev = builtins.substring 0 7 gitrev;
+
   drv = pkgs.stdenv.mkDerivation {
     name = "asterix-specs";
     propagatedBuildInputs = deps;
@@ -41,7 +43,7 @@ let
       echo "<html>" >> $ix
       echo "<body>" >> $ix
 
-      echo "Asterix specifications generated from <a href="https://github.com/zoranbosnjak/asterix-specs">repository</a> revision <code>#${gitrev}</code>." >> $ix
+      echo "Asterix specifications generated from <a href="https://github.com/zoranbosnjak/asterix-specs">repository</a> revision <code>#${shortGitrev}</code>." >> $ix
 
       mkdir -p $out/specs
       for level1 in $(find specs/* -maxdepth 1 -type d); do
@@ -65,11 +67,10 @@ let
           ${converter}/bin/converter -f $orig --ast --validate
           cp $orig $base.ast
 
-          echo "convert to .json"
+          echo "convert to .json, .xml and pretify to .txt"
           ${converter}/bin/converter --ast --json -f $orig > $base.json
-
-          echo "pretify"
-          ${renderer}/bin/render --script renderer/formats/ast.py render $base.json > $base.txt
+          ${converter}/bin/converter --ast --xml -f $orig > $base.xml
+          ${converter}/bin/converter --ast --ast -f $orig > $base.txt
 
           echo "render to minimal .json"
           ${renderer}/bin/render --script renderer/formats/minimal.py render $base.json > $base-minimal.json
@@ -96,6 +97,7 @@ let
           echo "<a href=\"$ref.ast\">[ast]</a>" >> $ix
           echo "<a href=\"$ref.txt\">[txt]</a>" >> $ix
           echo "<a href=\"$ref.json\">[json]</a>" >> $ix
+          echo "<a href=\"$ref.xml\">[xml]</a>" >> $ix
           echo "<a href=\"$ref-minimal.json\">[minimal-json]</a>" >> $ix
           echo "<a href=\"$ref.rst\">[rst]</a>" >> $ix
           echo "<a href=\"$ref.pdf\">[pdf]</a>" >> $ix
@@ -113,6 +115,7 @@ let
 	  echo "    <li><code>ast</code> source format</li>" >> $ix
 	  echo "    <li><code>txt</code> reformated (same as source), generated from <code>json</code></li>" >> $ix
 	  echo "    <li><code>json</code> representation, generated from <code>ast</code></li>" >> $ix
+	  echo "    <li><code>xml</code> representation, generated from <code>ast</code> (experimental)</li>" >> $ix
 	  echo "    <li><code>minimal-json</code> minimal json representation, generated from <code>json</code></li>" >> $ix
 	  echo "    <li><code>rst</code> documentation format, generated from <code>json</code></li>" >> $ix
 	  echo "    <li><code>pdf</code> documentation, generated from <code>rst</code></li>" >> $ix

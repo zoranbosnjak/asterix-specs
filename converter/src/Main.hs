@@ -4,16 +4,19 @@
 
 module Main where
 
+import           Control.Monad
 import           Options.Applicative as Opt
 import qualified Data.Text as T
 import qualified Data.Text.IO
 import           System.IO as IO
 import           System.Exit (die)
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BS8
 import           Data.Maybe
+import           Crypto.Hash
 
 import           Data.Asterix
-import           Data.Asterix.Validation (validationErrors)
+import           Data.Asterix.Validation (validate, isValid)
 
 data Input
     = FileInput FilePath
@@ -21,6 +24,7 @@ data Input
 
 data Output
     = ValidateOnly
+    | Sha1
     | OutputList
     | OutputSyntax EncodeAsterix
 
@@ -46,8 +50,10 @@ options = Options
         decoderOpt = foldr (<|>) empty $ do
             (shortName, description, f) <- availableDecoders
             return $ flag' f (long shortName <> help ("input syntax: " ++ description))
-    outputOpts = (validateOnly <|> outList <|> (fmap OutputSyntax astEncoder)) where
+    outputOpts = (validateOnly <|> fp_sha1 <|> outList <|> (fmap OutputSyntax astEncoder))
+      where
         validateOnly = flag' ValidateOnly ( long "validate" <> help "validate only" )
+        fp_sha1 = flag' Sha1 ( long "sha1" <> help "show sha1 fingerprint" )
         outList = flag' OutputList ( long "list" <> help "list output" )
         astEncoder = foldr (<|>) empty $ do
             (shortName, description, f) <- availableEncoders
@@ -56,46 +62,49 @@ options = Options
 main :: IO ()
 main = do
     opt <- execParser (info (options <**> helper) idm)
-    (s, filename, astDecoder) <- do
+    result <- do
         let (i, astDecoder) = optInput opt
         (s, filename) <- case i of
-                FileInput f -> (,) <$> BS.readFile f <*> pure f
-                StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
-        return (s, filename, astDecoder)
+            FileInput f -> (,) <$> BS.readFile f <*> pure f
+            StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
+        return $ astDecoder filename s
 
-    case astDecoder filename s of
+    case result of
         Left e -> die e
         Right asterix -> case optOutput opt of
-            ValidateOnly -> case validationErrors asterix of
+            ValidateOnly -> case validate asterix of
                 [] -> print ("ok" :: String)
                 lst -> do
                     mapM_ (Data.Text.IO.hPutStrLn stderr) lst
                     IO.hPutStrLn stderr ""
                     die "Validation error(s) present!"
+            Sha1 -> do
+                let sha1 :: BS.ByteString -> Digest SHA1
+                    sha1 = hash
+                print $ sha1 $ BS8.pack $ show asterix
+                unless (isValid asterix) $ do
+                    die "Validation error(s) present, run 'validate' for details!"
             OutputList -> do
-                mapM_ (dumpItem []) (itemSubitem <$> astCatalogue asterix)
-                case validationErrors asterix of
-                    [] -> return ()
-                    _ -> die "Validation error(s) present, run 'validate' for details!"
+                mapM_ (dumpItem []) (astCatalogue asterix)
+                unless (isValid asterix) $ do
+                    die "Validation error(s) present, run 'validate' for details!"
             OutputSyntax astEncoder -> do
                 BS.putStr $ astEncoder asterix
-                case validationErrors asterix of
-                    [] -> return ()
-                    _ -> die "Validation error(s) present, run 'validate' for details!"
+                unless (isValid asterix) $ do
+                    die "Validation error(s) present, run 'validate' for details!"
   where
     dumpItem parent = \case
         Spare _ -> return ()
-        Subitem name _title _dsc element _remark -> do
+        Item name _title variation _doc -> do
             let path = parent ++ [name]
                 next = \case
-                    Fixed size _ -> ("Fixed " <> T.pack (show size), return ())
+                    Element size _ -> ("Element " <> T.pack (show size), return ())
                     Group lst -> ("Group", mapM_ (dumpItem path) lst)
                     Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
                     Repetitive _ var -> ("Repetitive", snd $ next var)
                     Explicit -> ("Explicit", return ())
                     Compound lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
-                    Rfs -> ("Rfs", return ())
-                (details, act) = next element
+                (details, act) = next variation
             Data.Text.IO.putStrLn (showPath path <> ": " <> details)
             act
 
