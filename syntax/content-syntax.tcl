@@ -9,7 +9,7 @@ set spec {
             }
             { line /raw}
             { line /table { loop { line (indent) INT : \"STRING\" (unindent)} {} } }
-            { line /string {or /ascii /icao } }
+            { line /string {or /ascii /icao /octal } }
             { line
                 { or /signed /unsigned }
                 /integer
