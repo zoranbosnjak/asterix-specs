@@ -74,6 +74,7 @@ data Signed = Signed | Unsigned deriving (Generic, Eq, Show)
 data StringType
     = StringAscii
     | StringICAO
+    | StringOctal
     deriving (Generic, Eq, Show, Read)
 
 data Content

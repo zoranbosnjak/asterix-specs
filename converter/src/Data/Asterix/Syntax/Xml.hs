@@ -81,6 +81,7 @@ instance Block Content where
         ("<content type=\"string\" variation=\"" % stext % "\" />") $ case st of
             StringAscii -> "ascii"
             StringICAO -> "icao"
+            StringOctal -> "octal"
     enc (ContentInteger signed constraints) = enclosed
         (sformat ("<content type=\"integer\" signed=\"" % stext % "\">") $ case signed of
             Signed -> "true"

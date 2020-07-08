@@ -138,7 +138,9 @@ def renderVariation(variation):
                 if value['variation'] == 'StringAscii':
                     tell('- Ascii string (8-bits per character)')
                 elif value['variation'] == 'StringICAO':
-                    tell('- Ascii ICAO (6-bits per character)')
+                    tell('- ICAO string (6-bits per character)')
+                elif value['variation'] == 'StringOctal':
+                    tell('- Octal string (3-bits per digit)')
                 else:
                     raise Exception('unexpected string type {}'.format(value['variation']))
                 tell('')

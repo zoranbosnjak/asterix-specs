@@ -48,6 +48,7 @@ dumpVariation = \case
                     ContentString st -> tell $ "string " <> case st of
                         StringAscii -> "ascii"
                         StringICAO -> "icao"
+                        StringOctal -> "octal"
                     ContentInteger signed constraints -> do
                         let sig = toLower <$> show signed
                             cst = case constraints of
@@ -319,6 +320,7 @@ pContent = tryOne
         ContentString <$> tryOne
             [ MC.string "ascii" >> pure StringAscii
             , MC.string "icao" >> pure StringICAO
+            , MC.string "octal" >> pure StringOctal
             ]
     , ContentInteger
         <$> pSigned <* (sc >> MC.string "integer")
