@@ -63,6 +63,8 @@ dumpVariation = \case
                         tell $ sformat
                             (F.string % " quantity " % stext % " " % int % " " % F.string % stext )
                             sig (showNumber scaling) fract (show unit) cst
+                    ContentBds -> do
+                        tell "bds"
             case rule of
                 Unspecified -> tell "raw"
                 ContextFree cont -> dumpContent cont
@@ -331,6 +333,7 @@ pContent = tryOne
         <*> L.decimal <* sc
         <*> (T.pack <$> stringLiteral)
         <*> (many (sc >> pConstrain))
+    , MC.string "bds" >> pure ContentBds
     ]
 
 -- | Parse (fixed) type.

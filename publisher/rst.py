@@ -113,6 +113,10 @@ def renderVariation(variation):
 
         tell('')
 
+    def renderBds(value):
+        tell('- BDS register')
+        tell('')
+
     def renderElement():
         n = variation['size']
         tell('- {} [``{}``]'.format(bits(n), '.'*n))
@@ -148,6 +152,8 @@ def renderVariation(variation):
                 renderInteger(value)
             elif t == 'Quantity':
                 renderQuantity(value)
+            elif t == 'Bds':
+                renderBds(value)
             else:
                 raise Exception('unexpected value type {}'.format(t))
             return n

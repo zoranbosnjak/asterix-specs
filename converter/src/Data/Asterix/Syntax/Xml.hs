@@ -102,6 +102,10 @@ instance Block Content where
         signed' = case signed of
             Signed -> "true"
             Unsigned -> "false"
+    enc (ContentBds) = enclosed
+        "<content type=\"bds\">"
+        "</content>"
+        (return ())
 
 instance Block Variation where
     enc (Element n rule) = enclosed

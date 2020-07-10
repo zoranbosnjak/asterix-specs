@@ -91,6 +91,7 @@ data Content
         FractBits   -- number for fractional bits
         Unit        -- unit
         [Constrain]
+    | ContentBds
     deriving (Generic, Eq, Show)
 
 data Variation

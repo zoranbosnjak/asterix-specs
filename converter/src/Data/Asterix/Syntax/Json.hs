@@ -151,6 +151,9 @@ instance ToJSON Content where
             , "unit"    .= unit
             , "constraints" .= constraints
             ]
+        ContentBds -> object
+            [ "type" .= ("Bds" :: String)
+            ]
 
 instance FromJSON Content  where
     parseJSON = withObject "Content" $ \v -> case HMS.lookup "type" v of
@@ -167,6 +170,7 @@ instance FromJSON Content  where
             <*> v .: "fractionalBits"
             <*> v .: "unit"
             <*> v .: "constraints"
+        Just "Bds" -> pure ContentBds
         _ -> typeMismatch "Content" $ String "wrong type"
 
 instance ToJSON Variation where
