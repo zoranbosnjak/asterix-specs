@@ -30,12 +30,14 @@ data Output
 
 data Options = Options
     { optInput  :: (Input, DecodeAsterix)
+    , optWarnings :: Bool
     , optOutput :: Output
     }
 
 options :: Opt.Parser Options
 options = Options
     <$> inputOpts
+    <*> includeWarnings
     <*> outputOpts
   where
     inputOpts = (,) <$> (fileInput <|> stdInput) <*> decoderOpt where
@@ -50,6 +52,9 @@ options = Options
         decoderOpt = foldr (<|>) empty $ do
             (shortName, description, f) <- availableDecoders
             return $ flag' f (long shortName <> help ("input syntax: " ++ description))
+
+    includeWarnings = switch ( long "warnings" <> help "Include warnings on validation")
+
     outputOpts = (validateOnly <|> fp_sha1 <|> outList <|> (fmap OutputSyntax astEncoder))
       where
         validateOnly = flag' ValidateOnly ( long "validate" <> help "validate only" )
@@ -69,10 +74,11 @@ main = do
             StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
         return $ astDecoder filename s
 
+    let warnings = optWarnings opt
     case result of
         Left e -> die e
         Right asterix -> case optOutput opt of
-            ValidateOnly -> case validate asterix of
+            ValidateOnly -> case validate warnings asterix of
                 [] -> print ("ok" :: String)
                 lst -> do
                     mapM_ (Data.Text.IO.hPutStrLn stderr) lst
@@ -82,15 +88,15 @@ main = do
                 let sha1 :: BS.ByteString -> Digest SHA1
                     sha1 = hash
                 print $ sha1 $ BS8.pack $ show asterix
-                unless (isValid asterix) $ do
+                unless (isValid warnings asterix) $ do
                     die "Validation error(s) present, run 'validate' for details!"
             OutputList -> do
                 mapM_ (dumpItem []) (astCatalogue asterix)
-                unless (isValid asterix) $ do
+                unless (isValid warnings asterix) $ do
                     die "Validation error(s) present, run 'validate' for details!"
             OutputSyntax astEncoder -> do
                 BS.putStr $ astEncoder asterix
-                unless (isValid asterix) $ do
+                unless (isValid warnings asterix) $ do
                     die "Validation error(s) present, run 'validate' for details!"
   where
     dumpItem parent = \case

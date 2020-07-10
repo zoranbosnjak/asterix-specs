@@ -1,6 +1,6 @@
 asterix 011 "Transmission of A-SMGCS Data"
 edition 1.2
-date 2008-5-1
+date 2008-05-01
 preamble
     Surveillance data exchange.
 
@@ -12,13 +12,13 @@ items
             at the receiver side by further defining the type of transaction.
         element 8
             table
-                 1: Target reports, flight plan data and basic alerts
-                 2: Manual attachment of flight plan to track
-                 3: Manual detachment of flight plan to track
-                 4: Insertion of flight plan data
-                 5: Suppression of flight plan data
-                 6: Modification of flight plan data
-                 7: Holdbar status
+                1: Target reports, flight plan data and basic alerts
+                2: Manual attachment of flight plan to track
+                3: Manual detachment of flight plan to track
+                4: Insertion of flight plan data
+                5: Suppression of flight plan data
+                6: Modification of flight plan data
+                7: Holdbar status
 
     010 "Data Source Identifier"
         definition
@@ -37,10 +37,8 @@ items
     015 "Service Identification"
         definition
             Identification of the service provided to one or more users.
-        group
-            SI "Service Identification"
-                element 8
-                    raw
+        element 8
+            raw
         remark
             Note:
                 The service identification is allocated by the A-SMGCS
@@ -79,11 +77,9 @@ items
     090 "Measured Flight Level"
         definition
             Last valid and credible flight level used to update the track, in two's complement representation.
-        group
-            MFL "Measured Flight Level"
-                element 16
-                    signed quantity 1 2 "FL" >= -12 <= 1500
-       remark
+        element 16
+            signed quantity 1 2 "FL" >= -12 <= 1500
+        remark
             Note:
                  The criteria to determine the credibility of the flight level are Tracker dependent.
                  Credible means: within reasonable range of change with respect to the previous detection.
@@ -91,11 +87,9 @@ items
     092 "Calculated Track Geometric Altitude"
         definition
             Calculated Track Geometric Altitude Calculated geometric vertical distance above mean sea level, not related to barometric pressure.
-        group
-            CTGA "Calculated Track Geometric Altitude"
-                element 16
-                    signed quantity 25 2 "ft" >= -1500 <= 150000
-       remark
+        element 16
+            signed quantity 25 2 "ft" >= -1500 <= 150000
+        remark
             Note:
                  The source of altitude is identified in bits (SRC) of item I011/170 Track Status.
 
@@ -115,10 +109,8 @@ items
     140 "Time of Track Information"
         definition
             Absolute time stamping expressed as UTC.
-        group
-            ToTI "Time of Track Information"
-                element 24
-                    unsigned quantity 1 7 "s"
+        element 24
+            unsigned quantity 1 7 "s"
         remark
             Note:
                 The time of day value is reset to zero each day at midnight.
@@ -141,7 +133,6 @@ items
                     table
                         0: Multisensor Track
                         1: Monosensor Track
-
             GBS ""
                 element 1
                     table
@@ -229,7 +220,7 @@ items
 
     202 "Calculated Track Velocity in Cartesian Coordinates"
         definition
-           Calculated track velocity expressed in Cartesian co-ordinates.
+            Calculated track velocity expressed in Cartesian co-ordinates.
         group
             Vx "Vx"
                 element 16
@@ -252,10 +243,8 @@ items
     215 "Calculated Rate Of Climb/Descent"
         definition
             Calculated rate of Climb/Descent of an aircraft, in two's complement form.
-        group
-            RoCD "Rate of Climb Descent"
-                element 16
-                    signed quantity 25 2 "ft/min" >= -204800 <= 204800
+        element 16
+            signed quantity 25 2 "ft/min" >= -204800 <= 204800
 
     245 "Target Identification"
         definition
@@ -270,7 +259,7 @@ items
             spare 6
             TId "Target Identification"
                 element 48
-                    raw
+                    string icao
         remark
             Note:
                 Characters 1-8 (coded on 6 bits each) defining target identification
@@ -343,27 +332,25 @@ items
     300 "Vehicle Fleet Identification"
         definition
             Vehicle fleet identification number.
-        group
-            VFI "Vehicle Fleet Identification"
-                element 8
-                    table
-                        0: Flyco (follow me)
-                        1: ATC equipment maintenance
-                        2: Airport maintenance
-                        3: Fire
-                        4: Bird scarer
-                        5: Snow plough
-                        6: Runway sweeper
-                        7: Emergency
-                        8: Police
-                        9: Bus
-                        10: Tug (push/tow)
-                        11: Grass cutter
-                        12: Fuel
-                        13: Baggage
-                        14: Catering
-                        15: Aircraft maintenance
-                        16: Unknown
+        element 8
+            table
+                0: Flyco (follow me)
+                1: ATC equipment maintenance
+                2: Airport maintenance
+                3: Fire
+                4: Bird scarer
+                5: Snow plough
+                6: Runway sweeper
+                7: Emergency
+                8: Police
+                9: Bus
+                10: Tug (push/tow)
+                11: Grass cutter
+                12: Fuel
+                13: Baggage
+                14: Catering
+                15: Aircraft maintenance
+                16: Unknown
 
     310 "Pre-programmed Message"
         definition
@@ -389,10 +376,8 @@ items
         compound
             MB "BDS"
                 repetitive 8
-                    group
-                        MB "Mode S MB Data"
-                            element 8
-                                raw // TODO: BDS format
+                    element 8
+                        raw // TODO: BDS format
             ADR "24 bits Aircraft address"
                 element 24
                     raw
@@ -431,31 +416,31 @@ items
                                 0: No
                                 1: Yes
                     ARC "Altitude reporting capability"
-                       element 1
-                           table
-                               0: 100 ft resolution
-                               1: 25 ft resolution
+                        element 1
+                            table
+                                0: 100 ft resolution
+                                1: 25 ft resolution
                     AIC "Aircraft identification capability"
-                       element 1
-                           table
-                               0: No
-                               1: Yes
+                        element 1
+                            table
+                                0: No
+                                1: Yes
                     B1A "BDS 1,0 bit 16"
-                       element 1
+                        element 1
                             raw
                     B1B "BDS 1,0 bit 37/40"
-                       element 4
+                        element 4
                             raw
                     AC "ACAS operational"
-                       element 1
-                           table
-                               0: No
-                               1: Yes
+                        element 1
+                            table
+                                0: No
+                                1: Yes
                     MN "Multiple navigational aids operating"
-                       element 1
-                           table
-                               0: No
-                               1: Yes
+                        element 1
+                            table
+                                0: No
+                                1: Yes
                     DC "Differential correction"
                         element 1
                             table
@@ -649,7 +634,6 @@ items
             AST "Aircraft Stand"
                 element 48
                     string ascii
-
             STS "Stand Status"
                 group
                     EMP "Stand empty"
@@ -665,23 +649,22 @@ items
                                 1: Not available
                                 2: Unknown
                     spare 4
+
     430 "Phase of flight"
         definition
             Current phase of the flight.
-        group
-            FLS "Phase of flight"
-                element 8
-                    table
-                        0: unknown
-                        1: on stand
-                        2: taxiing for departure
-                        3: taxiing for arrival
-                        4: runway for departure
-                        5: runway for arrival
-                        6: hold for departure
-                        7: hold for arrival
-                        8: push back
-                        9: on finals
+        element 8
+            table
+                0: unknown
+                1: on stand
+                2: taxiing for departure
+                3: taxiing for arrival
+                4: runway for departure
+                5: runway for arrival
+                6: hold for departure
+                7: hold for arrival
+                8: push back
+                9: on finals
 
     500 "Estimated Accuracies"
         definition
@@ -704,8 +687,8 @@ items
                         element 16
                             signed quantity 180 31 "deg"
             ATH "Estimated Accuracy Of Track Height"
-              element 16
-                  signed quantity 0.5 0 "m"
+                element 16
+                    signed quantity 0.5 0 "m"
             AVC "Estimated Accuracy Of Track Velocity (Cartesian)"
                 group
                     AVC_X "Estimated accuracy of the calculated velocity of X Component"
@@ -715,8 +698,8 @@ items
                         element 8
                             unsigned quantity 0.1 0 "m/s"
             ARC "Estimated Accuracy Of Rate Of Climb / Descent"
-              element 16
-                  signed quantity 0.1 0 "m/s"
+                element 16
+                    signed quantity 0.1 0 "m/s"
             AAC "Estimated Accuracy Of Acceleration (Cartesian)"
                 group
                     AAC_X "Estimated Accuracy Of Acceleration of X Component"

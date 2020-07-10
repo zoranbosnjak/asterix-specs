@@ -90,17 +90,17 @@ instance IsAligned Item where
 
 -- Validations
 class Validate a where
-    validate :: a -> [ValidationError]
+    validate :: Bool -> a -> [ValidationError]
 
-isValid :: Validate a => a -> Bool
-isValid = null . validate
+isValid :: Validate a => Bool -> a -> Bool
+isValid warnings = null . validate warnings
 
 instance Validate a => Validate [a] where
-    validate lst = join (fmap validate lst)
+    validate warnings lst = join (fmap (validate warnings) lst)
 
 instance Validate a => Validate (Maybe a) where
-    validate Nothing = []
-    validate (Just a) = validate a
+    validate _warnings Nothing = []
+    validate warnings (Just a) = validate warnings a
 
 reportWhen :: Bool -> ValidationError -> [ValidationError]
 reportWhen False _ = []
@@ -110,7 +110,7 @@ reportUnless :: Bool -> ValidationError -> [ValidationError]
 reportUnless = reportWhen . not
 
 instance Validate (RegisterSize, Content) where
-    validate (n, ContentTable lst) = join
+    validate _warnings (n, ContentTable lst) = join
         [ reportWhen (keys /= nub keys) "duplicated keys"
         , reportWhen (any T.null values) "empty value"
         , reportWhen (sizeCheck == GT) "table too big"
@@ -119,30 +119,31 @@ instance Validate (RegisterSize, Content) where
         keys = fst <$> lst
         values = snd <$> lst
         sizeCheck = compare (length keys) (2 ^ n)
-    validate _ = []
+    validate _ _ = []
 
 instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
-    validate (_n, Unspecified) = []
-    validate (n, ContextFree a) = validate (n,a)
-    validate (n, Dependent _someItem rules) = join
+    validate _warnings (_n, Unspecified) = []
+    validate warnings (n, ContextFree a) = validate warnings (n,a)
+    validate warnings (n, Dependent _someItem rules) = join
         [ reportWhen (keys /= nub keys) "duplicated keys"
         , join $ do
             rule <- fmap snd rules
-            return $ validate (n, rule)
+            return $ validate warnings (n, rule)
         ]
       where
         keys = fst <$> rules
 
 instance Validate Variation where
-    validate (Element n content) = join
+    validate warnings (Element n content) = join
         [ reportUnless (n > 0) "element size"
-        , validate (n, content)
+        , validate warnings (n, content)
         ]
-    validate x@(Group items) = join
+    validate warnings x@(Group items) = join
         [ reportUnless (isAligned x) "bit alignment"
-        , validate items
+        , validate warnings items
+        , reportWhen (warnings && length items <= 1) "single item in a group"
         ]
-    validate x@(Extended _n1 _n2 items) = join
+    validate warnings x@(Extended _n1 _n2 items) = join
         [ reportUnless (isAligned x) "bit alignment"
         , join $ do
             item <- items
@@ -155,30 +156,30 @@ instance Validate Variation where
                     names = catMaybes (fmap getName lst)
                 in names /= nub names
             in reportWhen (dupNames items) "duplicated names"
-        , validate items
+        , validate warnings items
         ]
-    validate (Repetitive m variation) = join
+    validate warnings (Repetitive m variation) = join
         [ reportUnless (m > 0) "REP size"
         , reportUnless (isAligned m) "REP alignment"
         , reportUnless (isAligned variation) "variation alignment"
-        , validate variation
+        , validate warnings variation
         ]
-    validate Explicit = []
-    validate x@(Compound items) = join
+    validate _warnings Explicit = []
+    validate warnings x@(Compound items) = join
         [ reportUnless (isAligned x) "alignment error"
-        , validate items
+        , validate warnings items
         ]
 
 instance Validate Item where
-    validate (Spare n) = reportUnless (n > 0) "size error"
-    validate (Item name _title variation _doc) = do
-        err <- validate variation
+    validate _warnings (Spare n) = reportUnless (n > 0) "size error"
+    validate warnings (Item name _title variation _doc) = do
+        err <- validate warnings variation
         return (name <> ":" <> err)
 
 instance Validate Asterix where
-    validate asterix = join
+    validate warnings asterix = join
         [ validateCat
-        , join (validate <$> astCatalogue asterix)
+        , join (validate warnings <$> astCatalogue asterix)
         , allItemsDefined
         , validateUap
         , join (validateDepItem <$> astCatalogue asterix)
