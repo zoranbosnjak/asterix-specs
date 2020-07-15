@@ -38,3 +38,10 @@ availableDecoders = do
     f <- maybe [] pure $ syntaxDecoder syntax
     return (shortName, syntaxDescription syntax, f)
 
+availablePretifiers :: [(String, String, Decoder, Encoder)]
+availablePretifiers = do
+    (shortName, syntax) <- syntaxes
+    case (syntaxDecoder syntax, syntaxEncoder syntax) of
+        (Just decoder, Just encoder) -> return (shortName, syntaxDescription syntax, decoder, encoder)
+        _ -> []
+

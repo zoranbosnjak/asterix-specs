@@ -18,23 +18,10 @@ module Data.Asterix
 
 import           Data.List
 import           Data.Maybe (catMaybes)
-import           Data.ByteString (ByteString)
 import qualified Data.Text as T
 
 import           Data.Asterix.Types
 import           Data.Asterix.Syntax
-
-type EncodeAsterix = Asterix -> ByteString
-type DecodeAsterix = FilePath -> ByteString -> Either String Asterix
-
-data Syntax = Syntax
-    { syntaxDescription :: String
-    , encodeAsterix :: Maybe EncodeAsterix
-    , decodeAsterix :: Maybe DecodeAsterix
-    }
-
-instance Show Syntax where
-    show = syntaxDescription
 
 showPath :: [Name] -> T.Text
 showPath = T.intercalate "/"

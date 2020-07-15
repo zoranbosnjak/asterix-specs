@@ -16,6 +16,7 @@ import           Data.Maybe
 import           Crypto.Hash
 
 import           Data.Asterix
+import           Data.Asterix.Common
 import           Data.Asterix.Validation (validate, isValid)
 
 data Input
@@ -26,16 +27,20 @@ data Output
     = ValidateOnly
     | Sha1
     | OutputList
-    | OutputSyntax EncodeAsterix
+    | OutputSyntax Encoder
 
-data Options = Options
-    { optInput  :: (Input, DecodeAsterix)
-    , optWarnings :: Bool
-    , optOutput :: Output
+data Convert = Convert
+    { convInput  :: (Input, Decoder)
+    , convWarnings :: Bool
+    , convOutput :: Output
     }
 
-options :: Opt.Parser Options
-options = Options
+data Options
+    = OptConvert Convert
+    | OptPretify FilePath (Decoder, Encoder)
+
+convertOpts :: Opt.Parser Convert
+convertOpts = Convert
     <$> inputOpts
     <*> includeWarnings
     <*> outputOpts
@@ -64,20 +69,31 @@ options = Options
             (shortName, description, f) <- availableEncoders
             return $ flag' f (long shortName <> help ("output syntax: " ++ description))
 
-main :: IO ()
-main = do
-    opt <- execParser (info (options <**> helper) idm)
+options :: Opt.Parser Options
+options = fmap OptConvert convertOpts <|> optPretify
+  where
+    optPretify = OptPretify
+        <$> (strOption ( long "pretify" <> metavar "FILENAME" <> help "Reformat file to normal form.")
+            <* (flag' () ( long "remove-comments" <> help "This process removes comments.")))
+        <*> pretifyOpt
+      where
+        pretifyOpt = foldr (<|>) empty $ do
+            (shortName, description, decoder, encoder) <- availablePretifiers
+            return $ flag' (decoder, encoder) (long shortName <> help ("syntax: " ++ description))
+
+convert :: Convert -> IO ()
+convert opt = do
     result <- do
-        let (i, astDecoder) = optInput opt
+        let (i, astDecoder) = convInput opt
         (s, filename) <- case i of
             FileInput f -> (,) <$> BS.readFile f <*> pure f
             StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
         return $ astDecoder filename s
 
-    let warnings = optWarnings opt
+    let warnings = convWarnings opt
     case result of
         Left e -> die e
-        Right asterix -> case optOutput opt of
+        Right asterix -> case convOutput opt of
             ValidateOnly -> case validate warnings asterix of
                 [] -> print ("ok" :: String)
                 lst -> do
@@ -118,4 +134,19 @@ main = do
                 (details, act) = next variation
             Data.Text.IO.putStrLn (showPath path <> ": " <> details)
             act
+
+pretify :: FilePath -> Decoder -> Encoder -> IO ()
+pretify filename decoder encoder = do
+    s <- BS.readFile filename
+    case decoder filename s of
+        Left e -> die e
+        Right asterix -> do
+            BS.writeFile filename $ encoder asterix
+
+main :: IO ()
+main = do
+    opt <- execParser (info (options <**> helper) idm)
+    case opt of
+        OptConvert convOpt -> convert convOpt
+        OptPretify filename (decoder, encoder) -> pretify filename decoder encoder
 

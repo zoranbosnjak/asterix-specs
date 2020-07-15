@@ -103,7 +103,7 @@ dumpItem = \case
     Item name title variation doc -> do
         tell $ sformat (stext % " " % F.string) name (show title)
         block $ dumpText "definition" (docDefinition doc)
-        block $ dumpText "destription" (docDescription doc)
+        block $ dumpText "description" (docDescription doc)
         block $ do
             dumpVariation variation
             dumpText "remark" (docRemark doc)
