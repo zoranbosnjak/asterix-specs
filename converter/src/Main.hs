@@ -91,7 +91,11 @@ main = do
                 unless (isValid warnings asterix) $ do
                     die "Validation error(s) present, run 'validate' for details!"
             OutputList -> do
-                mapM_ (dumpItem []) (astCatalogue asterix)
+                case asterix of
+                    AsterixBasic basic -> mapM_ (dumpItem []) (basCatalogue basic)
+                    AsterixExpansion expansion -> case expVariation expansion of
+                        Compound _ lst -> mapM_ (dumpItem []) (catMaybes lst)
+                        _ -> fail "unexpected expansion variation"
                 unless (isValid warnings asterix) $ do
                     die "Validation error(s) present, run 'validate' for details!"
             OutputSyntax astEncoder -> do
@@ -109,7 +113,8 @@ main = do
                     Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
                     Repetitive _ var -> ("Repetitive", snd $ next var)
                     Explicit -> ("Explicit", return ())
-                    Compound lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
+                    Compound Nothing lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
+                    Compound (Just _n) lst -> ("Compound(n)", mapM_ (dumpItem path) (catMaybes lst))
                 (details, act) = next variation
             Data.Text.IO.putStrLn (showPath path <> ": " <> details)
             act

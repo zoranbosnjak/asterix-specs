@@ -100,7 +100,7 @@ data Variation
     | Extended PrimarySize ExtensionSize [Item]
     | Repetitive RepetitionSize Variation
     | Explicit
-    | Compound [Maybe Item]
+    | Compound (Maybe RegisterSize) [Maybe Item]
     deriving (Generic, Eq, Show)
 
 data Item
@@ -113,14 +113,28 @@ data Uap
     | Uaps [(UapName, [Maybe Name])]
     deriving (Generic, Eq, Show)
 
-data Asterix = Asterix
-    { astCategory   :: Int
-    , astTitle      :: Text
-    , astEdition    :: Edition
-    , astDate       :: Date
-    , astPreamble   :: Maybe Text
-    , astCatalogue  :: [Item]
-    , astUap        :: Uap
+data Basic = Basic
+    { basCategory   :: Int
+    , basTitle      :: Text
+    , basEdition    :: Edition
+    , basDate       :: Date
+    , basPreamble   :: Maybe Text
+    , basCatalogue  :: [Item]
+    , basUap        :: Uap
     -- TODO: encoding rules
     } deriving (Generic, Eq, Show)
+
+data Expansion = Expansion
+    { expCategory   :: Int
+    , expEdition    :: Edition
+    , expDate       :: Date
+    , expLenSize    :: Int
+    , expVariation  :: Variation
+    -- TODO: encoding rules??
+    } deriving (Generic, Eq, Show)
+
+data Asterix
+    = AsterixBasic Basic
+    | AsterixExpansion Expansion
+    deriving (Generic, Eq, Show)
 

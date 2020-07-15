@@ -125,8 +125,11 @@ instance Block Variation where
         "</variation>"
         (enc variation)
     enc (Explicit) = tell "<variation type=\"explicit\" />"
-    enc (Compound mItems) = enclosed
-        ("<variation type=\"compound\">")
+    enc (Compound mFspecSize mItems) = enclosed
+        (case mFspecSize of
+            Nothing -> ("<variation type=\"compound\">")
+            Just n -> (sformat ("<variation type=\"compound\" fspec_size=\"" % int % "\">") n)
+        )
         "</variation>"
         (mapM_ enc mItems)
 
@@ -158,26 +161,48 @@ instance Block Uap where
       where
         go mName = tell $ sformat ("<item>" % stext % "</item>") $ maybe "-" id mName
 
-instance Block Asterix where
-    enc asterix = do
+instance Block Basic where
+    enc basic = do
         tell "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         tell ""
         enclosed header footer $ do
-            tell $ sformat ("<title>" % stext % "</title>") (xml $ astTitle asterix)
+            tell $ sformat ("<title>" % stext % "</title>") (xml $ basTitle basic)
             tell $ sformat ("<date>" % int % "-" % left 2 '0' % "-" % left 2 '0' % "</date>")
                 year month day
-            case astPreamble asterix of
+            case basPreamble basic of
                 Nothing -> return ()
                 Just preamble -> enclosed "<preamble>" "</preamble>" $ tell $ xml preamble
-            enclosed "<items>" "</items>" $ mapM_ enc (astCatalogue asterix)
-            enc $ astUap asterix
+            enclosed "<items>" "</items>" $ mapM_ enc (basCatalogue basic)
+            enc $ basUap basic
       where
         header = sformat
             ("<category cat=\"" % int % "\" edition=\"" % int % "." % int % "\">")
-            (astCategory asterix) (editionMajor ed) (editionMinor ed)
+            (basCategory basic) (editionMajor ed) (editionMinor ed)
         footer = "</category>"
-        ed = astEdition asterix
-        (Date year month day) = astDate asterix
+        ed = basEdition basic
+        (Date year month day) = basDate basic
+
+instance Block Expansion where
+    enc expansion = do
+        tell "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+        tell ""
+        enclosed header footer $ do
+            tell $ sformat ("<date>" % int % "-" % left 2 '0' % "-" % left 2 '0' % "</date>")
+                year month day
+            tell $ sformat ("<lenSize>" % int % "</lenSize>") (expLenSize expansion)
+            enc $ expVariation expansion
+      where
+        header = sformat
+            ("<ref cat=\"" % int % "\" edition=\"" % int % "." % int % "\">")
+            (expCategory expansion) (editionMajor ed) (editionMinor ed)
+        footer = "</ref>"
+        ed = expEdition expansion
+        (Date year month day) = expDate expansion
+
+instance Block Asterix where
+    enc = \case
+        AsterixBasic x -> enc x
+        AsterixExpansion x -> enc x
 
 -- | Syntax implementation
 syntax :: Syntax

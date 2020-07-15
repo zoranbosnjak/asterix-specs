@@ -80,7 +80,11 @@ instance IsAligned Variation where
             Nothing -> False
             Just n -> isAligned (repSize + n)
     isAligned Explicit = True
-    isAligned (Compound lst) = all check lst where
+    isAligned (Compound mFspecSize lst) = and
+        [ maybe True isAligned mFspecSize
+        , all check lst
+        ]
+      where
         check Nothing = True
         check (Just item) = isAligned item
 
@@ -165,7 +169,7 @@ instance Validate Variation where
         , validate warnings variation
         ]
     validate _warnings Explicit = []
-    validate warnings x@(Compound items) = join
+    validate warnings x@(Compound _mFspecSize items) = join
         [ reportUnless (isAligned x) "alignment error"
         , validate warnings items
         ]
@@ -176,29 +180,29 @@ instance Validate Item where
         err <- validate warnings variation
         return (name <> ":" <> err)
 
-instance Validate Asterix where
-    validate warnings asterix = join
+instance Validate Basic where
+    validate warnings basic = join
         [ validateCat
-        , join (validate warnings <$> astCatalogue asterix)
+        , join (validate warnings <$> basCatalogue basic)
         , allItemsDefined
         , validateUap
-        , join (validateDepItem <$> astCatalogue asterix)
+        , join (validateDepItem <$> basCatalogue basic)
         ]
       where
         validateCat :: [ValidationError]
-        validateCat = reportUnless (astCategory asterix `elem` [0..255])
+        validateCat = reportUnless (basCategory basic `elem` [0..255])
             "category number out of range"
 
         allItemsDefined :: [ValidationError]
         allItemsDefined = join [requiredNotDefined, definedNotRequired, noDups]
           where
             required :: [Name]
-            required = catMaybes $ case astUap asterix of
+            required = catMaybes $ case basUap basic of
                 Uap lst -> lst
                 Uaps lst -> nub $ join $ fmap snd lst
 
             defined :: [Name]
-            defined = astCatalogue asterix >>= \case
+            defined = basCatalogue basic >>= \case
                 Spare _n -> []
                 Item name _title _variation _doc -> [name]
 
@@ -221,7 +225,7 @@ instance Validate Asterix where
                 dups = defined \\ (nub defined)
 
         validateUap :: [ValidationError]
-        validateUap = case astUap asterix of
+        validateUap = case basUap basic of
             Uap lst -> validateList lst
             Uaps lst -> join
                 [ do
@@ -244,7 +248,7 @@ instance Validate Asterix where
             Element _n rule -> case rule of
                 Unspecified -> []
                 ContextFree _ -> []
-                Dependent someItemName rules -> case findItemByName asterix someItemName of
+                Dependent someItemName rules -> case findItemByName basic someItemName of
                     Nothing -> [showPath someItemName <> " not defined"]
                     Just someItem -> case size someItem of
                         Nothing -> [showPath someItemName <> " unknown size"]
@@ -255,5 +259,16 @@ instance Validate Asterix where
             Extended _n1 _n2 items -> join $ fmap validateDepItem items
             Repetitive _n variation' -> validateDepItem (Item name title variation' doc)
             Explicit -> []
-            Compound lst -> join (fmap validateDepItem $ catMaybes lst)
+            Compound _mFspecSize lst -> join (fmap validateDepItem $ catMaybes lst)
+
+instance Validate Expansion where
+    validate warnings x = join
+        [ reportUnless (isAligned $ expLenSize x) "bit alignment"
+        , validate warnings $ expVariation x
+        ]
+
+instance Validate Asterix where
+    validate warnings = \case
+        AsterixBasic x -> validate warnings x
+        AsterixExpansion x -> validate warnings x
 

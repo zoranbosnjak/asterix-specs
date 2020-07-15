@@ -18,7 +18,7 @@ set spec {
                 }
             }
             { stack
-                { line /compound }
+                { line /compound [n] }
                 { line
                     { loop { line (indent)
                         { or -

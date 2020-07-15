@@ -39,12 +39,12 @@ instance Show Syntax where
 showPath :: [Name] -> T.Text
 showPath = T.intercalate "/"
 
-findItemByName :: Asterix -> [Name] -> Maybe Item
+findItemByName :: Basic -> [Name] -> Maybe Item
 findItemByName _ [] = Nothing
-findItemByName asterix (x:xs) = do
+findItemByName basic (x:xs) = do
     let f (Spare _) = False
         f (Item name _ _ _) = name == x
-    item <- find f $ astCatalogue asterix
+    item <- find f $ basCatalogue basic
     go item xs
   where
     go item [] = Just item
@@ -54,7 +54,7 @@ findItemByName asterix (x:xs) = do
             let candidates = case variation of
                     Group lst -> lst
                     Extended _ _ lst -> lst
-                    Compound lst -> catMaybes lst
+                    Compound _fspecSize lst -> catMaybes lst
                     _ -> []
                 byName (Spare _) = False
                 byName (Item n _ _ _) = n == y

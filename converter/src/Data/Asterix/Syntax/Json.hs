@@ -197,8 +197,9 @@ instance ToJSON Variation where
     toJSON Explicit = object
         [ "type"    .= ("Explicit" :: String)
         ]
-    toJSON (Compound lst) = object
+    toJSON (Compound mSize lst) = object
         [ "type"    .= ("Compound" :: String)
+        , "fspec"   .= mSize
         , "items"   .= lst
         ]
 
@@ -218,7 +219,8 @@ instance FromJSON Variation  where
             <*> v .: "variation"
         Just "Explicit" -> pure Explicit
         Just "Compound" -> Compound
-            <$> v .: "items"
+            <$> v .: "fspec"
+            <*> v .: "items"
         _ -> typeMismatch "Element" $ String "wrong type"
 
 instance ToJSON Item where
@@ -272,19 +274,20 @@ instance FromJSON Uap  where
         Just "uaps" -> Uap <$> v .: "variations"
         _ -> typeMismatch "Uap" $ String "wrong type"
 
-instance ToJSON Asterix where
+instance ToJSON Basic where
     toJSON c = object
-        [ "number"      .= astCategory c
-        , "title"       .= astTitle c
-        , "edition"     .= astEdition c
-        , "date"        .= astDate c
-        , "preamble"    .= astPreamble c
-        , "catalogue"   .= astCatalogue c
-        , "uap"         .= astUap c
+        [ "type"        .= ("Basic" :: String)
+        , "number"      .= basCategory c
+        , "title"       .= basTitle c
+        , "edition"     .= basEdition c
+        , "date"        .= basDate c
+        , "preamble"    .= basPreamble c
+        , "catalogue"   .= basCatalogue c
+        , "uap"         .= basUap c
         ]
 
-instance FromJSON Asterix  where
-    parseJSON = withObject "Asterix" $ \v -> Asterix
+instance FromJSON Basic  where
+    parseJSON = withObject "Basic" $ \v -> Basic
         <$> v .: "number"
         <*> v .: "title"
         <*> v .: "edition"
@@ -292,6 +295,35 @@ instance FromJSON Asterix  where
         <*> v .: "preamble"
         <*> v .: "catalogue"
         <*> v .: "uap"
+
+instance ToJSON Expansion where
+    toJSON c = object
+        [ "type"        .= ("Expansion" :: String)
+        , "number"      .= expCategory c
+        , "edition"     .= expEdition c
+        , "date"        .= expDate c
+        , "lenSize"     .= expLenSize c
+        , "variation"   .= expVariation c
+        ]
+
+instance FromJSON Expansion where
+    parseJSON = withObject "Expansion" $ \v -> Expansion
+        <$> v .: "number"
+        <*> v .: "edition"
+        <*> v .: "date"
+        <*> v .: "lenSize"
+        <*> v .: "variation"
+
+instance ToJSON Asterix where
+    toJSON = \case
+        AsterixBasic x -> toJSON x
+        AsterixExpansion x -> toJSON x
+
+instance FromJSON Asterix  where
+    parseJSON = withObject "Asterix" $ \v -> case HMS.lookup "type" v of
+        Just "Basic" -> AsterixBasic <$> parseJSON (Object v)
+        Just "Expansion" -> AsterixExpansion <$> parseJSON (Object v)
+        _ -> typeMismatch "Asterix" $ String "wrong type"
 
 -- | Syntax implementation
 syntax :: Syntax

@@ -89,8 +89,10 @@ dumpVariation = \case
     Explicit -> do
         tell "explicit"
 
-    Compound lst -> do
-        tell "compound"
+    Compound mFspecSize lst -> do
+        case mFspecSize of
+            Nothing -> tell "compound"
+            Just n -> tell $ sformat ("compound " % int) n
         block $ forM_ lst $ \case
             Nothing -> tell "-"
             Just item -> dumpItem item
@@ -127,13 +129,13 @@ dumpUap = \case
     dumpList lst = block $ forM_ lst $ \item -> do
         tell $ maybe "-" id item
 
--- | Encode asterix category description.
-dumpAsterix :: Asterix -> Accumulator ()
-dumpAsterix asterix = do
+-- | Encode asterix basic category description.
+dumpBasic :: Basic -> Accumulator ()
+dumpBasic basic = do
     tell $ sformat ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
     tell $ sformat ("edition " % int % "." % int) ed1 ed2
     tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-    case astPreamble asterix of
+    case basPreamble basic of
         Nothing -> return ()
         Just preamble -> do
             tell "preamble"
@@ -142,19 +144,42 @@ dumpAsterix asterix = do
 
     tell ""
     tell "items"
-    block $ forM_ (astCatalogue asterix) $ \item -> do
+    block $ forM_ (basCatalogue basic) $ \item -> do
         tell ""
         dumpItem item
 
     tell ""
-    dumpUap $ astUap asterix
+    dumpUap $ basUap basic
   where
-    cat = astCategory asterix
-    title = astTitle asterix
-    edition = astEdition asterix
+    cat = basCategory basic
+    title = basTitle basic
+    edition = basEdition basic
     ed1 = editionMajor edition
     ed2 = editionMinor edition
-    (Date year month day) = astDate asterix
+    (Date year month day) = basDate basic
+
+-- | Encode expansion
+dumpExpansion :: Expansion -> Accumulator ()
+dumpExpansion x = do
+    tell $ sformat ("ref " % left 3 '0') cat
+    tell $ sformat ("edition " % int % "." % int) ed1 ed2
+    tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+    tell ""
+    tell $ sformat ("length " % int) (expLenSize x)
+    tell ""
+    dumpVariation $ expVariation x
+  where
+    cat = expCategory x
+    edition = expEdition x
+    ed1 = editionMajor edition
+    ed2 = editionMinor edition
+    (Date year month day) = expDate x
+
+-- | Encode asterix description.
+dumpAsterix :: Asterix -> Accumulator ()
+dumpAsterix = \case
+    AsterixBasic basic -> dumpBasic basic
+    AsterixExpansion expansion -> dumpExpansion expansion
 
 -- | Parse from Text
 
@@ -188,9 +213,9 @@ tryOne [x] = x
 tryOne (x:xs) = try x <|> tryOne xs
 
 -- | Parse 'asterix category'.
-pCat :: Parser Int
-pCat = do
-    MC.string "asterix" >> sc
+pCat :: Text -> Parser Int
+pCat prefix = do
+    MC.string prefix >> sc
     (a,b,c) <- (,,) <$> digitChar <*> digitChar <*> digitChar
     return (read [a,b,c])
 
@@ -389,10 +414,15 @@ pExplicit = MC.string "explicit" *> pure Explicit
 
 -- | Parse 'compound' item.
 pCompound :: Parser Variation
-pCompound = Compound . snd <$> parseList (MC.string "compound") pListElement
+pCompound = do
+    (a,b) <- parseList pHeader pListElement
+    return $ Compound a b
   where
     pListElement sc' = try pDash <|> (Just <$> pItem sc')
     pDash = MC.char '-' >> pure Nothing
+    pHeader =
+        try (Just <$> (MC.string "compound" >> sc >> L.decimal))
+        <|> (MC.string "compound" >> pure Nothing)
 
 -- | Parse 'element'.
 pVariation :: Parser () -> Parser Variation
@@ -444,16 +474,31 @@ pUap = uaps <|> uap
         (_, lst) <- parseList (MC.string "uaps") (\_ -> parseList pUapName parseOne)
         return $ Uaps lst
 
--- | Parse asterix category description.
-pAsterix :: Parser Asterix
-pAsterix = Asterix
-    <$> pCat
+-- | Parse basic category description.
+pBasic :: Parser Basic
+pBasic = Basic
+    <$> pCat "asterix"
     <*> (scn >> (T.pack <$> stringLiteral))
     <*> (scn >> pEdition)
     <*> (scn >> pDate)
     <*> optional (try (scn >> pPreamble))
     <*> (scn >> pItems)
     <*> (scn >> pUap)
+
+-- | Parse extension
+pExtension :: Parser Expansion
+pExtension = Expansion
+    <$> pCat "ref"
+    <*> (scn >> pEdition)
+    <*> (scn >> pDate)
+    <*> (scn >> MC.string "length" >> sc >> L.decimal)
+    <*> (scn >> pCompound)
+
+-- | Parse asterix.
+pAsterix :: Parser Asterix
+pAsterix
+    = try (AsterixBasic <$> pBasic)
+  <|> (AsterixExpansion <$> pExtension)
 
 -- | Syntax implementation
 syntax :: Syntax
