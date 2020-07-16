@@ -1,6 +1,7 @@
 
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Main where
 
@@ -8,13 +9,15 @@ import           Control.Monad
 import           Options.Applicative as Opt
 import qualified Data.Text as T
 import qualified Data.Text.IO
+import qualified System.Environment
 import           System.IO as IO
-import           System.Exit (die)
+import           System.Exit (die, exitWith, ExitCode(ExitSuccess))
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import           Data.Maybe
 import           Crypto.Hash
 
+import           TH (getEnvVariableExpr)
 import           Data.Asterix
 import           Data.Asterix.Common
 import           Data.Asterix.Validation (validate, isValid)
@@ -145,7 +148,32 @@ pretify filename decoder encoder = do
 
 main :: IO ()
 main = do
-    opt <- execParser (info (options <**> helper) idm)
+    pName <- System.Environment.getProgName
+    _pArgs <- System.Environment.getArgs
+
+    -- get build environment variables
+    let swVersion :: String
+        swVersion = $( getEnvVariableExpr "SW_VERSION" )
+
+        gitRev :: String
+        gitRev = $( getEnvVariableExpr "GIT_REV" )
+
+        versionString :: String
+        versionString =
+            "version: " ++ swVersion
+            ++ ", git rev: " ++ gitRev
+
+    opt <- do
+        let showVersion = flag' True (long "version" <> help "Show version and exit")
+            options'
+                = (showVersion *> pure Nothing)
+              <|> fmap Just options
+        execParser (info (options' <**> helper) idm) >>= \case
+            Nothing -> do
+                putStrLn $ pName ++ ", " ++ versionString
+                exitWith ExitSuccess
+            Just opt -> return opt
+
     case opt of
         OptConvert convOpt -> convert convOpt
         OptPretify filename (decoder, encoder) -> pretify filename decoder encoder

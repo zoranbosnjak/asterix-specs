@@ -6,7 +6,7 @@
 }:
 mkDerivation {
   pname = "converter";
-  version = "0.3.0";
+  version = "0.4.0";
   src = ./.;
   isLibrary = true;
   isExecutable = true;

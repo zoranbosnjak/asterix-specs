@@ -9,14 +9,24 @@ let
     else import packages { };
 
   haskellPackages = pkgs.haskellPackages;
-  drv = haskellPackages.callPackage ./generated.nix { };
+  drv1 = haskellPackages.callPackage ./generated.nix { };
+
+  envVars = ''
+    export GIT_REV=${gitrev}
+    export SW_VERSION=$(cat *.cabal | grep "^version:" | awk '{print $2}')
+  '';
+
+  drv = drv1.overrideDerivation (oldAttrs: {
+      preBuild = envVars;
+    }) // { inherit env; };
 
   env = pkgs.stdenv.mkDerivation rec {
     name = "converter-devel-environment";
-    buildInputs = drv.env.nativeBuildInputs ++ [
+    buildInputs = drv1.env.nativeBuildInputs ++ [
       pkgs.cabal2nix
       pkgs.ghcid
     ];
+    shellHook = envVars;
   };
 
 in
