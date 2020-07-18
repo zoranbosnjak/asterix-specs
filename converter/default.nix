@@ -1,12 +1,13 @@
-{ packages ? null
-, gitrev ? "devel"
+{ gitrev ? "devel"
+, packages ? null
+, inShell ? null
 }:
 
 let
   nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
   pkgs = if packages == null
     then import (builtins.fetchGit nixpkgs) { }
-    else import packages { };
+    else packages;
 
   haskellPackages = pkgs.haskellPackages;
   drv1 = haskellPackages.callPackage ./generated.nix { };
@@ -18,6 +19,9 @@ let
 
   drv = drv1.overrideDerivation (oldAttrs: {
       preBuild = envVars;
+      src = builtins.filterSource
+        (path: type: type != "symlink" || baseNameOf path != "result")
+        ./.;
     }) // { inherit env; };
 
   env = pkgs.stdenv.mkDerivation rec {
@@ -30,5 +34,7 @@ let
   };
 
 in
-  if pkgs.lib.inNixShell then env else drv
+  if inShell == false
+    then drv
+    else if pkgs.lib.inNixShell then env else drv
 

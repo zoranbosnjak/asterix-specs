@@ -6,125 +6,125 @@ let
   nixpkgs = builtins.fromJSON (builtins.readFile ./nixpkgs.json);
   pkgs = if packages == null
     then import (builtins.fetchGit nixpkgs) { }
-    else import packages { };
-
-  syntax = import ./syntax/default.nix { inherit gitrev; };
-
-  converter = import ./converter/default.nix { inherit gitrev; };
-
-  renderer = import ./renderer/default.nix { inShell = false; };
-
-  deps = import ./publisher/deps.nix { inherit pkgs; };
+    else packages;
 
   shortGitrev = builtins.substring 0 7 gitrev;
 
+  syntax = import ./syntax/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
+
+  converter = import ./converter/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
+
+  renderer = import ./renderer/default.nix { packages = pkgs; inShell = false; };
+
+  cats =
+    let
+      toCatNumber = s:
+        let
+          x = builtins.split "cat" s;
+        in if (builtins.length x) == 3
+          then builtins.head (builtins.tail (builtins.tail x))
+          else null;
+
+      isCat = key: val:
+        (val == "directory" && toCatNumber key != null);
+    in map toCatNumber (builtins.attrNames (pkgs.lib.attrsets.filterAttrs isCat (builtins.readDir ./specs)));
+
+  values = lst: builtins.filter (x: x != null) lst;
+
+  isRegular = key: val: (val == "regular");
+
+  listing = catnum: builtins.attrNames (pkgs.lib.attrsets.filterAttrs isRegular (builtins.readDir (./specs + "/cat" + catnum)));
+
+  findAst = x: s:
+    let m = builtins.match (x + "-(.*).ast") s;
+    in if m == null
+      then null
+      else builtins.head m;
+
+  catsUnder = catnum: values (map (findAst "cat") (listing catnum));
+
+  refsUnder = catnum: values (map (findAst "ref") (listing catnum));
+
+  level1 = catnum:
+    let
+      asterix-spec = catnumber: spectype: edition:
+        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit catnumber spectype edition;};
+
+      linkCats =
+        let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";
+        in toString (map linkCat (catsUnder catnum));
+
+      linkRefs =
+        let linkRef = ed: "\"" + ed + " " + asterix-spec catnum "ref" ed + "\"";
+        in toString (map linkRef (refsUnder catnum));
+
+    in
+      pkgs.stdenv.mkDerivation {
+        name = "asterix-category-" + catnum;
+        src = builtins.filterSource
+          (path: type:
+            (type != "directory" || baseNameOf path != ".git")
+            && (type != "symlink" || baseNameOf path != "result"))
+          ./specs;
+
+        installPhase = ''
+          mkdir -p $out
+          echo ${catnum} > $out/category
+
+          mkdir -p $out/cats
+          for i in ${linkCats}; do
+            set -- $i
+            ln -s $2 $out/cats/cat$1
+          done
+
+          mkdir -p $out/refs
+          for i in ${linkRefs}; do
+            set -- $i
+            ln -s $2 $out/refs/ref$1
+          done
+        '';
+      };
+
+  linkCategories =
+    let linkCategory = cat: "\"" + cat + " " + level1 cat + "\"";
+    in toString (map linkCategory cats);
+
+  matrix =
+    let obj =
+      { inherit shortGitrev;
+        categories = map (catnum: { category = catnum; cats = catsUnder catnum; refs = refsUnder catnum;}) cats;
+      };
+    in  pkgs.writeText "asterix-specs-matrix" ''
+      ${builtins.toJSON obj}
+    '';
+
+  html = import ./html {inherit pkgs matrix;};
+
   drv = pkgs.stdenv.mkDerivation {
     name = "asterix-specs";
-    propagatedBuildInputs = deps;
     src = builtins.filterSource
-      (path: type: type != "directory" || baseNameOf path != ".git")
-      ./.;
-
-    FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = pkgs.texlive.dejavu.pkgs; };
+      (path: type:
+          (type != "directory" || baseNameOf path != ".git")
+       && (type != "symlink" || baseNameOf path != "result"))
+      ./specs;
 
     installPhase = ''
       mkdir -p $out
-      mkdir -p $out/bin
 
-      ln -s ${syntax}/syntax $out/syntax
+      ln -s ${syntax} $out/syntax
+
+      mkdir -p $out/bin
       ln -s ${converter}/bin/converter $out/bin/converter
       ln -s ${renderer}/bin/render $out/bin/render
 
-      cp publisher/style.css $out
-
-      ix=$out/index.html
-      echo "<!DOCTYPE html>" >> $ix
-      echo "<head><link href="style.css" rel="stylesheet" type="text/css"></head>" >> $ix
-      echo "<html>" >> $ix
-      echo "<body>" >> $ix
-
-      echo "Asterix specifications generated from <a href="https://github.com/zoranbosnjak/asterix-specs">repository</a> revision <code>#${shortGitrev}</code>." >> $ix
-
       mkdir -p $out/specs
-      for level1 in $(find specs/* -maxdepth 1 -type d); do
-        cat=$(basename $level1)
-        mkdir -p $out/specs/$cat
-
-        echo "<h2>$cat</h2>" >> $ix
-        echo "<ul>" >> $ix
-
-        for level2 in $(find $level1 -type f | grep ast | cut -c 2- | sort -t. -k1,1n -k2,2n); do
-          edition=$(basename v$level2 .ast)
-          echo $cat $edition
-
-          dst=$out/specs/$cat/$edition
-          mkdir $dst
-
-          orig=specs/$cat/$edition.ast
-          base=$dst/$cat-$edition
-
-          echo "validate, copy original"
-          ${converter}/bin/converter -f $orig --ast --validate
-          cp $orig $base.ast
-
-          echo "convert to .json, .xml and pretify to .txt"
-          ${converter}/bin/converter --ast --json -f $orig > $base.json
-          ${converter}/bin/converter --ast --xml -f $orig > $base.xml
-          ${converter}/bin/converter --ast --ast -f $orig > $base.txt
-
-          echo "render to minimal .json"
-          ${renderer}/bin/render --script renderer/formats/minimal.py render $base.json > $base-minimal.json
-
-          echo "render to .rst"
-          ${renderer}/bin/render --script publisher/rst.py render $base.json > $base.rst
-
-          current=$PWD
-          echo "generate html and pdf version"
-          rm -rf $TMP/publisher
-          cp -a publisher $TMP
-          cp $base.json $TMP/publisher/specs.json
-          cp $base.rst $TMP/publisher/specs.rst
-          cd $TMP/publisher
-          make html
-          make latexpdf
-          mkdir $base.html
-          cp -a $TMP/publisher/_build/html/. $base.html
-          cp $TMP/publisher/_build/latex/test.pdf $base.pdf
-          cd $current
-
-          echo "<li> $edition" >> $ix
-          ref=specs/$cat/$edition/$cat-$edition
-          echo "<a href=\"$ref.ast\">[ast]</a>" >> $ix
-          echo "<a href=\"$ref.txt\">[txt]</a>" >> $ix
-          echo "<a href=\"$ref.json\">[json]</a>" >> $ix
-          echo "<a href=\"$ref.xml\">[xml]</a>" >> $ix
-          echo "<a href=\"$ref-minimal.json\">[minimal-json]</a>" >> $ix
-          echo "<a href=\"$ref.rst\">[rst]</a>" >> $ix
-          echo "<a href=\"$ref.pdf\">[pdf]</a>" >> $ix
-          echo "<a href=\"$ref.html/specs.html\">[html]</a>" >> $ix
-          echo "</li>" >> $ix
-
-        done
-        echo "</ul>" >> $ix
-
+      for i in ${linkCategories}; do
+        set -- $i
+        ln -s $2 $out/specs/cat$1
       done
 
-	  echo "<hr>" >> $ix
-	  echo "Format description:" >> $ix
-	  echo "<ul>" >> $ix
-	  echo "    <li><code>ast</code> source format</li>" >> $ix
-	  echo "    <li><code>txt</code> reformated (same as source), generated from <code>json</code></li>" >> $ix
-	  echo "    <li><code>json</code> representation, generated from <code>ast</code></li>" >> $ix
-	  echo "    <li><code>xml</code> representation, generated from <code>ast</code> (experimental)</li>" >> $ix
-	  echo "    <li><code>minimal-json</code> minimal json representation, generated from <code>json</code></li>" >> $ix
-	  echo "    <li><code>rst</code> documentation format, generated from <code>json</code></li>" >> $ix
-	  echo "    <li><code>pdf</code> documentation, generated from <code>rst</code></li>" >> $ix
-	  echo "    <li><code>html</code> documentation, generated from <code>rst</code></li>" >> $ix
-	  echo "</ul>" >> $ix
-
-      echo "</body>" >> $ix
-      echo "</html>" >> $ix
-
+      cp ${html}/index.html $out
+      cp ${html}/style.css $out
     '';
   } // { inherit env; };
 
@@ -138,5 +138,5 @@ let
   };
 
 in
-    if pkgs.lib.inNixShell then drv.env else drv
+  if pkgs.lib.inNixShell then drv.env else drv
 

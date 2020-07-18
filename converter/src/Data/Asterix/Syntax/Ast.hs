@@ -161,7 +161,7 @@ dumpBasic basic = do
 -- | Encode expansion
 dumpExpansion :: Expansion -> Accumulator ()
 dumpExpansion x = do
-    tell $ sformat ("ref " % left 3 '0') cat
+    tell $ sformat ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
     tell $ sformat ("edition " % int % "." % int) ed1 ed2
     tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
     tell ""
@@ -170,6 +170,7 @@ dumpExpansion x = do
     dumpVariation $ expVariation x
   where
     cat = expCategory x
+    title = expTitle x
     edition = expEdition x
     ed1 = editionMajor edition
     ed2 = editionMinor edition
@@ -489,6 +490,7 @@ pBasic = Basic
 pExtension :: Parser Expansion
 pExtension = Expansion
     <$> pCat "ref"
+    <*> (scn >> (T.pack <$> stringLiteral))
     <*> (scn >> pEdition)
     <*> (scn >> pDate)
     <*> (scn >> MC.string "length" >> sc >> L.decimal)

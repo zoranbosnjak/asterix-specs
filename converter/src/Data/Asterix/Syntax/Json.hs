@@ -300,6 +300,7 @@ instance ToJSON Expansion where
     toJSON c = object
         [ "type"        .= ("Expansion" :: String)
         , "number"      .= expCategory c
+        , "title"       .= expTitle c
         , "edition"     .= expEdition c
         , "date"        .= expDate c
         , "lenSize"     .= expLenSize c
@@ -309,6 +310,7 @@ instance ToJSON Expansion where
 instance FromJSON Expansion where
     parseJSON = withObject "Expansion" $ \v -> Expansion
         <$> v .: "number"
+        <*> v .: "title"
         <*> v .: "edition"
         <*> v .: "date"
         <*> v .: "lenSize"

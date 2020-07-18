@@ -22,6 +22,7 @@ import json
 with open('specs.json') as f:
     obj = json.loads(f.read())
 
+rt = obj['type']
 cat = obj['number']
 cat_title = obj['title']
 date = obj['date']
@@ -31,7 +32,13 @@ cat_edition = '{}.{}'.format(edition['major'], edition['minor'])
 
 # -- Project information -----------------------------------------------------
 
-project = 'cat{:03d} specification'.format(cat)
+if rt == 'Basic':
+    project = 'cat{:03d} category specification'.format(cat)
+elif rt == 'Expansion':
+    project = 'cat{:03d} expansion specification'.format(cat)
+else:
+    raise Exception('unexpected project type')
+
 copyright = '2019, test'
 author = 'test'
 

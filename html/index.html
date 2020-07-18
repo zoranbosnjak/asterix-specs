@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head><link href="style.css" rel="stylesheet" type="text/css"></head>
+<body>
+<h1>Asterix specifications</h1>
+
+Generated from
+<a href="https://github.com/zoranbosnjak/asterix-specs">repository</a>,
+revision <code>{{shortGitrev}}</code>.
+
+{% for cat in categories %}
+<hr>
+<h2>category {{cat.category}}</h2>
+
+{% if cat.cats %}
+category editions:
+<ul>
+{% for edition in cat.cats %}
+<li> {{edition}}
+    <a href=specs/cat{{cat.category}}/cats/cat{{edition}}/definition.ast>[ast]</a>
+    <a href=specs/cat{{cat.category}}/cats/cat{{edition}}/definition.txt>[txt]</a>
+    <a href=specs/cat{{cat.category}}/cats/cat{{edition}}/definition.json>[json]</a>
+    <a href=specs/cat{{cat.category}}/cats/cat{{edition}}/definition.xml>[xml]</a>
+    <a href=specs/cat{{cat.category}}/cats/cat{{edition}}/definition.rst>[rst]</a>
+    <a href=specs/cat{{cat.category}}/cats/cat{{edition}}/definition.pdf>[pdf]</a>
+    <a href=specs/cat{{cat.category}}/cats/cat{{edition}}/definition.html/index.html>[html]</a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% if cat.refs %}
+REF editions:
+<ul>
+{% for edition in cat.refs %}
+<li> {{edition}}
+    <a href=specs/cat{{cat.category}}/refs/ref{{edition}}/definition.ast>[ast]</a>
+    <a href=specs/cat{{cat.category}}/refs/ref{{edition}}/definition.txt>[txt]</a>
+    <a href=specs/cat{{cat.category}}/refs/ref{{edition}}/definition.json>[json]</a>
+    <a href=specs/cat{{cat.category}}/refs/ref{{edition}}/definition.xml>[xml]</a>
+    <a href=specs/cat{{cat.category}}/refs/ref{{edition}}/definition.rst>[rst]</a>
+    <a href=specs/cat{{cat.category}}/refs/ref{{edition}}/definition.pdf>[pdf]</a>
+    <a href=specs/cat{{cat.category}}/refs/ref{{edition}}/definition.html/index.html>[html]</a>
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endfor %}
+
+<hr>
+<span class=footer>
+Format description:
+
+<ul>
+    <li><code>ast</code> source format (<a href=syntax/index.html>syntax description</a>)</li>
+    <li><code>txt</code> reformated source file, generated from <code>ast</code></li>
+    <li><code>json</code> representation, generated from <code>ast</code></li>
+    <li><code>xml</code> representation, generated from <code>ast</code> (experimental)</li>
+    <li><code>rst</code> documentation format, generated from <code>json</code></li>
+    <li><code>pdf</code> documentation, generated from <code>rst</code></li>
+    <li><code>html</code> documentation, generated from <code>rst</code></li>
+</ul>
+</span>
+
+</body>
+</html>
+

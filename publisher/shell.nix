@@ -5,12 +5,11 @@ let
   nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
   pkgs = if packages == null
     then import (builtins.fetchGit nixpkgs) { }
-    else import packages { };
+    else packages;
 
-  renderer = import ../renderer/default.nix { inShell = false; inherit packages; };
+  converter = import ../converter/default.nix { packages = pkgs; inShell = false; };
 
-  haskellPackages = pkgs.haskellPackages;
-  converter = haskellPackages.callPackage ../converter/generated.nix { };
+  renderer = import ../renderer/default.nix { packages = pkgs; inShell = false; };
 
   deps = import ./deps.nix { inherit pkgs; } ++ [converter renderer];
 

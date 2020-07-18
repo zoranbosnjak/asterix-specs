@@ -1,5 +1,5 @@
-{ inShell ? null
-, packages ? null
+{ packages ? null
+, inShell ? null
 }:
 
 let
@@ -7,7 +7,7 @@ let
   nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
   pkgs = if packages == null
     then import (builtins.fetchGit nixpkgs) { }
-    else import packages { };
+    else packages;
 
   version = builtins.replaceStrings ["\n"] [""] (builtins.readFile ./VERSION.txt);
   deps = with pkgs; [
@@ -18,7 +18,9 @@ let
   drv = pkgs.python3Packages.buildPythonApplication {
     pname = "asterix-renderer";
     version = version;
-    src = ./.;
+    src = builtins.filterSource
+      (path: type: type != "symlink" || baseNameOf path != "result")
+      ./.;
     propagatedBuildInputs = deps;
     preCheck = ''
     '';

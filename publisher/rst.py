@@ -36,16 +36,29 @@ def render(s):
     renderHeader(root)
 
     cat = root['number']
-    tell(underline('-', 'Description of standard data items'))
-    [renderTopItem(cat, item) for item in root['catalogue']]
 
-    renderUap(root)
+    rt = root['type']
+    if rt == 'Basic':
+        tell(underline('-', 'Description of standard data items'))
+        [renderTopItem(cat, item) for item in root['catalogue']]
+        renderUap(root)
+    elif rt == 'Expansion':
+        tell(underline('-', 'Description of asterix expansion'))
+        renderVariation(root['variation'])
+    else:
+        raise Exception('unexpected root type {}'.format(rt))
 
     return ''.join([line+'\n' for line in accumulator])
 
 def renderHeader(root):
     cat = root['number']
-    tell(underline('=', "Asterix category " + '{:03d}'.format(cat) + ' - {}'.format(root['title'])))
+    rt = root['type']
+    if rt == 'Basic':
+        tell(underline('=', "Asterix category " + '{:03d}'.format(cat) + ' - {}'.format(root['title'])))
+    elif rt == 'Expansion':
+        tell(underline('=', "Asterix expansion " + '{:03d}'.format(cat) + ' - {}'.format(root['title'])))
+    else:
+        raise Exception('unexpected root type {}'.format(rt))
     tell('**category**: {:03d}'.format(cat))
     tell('')
     edition = root['edition']
@@ -54,8 +67,9 @@ def renderHeader(root):
     date = root['date']
     tell('**date**: {}-{:02d}-{:02d}'.format(date['year'], date['month'], date['day']))
     tell('')
-    tell(underline('-', 'Preamble'))
-    tell(root['preamble'])
+    if rt == 'Basic':
+        tell(underline('-', 'Preamble'))
+        tell(root['preamble'])
     tell('')
 
 def renderTopItem(cat, item):
@@ -245,7 +259,11 @@ def renderVariation(variation):
         return 0
 
     def renderCompound():
-        tell('Compound item')
+        fspec = variation['fspec']
+        if fspec == None:
+            tell('Compound item (FX)')
+        else:
+            tell('Compound item (fspec={} bits)'.format(fspec))
         tell('')
         n = 0
         with indent:

@@ -187,6 +187,7 @@ instance Block Expansion where
         tell "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         tell ""
         enclosed header footer $ do
+            tell $ sformat ("<title>" % stext % "</title>") (xml $ expTitle expansion)
             tell $ sformat ("<date>" % int % "-" % left 2 '0' % "-" % left 2 '0' % "</date>")
                 year month day
             tell $ sformat ("<lenSize>" % int % "</lenSize>") (expLenSize expansion)

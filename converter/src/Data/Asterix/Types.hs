@@ -126,6 +126,7 @@ data Basic = Basic
 
 data Expansion = Expansion
     { expCategory   :: Int
+    , expTitle      :: Text
     , expEdition    :: Edition
     , expDate       :: Date
     , expLenSize    :: Int
