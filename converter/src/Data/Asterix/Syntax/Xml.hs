@@ -190,7 +190,6 @@ instance Block Expansion where
             tell $ sformat ("<title>" % stext % "</title>") (xml $ expTitle expansion)
             tell $ sformat ("<date>" % int % "-" % left 2 '0' % "-" % left 2 '0' % "</date>")
                 year month day
-            tell $ sformat ("<lenSize>" % int % "</lenSize>") (expLenSize expansion)
             enc $ expVariation expansion
       where
         header = sformat

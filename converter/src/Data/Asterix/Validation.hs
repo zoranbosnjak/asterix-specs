@@ -263,8 +263,7 @@ instance Validate Basic where
 
 instance Validate Expansion where
     validate warnings x = join
-        [ reportUnless (isAligned $ expLenSize x) "bit alignment"
-        , validate warnings $ expVariation x
+        [ validate warnings $ expVariation x
         ]
 
 instance Validate Asterix where

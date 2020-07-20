@@ -165,8 +165,6 @@ dumpExpansion x = do
     tell $ sformat ("edition " % int % "." % int) ed1 ed2
     tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
     tell ""
-    tell $ sformat ("length " % int) (expLenSize x)
-    tell ""
     dumpVariation $ expVariation x
   where
     cat = expCategory x
@@ -493,7 +491,6 @@ pExtension = Expansion
     <*> (scn >> (T.pack <$> stringLiteral))
     <*> (scn >> pEdition)
     <*> (scn >> pDate)
-    <*> (scn >> MC.string "length" >> sc >> L.decimal)
     <*> (scn >> pCompound)
 
 -- | Parse asterix.

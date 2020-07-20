@@ -129,7 +129,6 @@ data Expansion = Expansion
     , expTitle      :: Text
     , expEdition    :: Edition
     , expDate       :: Date
-    , expLenSize    :: Int
     , expVariation  :: Variation
     -- TODO: encoding rules??
     } deriving (Generic, Eq, Show)

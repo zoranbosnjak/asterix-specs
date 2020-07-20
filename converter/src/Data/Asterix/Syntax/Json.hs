@@ -303,7 +303,6 @@ instance ToJSON Expansion where
         , "title"       .= expTitle c
         , "edition"     .= expEdition c
         , "date"        .= expDate c
-        , "lenSize"     .= expLenSize c
         , "variation"   .= expVariation c
         ]
 
@@ -313,7 +312,6 @@ instance FromJSON Expansion where
         <*> v .: "title"
         <*> v .: "edition"
         <*> v .: "date"
-        <*> v .: "lenSize"
         <*> v .: "variation"
 
 instance ToJSON Asterix where
