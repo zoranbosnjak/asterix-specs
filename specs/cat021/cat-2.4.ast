@@ -123,7 +123,7 @@ items
                 19: reserved
                 20: surface emergency vehicle
                 21: surface service vehicle
-                22: element ground or tethered obstruction
+                22: fixed ground or tethered obstruction
                 23: cluster obstacle
                 24: line obstacle
 
@@ -158,7 +158,7 @@ items
                 element 1
                     table
                         0: Report from target transponder
-                        1: Report from field monitor (element transponder)
+                        1: Report from field monitor (fixed transponder)
             DCR "Differential Correction"
                 element 1
                     table
@@ -330,9 +330,9 @@ items
                 element 2
                     table
                         3: Reserved
-                        2: TOMRp whole seconds = (I021/075) Whole seconds - 1
-                        1: TOMRp whole seconds = (I021/075) Whole seconds + 1
-                        0: TOMRp whole seconds = (I021/075) Whole seconds
+                        2: TOMRv whole seconds = (I021/075) Whole seconds - 1
+                        1: TOMRv whole seconds = (I021/075) Whole seconds + 1
+                        0: TOMRv whole seconds = (I021/075) Whole seconds
             TOMRP "Fractional part of the time of message reception for position in the ground station."
                 element 30
                     unsigned quantity 1 30 "s"
@@ -656,7 +656,7 @@ items
                     table
                         0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
                         1: Air Speed = Mach, LSB (Bit-1) = 0.001
-            IAS "Air Speed (IAS or Mach)"
+            AS "Air Speed (IAS or Mach)"
                 element 15
                     case 150/IM
                         0:
@@ -919,16 +919,8 @@ items
         definition
             Mode S Comm B data as extracted from the aircraft transponder.
         repetitive 8
-            group
-                MBDATA "56-bit message conveying Mode S Comm B message data"
-                    element 56
-                        raw
-                BDS1 "Comm B Data Buffer Store 1 Address"
-                    element 4
-                        raw
-                BDS2 "Comm B Data Buffer Store 2 Address"
-                    element 4
-                        raw
+            element 8
+                bds
         remark
             Notes:
 
