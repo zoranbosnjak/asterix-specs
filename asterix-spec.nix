@@ -1,5 +1,7 @@
 { gitrev ? "devel"
 , packages ? null
+, converter
+, renderer
 , catnumber
 , spectype
 , edition
@@ -13,9 +15,6 @@ let
 
   shortGitrev = builtins.substring 0 7 gitrev;
 
-  converter = import ./converter/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
-
-  renderer = import ./renderer/default.nix { packages = pkgs; inShell = false; };
   render_rst = ./publisher/rst.py;
 
   publisher = ./publisher;

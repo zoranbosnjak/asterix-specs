@@ -155,13 +155,8 @@ main = do
     let swVersion :: String
         swVersion = $( getEnvVariableExpr "SW_VERSION" )
 
-        gitRev :: String
-        gitRev = $( getEnvVariableExpr "GIT_REV" )
-
         versionString :: String
-        versionString =
-            "version: " ++ swVersion
-            ++ ", git rev: " ++ gitRev
+        versionString = "version: " ++ swVersion
 
     opt <- do
         let showVersion = flag' True (long "version" <> help "Show version and exit")

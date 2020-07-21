@@ -1,5 +1,4 @@
-{ gitrev ? "devel"
-, packages ? null
+{ packages ? null
 , inShell ? null
 }:
 
@@ -13,7 +12,6 @@ let
   drv1 = haskellPackages.callPackage ./generated.nix { };
 
   envVars = ''
-    export GIT_REV=${gitrev}
     export SW_VERSION=$(cat *.cabal | grep "^version:" | awk '{print $2}')
   '';
 

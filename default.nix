@@ -12,7 +12,7 @@ let
 
   syntax = import ./syntax/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
 
-  converter = import ./converter/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
+  converter = import ./converter/default.nix { packages = pkgs; inShell = false; };
 
   renderer = import ./renderer/default.nix { packages = pkgs; inShell = false; };
 
@@ -48,7 +48,7 @@ let
   level1 = catnum:
     let
       asterix-spec = catnumber: spectype: edition:
-        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit catnumber spectype edition;};
+        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit converter renderer catnumber spectype edition;};
 
       linkCats =
         let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";
