@@ -1,0 +1,35 @@
+name: rebuild and deploy
+on: [push, pull_request]
+jobs:
+    main:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2.3.1
+              with:
+                persist-credentials: false
+            - uses: cachix/install-nix-action@v10
+            - uses: cachix/cachix-action@v6
+              with:
+                name: zoranbosnjak
+                signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+            - name: rebuild
+              run: |
+                nix-build --argstr gitrev $GITHUB_SHA
+                rsync -r -L --delete result/ output/
+                find output -type d | xargs chmod 755
+                find output -type f | xargs chmod 644
+                touch output/.nojekyll
+            - name: show event
+              run: echo ${{ github.event_name }}
+            - name: show ref
+              run: echo ${{ github.ref }}
+            - name: deploy
+              if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+              uses: JamesIves/github-pages-deploy-action@3.5.8
+              with:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                BRANCH: gh-pages
+                FOLDER: output
+                CLEAN: true
+                SINGLE_COMMIT: true
+
