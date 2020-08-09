@@ -50,7 +50,7 @@ let
   level1 = catnum:
     let
       asterix-spec = catnumber: spectype: edition:
-        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit converter renderer catnumber spectype edition;};
+        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit converter converterStatic renderer catnumber spectype edition;};
 
       linkCats =
         let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";
