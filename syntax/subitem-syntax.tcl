@@ -30,7 +30,7 @@ set spec {
                     }
                 }
             }
-            { line /repetitive BYTES subitem-def }
+            { line /repetitive BITS subitem-def }
             { line /explicit }
             { line /element BITS content-def }
             { line /spare BITS }
