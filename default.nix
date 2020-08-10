@@ -14,6 +14,8 @@ let
 
   converter = import ./converter/default.nix { packages = pkgs; inShell = false; };
 
+  converterStatic = import ./converter/default.nix { packages = pkgs; inShell = false; static = true; };
+
   renderer = import ./renderer/default.nix { packages = pkgs; inShell = false; };
 
   cats =
@@ -48,7 +50,7 @@ let
   level1 = catnum:
     let
       asterix-spec = catnumber: spectype: edition:
-        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit converter renderer catnumber spectype edition;};
+        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit converter converterStatic renderer catnumber spectype edition;};
 
       linkCats =
         let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";
@@ -115,6 +117,7 @@ let
 
       mkdir -p $out/bin
       ln -s ${converter}/bin/converter $out/bin/converter
+      ln -s ${converterStatic}/bin/converter $out/bin/converter-static
       ln -s ${renderer}/bin/render $out/bin/render
 
       mkdir -p $out/specs

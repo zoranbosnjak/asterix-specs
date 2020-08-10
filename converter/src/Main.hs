@@ -1,7 +1,6 @@
 
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
 
 module Main where
 
@@ -15,12 +14,14 @@ import           System.Exit (die, exitWith, ExitCode(ExitSuccess))
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import           Data.Maybe
+import           Data.Version (showVersion)
 import           Crypto.Hash
 
-import           TH (getEnvVariableExpr)
 import           Data.Asterix
 import           Data.Asterix.Common
 import           Data.Asterix.Validation (validate, isValid)
+
+import           Paths_converter (version)
 
 data Input
     = FileInput FilePath
@@ -148,24 +149,17 @@ pretify filename decoder encoder = do
 
 main :: IO ()
 main = do
-    pName <- System.Environment.getProgName
+    _pName <- System.Environment.getProgName
     _pArgs <- System.Environment.getArgs
 
-    -- get build environment variables
-    let swVersion :: String
-        swVersion = $( getEnvVariableExpr "SW_VERSION" )
-
-        versionString :: String
-        versionString = "version: " ++ swVersion
-
     opt <- do
-        let showVersion = flag' True (long "version" <> help "Show version and exit")
+        let ver = flag' True (long "version" <> help "Show version and exit")
             options'
-                = (showVersion *> pure Nothing)
+                = (ver *> pure Nothing)
               <|> fmap Just options
         execParser (info (options' <**> helper) idm) >>= \case
             Nothing -> do
-                putStrLn $ pName ++ ", " ++ versionString
+                putStrLn $ "Asterix specs converter, version: " ++ showVersion version
                 exitWith ExitSuccess
             Just opt -> return opt
 
