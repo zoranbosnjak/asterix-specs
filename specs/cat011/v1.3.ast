@@ -22,7 +22,7 @@ items
 
     010 "Data Source Identifier"
         definition
-            Identification of the radar station from which the data are received.
+            Identification of the radar station from which the data is received.
         group
             SAC "System Area Code fixed to zero"
                 element 8
@@ -43,7 +43,7 @@ items
             Note:
                 The service identification is allocated by the A-SMGCS
 
-    041 "Position in WGS-84 Coordinates"
+    041 "Position in WGS-84 Co-ordinates"
         definition
             Position of a target in WGS-84 Coordinates.
         group
@@ -86,7 +86,7 @@ items
 
     092 "Calculated Track Geometric Altitude"
         definition
-            Calculated Track Geometric Altitude Calculated geometric vertical distance above mean sea level, not related to barometric pressure.
+            Calculated geometric vertical distance above mean sea level, not related to barometric pressure.
         element 16
             signed quantity 25 2 "ft" >= -1500 <= 150000
         remark
@@ -104,7 +104,7 @@ items
                         1: QNH correction applied
             CTBA "Calculated Track Barometric Altitude"
                 element 15
-                    signed quantity 1 2 "ft" >= -15 <= 1500
+                    signed quantity 1 2 "FL" >= -15 <= 1500
 
     140 "Time of Track Information"
         definition
@@ -217,6 +217,39 @@ items
                         0: default value
                         1: ADS-B data inconsistent with other surveillance information
             spare 2
+            spare 1
+            PSR ""
+                element 1
+                    table
+                        0: default value
+                        1: Age of the last received PSR track update is higher than system dependent threshold
+            SSR ""
+                element 1
+                    table
+                        0: default value
+                        1: Age of the last received SSR track update is higher than system dependent threshold
+            MDS ""
+                element 1
+                    table
+                        0: default value
+                        1: Age of the last received Mode S track update is higher than system dependent threshold
+            ADS ""
+                element 1
+                    table
+                        0: default value
+                        1: Age of the last received ADS track update is higher than system dependent threshold
+            SUC ""
+                element 1
+                    table
+                        0: default value
+                        1: Special Used Code (Mode A codes to be defined in the system to mark a track with special interest)
+            AAC ""
+                element 1
+                    table
+                        0: default value
+                        1: Assigned Mode A Code Conflict (same individual Mode A Code assigned to another track)
+        remark
+            Track type and coasting can also be derived from Data Item I011/290 System Track Update Ages
 
     202 "Calculated Track Velocity in Cartesian Coordinates"
         definition
@@ -253,7 +286,7 @@ items
             STI ""
                 element 2
                     table
-                        0: Callsign or registration downlinked from transponde
+                        0: Callsign or registration downlinked from transponder
                         1: Callsign not downlinked from transponder
                         2: Registration not downlinked from transponder
             spare 6
@@ -279,25 +312,25 @@ items
                     unsigned quantity 1 0 "m"
         remark
             Note:
-                The orientation gives the direction which the aircraft nose is pointing, relative to the Geographical North.
+                The orientation gives the direction to which the aircraft nose is pointing, relative to the Geographical North.
 
     290 "System Track Update Ages"
         definition
             Ages of the last plot/local track, or the last valid mode-A/mode-C, used to update the system track.
         compound
-            PSR "Age of the last primary detection used to update the track"
+            PSR "Age of the last primary report used to update the track"
                 element 8
                     unsigned quantity 1 2 "s"
-            SSR "Age of the last secondary detection used to update the track"
+            SSR "Age of the last secondary report used to update the track"
                 element 8
                     unsigned quantity 1 2 "s"
-            MDA "Age of the last Mode A detection used to update the track"
+            MDA "Age of the last valid Mode A report used to update the track"
                 element 8
                     unsigned quantity 1 2 "s"
-            MFL "Age of the last Mode C detection used to update the track"
+            MFL "Age of the last valid and credible Mode C used to update the track"
                 element 8
                     unsigned quantity 1 2 "s"
-            MDS "Age of the last Mode S detection used to update the track"
+            MDS "Age of the last Mode S reportused to update the track"
                 element 8
                     unsigned quantity 1 2 "s"
             ADS "Age of the last ADS report used to update the track"
@@ -309,7 +342,7 @@ items
             MD1 "Age of the last valid Mode 1 used to update the track"
                 element 8
                     unsigned quantity 1 2 "s"
-            MD2 "Age of the last Mode 2 used to update the track"
+            MD2 "Age of the last valid Mode 2 used to update the track"
                 element 8
                     unsigned quantity 1 2 "s"
             LOP "Age of the last magentic loop detection"
@@ -408,7 +441,7 @@ items
                                 7: Lifeguard / medical
                                 8: Minimum fuel
                                 9: No communications
-                                10: Unlawful
+                                10: Unlawful interference
                     spare 1
                     SSC "Specific service capability"
                         element 1
@@ -548,7 +581,7 @@ items
                     RVSM "RVSM"
                         element 2
                             table
-                                0: Unknown Instrument Flight Rules
+                                0: Unknown
                                 1: Approved
                                 2: Exempt
                                 3: Not Approved
@@ -574,7 +607,7 @@ items
             ADES "Destination Airport"
                 element 32
                     string ascii
-            RWY "DRunway Designation"
+            RWY "Runway Designation"
                 element 24
                     string ascii
             CFL "Current Cleared Flight Level"
@@ -686,7 +719,7 @@ items
                     APW_Lon "APW Longitude Component Accuracy"
                         element 16
                             signed quantity 180 31 "deg"
-            ATH "Estimated Accuracy Of Track Height"
+            ATH "Estimated Accuracy Of Height"
                 element 16
                     signed quantity 0.5 0 "m"
             AVC "Estimated Accuracy Of Track Velocity (Cartesian)"
@@ -744,7 +777,7 @@ items
 
     610 "Holdbar status"
         definition
-            LStatus of up to sixteen banks of twelve indicators.
+            Status of up to sixteen banks of twelve indicators.
         repetitive 8
             group
                 BKN "Bank Number"
