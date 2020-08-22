@@ -92,16 +92,6 @@ Remark:
 
 ## Asterix definition in `haskell` syntax
 
-`Text`, `Int`, `Integer` are assumed to be basic types.
-The rest of the structures definition is either:
-
-- a type synonym
-- product type (record)
-- sum type (multiple options)
-
-See [Wikipedia article](https://en.wikipedia.org/wiki/Algebraic_data_type)
-for more information about algebraic data types.
-
 The essence of asterix definition is recursively encoded in `Item` and it's `Variation`.
 
 ```haskell

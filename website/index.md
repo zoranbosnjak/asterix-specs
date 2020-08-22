@@ -4,8 +4,8 @@ title: Home
 
 # Overview
 
-**Asterix** is a binary data format. It was originally developed
-and is still maintained by [eurocontrol](https://www.eurocontrol.int/asterix).
+**Asterix** is a binary data format. It is developed
+and maintained by [eurocontrol](https://www.eurocontrol.int/asterix).
 
 The major problem with the original specifications is that
 they are provided in a form of free text (PDF files). As a consequence,
@@ -29,7 +29,7 @@ In this project, the asterix definitions are stored and maintained in a
 compact text based parsable form. The intention of this [format](/syntax.html)
 is to be:
 
-* exact and complete (including remarks);
+* exact and complete (including definition text and remarks);
 * easy to read and write with any text editor;
 * easy to parse and reuse in other projects;
 * clutter free;
@@ -90,22 +90,74 @@ project to the format required by the target project.\
 \
 This is one-time effort and pays off quickly by:
     * reusing all [existing](/specs.html) definitions;
-    * writing new definitions in clutter free format;
+    * writing new definitions in a clutter free format;
 
-## Example usage in python script
+## Example usage in `python` script
+
+This example is using asterix category description in `json` format.
 
 ```python
 
 import json
 
-# load definition
+# load definition and decode json
+with open('definition.json') as f:
+    s = f.read()
+root = json.loads(s)
 
-# extract some information
+# show category info
+print(root['number'], root['edition'], root['date'])
 
 # show top level items
+for i in root['catalogue']:
+    print(i['name'])
 
 # show user application profile
+for i in root['uap']['items']:
+    print(i)
 
-# show some more details about this category
+# recursivly walk over the structure and show all items
+
+def dump_item(item, parent=''):
+    path = parent
+    if item['spare']:
+        path = path + '/spare'
+        n = item['length']
+        print('{}, bits: {}'.format(path, n))
+        return
+    path = path + '/' + item['name']
+    dump_variation(item['variation'], path)
+
+def dump_variation(variation, path):
+    t = variation['type']
+    if t == 'Element':
+        n = variation['size']
+        print('{} Element, bits: {}'.format(path, n))
+    elif t == 'Group':
+        print('{} Gorup'.format(path))
+        for i in variation['items']:
+            dump_item(i, path)
+    elif t == 'Extended':
+        n1 = variation['first']
+        n2 = variation['extents']
+        print('{} Extended, first part {}, extents {}'.format(path, n1, n2))
+        for i in variation['items']:
+            dump_item(i, path)
+    elif t == 'Repetitive':
+        n = variation['rep']
+        print('{} Repetitive ({})'.format(path, n))
+        dump_variation(variation['variation'], path)
+    elif t == 'Explicit':
+        print('{} Explicit'.format(path))
+    elif t == 'Compound':
+        print('{} Compound'.format(path))
+        for i in variation['items']:
+            if i is not None:
+                dump_item(i, path)
+    else:
+        raise Exception('unexpected variation type {}'.format(t))
+
+for i in root['catalogue']:
+    dump_item(i)
 ```
 
