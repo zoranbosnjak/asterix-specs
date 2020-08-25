@@ -9,7 +9,7 @@ Asterix conversion and validation tool is an integral part of this project.
 Features:
 
 * validate sources file
-* convert from one format to another
+* transparently convert from one format to another
 * convert from one format to itself (pretify definition file)
 * dump file as a list of items
 * show asterix definition signature (like a fingerprint, but not

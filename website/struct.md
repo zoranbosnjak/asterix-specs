@@ -73,11 +73,11 @@ Remark:
 
 **Content** is one of:
 
-- Raw content
-- Table of possible values
-- Ascii, ICAO or Octal String
-- Signed or unsigned Integer
-- Signed or unsigned Quantity
+- *Raw* content
+- *Table* of possible values
+- *Ascii*, *ICAO* or *Octal String*
+- *Signed* or *Unsigned Integer*
+- *Signed* or *Unsigned Quantity*
 
 Remark:
 
@@ -87,8 +87,8 @@ Remark:
 > in a programming environments, however semantically there is a small difference.
 > In strongly typed environments, the compiler can prevent some irregular
 > operations over *raw* values. For example: it makes no sense to
-> *add/multiply* 2 identifiers, whereas the arithmetic operations over
-> *integers* are well defined.
+> *add/multiply* 2 identifiers, whereas the same arithmetic operations over
+> *unsigned integers* are well defined.
 
 ## Asterix definition in `haskell` syntax
 

@@ -1,71 +1,69 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-import           Data.Monoid (mappend)
+import qualified GHC.IO.Encoding as E
+import           System.Environment (getEnvironment)
+import           Data.Aeson
 import           Hakyll
 
 config :: Configuration
 config = defaultConfiguration
 
+getEnvVariableExpr :: String -> IO String
+getEnvVariableExpr envKey = do
+    env <- getEnvironment
+    case lookup envKey env of
+        Nothing -> error $ "Environment variable " ++ envKey ++ " not defined."
+        Just value -> pure value
+
+pandocCompileString :: Item String -> Compiler (Item String)
+pandocCompileString content = do
+    itemPandoc <- readPandocWith defaultHakyllReaderOptions content
+    itemPandoc' <- traverse (return . id) itemPandoc
+    return $ writePandocWith defaultHakyllWriterOptions itemPandoc'
+
 main :: IO ()
-main = hakyllWith config $ do
-    match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+main = do
+    E.setLocaleEncoding E.utf8
 
-    match "*.md" $ do
-        route   $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
+    gitrev <- getEnvVariableExpr "SHORT_GITREV"
+    specs <- getEnvVariableExpr "SPECS"
+    Just manifest <- decodeFileStrict (specs <> "/" <> "manifest.json")
 
-    match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+    print (manifest :: Array)
 
-    {-
-    match (fromList ["about.rst", "contact.markdown"]) $ do
-        route   $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
+    hakyllWith config $ do
+        match "css/*" $ do
+            route   idRoute
+            compile compressCssCompiler
 
-    match "posts/*" $ do
-        route $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
-            >>= relativizeUrls
+        match "images/*" $ do
+            route   idRoute
+            compile copyFileCompiler
 
-    create ["archive.html"] $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let archiveCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    constField "title" "Archives"            `mappend`
-                    defaultContext
-
-            makeItem ""
-                >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-                >>= loadAndApplyTemplate "templates/default.html" archiveCtx
+        match "*.md" $ do
+            route   $ setExtension "html"
+            compile $ pandocCompiler
+                >>= loadAndApplyTemplate "templates/default.html" defaultContext
                 >>= relativizeUrls
 
+        create ["specs.md"] $ do
+            let specsCtx = defaultContext
+                    <> constField "gitrev" gitrev
+                    <> listField "cats" defaultContext (pure [])
+            compile $ do
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/specs.md" specsCtx
 
-    match "index.html" $ do
-        route idRoute
-        compile $ do
-            posts <- recentFirst =<< loadAll "posts/*"
-            let indexCtx =
-                    listField "posts" postCtx (return posts) `mappend`
-                    defaultContext
-
-            getResourceBody
-                >>= applyAsTemplate indexCtx
-                >>= loadAndApplyTemplate "templates/default.html" indexCtx
+        create ["specs.html"] $ do
+            route   idRoute
+            compile $ do
+                load "specs.md"
+                >>= renderPandoc
+                >>= (\(Item _a b) -> pure (Item "specs.html" b))
+                >>= loadAndApplyTemplate "templates/default.html" defaultContext
                 >>= relativizeUrls
 
-    -}
-    match "templates/*" $ compile templateBodyCompiler
+        match "templates/*" $ compile templateBodyCompiler
 
 postCtx :: Context String
 postCtx =

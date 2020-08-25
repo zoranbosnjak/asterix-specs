@@ -9,20 +9,20 @@
 }:
 
 let
-  nixpkgs = builtins.fromJSON (builtins.readFile ./nixpkgs.json);
+  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
   pkgs = if packages == null
     then import (builtins.fetchGit nixpkgs) { }
     else packages;
 
   shortGitrev = builtins.substring 0 7 gitrev;
 
-  render_rst = ./publisher/rst.py;
+  render_rst = ../publisher/rst.py;
 
-  publisher = ./publisher;
-  publisher_deps = import ./publisher/deps.nix { inherit pkgs; };
+  publisher = ../publisher;
+  publisher_deps = import ../publisher/deps.nix { inherit pkgs; };
 
   name = "asterix-${catnumber}-${spectype}-${edition}";
-  src = builtins.readFile (./specs + "/cat" + catnumber + ("/" + spectype) + "-" + edition + ".ast" );
+  src = builtins.readFile (./. + "/cat" + catnumber + ("/" + spectype) + "-" + edition + ".ast" );
   orig = pkgs.writeText (name + "-source") src;
 
 in with pkgs; runCommand name
