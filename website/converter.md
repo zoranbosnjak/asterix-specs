@@ -35,7 +35,7 @@ Abstract [internal structure](/struct.html) is the same for all formats.
 ## Installation
 
 Pre-build 64-bit linux binary is available to download from
-[this link](https://zoranbosnjak.github.io/asterix-specs/bin/converter-static).
+[this link](/bin/converter-static).
 
 To install, download and copy the file to some location and set file mode,
 for example under UbuntuOS:

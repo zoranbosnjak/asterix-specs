@@ -4,8 +4,8 @@ title: Home
 
 # Overview
 
-**Asterix** is a binary data format. It is developed
-and maintained by [eurocontrol](https://www.eurocontrol.int/asterix).
+**Asterix** is a binary data format. It is
+maintained by [eurocontrol](https://www.eurocontrol.int/asterix).
 
 The major problem with the original specifications is that
 they are provided in a form of free text (PDF files). As a consequence,
