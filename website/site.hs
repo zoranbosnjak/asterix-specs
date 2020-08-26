@@ -3,6 +3,7 @@
 
 import qualified GHC.IO.Encoding as E
 import           System.Environment (getEnvironment)
+import           System.Directory (listDirectory)
 import           Control.Monad
 import           Data.Aeson
 import qualified Data.ByteString.Lazy as BSL
@@ -43,14 +44,16 @@ main = do
     gitrev <- getEnvVariableExpr "SHORT_GITREV"
     specs <- getEnvVariableExpr "SPECS"
     Just (manifest :: [Cat]) <- decodeFileStrict (specs <> "/" <> "manifest.json")
+    syntax <- getEnvVariableExpr "SYNTAX"
+    syntaxImages <- listDirectory $ syntax++"/syntax/png"
 
     hakyllWith config $ do
         match "css/*" $ do
-            route   idRoute
+            route idRoute
             compile compressCssCompiler
 
         match "images/*" $ do
-            route   idRoute
+            route idRoute
             compile copyFileCompiler
 
         match "*.md" $ do
@@ -86,19 +89,43 @@ main = do
                         >>= relativizeUrls
 
         create ["specs.md"] $ do
-            let specsCtx = defaultContext
+            let ctx = defaultContext
                     <> constField "gitrev" gitrev
                     <> listField "nums" catCtx (mapM makeItem manifest)
             compile $ do
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/specs.md" specsCtx
+                    >>= loadAndApplyTemplate "templates/specs.md" ctx
 
         create ["specs.html"] $ do
-            route   idRoute
+            route idRoute
             compile $ do
                 load "specs.md"
                 >>= renderPandoc
                 >>= (\(Item _a b) -> pure (Item "specs.html" b))
+                >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                >>= relativizeUrls
+
+        -- syntax images
+        forM_ syntaxImages $ \img -> do
+            create [ fromFilePath ("syntax/" ++ img) ] $ do
+                route idRoute
+                compile $ do
+                    unsafeCompiler (BSL.readFile $ syntax ++ "/syntax/png/" ++ img) >>= makeItem
+
+        create ["syntax.md"] $ do
+            let imgCtx = field "img" (\(Item _ i) -> pure i)
+                ctx = defaultContext
+                   <> listField "images" imgCtx (mapM makeItem syntaxImages)
+            compile $ do
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/syntax.md" ctx
+
+        create ["syntax.html"] $ do
+            route idRoute
+            compile $ do
+                load "syntax.md"
+                >>= renderPandoc
+                >>= (\(Item _a b) -> pure (Item "syntax.html" b))
                 >>= loadAndApplyTemplate "templates/default.html" defaultContext
                 >>= relativizeUrls
 

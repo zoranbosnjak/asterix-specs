@@ -16,6 +16,8 @@ let
 
   specs = import ../specs/default.nix { inherit gitrev; packages = pkgs; };
 
+  syntax = import ../syntax/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
+
   env = pkgs.stdenv.mkDerivation rec {
     name = "website-devel-environment";
     buildInputs = drv.env.nativeBuildInputs ++ [
@@ -23,6 +25,7 @@ let
     shellHook = ''
       export SHORT_GITREV=${shortGitrev}
       export SPECS=${specs}
+      export SYNTAX=${syntax}
     '';
   };
 

@@ -73,7 +73,7 @@ Remark:
 
 **Content** is one of:
 
-- *Raw* content
+- *Raw* value
 - *Table* of possible values
 - *Ascii*, *ICAO* or *Octal String*
 - *Signed* or *Unsigned Integer*
@@ -81,14 +81,17 @@ Remark:
 
 Remark:
 
-> The structure makes distinction between *raw* value and *unsigned integer*.
-> A *raw* content is a content where the bits don't have any particular meaning,
-> other then just representing some *identifier*. In is normally stored as *unsigned integer*,
-> in a programming environments, however semantically there is a small difference.
+> This structure makes distinction between *Raw* value and *Unsigned Integer*.
+> A *raw* value is a content where the bits don't have any particular meaning,
+> other then just representing some *identifier* (this is true in most of the
+> cases, for example the *SAC/SIC* code).
+>
+> *Unsigned Integer* is similar, however semantically there is a small difference.
 > In strongly typed environments, the compiler can prevent some irregular
 > operations over *raw* values. For example: it makes no sense to
 > *add/multiply* 2 identifiers, whereas the same arithmetic operations over
-> *unsigned integers* are well defined.
+> *unsigned integers* are well defined. One such example is a content that
+> represents *seconds*.
 
 ## Asterix definition in `haskell` syntax
 
