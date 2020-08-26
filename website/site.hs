@@ -1,9 +1,24 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 import qualified GHC.IO.Encoding as E
 import           System.Environment (getEnvironment)
+import           Control.Monad
 import           Data.Aeson
+import qualified Data.ByteString.Lazy as BSL
 import           Hakyll
+
+data Cat = Cat
+    { catNumber :: String
+    , catCats :: [String]
+    , catRefs :: [String]
+    } deriving (Show)
+
+instance FromJSON Cat where
+    parseJSON = withObject "Cat" $ \v -> Cat
+        <$> v .: "category"
+        <*> v .: "cats"
+        <*> v .: "refs"
 
 config :: Configuration
 config = defaultConfiguration
@@ -27,9 +42,7 @@ main = do
 
     gitrev <- getEnvVariableExpr "SHORT_GITREV"
     specs <- getEnvVariableExpr "SPECS"
-    Just manifest <- decodeFileStrict (specs <> "/" <> "manifest.json")
-
-    print (manifest :: Array)
+    Just (manifest :: [Cat]) <- decodeFileStrict (specs <> "/" <> "manifest.json")
 
     hakyllWith config $ do
         match "css/*" $ do
@@ -46,10 +59,36 @@ main = do
                 >>= loadAndApplyTemplate "templates/default.html" defaultContext
                 >>= relativizeUrls
 
+        -- for all definitions
+        forM_ manifest $ \(Cat n cats refs) -> do
+            let lst = [ (x, "cats", "cat") | x <- cats]
+                   ++ [ (x, "refs", "ref") | x <- refs]
+            forM_ lst $ \(ed,a,b) -> do
+                let dst = "specs/cat" ++ n ++ "/" ++ a ++ "/" ++ b ++ ed ++ "/definition."
+                    src = specs ++ "/" ++ dst
+
+                -- copy specs files in various formats
+                forM_ ["ast", "txt", "json", "xml", "rst", "pdf"] $ \fmt -> do
+                    create [ fromFilePath (dst ++ fmt) ] $ do
+                        route idRoute
+                        compile $ do
+                            unsafeCompiler (BSL.readFile (src ++ fmt)) >>= makeItem
+
+                -- create html version
+                create [ fromFilePath (dst ++ "html") ] $ do
+                    route idRoute
+                    compile $ do
+                        unsafeCompiler (readFile (src ++ "rst"))
+                        >>= (\x -> pure (Item "definition.rst" x))
+                        >>= renderPandoc
+                        >>= (\(Item _a val) -> pure (Item (fromFilePath $ dst ++ "html") val))
+                        >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                        >>= relativizeUrls
+
         create ["specs.md"] $ do
             let specsCtx = defaultContext
                     <> constField "gitrev" gitrev
-                    <> listField "cats" defaultContext (pure [])
+                    <> listField "nums" catCtx (mapM makeItem manifest)
             compile $ do
                 makeItem ""
                     >>= loadAndApplyTemplate "templates/specs.md" specsCtx
@@ -65,8 +104,18 @@ main = do
 
         match "templates/*" $ compile templateBodyCompiler
 
-postCtx :: Context String
-postCtx =
-    dateField "date" "%B %e, %Y" `mappend`
-    defaultContext
+catCtx :: Context Cat
+catCtx = mconcat
+    [ field "num" (\(Item _ i) -> pure (catNumber i))
+
+    , boolField "hasCats" (\(Item _ i) -> (catCats i /= []))
+    , listFieldWith "cats" edCtx (\(Item _ i) -> mapM makeItem [(catNumber i, x) | x <- catCats i])
+
+    , boolField "hasRefs" (\(Item _ i) -> (catRefs i /= []))
+    , listFieldWith "refs" edCtx (\(Item _ i) -> mapM makeItem [(catNumber i, x) | x <- catRefs i])
+    ]
+  where
+    edCtx
+        = field "n" (\(Item _ (n, _ed)) -> pure n)
+       <> field "ed" (\(Item _ (_n, ed)) -> pure ed)
 
