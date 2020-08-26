@@ -85,12 +85,15 @@ in the original *ast* or *json* format.
 * For the existing projects, the odds are that some subset of the
 specifications is already defined in some other structured format
 (like *json* or *xml*). In this case, the reasonable approach would
-be to write a *converter* from the specifications in this
+be to write *additional converter* from the specifications in this
 project to the format required by the target project.\
 \
 This is one-time effort and pays off quickly by:
     * reusing all [existing](/specs.html) definitions;
     * writing new definitions in a clutter free format;
+
+If you are creating new categories, consider [contributing](/source.html)
+definitions to the upstream repository.
 
 ## Example usage in `python` script
 
