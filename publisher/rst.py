@@ -36,15 +36,16 @@ def render(s):
     renderHeader(root)
 
     cat = root['number']
+    name = 'I'+'{:03d}'.format(cat)
 
     rt = root['type']
     if rt == 'Basic':
         tell(underline('-', 'Description of standard data items'))
-        [renderTopItem(cat, item) for item in root['catalogue']]
+        [renderTopItem(name, item) for item in root['catalogue']]
         renderUap(root)
     elif rt == 'Expansion':
         tell(underline('-', 'Description of asterix expansion'))
-        renderVariation(root['variation'])
+        renderVariation(name, root['variation'])
     else:
         raise Exception('unexpected root type {}'.format(rt))
 
@@ -72,15 +73,16 @@ def renderHeader(root):
         tell(root['preamble'])
     tell('')
 
-def renderTopItem(cat, item):
+def renderTopItem(parent, item):
+    name = parent + '/' + item['name']
     tell('')
-    tell(underline('*', 'I'+'{:03d}'.format(cat)+'/'+item['name']+' - ' + item['title']))
+    tell(underline('*', name + ' - ' + item['title']))
     tell('')
     tell('*Definition*: {}'.format(item['definition']))
     tell('')
     tell('*Structure*: ')
     tell('')
-    renderVariation(item['variation'])
+    renderVariation(name, item['variation'])
     tell('')
     if item['remark']:
         tell(item['remark'])
@@ -93,7 +95,7 @@ def bits(n):
         return '1 bit'
     return '{} bits'.format(n)
 
-def renderVariation(variation):
+def renderVariation(parent, variation):
 
     def renderInteger(value):
         tell('- {} integer'.format('signed' if value['signed'] else 'unsigned'))
@@ -186,21 +188,22 @@ def renderVariation(variation):
 
         return renderRule(variation['content'], case0, case1, case2)
 
-    def renderMaybeItem(item):
+    def renderMaybeItem(parent, item):
         if item['spare']:
             n = item['length']
-            tell('``(spare)``')
+            tell('**' + parent + '/(spare)**')
             tell('')
             tell('- {} [``{}``]'.format(bits(n), '.'*n))
             tell('')
             return n
+        name = parent + '/' + item['name']
         tit = item['title']
-        tell('**{}**{}'.format(item['name'], ' - *{}*'.format(tit) if tit else ''))
+        tell('**{}**{}'.format(name, ' - *{}*'.format(tit) if tit else ''))
         tell('')
         if item['description']:
             tell(' '.join(item['description'].splitlines()))
             tell('')
-        n = renderVariation(item['variation'])
+        n = renderVariation(name, item['variation'])
         if item['remark']:
             with indent:
                 tell('remark')
@@ -214,7 +217,7 @@ def renderVariation(variation):
         n = 0
         with indent:
             for item in variation['items']:
-                n += renderMaybeItem(item)
+                n += renderMaybeItem(parent, item)
         return n
 
     def renderExtended():
@@ -228,7 +231,7 @@ def renderVariation(variation):
         terminated = False
         with indent:
             for item in variation['items']:
-                n += renderMaybeItem(item)
+                n += renderMaybeItem(parent, item)
                 terminated = False
                 if (n+1) == nextFx:
                     tell('``(FX)``')
@@ -250,7 +253,7 @@ def renderVariation(variation):
         tell('Repetitive item, repetition factor {} bits.'.format(rep))
         tell('')
         with indent:
-            x = renderVariation(variation['variation'])
+            x = renderVariation(parent, variation['variation'])
         return x
 
     def renderExplicit():
@@ -272,7 +275,7 @@ def renderVariation(variation):
                     tell('(empty subitem)')
                     tell('')
                 else:
-                    n += renderMaybeItem(item)
+                    n += renderMaybeItem(parent, item)
         return n
 
     return locals()['render'+variation['type']]()
