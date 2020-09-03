@@ -7,6 +7,8 @@ title: Specifications
 Content is generated from [repository](https://github.com/zoranbosnjak/asterix-specs),
 revision `#$gitrev$`.
 
+Category listing: [manifest.json](/manifest.json).
+
 ---
 
 $for(nums)$

@@ -103,7 +103,7 @@ let
     installPhase = ''
       mkdir -p $out
 
-      ln -s ${manifest} $out/manifest.json
+      cat ${manifest} | ${pkgs.jq}/bin/jq > $out/manifest.json
 
       mkdir -p $out/specs
       for i in ${linkCategories}; do

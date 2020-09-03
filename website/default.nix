@@ -50,6 +50,8 @@ let
       ln -s ${converterStatic}/bin/converter $out/bin/converter-static
       ln -s ${renderer}/bin/render $out/bin/render
 
+      cp ${specs}/manifest.json $out/manifest.json
+
       rm -f result
       rm -rf _site _cache
       ${site}/bin/site rebuild
