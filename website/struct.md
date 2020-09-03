@@ -77,7 +77,8 @@ Remark:
 - *Table* of possible values
 - *Ascii*, *ICAO* or *Octal String*
 - *Signed* or *Unsigned Integer*
-- *Signed* or *Unsigned Quantity*
+- *Signed* or *Unsigned Quantity* (including units)
+- *BDS*
 
 Remark:
 
