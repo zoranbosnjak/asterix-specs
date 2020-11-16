@@ -158,18 +158,19 @@ items
                 4. Values 25 to 30 have been defined to comply with the updated
                    European Mode S Specification (EMS) and to provide the possibility
                    to report the following information:
-                   • Code 25: the maximum number of permitted re-interrogations to
-                   acquire the surveillance information has been reached;
-                   • Code 26: the maximum number of permitted re-interrogations to
-                   extract BDS Registers has been reached;
-                   • Code 27: inconsistency detected between the contents of the
-                   message and the BDS register overlayed;
-                   • Code 28: a BDS swap has been detected and the respective information
-                   has been discarded;
-                   • Code 29: the track has been updated while being in the zenithal
-                   gap (also referred to as “Cone of Silence”);
-                   • Code 30: the radar had lost track of an aircraft and subsequently
-                   re-acquired it.
+
+                       - Code 25: the maximum number of permitted re-interrogations to
+                         acquire the surveillance information has been reached;
+                       - Code 26: the maximum number of permitted re-interrogations to
+                         extract BDS Registers has been reached;
+                       - Code 27: inconsistency detected between the contents of the
+                         message and the BDS register overlayed;
+                       - Code 28: a BDS swap has been detected and the respective information
+                         has been discarded;
+                       - Code 29: the track has been updated while being in the zenithal
+                         gap (also referred to as “Cone of Silence”);
+                       - Code 30: the radar had lost track of an aircraft and subsequently
+                         re-acquired it.
 
     040 "Measured Position in Polar Co-ordinates"
         definition
@@ -180,7 +181,7 @@ items
                     unsigned quantity 1 8 "NM" < 256
             THETA ""
                 element 16
-                    unsigned quantity 360 12 "deg"
+                    unsigned quantity 360 16 "deg"
         remark
             Notes:
 
@@ -212,16 +213,12 @@ items
         definition
             Calculated position of an aircraft in Cartesian co-ordinates.
         group
-            LAT "Latitude"
+            X "X-Component"
                 element 16
                     signed quantity 1 7 "NM" >= -256 <= 256
-            LON "Longitude"
+            Y "X-Component"
                 element 16
                     signed quantity 1 7 "NM" >= -256 <= 256
-        remark
-            Notes:
-
-                - The LSB provides a resolution at least better than 0.6m.
 
     050 "Mode-2 Code in Octal Representation"
         definition
@@ -605,7 +602,7 @@ items
             sea level as the zero reference level.
         group
             spare 2
-            3DH "3D height, in binary notation. Negative values are expressed in two’s complement"
+            3DH "3D height, in binary notation. Negative values are expressed in two's complement"
                 element 14
                     signed quantity 25 0 "ft"
 
@@ -621,7 +618,7 @@ items
                                 0: Doppler speed is valid
                                 1: Doppler speed is doubtful
                     spare 5
-                    CAL "Calculated Doppler Speed, coded in two’s complement"
+                    CAL "Calculated Doppler Speed, coded in two's complement"
                         element 10
                             signed quantity 1 0 "m/sec"
             RDS "Raw Doppler Speed"
@@ -652,7 +649,7 @@ items
                 description
                     Number of Received Replies for (M)SSR
                 element 8
-                    unsigned quantity 1 0 ""
+                    unsigned integer
             SAM "Amplitude of (M)SSR Reply"
                 description
                     Amplitude of (M)SSR Reply
@@ -682,9 +679,9 @@ items
             Notes:
 
                 1. The total range covered is therefore from 0 to 11.21 dg.
-                2. Negative values are coded in two’s complement form.
+                2. Negative values are coded in two's complement form.
                 3. The total range covered is therefore from 0 to 11.21 dg.
-                4. Negative values are coded in two’s complement form.
+                4. Negative values are coded in two's complement form.
                 5. Negative values are coded in two's complement form.
                 6. The covered range difference is +/- 0.5 NM.
                 7. Sending the maximum value means that the difference in range
@@ -692,13 +689,13 @@ items
                 8. Negative values are coded in two's complement form.
                 9. The covered azimuth difference is +/-360/2 7 = +/- 2.8125 dg.
                 10. Sending the maximum value means that the difference in range
-                   is equal or greater than the maximum value.
+                    is equal or greater than the maximum value.
 
     140 "Time of Day"
         definition
             Absolute time stamping expressed as Co-ordinated Universal Time (UTC).
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1 7 "s" < 86400
         remark
             Notes:
 
@@ -712,9 +709,9 @@ items
             a particular track file.
         group
             spare 4
-            3DH "Track number"
+            TRN "Track number"
                 element 12
-                    unsigned quantity 1 0 ""
+                    raw
 
     170 "Track Status"
         definition
@@ -759,8 +756,7 @@ items
                     table
                         0: True target track.
                         1: Ghost target track.
-            SUP "Track maintained with track information from neighbouring Node B on
-                 the cluster, or network"
+            SUP "Track maintained with track information from neighbouring Node B on the cluster, or network"
                 element 1
                     table
                         0: no
@@ -781,7 +777,7 @@ items
                     unsigned quantity 1 14 "NM/s"
             HDG "Calculated Heading"
                 element 16
-                    unsigned quantity 360 16 ""
+                    unsigned quantity 360 16 "deg"
         remark
             Notes:
 
@@ -792,12 +788,10 @@ items
         definition
             Track quality in the form of a vector of standard deviations.
         group
-            SIGX "Sigma (X)) Standard Deviation on the horizontal axis of the local
-                  grid system"
+            SIGX "Sigma (X)) Standard Deviation on the horizontal axis of the local grid system"
                 element 8
                     unsigned quantity 1 7 "NM"
-            SIGY "Sigma (Y)) Standard Deviation on the vertical axis of the local
-                  grid system"
+            SIGY "Sigma (Y)) Standard Deviation on the vertical axis of the local grid system"
                 element 8
                     unsigned quantity 1 7 "NM"
             SIGV "Sigma (V)) Standard Deviation on the groundspeed within the local grid system"
@@ -816,7 +810,7 @@ items
                 3. The standard deviation is per definition a positive value, hence
                    the range covered is: 0<=Sigma (V)<56.25 Kt
                 4. The standard deviation is per definition a positive value; hence
-                   the range covered is: 0 <= sigma (H) < 22.5 degrees.   
+                   the range covered is: 0 <= sigma (H) < 22.5 degrees.
 
     220 "Aircraft Address"
         definition
@@ -837,9 +831,6 @@ items
                         2: Comm. A, Comm. B and Uplink ELM
                         3: Comm. A, Comm. B, Uplink ELM and Downlink ELM
                         4: Level 5 Transponder capability
-                        5: Not assigned
-                        6: Not assigned
-                        7: Not assigned
             STAT "Flight Status"
                 element 3
                     table
@@ -849,7 +840,6 @@ items
                         3: Alert, no SPI, aircraft on ground
                         4: Alert, SPI, aircraft airborne or on ground
                         5: No alert, SPI, aircraft airborne or on ground
-                        6: Not assigned
                         7: Unknown
             SI "SI/II Transponder Capability"
                 element 1
@@ -884,7 +874,7 @@ items
             Aircraft identification (in 8 characters) obtained from an aircraft
             equipped with a Mode S transponder.
         element 48
-            raw
+            string icao
         remark
             Notes:
 
@@ -895,9 +885,11 @@ items
         definition
             Mode S Comm B data as extracted from the aircraft transponder.
         group
-
             REP "Repetition factor"
                 element 8
+                    raw
+            MBdata "Mode S Comm B message data"
+                element 56
                     raw
             BDS1 "Comm B Data Buffer Store 1 Address"
                 element 4
@@ -964,6 +956,3 @@ uap
     060
     SP
     RE
-    
-
-

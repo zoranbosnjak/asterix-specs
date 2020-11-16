@@ -62,10 +62,10 @@ items
 
                 - The time of day value is reset to zero each day at midnight.
 
-    041 "Antenna rotation period as measured between two consecutive North crossings
-         or as averaged during a period of time."
+    041 "Antenna Rotation Speed"
         definition
-            Absolute time stamping expressed as UTC time.
+            Antenna rotation period as measured between two consecutive North crossings
+            or as averaged during a period of time.
         element 16
             unsigned quantity 1 7 "s"
         remark
@@ -92,8 +92,7 @@ items
                             table
                                 0: RDPC-1 selected
                                 1: RDPC-2 selected
-                    RDPR "Event to signal a reset/restart of the selected Radar Data
-                          Processor Chain, i.e. expect a new assignment of track numbers"
+                    RDPR "Event to signal a reset/restart of the selected Radar Data Processor Chain, i.e. expect a new assignment of track numbers"
                         element 1
                             table
                                 0: Default situation
@@ -118,7 +117,9 @@ items
                             table
                                 0: valid
                                 1: invalid
-            spare 2
+                    spare 1
+            -
+            -
             PSR "Specific Status information for a PSR sensor"
                 group
                     ANT "Selected antenna"
@@ -214,7 +215,7 @@ items
                                 0: No overload
                                 1: Overload
                     spare 7
-            spare 1
+            -
 
     060 "System Processing Mode"
         definition
@@ -309,7 +310,7 @@ items
         remark
             Notes:
 
-                - Applicable to all defined secondary subfields. The actual mapping 
+                - Applicable to all defined secondary subfields. The actual mapping
                   between the up to seven data reduction steps and their associated
                   data reduction measures is not subject to standardisation.
 
@@ -319,7 +320,7 @@ items
             last completed antenna revolution, counted between two North crossings
         repetitive 8
             group
-                TYP "Type of message counter, encoded as follows"
+                TYP "Type of message counter"
                     element 5
                         table
                             0: No detection (number of misses)
@@ -341,7 +342,7 @@ items
                             16: Filter for PSR+Enhanced Surveillance + all SSR/Mode S data
                 COUNT "COUNTER"
                     element 11
-                        raw
+                        unsigned integer
 
     090 "Collimation Error"
         definition
@@ -438,5 +439,4 @@ uap
     120
     090
     RE
-    SP    
-
+    SP
