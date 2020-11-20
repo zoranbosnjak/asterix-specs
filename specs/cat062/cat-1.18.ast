@@ -8,7 +8,7 @@ items
 
     010 "Data Source Identifier"
         definition
-            Identification of the system sending the data
+            Identification of the system sending the data.
         group
             SAC "System Area Code"
                 element 8
@@ -29,13 +29,13 @@ items
 
     040 "Track Number"
         definition
-            Identification of a track
+            Identification of a track.
         element 16
             raw
 
     060 "Track Mode 3/A Code"
         definition
-            Mode-3/A Code Converted into Octal Representation.
+            Mode-3/A code converted into octal representation.
         group
             V "Validated"
                 element 1
@@ -267,8 +267,8 @@ items
             Notes:
 
                 1. Track type and coasting can also be derived from I062/290 System Track Update Ages
-                2. If the system supports the technology, Default value (0) means that the technology was used to produce the report
-                3. If the system does not support the technology, Default value is meaningless.
+                2. If the system supports the technology, default value (0) means that the technology was used to produce the report
+                3. If the system does not support the technology, default value is meaningless.
                 4. Bits (EMS): other than subfield #11 of data item I062/380, these
                    bits allow the SDPS to set the emergency indication as derived from
                    other sources than ADS-B (e.g. based on the Mode 3/A code).
@@ -329,10 +329,10 @@ items
             Calculated Position in WGS-84 Co-ordinates with a resolution of
             :math:`180/2^{25}` degrees.
         group
-            Lat "Latitude"
+            LAT "Latitude"
                 element 32
                     signed quantity 180 25 "deg" >= -90 <= 90
-            Lon "Longitude"
+            LON "Longitude"
                 element 32
                     signed quantity 180 25 "deg" >= -180 < 180
         remark
@@ -402,10 +402,10 @@ items
                             raw
             POS "Mode 5 Reported Position"
                 group
-                    Lat "Latitude"
+                    LAT "Latitude"
                         element 24
                             signed quantity 180 23 "deg" >= -90 <= 90
-                    Lon "Longitude"
+                    LON "Longitude"
                         element 24
                             signed quantity 180 23 "deg" >= -180 < 180
             GA "Mode 5 GNSS-derived Altitude"
@@ -439,28 +439,28 @@ items
                     X5 "X-pulse from Mode 5 Data reply or Report"
                         element 1
                             table
-                                0: X-pulse set to zero or no authenticated Data reply or Report received.
-                                1: X-pulse set to one (present).
+                                0: X-pulse set to zero or no authenticated Data reply or Report received
+                                1: X-pulse set to one (present)
                     XC "X-pulse from Mode C reply"
                         element 1
                             table
-                                0: X-pulse set to zero or no Mode C reply.
-                                1: X-pulse set to one (present).
+                                0: X-pulse set to zero or no Mode C reply
+                                1: X-pulse set to one (present)
                     X3 "X-pulse from Mode 3/A reply"
                         element 1
                             table
-                                0: X-pulse set to zero or no Mode 3/A reply.
-                                1: X-pulse set to one (present).
+                                0: X-pulse set to zero or no Mode 3/A reply
+                                1: X-pulse set to one (present)
                     X2 "X-pulse from Mode 2 reply"
                         element 1
                             table
-                                0: X-pulse set to zero or no Mode 2 reply.
-                                1: X-pulse set to one (present).
+                                0: X-pulse set to zero or no Mode 2 reply
+                                1: X-pulse set to one (present)
                     X1 "X-pulse from Mode 1 reply"
                         element 1
                             table
-                                0: X-pulse set to zero or no Mode 1 reply.
-                                1: X-pulse set to one (present).
+                                0: X-pulse set to zero or no Mode 1 reply
+                                1: X-pulse set to one (present)
         remark
             Notes:
 
@@ -509,7 +509,7 @@ items
 
     135 "Calculated Track Barometric Altitude"
         definition
-            Calculated Barometric Altitude of the track, in two's complement form.
+            Calculated barometric altitude of the track, in two's complement form.
         group
             QNH ""
                 element 1
@@ -545,10 +545,10 @@ items
             Calculated track velocity expressed in Cartesian co-ordinates,in
             two's complement form.
         group
-            Vx ""
+            VX "Velocity (X-component)"
                 element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8191.75
-            Vy ""
+            VY "Velocity (Y-component)"
                 element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8191.75
         remark
@@ -564,16 +564,16 @@ items
             TRANS "Transversal Acceleration"
                 element 2
                     table
-                        0: Constant Course
-                        1: Right Turn
-                        2: Left Turn
+                        0: Constant course
+                        1: Right turn
+                        2: Left turn
                         3: Undetermined
             LONG "Longitudinal Acceleration"
                 element 2
                     table
-                        0: Constant Groundspeed
-                        1: Increasing Groundspeed
-                        2: Decreasing Groundspeed
+                        0: Constant groundspeed
+                        1: Increasing groundspeed
+                        2: Decreasing groundspeed
                         3: Undetermined
             VERT "Transversal Acceleration"
                 element 2
@@ -600,10 +600,10 @@ items
             Calculated Acceleration of the target expressed in Cartesian co-ordinates,
             in two's complement form.
         group
-            Ax ""
+            AX ""
                 element 8
                     signed quantity 1 2 "m/s2"
-            Ay ""
+            AY ""
                 element 8
                     signed quantity 1 2 "m/s2"
         remark
@@ -614,7 +614,7 @@ items
 
     220 "Calculated Rate of Climb/Descent"
         definition
-            Calculated rate of Climb/Descent of an aircraft in two's complement form.
+            Calculated rate of climb/descent of an aircraft in two's complement form.
         element 16
             signed quantity 6.25 0 "ft/min"
         remark
@@ -682,7 +682,7 @@ items
                 description
                     Actual track age since occurence
                 element 8
-                    unsigned quantity 1 2 "s" <= 255/4
+                    unsigned quantity 1 2 "s" <= 63.75
             PSR "PSR age"
                 description
                     Age of the last primary detection used to update the track
@@ -1119,9 +1119,9 @@ items
                         element 2
                             table
                                 0: Unknown
-                                1: Aircraft Altitude
-                                2: FCU/MCP Selected Altitude
-                                3: FMS Selected Altitude
+                                1: Aircraft altitude
+                                2: FCU/MCP selected altitude
+                                3: FMS selected altitude
                     ALT "Altitude in two's complement form"
                         element 13
                             signed quantity 25 0 "ft" >= -1300 <= 100000
@@ -1148,7 +1148,7 @@ items
                             table
                                 0: Not active
                                 1: Active
-                    Alt "Altitude in two's complement form"
+                    ALT "Altitude in two's complement form"
                         element 13
                             signed quantity 25 0 "ft" >= -1300 <= 100000
             TIS "Trajectory Intent Status"
@@ -1156,13 +1156,13 @@ items
                     NAV "TID available"
                         element 1
                             table
-                                0: Trajectory Intent Data is available for this aircraft
-                                1: Trajectory Intent Data is not available for this aircraft
+                                0: Trajectory intent data is available for this aircraft
+                                1: Trajectory intent data is not available for this aircraft
                     NVB "TID valid"
                         element 1
                             table
-                                0: Trajectory Intent Data is valid
-                                1: Trajectory Intent Data is not valid
+                                0: Trajectory intent data is valid
+                                1: Trajectory intent data is not valid
                     spare 5
             TID "Trajectory Intent Data"
                 repetitive 8
@@ -1182,13 +1182,13 @@ items
                                 Trajectory Change Point number
                             element 6
                                 raw
-                        Alt "Altitude in two's complement form"
+                        ALT "Altitude in two's complement form"
                             element 16
                                 signed quantity 10 0 "ft" >= -1500 <= 150000
-                        Lat "Latitude in WGS.84 in two's complement"
+                        LAT "Latitude in WGS.84 in two's complement"
                             element 24
                                 unsigned quantity 180 23 "deg" >= -90 <= 90
-                        Lon "Longitide in WGS.84 in two's complement"
+                        LON "Longitude in WGS.84 in two's complement"
                             element 24
                                 unsigned quantity 180 23 "deg" >= -180 < 180
                         PT "Point Type"
@@ -1303,7 +1303,7 @@ items
                     GBS "Ground Bit Set"
                         element 1
                             table
-                                0: Transponder Ground Bit not set or unknown
+                                0: Transponder ground bit not set or unknown
                                 1: Transponder Ground Bit set
                     spare 6
                     STAT "Flight Status"
@@ -1315,7 +1315,7 @@ items
                                 3: Minimum fuel
                                 4: No communications
                                 5: Unlawful interference
-                                6: "Downed" Aircraft
+                                6: Downed Aircraft
                                 7: Unknown
             ACS "ACAS Resolution Advisory Report"
                 description
@@ -1324,88 +1324,8 @@ items
                     report and threat identity data.
                     (MB Data) 56-bit message
                     conveying Mode S Comm B message data of BDS Register 3,0
-                group
-                    BDS30 "BDS code 3,0"
-                        element 8
-                            raw
-                    ARA41 "Active Resolution Advisories bit 41"
-                        element 1
-                            table
-                                0: There is more than one threat and the RA is intended to provide separation below some threat(s) and above some other threat(s) or no RA has been generated (when MTE = 0)
-                                1: Either there is only one threat or the RA is intended to provide separation in the same direction for all threats
-                    ARA42 "Active Resolution Advisories bit 42"
-                        element 1
-                            table
-                                0: RA is preventive or RA does not require a correction in the upward sense
-                                1: RA is corrective or RA requires a correction in the upward sense
-                    ARA43 "Active Resolution Advisories bit 43"
-                        element 1
-                            table
-                                0: Upward sense RA has been generated or RA does not require a positive climb
-                                1: Downward sense RA has been generated or RA requires a positive climb
-                    ARA44 "Active Resolution Advisories bit 44"
-                        element 1
-                            table
-                                0: RA is not increased rate or RA does not require a correction in the downward sense
-                                1: RA is increased rate or RA requires a correction in the downward sense
-                    ARA45 "Active Resolution Advisories bit 45"
-                        element 1
-                            table
-                                0: RA is not a sense reversal or RA does not require a positive descend
-                                1: RA is a sense reversal or RA requires a positive descend
-                    ARA46 "Active Resolution Advisories bit 46"
-                        element 1
-                            table
-                                0: A is not altitude crossing or RA does not require a crossing
-                                1: RA is altitude crossing or RA requires a crossing
-                    ARA47 "Active Resolution Advisories bit 47"
-                        element 1
-                            table
-                                0: RA is vertical speed limit or RA is not a sense reversal
-                                1: RA is positive or RA is a sense reversal
-                    ACAS3 "Reserved for ACAS III"
-                        element 7
-                            raw
-                    RAC55 "Resolution Advisory Complement bit 55"
-                        element 1
-                            table
-                                0: Not Active
-                                1: Active Do not pass below
-                    RAC56 "Resolution Advisory Complement bit 56"
-                        element 1
-                            table
-                                0: Not Active
-                                1: Active Do not pass above
-                    RAC57 "Resolution Advisory Complement bit 57"
-                        element 1
-                            table
-                                0: Not Active
-                                1: Active Do not turn left
-                    RAC58 "Resolution Advisory Complement bit 58"
-                        element 1
-                            table
-                                0: Not Active
-                                1: Active Do not turn right
-                    RAT "RA Terminated"
-                        element 1
-                            table
-                                0: No
-                                1: Yes
-                    MTE "Multiple Threat Encounter"
-                        element 1
-                            table
-                                0: No
-                                1: Yes
-                    TTI "Threat Type Indicator"
-                        element 2
-                            table
-                                0: No identity data in TID
-                                1: TID contains a Mode S transponder address
-                                2: TID contains altitude, range and bearing data
-                                3: Not assigned
-                    TID "Threat Identity Data"
-                        element 26
-                            raw
+                element 56
+                    bds
             BVR "Barometric Vertical Rate"
                 description
                     Barometric Vertical Rate in two's complement form
@@ -1469,16 +1389,16 @@ items
                                 0: Not valid Turbulence
                                 1: Valid Turbulence
                     spare 4
-                    WS_D "Wind Speed"
+                    WSD "Wind Speed"
                         element 16
                             unsigned quantity 1 0 "kt" >= 0 <= 300
-                    WD_D "Wind Direction"
+                    WDD "Wind Direction"
                         element 16
                             unsigned quantity 1 0 "deg" >= 1 <= 360
-                    TMP_D "Temperature in degrees celsius"
+                    TMPD "Temperature in degrees celsius"
                         element 16
                             signed quantity 1 2 "degC" >= -100 <= 100
-                    TRB_D "Turbulence"
+                    TRBD "Turbulence"
                         element 8
                             unsigned integer >= 0 <= 15
             EMC "Emitter Category"
@@ -1510,10 +1430,10 @@ items
                         24: Reserved
             POS "Position"
                 group
-                    Lat "Latitude in WGS.84 in two's complement form."
+                    LAT "Latitude in WGS.84 in two's complement form."
                         element 24
                             signed quantity 180 23 "deg" >= -90 <= 90
-                    Lon "Longitude in WGS.84 in two's complement form."
+                    LON "Longitude in WGS.84 in two's complement form."
                         element 24
                             signed quantity 180 23 "deg" >= -180 < 180
                 remark
@@ -1529,16 +1449,8 @@ items
                             raw
             MB "MODE S MB DATA"
                 repetitive 8
-                    group
-                        MBdata "56 bit message conveying Mode S B message data"
-                            element 56
-                                raw
-                        BDS1 "Comm B data Buffer Store 1 Address"
-                            element 4
-                                raw
-                        BDS2 "Comm B data Buffer Store 2 Address"
-                            element 4
-                                raw
+                    element 56
+                        bds
             IAR "Indicated Airspeed"
                 element 16
                     signed quantity 1 0 "kt" >= 0 <= 1100
@@ -1658,10 +1570,10 @@ items
                     unsigned quantity 1 2 "FL"
             CTL "Current Control Position"
                 group
-                    Centre "8-bit group Identification code"
+                    CENTRE "8-bit group Identification code"
                         element 8
                             raw
-                    Position "8-bit Control Position identification code"
+                    POSITION "8-bit Control Position identification code"
                         element 8
                             raw
             TOD "Time of Departure / Arrival"
@@ -1798,7 +1710,7 @@ items
 
     500 "Estimated Accuracies"
         definition
-            Overview of all important accuracies
+            Overview of all important accuracies.
         compound
             APC "Estimated Accuracy Of Track Position (Cartesian)"
                 group
@@ -1813,10 +1725,10 @@ items
                     signed quantity 1 1 "m"
             APW "Estimated Accuracy Of Track Position (WGS-84)"
                 group
-                    APWLat "APW (Latitude Component)"
+                    LAT "APW (Latitude Component)"
                         element 16
                             unsigned quantity 180 25 "deg"
-                    APWLon "APW (Longitude Component)"
+                    LON "APW (Longitude Component)"
                         element 16
                             unsigned quantity 180 25 "deg"
             AGA "Estimated Accuracy Of Calculated Track Geometric Altitude"
@@ -1825,7 +1737,7 @@ items
             ABA "Estimated Accuracy Of Calculated Track Barometric Altitude"
                 element 8
                     unsigned quantity 1 2 "FL"
-            ATW "Estimated Accuracy Of Track Velocity (Cartesian)"
+            ATV "Estimated Accuracy Of Track Velocity (Cartesian)"
                 group
                     ATVX "ATV (X-Component)"
                         element 8
@@ -1859,7 +1771,7 @@ items
 
     510 "Track Status"
         definition
-            Identification of a system track
+            Identification of a system track.
         extended 24 24
             MIDENT "Master System Unit Identification"
                 element 8
