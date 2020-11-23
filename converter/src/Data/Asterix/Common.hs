@@ -50,6 +50,6 @@ showConstrain = \case
     LessThan num -> "< " <> showNumber num
     LessThanOrEqualTo num -> "<= " <> showNumber num
 
-showName :: [Name] -> Text
-showName = T.intercalate "/"
+showPath :: [Name] -> Text
+showPath = T.intercalate "/"
 

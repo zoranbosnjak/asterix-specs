@@ -22,6 +22,7 @@ import           Data.Maybe
 import           Data.List
 
 import           Data.Asterix
+import           Data.Asterix.Common
 
 type ValidationError = T.Text
 
@@ -133,7 +134,7 @@ instance Validate (RegisterSize, Content) where
             guard warnings
             val <- values
             return $ join $ do
-                w <- T.words val
+                w <- take 1 $ T.words val
                 guard $ not $ isCapital w
                 return ["Expecting capitalized word -> " <> val <> " -> " <> w]
         , join $ do
@@ -299,7 +300,21 @@ instance Validate Basic where
                         Just m ->
                             let ln = compare (length rules) (2 ^ m)
                             in reportWhen (ln == GT) (showPath [name] <> " too many variations")
-            Group items -> join $ fmap validateDepItem items
+            Group items ->
+                (join $ fmap validateDepItem items)
+                ++ (join $ fmap validateNestedName items)
+              where
+                validateNestedName = \case
+                    Spare _ -> []
+                    Item subName _title _var _doc -> do
+                        let n = T.length name
+                            subName' = T.take n subName
+                        guard $ subName /= name
+                        guard $ subName' == name
+                        [showPath [name, subName]
+                            <> ": name repetition, suggesting -> "
+                            <> showPath [name, T.drop n subName]]
+
             Extended _n1 _n2 items -> join $ fmap validateDepItem items
             Repetitive _n variation' -> validateDepItem (Item name title variation' doc)
             Explicit -> []
