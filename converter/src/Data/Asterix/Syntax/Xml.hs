@@ -51,7 +51,7 @@ instance Block a => Block (Rule a) where
     enc Unspecified = tell "<raw />"
     enc (ContextFree a) = enc a
     enc (Dependent name rules) = enclosed
-        (sformat ("<case item=\"" % stext % "\">") (showName name))
+        (sformat ("<case item=\"" % stext % "\">") (showPath name))
         "</case>"
         (forM_ rules $ \(i, rule) -> enclosed
             (sformat ("<of value=\"" % int % "\">") i)

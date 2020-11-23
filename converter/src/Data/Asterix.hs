@@ -18,13 +18,9 @@ module Data.Asterix
 
 import           Data.List
 import           Data.Maybe (catMaybes)
-import qualified Data.Text as T
 
 import           Data.Asterix.Types
 import           Data.Asterix.Syntax
-
-showPath :: [Name] -> T.Text
-showPath = T.intercalate "/"
 
 findItemByName :: Basic -> [Name] -> Maybe Item
 findItemByName _ [] = Nothing
