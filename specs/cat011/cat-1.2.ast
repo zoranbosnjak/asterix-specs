@@ -47,10 +47,10 @@ items
         definition
             Position of a target in WGS-84 Coordinates.
         group
-            Lat "Latitude in WGS-84 in two's complement"
+            LAT "Latitude in WGS-84 in two's complement"
                 element 32
                     signed quantity 180 31 "deg" >= -90 <= 90
-            Lon "Longitude in WGS-84 in two's complement"
+            LON "Longitude in WGS-84 in two's complement"
                 element 32
                     signed quantity 180 31 "deg" >= -180 < 180
 
@@ -70,7 +70,7 @@ items
             Track Mode-3/A code converted into octal representation.
         group
             spare 4
-            Mod3A "Mode-3/A reply in octal representation"
+            MOD3A "Mode-3/A reply in octal representation"
                 element 12
                     string octal
 
@@ -86,7 +86,7 @@ items
 
     092 "Calculated Track Geometric Altitude"
         definition
-            Calculated Track Geometric Altitude Calculated geometric vertical distance above mean sea level, not related to barometric pressure.
+            Calculated geometric vertical distance above mean sea level, not related to barometric pressure.
         element 16
             signed quantity 25 2 "ft" >= -1500 <= 150000
         remark
@@ -104,7 +104,7 @@ items
                         1: QNH correction applied
             CTBA "Calculated Track Barometric Altitude"
                 element 15
-                    signed quantity 1 2 "ft" >= -15 <= 1500
+                    signed quantity 1 2 "FL" >= -15 <= 1500
 
     140 "Time of Track Information"
         definition
@@ -222,10 +222,10 @@ items
         definition
             Calculated track velocity expressed in Cartesian co-ordinates.
         group
-            Vx "Vx"
+            VX "Vx"
                 element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8192
-            Vy "Vy"
+            VY "Vy"
                 element 16
                     signed quantity 1 2 "m/s" >= -8192 <= 8192
 
@@ -233,10 +233,10 @@ items
         definition
             Calculated Acceleration of the target, in two's complement form.
         group
-            Ax "Ax"
+            AX "Ax"
                 element 8
                     signed quantity 1 2 "m/s2" >= -31 <= 31
-            Ay "Ay"
+            AY "Ay"
                 element 8
                     signed quantity 1 2 "m/s2" >= -31 <= 31
 
@@ -253,11 +253,11 @@ items
             STI ""
                 element 2
                     table
-                        0: Callsign or registration downlinked from transponde
+                        0: Callsign or registration downlinked from transponder
                         1: Callsign not downlinked from transponder
                         2: Registration not downlinked from transponder
             spare 6
-            TId "Target Identification"
+            TID "Target Identification"
                 element 48
                     string icao
         remark
@@ -268,13 +268,13 @@ items
         definition
             Target size defined as length and with of the detected target, and orientation.
         extended 8 8
-            Length "Length"
+            LENGTH "Length"
                 element 7
                     unsigned quantity 1 0 "m"
-            Ori "Orientation"
+            ORIENTATION "Orientation"
                 element 7
                     unsigned quantity 360 7 "deg"
-            Width "Width"
+            WIDTH "Width"
                 element 7
                     unsigned quantity 1 0 "m"
         remark
@@ -505,7 +505,7 @@ items
         definition
             All flight plan related information.
         compound
-            FPPSId "FPPS Identification Tag"
+            FPPSID "FPPS Identification Tag"
                 group
                     SAC "System Area Code"
                         element 8
@@ -516,7 +516,7 @@ items
             CSN "Callsign"
                 element 56
                     string ascii
-            IFPS_FLIGHT_ID "IFPS_FLIGHT_ID"
+            IFPSFLIGHTID "IFPS_FLIGHT_ID"
                 group
                     TYP "IFPS Flight ID Type"
                         element 2
@@ -531,14 +531,14 @@ items
                             raw
             FLIGHTCAT "Flight Category"
                 group
-                    GAT_OAT "Flight type"
+                    GATOAT "Flight type"
                         element 2
                             table
                                 0: Unknown
                                 1: General Air Traffic
                                 2: Operational Air Traffic
                                 3: Not applicable
-                    FR1_FR2 "Flight rules"
+                    FR1FR2 "Flight rules"
                         element 2
                             table
                                 0: Instrument Flight Rules
@@ -548,7 +548,7 @@ items
                     RVSM "RVSM"
                         element 2
                             table
-                                0: Unknown Instrument Flight Rules
+                                0: Unknown
                                 1: Approved
                                 2: Exempt
                                 3: Not Approved
@@ -574,7 +574,7 @@ items
             ADES "Destination Airport"
                 element 32
                     string ascii
-            RWY "DRunway Designation"
+            RWY "Runway Designation"
                 element 24
                     string ascii
             CFL "Current Cleared Flight Level"
@@ -582,10 +582,10 @@ items
                     unsigned quantity 1 2 "FL"
             CCP "Current Control Position"
                 group
-                    Centre "8-bit group Identification code"
+                    CENTRE "8-bit group Identification code"
                         element 8
                             raw
-                    Position "8-bit Control Position identification code"
+                    POSITION "8-bit Control Position identification code"
                         element 8
                             raw
             TOD "Time of Departure"
@@ -744,7 +744,7 @@ items
 
     610 "Holdbar status"
         definition
-            LStatus of up to sixteen banks of twelve indicators.
+            Status of up to sixteen banks of twelve indicators.
         repetitive 8
             group
                 BKN "Bank Number"

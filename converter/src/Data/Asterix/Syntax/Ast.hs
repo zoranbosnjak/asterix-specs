@@ -69,7 +69,7 @@ dumpVariation = \case
                 Unspecified -> tell "raw"
                 ContextFree cont -> dumpContent cont
                 Dependent name lst -> do
-                    tell $ sformat ("case " % stext) (showName name)
+                    tell $ sformat ("case " % stext) (showPath name)
                     block $ forM_ lst $ \(x,a) -> do
                         tell $ sformat (int % ":") x
                         block $ dumpContent a

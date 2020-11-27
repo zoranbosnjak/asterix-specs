@@ -22,6 +22,7 @@ import           Data.Maybe
 import           Data.List
 
 import           Data.Asterix
+import           Data.Asterix.Common
 
 type ValidationError = T.Text
 
@@ -40,6 +41,17 @@ instance Fixed Item where
 
 isFixed :: Fixed a => a -> Bool
 isFixed = isJust . size
+
+isCapital :: T.Text -> Bool
+isCapital w
+    | elem w exceptions = True
+    | T.head w == '(' || T.last w == ')' = True
+    | otherwise = elem (T.head w) (['A'..'Z'] <> ['0'..'9'])
+  where
+    exceptions =
+        [ "of", "in", "by", "to", "from", "the", "for", "and", "or"
+        , "with", "which", "is", "as", "/", "=", "on", "a"
+        ]
 
 -- Bit alignment property.
 class IsAligned a where
@@ -114,10 +126,22 @@ reportUnless :: Bool -> ValidationError -> [ValidationError]
 reportUnless = reportWhen . not
 
 instance Validate (RegisterSize, Content) where
-    validate _warnings (n, ContentTable lst) = join
+    validate warnings (n, ContentTable lst) = join
         [ reportWhen (keys /= nub keys) "duplicated keys"
         , reportWhen (any T.null values) "empty value"
         , reportWhen (sizeCheck == GT) "table too big"
+        , join $ do
+            guard warnings
+            val <- values
+            return $ join $ do
+                w <- take 1 $ T.words val
+                guard $ not $ isCapital w
+                return ["Expecting capitalized word -> " <> val <> " -> " <> w]
+        , join $ do
+            guard warnings
+            val <- values
+            return $ reportWhen (val /= "" && T.last val == '.') $
+                "Unexpected dot at the end of table entry -> " <> val
         ]
       where
         keys = fst <$> lst
@@ -176,9 +200,30 @@ instance Validate Variation where
 
 instance Validate Item where
     validate _warnings (Spare n) = reportUnless (n > 0) "size error"
-    validate warnings (Item name _title variation _doc) = do
-        err <- validate warnings variation
-        return (name <> ":" <> err)
+    validate warnings (Item name title variation _doc) = join
+        -- check item name length
+        [ reportWhen (T.length name > 15) (name <> ":Item name too long")
+        -- item name valid characters
+        , do
+            c <- T.unpack name
+            guard $ not $ elem c (['A'..'Z'] <> ['0'..'9'])
+            return $ name <> ":Invalid character " <> T.pack (show c)
+        -- capitalized title
+        , do
+            guard warnings
+            w <- T.words title
+            guard $ not $ isCapital w
+            return $ name <> ":Title not capitalized -> " <> title <> " -> " <> w
+        -- no dot at the end of title
+        , reportWhen (warnings && title /= "" && T.last title == '.') $
+            name <> ":Unexpected dot at the end of title -> " <> title
+        -- check variation
+        , validateVariation
+        ]
+      where
+        validateVariation = do
+            err <- validate warnings variation
+            return (name <> ":" <> err)
 
 instance Validate Basic where
     validate warnings basic = join
@@ -255,7 +300,21 @@ instance Validate Basic where
                         Just m ->
                             let ln = compare (length rules) (2 ^ m)
                             in reportWhen (ln == GT) (showPath [name] <> " too many variations")
-            Group items -> join $ fmap validateDepItem items
+            Group items ->
+                (join $ fmap validateDepItem items)
+                ++ (join $ fmap validateNestedName items)
+              where
+                validateNestedName = \case
+                    Spare _ -> []
+                    Item subName _title _var _doc -> do
+                        let n = T.length name
+                            subName' = T.take n subName
+                        guard $ subName /= name
+                        guard $ subName' == name
+                        [showPath [name, subName]
+                            <> ": name repetition, suggesting -> "
+                            <> showPath [name, T.drop n subName]]
+
             Extended _n1 _n2 items -> join $ fmap validateDepItem items
             Repetitive _n variation' -> validateDepItem (Item name title variation' doc)
             Explicit -> []
