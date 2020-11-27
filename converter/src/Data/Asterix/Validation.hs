@@ -161,6 +161,13 @@ instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
       where
         keys = fst <$> rules
 
+duplicatedNames :: [Item] -> Bool
+duplicatedNames items = names /= nub names
+  where
+    names = items >>= \case
+        Spare _ -> []
+        Item name _title _variation _doc -> [name]
+
 instance Validate Variation where
     validate warnings (Element n content) = join
         [ reportUnless (n > 0) "element size"
@@ -170,20 +177,14 @@ instance Validate Variation where
         [ reportUnless (isAligned x) "bit alignment"
         , validate warnings items
         , reportWhen (warnings && length items <= 1) "single item in a group"
+        , reportWhen (duplicatedNames items) "duplicated names"
         ]
     validate warnings x@(Extended _n1 _n2 items) = join
         [ reportUnless (isAligned x) "bit alignment"
         , join $ do
             item <- items
             return $ maybe ["item size not fixed"] (const []) (size item)
-        , let
-            dupNames lst =
-                let getName = \case
-                        Spare _ -> Nothing
-                        Item name' _title _variation _doc -> Just name'
-                    names = catMaybes (fmap getName lst)
-                in names /= nub names
-            in reportWhen (dupNames items) "duplicated names"
+        , reportWhen (duplicatedNames items) "duplicated names"
         , validate warnings items
         ]
     validate warnings (Repetitive m variation) = join
@@ -196,6 +197,8 @@ instance Validate Variation where
     validate warnings x@(Compound _mFspecSize items) = join
         [ reportUnless (isAligned x) "alignment error"
         , validate warnings items
+        , let items' = catMaybes items
+          in reportWhen (duplicatedNames items') "duplicated names"
         ]
 
 instance Validate Item where
