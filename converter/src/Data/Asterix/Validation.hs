@@ -147,6 +147,16 @@ instance Validate (RegisterSize, Content) where
         keys = fst <$> lst
         values = snd <$> lst
         sizeCheck = compare (length keys) (2 ^ n)
+    validate _warnings (stringSize, ContentString stringType) =
+        reportWhen (stringSize `mod` charSize /= 0) $
+            T.pack $ show stringType ++ " (" ++ show charSize
+            ++ " bits per symbol) does not fit in parent element ("
+            ++ show stringSize ++ " bits)"
+      where
+        charSize = case stringType of
+            StringAscii -> 8
+            StringICAO  -> 6
+            StringOctal -> 3
     validate _ _ = []
 
 instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
