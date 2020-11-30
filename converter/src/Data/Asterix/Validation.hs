@@ -51,6 +51,7 @@ isCapital w
     exceptions =
         [ "of", "in", "by", "to", "from", "the", "for", "and", "or"
         , "with", "which", "is", "as", "/", "=", "on", "a"
+        , ">", ">=", "<", "<=", "=="
         ]
 
 -- Bit alignment property.
