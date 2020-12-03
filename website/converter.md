@@ -58,6 +58,7 @@ converter --help
 
 # validate a file (ast/json format)
 converter -f input.ast --ast --validate
+converter -f input.ast --ast --validate --warnings
 converter -f input.json --json --validate
 
 # show definition fingerprint, for the same definitions

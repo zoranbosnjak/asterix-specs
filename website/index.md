@@ -51,7 +51,7 @@ items
         element 8
             table
                 1: Polar vector
-                2: Cartesian vector of start point/ length
+                2: Cartesian vector of start point/length
                 3: Contour record
                 4: Cartesian start point and end point vector
                 254: SOP message
@@ -64,7 +64,7 @@ items
             SAC "System Area Code"
                 element 8
                     raw
-            SIC "System Identification code"
+            SIC "System Identification Code"
                 element 8
                     raw
         remark
@@ -95,7 +95,7 @@ This is one-time effort and pays off quickly by:
 If you are creating new categories, consider [contributing](/source.html)
 definitions to the upstream repository.
 
-## Example usage in `python` script
+## Example: traversing specification with `python` script
 
 This example is using asterix category description in `json` format.
 
