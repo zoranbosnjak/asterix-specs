@@ -309,6 +309,7 @@ def renderUap(root):
                 tell('- ``(FX)`` - Field extension indicator')
         tell('')
 
+    tell('')
     tell(underline('=', "User Application Profile for Category {:03d}".format(cat)))
     t = uap['type']
     if t == 'uap':
