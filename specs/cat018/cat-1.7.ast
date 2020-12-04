@@ -34,7 +34,6 @@ items
                 65: Cancel_GICB_extraction
                 66: GICB_extraction_ack
                 67: GICB_response
-                
 
     001 "Result"
         definition
@@ -67,7 +66,7 @@ items
 
     002 "Time of Day"
         definition
-            Absolute time stamping expressed as Co-ordinated Universal Time (UTC) time. 
+            Absolute time stamping expressed as Co-ordinated Universal Time (UTC) time.
         element 24
             unsigned quantity 1 7 "s"
         remark
@@ -75,7 +74,7 @@ items
                 1. The time of day value is reset to zero each day at midnight.
                 2. For time management in radar transmission applications, refer
                    to Part 1, paragraph 5.4.
-                   
+
     004 "II Code"
         definition
             Indicates the interrogator’s current and previous II Code.
@@ -88,173 +87,172 @@ items
                     raw
         remark
             Note:
-                - The Previous II code shall be set to the Current II code value when there is no Previous II code available. 
-                
+                - The Previous II code shall be set to the Current II code value when there is no Previous II code available.
+
     005 "Mode S Address"
         definition
             Technical Mode S address used for identification of an aircraft, as defined in ICAO Annex 10.
         element 24
             raw
-            
+
     006 "Mode S Address List"
         definition
             List of technical Mode S addresses.
-        repetitive 24
+        repetitive 8
             element 24
                 raw
 
     007 "Aircraft Data Link Command"
         definition
-            Command for the aircraft data link communications. It allows the 
-            GDLP to enable or disable the uplink & downlink data flows for a 
-            specified aircraft. 
+            Command for the aircraft data link communications. It allows the
+            GDLP to enable or disable the uplink & downlink data flows for a
+            specified aircraft.
         group
             UM "Uplink Mask"
                 element 1
                     table
-                        0: UC shall be ignored 
-                        1: UC shall be taken into account 
+                        0: UC shall be ignored
+                        1: UC shall be taken into account
             DM "Downlink Mask"
                 element 1
                     table
-                        0: DC shall be ignored 
+                        0: DC shall be ignored
                         1: DC shall be taken into account
             UC "Uplink Command"
                 element 1
                     table
-                        0: the uplink flow shall be enabled 
+                        0: the uplink flow shall be enabled
                         1: the uplink flow shall be stopped
             DC "Downlink Command"
                 element 1
                     table
-                        0: the downlink flow shall be enabled 
-                        1: the downlink flow shall be  stopped
+                        0: the downlink flow shall be enabled
+                        1: the downlink flow shall be stopped
             spare 4
         remark
-            Note: 
-                - This command applies to the interrogator ́s 
-                  Current status (UCS/DCS) and does not affect the 
-                  interrogator’s Default Status (see UDS/DDS in 
+            Note:
+                - This command applies to the interrogator's
+                  Current status (UCS/DCS) and does not affect the
+                  interrogator’s Default Status (see UDS/DDS in
                   Data Item I018/008).
-            
+
     008 "Aircraft Data Link Status"
         definition
             Status for the aircraft data link communications.
         extended 8 8
-                UDS "Uplink Default Status"
-                    element 1
-                        table
-                            0: The interrogator is enabled to uplink frames 
-                            1: The interrogator is disabled to uplink frames 
-                DDS "Downlink Default Status"
-                    element 1
-                        table
-                            0: The interrogator is enabled to extract frames
-                            1: The interrogator is disabled to extract frames
-                UCS "Uplink Current Status"
-                    element 1
-                        table
-                            0: The interrogator is enabled to uplink frames
-                            1: The interrogator is disabled to uplink frames
-                DCS "Downlink Current Status"
-                    element 1
-                        table
-                            0: The interrogator is enabled to extract frames
-                            1: The interrogator is disabled to extract frames
-                spare 2
-                EI "Exit Indication"
-                    element 1
-                        table
-                            0: The aircraft is in the Datalink coverage map of the interrogator
-                            1: The aircraft is not in the Datalink coverage map of the interrogator 
-                IC "Interrogator Control"
-                    element 1
-                        table
-                            0: The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report could be changed using D_Data_link_command
-                            1: The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report cannot be changed using D_Data_link_command
-                spare 6
-                
+            UDS "Uplink Default Status"
+                element 1
+                    table
+                        0: The interrogator is enabled to uplink frames
+                        1: The interrogator is disabled to uplink frames
+            DDS "Downlink Default Status"
+                element 1
+                    table
+                        0: The interrogator is enabled to extract frames
+                        1: The interrogator is disabled to extract frames
+            UCS "Uplink Current Status"
+                element 1
+                    table
+                        0: The interrogator is enabled to uplink frames
+                        1: The interrogator is disabled to uplink frames
+            DCS "Downlink Current Status"
+                element 1
+                    table
+                        0: The interrogator is enabled to extract frames
+                        1: The interrogator is disabled to extract frames
+            spare 2
+            EI "Exit Indication"
+                element 1
+                    table
+                        0: The aircraft is in the Datalink coverage map of the interrogator
+                        1: The aircraft is not in the Datalink coverage map of the interrogator
+            IC "Interrogator Control"
+                element 1
+                    table
+                        0: The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report could be changed using D_Data_link_command
+                        1: The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report cannot be changed using D_Data_link_command
+            spare 6
         remark
             Notes:
-                1. The current status should never be more restrictive than the default status. 
-                2. IC is usually set 1when the interrogator is a member of a cluster with a 
-                   decentralised data link responsibility protocol. 
-                   IC is usually set to 0 when the interrogator is connected to a GDLP. IC 
+                1. The current status should never be more restrictive than the default status.
+                2. IC is usually set 1when the interrogator is a member of a cluster with a
+                   decentralised data link responsibility protocol.
+                   IC is usually set to 0 when the interrogator is connected to a GDLP. IC
                    settings shall comply with the rules defined in Ref.3.
-    
+
     009 "Aircraft Data Link Report Request"
         definition
             Request for an Aircraft_report message.
         extended 8 8
-                SR ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include D_Data_link_status 
-                            1: The next Aircraft_report shall include D_Data_link_status 
-                AR ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include D_COM
-                            1: The next Aircraft_report shall include D_COM
-                ER ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include D_ECA
-                            1: The next Aircraft_report shall include D_ECA
-                FR ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include D_CQF
-                            1: The next Aircraft_report shall include D_CQF
-                MR ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include D_CQF_method
-                            1: The next Aircraft_report shall include D_CQF_method 
-                PR ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include D_Polar_position
-                            1: The next Aircraft_report shall include D_Polar_position 
-                CR ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include D_Cartesian_position
-                            1: The next Aircraft_report shall include D_Cartesian_position
-                ID ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include Aircraft_ID
-                            1: The next Aircraft_report shall include Aircraft_ID
-                MA ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include Mode_A
-                            1: The next Aircraft_report shall include Mode_A
-                SP ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include Speed
-                            1: The next Aircraft_report shall include Speed
-                HG ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include Height
-                            1: The next Aircraft_report shall include Height
-                HD ""
-                    element 1
-                        table
-                            0: The next Aircraft_report may not include Heading
-                            1: The next Aircraft_report shall include Heading
-                spare 2
+            SR ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include D_Data_link_status
+                        1: The next Aircraft_report shall include D_Data_link_status
+            AR ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include D_COM
+                        1: The next Aircraft_report shall include D_COM
+            ER ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include D_ECA
+                        1: The next Aircraft_report shall include D_ECA
+            FR ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include D_CQF
+                        1: The next Aircraft_report shall include D_CQF
+            MR ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include D_CQF_method
+                        1: The next Aircraft_report shall include D_CQF_method
+            PR ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include D_Polar_position
+                        1: The next Aircraft_report shall include D_Polar_position
+            CR ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include D_Cartesian_position
+                        1: The next Aircraft_report shall include D_Cartesian_position
+            ID ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include Aircraft_ID
+                        1: The next Aircraft_report shall include Aircraft_ID
+            MA ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include Mode_A
+                        1: The next Aircraft_report shall include Mode_A
+            SP ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include Speed
+                        1: The next Aircraft_report shall include Speed
+            HG ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include Height
+                        1: The next Aircraft_report shall include Height
+            HD ""
+                element 1
+                    table
+                        0: The next Aircraft_report may not include Heading
+                        1: The next Aircraft_report shall include Heading
+            spare 2
         remark
-            Note: 
-                - This item indicates to the DLF which items to send in the next Aircraft_report 
-                  messages (for a specified aircraft) through the use of flags. These flags 
-                  concern D_Data_link_status, D_COM, D_ECA, D_CQF, D_CQF_method, 
-                  D_Polar_position, D_Cartesian_position, D_Aircraft_ID, D_Mode_A, 
-                  D_Speed, D_Height, D_Heading. 
-            
+            Note:
+                - This item indicates to the DLF which items to send in the next Aircraft_report
+                  messages (for a specified aircraft) through the use of flags. These flags
+                  concern D_Data_link_status, D_COM, D_ECA, D_CQF, D_CQF_method,
+                  D_Polar_position, D_Cartesian_position, D_Aircraft_ID, D_Mode_A,
+                  D_Speed, D_Height, D_Heading.
+
     010 "Transponder Communications Capability"
         definition
             Transponder Communications Capability
@@ -268,13 +266,13 @@ items
                         2: Comm. A, Comm. B and Uplink ELM
                         3: Comm. A, Comm. B and Uplink ELM and Downlink ELM
                         4: Level 5 Transponder capability
-                        
+
     011 "Capability Report"
         definition
             Capability report as described in the Mode S subnetwork SARPs
         element 56
-            raw  
-            
+            raw
+
     012 "Aircraft Coverage Quality Factor"
         definition
             Coverage Quality Factor (CQF) of an aircraft (for a given interrogator).
@@ -291,13 +289,13 @@ items
                         1: The CQF is minimum
                         126: The CQF is maximum
                         127: The CQF is undefined according to the calculation method
-                        
+
     013 " Aircraft CQF Calculation Method"
         definition
             Indicates which criteria to take into account when computing the CQF of an aircraft for an interrogator.
         element 8
             raw
-            
+
     014 "Aircraft Position in Polar Co-ordinates"
         definition
             Measured position of an aircraft in local polar co-ordinates.
@@ -309,12 +307,12 @@ items
                 element 16
                     unsigned quantity 360 16 "deg"
         remark
-            Note: 
+            Note:
                 - When expressed in 16 bits, signed or unsigned azimuths have the same value.
-            
+
     015 "Aircraft Position in Cartesian Co-ordinates "
         definition
-            Calculated position of an aircraft in Cartesian co-ordinates. 
+            Calculated position of an aircraft in Cartesian co-ordinates.
         group
             X "X-Component"
                 element 16
@@ -323,26 +321,26 @@ items
                 element 16
                     signed quantity 1 7 "NM" >= -256 <= 256
         remark
-            Note: 
-                - Negative values are expressed in 2’s complement form, bit-32 and bit-16 
-                  shall be set to 0 for positive values and 1 for negative values. 
-                  
+            Note:
+                - Negative values are expressed in 2’s complement form, bit-32 and bit-16
+                  shall be set to 0 for positive values and 1 for negative values.
+
     016 "Packet Number"
         definition
-            Number used to correlate an uplink packet request and its associated acknowledgement.   
+            Number used to correlate an uplink packet request and its associated acknowledgement.
         element 32
-            raw
-			
+            unsigned integer
+
     017 "Packet Number List"
         definition
             List of numbers used to correlate an uplink packet request and their associated acknowledgements
         repetitive 8
             element 32
-                raw
-                
+                unsigned integer
+
     018 "Mode S Packet Properties"
         definition
-            Properties of an uplink Mode S packet, i.e. its internal priority and its capability to be 
+            Properties of an uplink Mode S packet, i.e. its internal priority and its capability to be
             multiplexed or not, and its type (SVC, MSP or ROUTE).
         group
             spare 1
@@ -355,28 +353,30 @@ items
                         0: SVC packets
                         1: MSP packets
                         2: Route packets
-        remark  
-            Note: 
-                - The PT field is used to identify the ROUTE packets which have a higher 
-                  priority than SVCs.  The PR field is used to describe the priority of SVCs as 
+        remark
+            Note:
+                - The PT field is used to identify the ROUTE packets which have a higher
+                  priority than SVCs.  The PR field is used to describe the priority of SVCs as
                   follows:
-                      0 = low           
-                      1 = high 
-                  For ROUTE and MSP packets the value of PR has no significance.  However, 
-                  for the purpose of standardisation, it is recommended that for ROUTE 
-                  packets, PR is set to 15 and for MSPs the PR should be set to 31. 
-            
-    019 "Mode S Packet" 
+
+                      0 = low
+                      1 = high
+
+                  For ROUTE and MSP packets the value of PR has no significance.  However,
+                  for the purpose of standardisation, it is recommended that for ROUTE
+                  packets, PR is set to 15 and for MSPs the PR should be set to 31.
+
+    019 "Mode S Packet"
         definition
             A Mode S packet as defined in the Mode S subnetwork SARPs.
         explicit
-        
+
     020 "Broadcast Number"
         definition
             Number used to correlate an uplink broadcast request and its associated acknowledgement.
         element 32
-            raw
-			
+            unsigned integer
+
     021 "Broadcast Properties"
         definition
             Properties of an uplink broadcast request (power, duration, coverage).
@@ -389,17 +389,17 @@ items
                     unsigned integer
             DURATION "Duration"
                 element 8
-                    unsigned integer
+                    unsigned quantity 1 0 "s"
             COVERAGE "Coverage"
                 element 32
                     raw
         remark
             Notes:
-                 1. A broadcast with a higher priority will temporarily delay a lower priority broadcast if 
-                    necessary. The delayed broadcast will be resumed as soon as possible for its 
-                    remaining time. 
+                 1. A broadcast with a higher priority will temporarily delay a lower priority broadcast if
+                    necessary. The delayed broadcast will be resumed as soon as possible for its
+                    remaining time.
                  2. The sectors are numbered from 1 to 32 clockwise, sector 1 being the first sector after the North.
-                 
+
     022 "Broadcast Prefix"
         definition
             Contents of the 32 first bits of an uplink broadcast interrogation.
@@ -409,48 +409,48 @@ items
                 element 27
                     raw
         remark
-            Note: 
-                - The Mode S uplink broadcast interrogation will be made up of this 
-                  D_Broadcast_prefix field followed by the D_Broadcast field and then by the 
-                  Address/Parity field (in this order), as defined in ICAO Annex 10. In the 
-                  interrogator, the 5 first bits of D_Broadcast_prefix will be replaced by ICAO 
+            Note:
+                - The Mode S uplink broadcast interrogation will be made up of this
+                  D_Broadcast_prefix field followed by the D_Broadcast field and then by the
+                  Address/Parity field (in this order), as defined in ICAO Annex 10. In the
+                  interrogator, the 5 first bits of D_Broadcast_prefix will be replaced by ICAO
                   UF field, as defined in Annex 10.
-            
+
     023 "Uplink or Downlink Broadcast"
         definition
-            Broadcast message sent (MA field of the Comm-A frame) or received 
-            (MB field of the Comm-B frame), conformant with the ICAO Manual on 
+            Broadcast message sent (MA field of the Comm-A frame) or received
+            (MB field of the Comm-B frame), conformant with the ICAO Manual on
             Mode S Specific Services.
         element 56
             raw
-            
+
     025 "GICB Number"
         definition
-            Number used to correlate subsequent GICB messages (i.e. responses 
+            Number used to correlate subsequent GICB messages (i.e. responses
             and acknowledgements) with the original GICB request.
         element 32
-            raw
-            
+            unsigned integer
+
     027 "BDS Code"
         definition
-            BDS code of the GICB to be extracted. 
+            BDS code of the GICB to be extracted.
         element 8
             raw
-            
+
     028 "GICB Extraction Periodicity"
         definition
             Periodicity of the GICB extractions.
         element 16
-            raw
-            
+            unsigned quantity 1 0 "s"
+
     029 "GICB Extracted"
         definition
-            GICB extracted message (MB field of the Comm-B frame). i.e., the 
-            contents of a BDS register, conformant with the ICAO Manual on 
+            GICB extracted message (MB field of the Comm-B frame). i.e., the
+            contents of a BDS register, conformant with the ICAO Manual on
             Mode S Specific Services.
         element 56
             raw
-            
+
     030 "GICB Properties"
         definition
             Properties of the GICB extractions.
@@ -482,17 +482,17 @@ items
                         2: The extracted GICB must be sent both on the Data Link and on the Surveillance lines
             spare 3
         remark
-            Note: 
-                - The Non Extraction flag (NE) should be used only if the Asynchronous 
-                  Update flag (AU) is set to true. It is specially reserved to the ACAS' RA 
-                  extraction (asynchronous update without periodic extraction request). 
-        
+            Note:
+                - The Non Extraction flag (NE) should be used only if the Asynchronous
+                  Update flag (AU) is set to true. It is specially reserved to the ACAS' RA
+                  extraction (asynchronous update without periodic extraction request).
+
     031 "Aircraft Identity"
         definition
             Identity of the aircraft extracted by a BDS 20 as described in ICAO Annex 10.
         element 48
             raw
-        
+
     032 "Aircraft Mode A"
         definition
             Mode-3/A code converted into octal representation.
@@ -504,9 +504,9 @@ items
                         1: Code not validated
             G ""
                 element 1
-                   table
-                       0: Default
-                       1: Garbled code
+                    table
+                        0: Default
+                        1: Garbled code
             L ""
                 element 1
                     table
@@ -517,11 +517,11 @@ items
                 element 12
                     string octal
         remark
-            Note: 
-                - Bit 15 has no meaning in the case of a smoothed Mode-3/A code and is set 
-                  to 0 for a calculated track. For Mode S, it is set to one when an error 
-                  correction has been attempted. 
-            
+            Note:
+                - Bit 15 has no meaning in the case of a smoothed Mode-3/A code and is set
+                  to 0 for a calculated track. For Mode S, it is set to one when an error
+                  correction has been attempted.
+
     033 "Aircraft Height"
         definition
             Flight Level converted into binary representation.
@@ -538,28 +538,28 @@ items
                         1: Garbled code
             FL "Flight Level"
                 element 14
-                     signed quantity 1 2 "FL"
+                    signed quantity 1 2 "FL"
         remark
-            Notes:  
-                1. The value shall be within the range described by ICAO Annex 10 
-                2. For Mode S, bit 15 (G) is set to one when an error correction 
-                   has been attempted. 
-                3. If Altitude is not extracted on the last scan, it is an implementation 
-                   issue as to whether Altitude is output from track file, if at all. 
-                   
+            Notes:
+                1. The value shall be within the range described by ICAO Annex 10
+                2. For Mode S, bit 15 (G) is set to one when an error correction
+                   has been attempted.
+                3. If Altitude is not extracted on the last scan, it is an implementation
+                   issue as to whether Altitude is output from track file, if at all.
+
     034 "Aircraft Speed"
         definition
             Tracker calculated Ground Speed of an aircraft.
         element 16
             unsigned quantity 1 14 "NM/s"
-            
+
     035 "Aircraft Heading"
         definition
-            Tracker calculated heading of an aircraft. . The heading is the heading with respect 
+            Tracker calculated heading of an aircraft. . The heading is the heading with respect
             to the geographical north at the aircraft position.
         element 16
             unsigned quantity 360 16 "deg"
-            
+
     036 "Data Source Identifier"
         definition
             Identification of the source node for the GDLP/LU data
@@ -573,8 +573,8 @@ items
         remark
             Note:
                 - The up-to-date list of SACs is published on the
-                EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
-                  
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
     037 "Data Destination Identifier"
         definition
             Identification of the destination node for the GDLP/LU data.
