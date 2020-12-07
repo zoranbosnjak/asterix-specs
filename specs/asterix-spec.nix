@@ -47,7 +47,7 @@ in with pkgs; runCommand name
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
 
-    echo "pretify to .txt"
+    echo "prettify to .txt"
     ${converter}/bin/converter -f ${orig} --ast --ast > $out/definition.txt
     ${converterStatic}/bin/converter -f ${orig} --ast --ast > $out/definition.txt2
     diff $out/definition.txt $out/definition.txt2

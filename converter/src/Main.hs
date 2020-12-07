@@ -41,7 +41,7 @@ data Convert = Convert
 
 data Options
     = OptConvert Convert
-    | OptPretify FilePath (Decoder, Encoder)
+    | OptPrettify FilePath (Decoder, Encoder)
 
 convertOpts :: Opt.Parser Convert
 convertOpts = Convert
@@ -74,15 +74,15 @@ convertOpts = Convert
             return $ flag' f (long shortName <> help ("output syntax: " ++ description))
 
 options :: Opt.Parser Options
-options = fmap OptConvert convertOpts <|> optPretify
+options = fmap OptConvert convertOpts <|> optPrettify
   where
-    optPretify = OptPretify
-        <$> (strOption ( long "pretify" <> metavar "FILENAME" <> help "Reformat file to normal form.")
+    optPrettify = OptPrettify
+        <$> (strOption ( long "prettify" <> metavar "FILENAME" <> help "Reformat file to normal form.")
             <* (flag' () ( long "remove-comments" <> help "This process removes comments.")))
-        <*> pretifyOpt
+        <*> prettifyOpt
       where
-        pretifyOpt = foldr (<|>) empty $ do
-            (shortName, description, decoder, encoder) <- availablePretifiers
+        prettifyOpt = foldr (<|>) empty $ do
+            (shortName, description, decoder, encoder) <- availablePrettifiers
             return $ flag' (decoder, encoder) (long shortName <> help ("syntax: " ++ description))
 
 convert :: Convert -> IO ()
@@ -139,8 +139,8 @@ convert opt = do
             Data.Text.IO.putStrLn (showPath path <> ": " <> details)
             act
 
-pretify :: FilePath -> Decoder -> Encoder -> IO ()
-pretify filename decoder encoder = do
+prettify :: FilePath -> Decoder -> Encoder -> IO ()
+prettify filename decoder encoder = do
     s <- BS.readFile filename
     case decoder filename s of
         Left e -> die e
@@ -165,5 +165,5 @@ main = do
 
     case opt of
         OptConvert convOpt -> convert convOpt
-        OptPretify filename (decoder, encoder) -> pretify filename decoder encoder
+        OptPrettify filename (decoder, encoder) -> prettify filename decoder encoder
 

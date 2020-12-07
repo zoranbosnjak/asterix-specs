@@ -10,7 +10,7 @@ Features:
 
 * validate sources file
 * transparently convert from one format to another
-* convert from one format to itself (pretify definition file)
+* convert from one format to itself (prettify definition file)
 * dump file as a list of items
 * show asterix definition signature (like a fingerprint, but not
   depending on a particular file format).
@@ -72,8 +72,8 @@ converter -f input.ast --ast --json > out.json
 # convert json -> ast
 converter -f input.json --json --ast > out.ast
 
-# pretify ast file after editing, the file will be overwritten
-converter --pretify input.ast --remove-comments --ast
+# prettify ast file after editing, the file will be overwritten
+converter --prettify input.ast --remove-comments --ast
 ```
 
 ## Development
