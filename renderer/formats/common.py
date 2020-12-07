@@ -40,11 +40,9 @@ def getNumber(value):
         return Real(float(val))
     raise Exception('unexpected value type {}'.format(t))
 
-def renderRule(rule, caseUnspecified, caseContextFree, caseDependent):
+def renderRule(rule, caseContextFree, caseDependent):
     rule_type = rule['type']
-    if rule_type == 'Unspecified':
-        return caseUnspecified()
-    elif rule_type == 'ContextFree':
+    if rule_type == 'ContextFree':
         return caseContextFree(rule)
     elif rule_type == 'Dependent':
         return caseDependent(rule)

@@ -34,8 +34,7 @@ data Documentation = Documentation
     } deriving (Generic, Eq, Show)
 
 data Rule a
-    = Unspecified
-    | ContextFree a
+    = ContextFree a
     | Dependent [Name] [(Int, a)]
     deriving (Generic, Eq, Show)
 
@@ -78,7 +77,8 @@ data StringType
     deriving (Generic, Eq, Show, Read)
 
 data Content
-    = ContentTable
+    = ContentRaw
+    | ContentTable
         [(Int, Text)]
     | ContentString
         StringType

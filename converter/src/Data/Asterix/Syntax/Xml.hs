@@ -48,7 +48,6 @@ instance Block a => Block (Maybe a) where
     enc (Just x) = enc x
 
 instance Block a => Block (Rule a) where
-    enc Unspecified = tell "<raw />"
     enc (ContextFree a) = enc a
     enc (Dependent name rules) = enclosed
         (sformat ("<case item=\"" % stext % "\">") (showPath name))
@@ -71,6 +70,7 @@ instance Block Constrain where
             LessThanOrEqualTo x -> ("le", x)
 
 instance Block Content where
+    enc ContentRaw = tell "<raw />"
     enc (ContentTable lst) = enclosed
         "<content type=\"table\">"
         "</content>"

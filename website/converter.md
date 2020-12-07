@@ -46,9 +46,14 @@ sudo chmod 755 /usr/local/bin/converter
 converter --help
 ```
 
-For [nix](https://nixos.org/) users,
-a [converter nix expression](https://github.com/zoranbosnjak/asterix-specs/blob/master/converter/default.nix)
-is provided in the source code.
+Install or upgrade procedure for [nix](https://nixos.org/) users:
+
+```bash
+cd converter
+nix-build
+nix-env -i $(readlink result)
+converter --help
+```
 
 ## Usage
 

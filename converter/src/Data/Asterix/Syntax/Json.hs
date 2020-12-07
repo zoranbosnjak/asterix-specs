@@ -27,9 +27,6 @@ import           Data.Asterix.Common
 
 instance ToJSON a => ToJSON (Rule a)
   where
-    toJSON (Unspecified) = object
-        [ "type" .= ("Unspecified" :: String)
-        ]
     toJSON (ContextFree rule) = object
         [ "type" .= ("ContextFree" :: String)
         , "rule" .= rule
@@ -42,7 +39,6 @@ instance ToJSON a => ToJSON (Rule a)
 
 instance FromJSON a => FromJSON (Rule a) where
     parseJSON = withObject "Rule" $ \v -> case HMS.lookup "type" v of
-        Just "Unspecified" -> pure Unspecified
         Just "ContextFree" -> ContextFree
             <$> v .: "rule"
         Just "Dependent" -> Dependent
@@ -130,6 +126,9 @@ instance FromJSON StringType  where
 
 instance ToJSON Content where
     toJSON = \case
+        ContentRaw -> object
+            [ "type" .= ("Raw" :: String)
+            ]
         ContentTable lst -> object
             [ "type" .= ("Table" :: String)
             , "values" .= lst
@@ -157,6 +156,7 @@ instance ToJSON Content where
 
 instance FromJSON Content  where
     parseJSON = withObject "Content" $ \v -> case HMS.lookup "type" v of
+        Just "Raw" -> pure ContentRaw
         Just "Table" -> ContentTable
             <$> v .: "values"
         Just "String" -> ContentString

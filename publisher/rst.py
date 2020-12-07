@@ -138,16 +138,15 @@ def renderVariation(parent, variation):
         tell('- {} [``{}``]'.format(bits(n), '.'*n))
         tell('')
 
-        def case0():
-            tell('- raw value')
-            tell('')
-            return n
-
         def case1(val):
             value = val['rule']
             t = value['type']
 
-            if t == 'Table':
+            if t == 'Raw':
+                tell('- raw value')
+                tell('')
+
+            elif t == 'Table':
                 tell('- values:')
                 tell('')
                 with indent:
@@ -186,7 +185,7 @@ def renderVariation(parent, variation):
             tell('')
             return n
 
-        return renderRule(variation['content'], case0, case1, case2)
+        return renderRule(variation['content'], case1, case2)
 
     def renderMaybeItem(parent, item):
         if item['spare']:

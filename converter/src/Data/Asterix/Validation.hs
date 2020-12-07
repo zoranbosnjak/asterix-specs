@@ -161,7 +161,6 @@ instance Validate (RegisterSize, Content) where
     validate _ _ = []
 
 instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
-    validate _warnings (_n, Unspecified) = []
     validate warnings (n, ContextFree a) = validate warnings (n,a)
     validate warnings (n, Dependent _someItem rules) = join
         [ reportWhen (keys /= nub keys) "duplicated keys"
@@ -305,7 +304,6 @@ instance Validate Basic where
         validateDepItem (Spare _n) = []
         validateDepItem (Item name title variation doc) = case variation of
             Element _n rule -> case rule of
-                Unspecified -> []
                 ContextFree _ -> []
                 Dependent someItemName rules -> case findItemByName basic someItemName of
                     Nothing -> [showPath someItemName <> " not defined"]

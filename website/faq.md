@@ -43,7 +43,7 @@ SAC "System Area Code"
     "title": "System Area Code",
     "variation": {
         "content": {
-            "type": "Unspecified"
+            "type": "Raw"
         },
         "size": 8,
         "type": "Element"

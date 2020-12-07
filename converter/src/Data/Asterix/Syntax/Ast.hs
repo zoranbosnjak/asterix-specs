@@ -41,6 +41,8 @@ dumpVariation = \case
         tell $ sformat ("element " % int) n
         block $ do
             let dumpContent = \case
+                    ContentRaw -> do
+                        tell "raw"
                     ContentTable lst -> do
                         tell "table"
                         block $ forM_ lst $ \(key, value) -> do
@@ -66,7 +68,6 @@ dumpVariation = \case
                     ContentBds -> do
                         tell "bds"
             case rule of
-                Unspecified -> tell "raw"
                 ContextFree cont -> dumpContent cont
                 Dependent name lst -> do
                     tell $ sformat ("case " % stext) (showPath name)
@@ -340,7 +341,8 @@ pConstrain = tryOne
 
 pContent :: Parser Content
 pContent = tryOne
-    [ (ContentTable . snd <$> parseList (MC.string "table") parseRow)
+    [ MC.string "raw" >> pure ContentRaw
+    , (ContentTable . snd <$> parseList (MC.string "table") parseRow)
     , do
         MC.string "string" >> sc
         ContentString <$> tryOne
@@ -367,7 +369,6 @@ pElement sc' = do
     n <- L.decimal
     rule <- sc' >> tryOne
         [ ContextFree <$> pContent
-        , MC.string "raw" >> pure Unspecified
         , pDependent
         ]
     return $ Element n rule

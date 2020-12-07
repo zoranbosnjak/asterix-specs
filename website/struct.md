@@ -127,10 +127,27 @@ data Date = Date
     , dateDay   :: Int
     }
 
+data StringType
+    = StringAscii
+    | StringICAO
+    | StringOctal
+
 data Content
-    = Number
-    | TableOfValues
-    -- some more
+    = ContentRaw
+    | ContentTable
+        [(Int, Text)]
+    | ContentString
+        StringType
+    | ContentInteger
+        Signed
+        [Constrain]
+    | ContentQuantity
+        Signed      -- unsigned/signed
+        Number      -- scaling factor
+        FractBits   -- number for fractional bits
+        Unit        -- unit
+        [Constrain]
+    | ContentBds
 
 data Variation
     -- leaf of the structure
