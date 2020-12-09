@@ -1,4 +1,3 @@
-
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
@@ -186,7 +185,7 @@ instance Validate Variation where
     validate warnings x@(Group items) = join
         [ reportUnless (isAligned x) "bit alignment"
         , validate warnings items
-        , reportWhen (warnings && length items <= 1) "single item in a group"
+        , reportWhen (length items <= 1) "group requires more items"
         , reportWhen (duplicatedNames items) "duplicated names"
         ]
     validate warnings x@(Extended _n1 _n2 items) = join
