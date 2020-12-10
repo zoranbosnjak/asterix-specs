@@ -74,7 +74,7 @@ instance IsAligned Variation where
         ]
       where
         fxPositions = tail (sum <$> inits (n1:repeat n2))
-        loop _n _fx [] = True
+        loop n _fx [] = isAligned n
         loop _n [] _items = False
         loop n (fx:fxs) (item:items) = case size item of
             Nothing -> False
