@@ -1,8 +1,8 @@
 ---
-title: Converter
+title: Tools
 ---
 
-# Converter
+# Tools
 
 Asterix conversion and validation tool is an integral part of this project.
 
@@ -35,50 +35,49 @@ Abstract [internal structure](/struct.html) is the same for all formats.
 ## Installation
 
 Pre-build 64-bit linux binary is available to download from
-[this link](/bin/converter-static).
+[this link](/bin/aspecs-static).
 
 To install, download and copy the file to some location and set file mode,
 for example under UbuntuOS:
 
 ```bash
-sudo cp converter-static /usr/local/bin/converter
-sudo chmod 755 /usr/local/bin/converter
-converter --help
+sudo cp aspecs-static /usr/local/bin/aspecs
+sudo chmod 755 /usr/local/bin/aspecs
+aspecs --help
 ```
 
 Install or upgrade procedure for [nix](https://nixos.org/) users:
 
 ```bash
-cd converter
+cd tools
 nix-build
 nix-env -i $(readlink result)
-converter --help
+aspecs --help
 ```
 
 ## Usage
 
 ```bash
 # show help
-converter --help
+aspecs --help
 
 # validate a file (ast/json format)
-converter -f input.ast --ast --validate
-converter -f input.ast --ast --validate --warnings
-converter -f input.json --json --validate
+aspecs -f input.ast --ast --validate --warnings
+aspecs -f input.json --json --validate --warnings
 
 # show definition fingerprint, for the same definitions
 # the fingerprint shall be the same, regardless of the format
-converter -f input.ast --ast --sha1
-converter -f input.json --json --sha1
+aspecs -f input.ast --ast --sha1
+aspecs -f input.json --json --sha1
 
 # convert ast -> json
-converter -f input.ast --ast --json > out.json
+aspecs -f input.ast --ast --json > out.json
 
 # convert json -> ast
-converter -f input.json --json --ast > out.ast
+aspecs -f input.json --json --ast > out.ast
 
 # prettify ast file after editing, the file will be overwritten
-converter --prettify input.ast --remove-comments --ast
+aspecs --prettify input.ast --remove-comments --ast
 ```
 
 ## Development
@@ -87,12 +86,14 @@ converter --prettify input.ast --remove-comments --ast
 # install nix package manager
 curl -L https://nixos.org/nix/install | sh
 
-# rebuild converter
+# clone repository
 git clone https://github.com/zoranbosnjak/asterix-specs.git
-cd asterix-specs/converter/
+
+# (re)build tools
+cd asterix-specs/tools/
 nix-build
 
 # run it
-./result/bin/converter --help
+./result/bin/aspecs --help
 ```
 

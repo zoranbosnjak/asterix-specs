@@ -13,9 +13,9 @@ let
 
   haskellPackages = pkgs.haskellPackages;
 
-  converter = import ../converter/default.nix { packages = pkgs; inShell = false; };
+  tools = import ../tools/default.nix { packages = pkgs; inShell = false; };
 
-  converterStatic = import ../converter/default.nix { packages = pkgs; inShell = false; static = true; };
+  toolsStatic = import ../tools/default.nix { packages = pkgs; inShell = false; static = true; };
 
   renderer = import ../renderer/default.nix { packages = pkgs; inShell = false; };
 
@@ -46,8 +46,8 @@ let
       mkdir -p $out
 
       mkdir -p $out/bin
-      ln -s ${converter}/bin/converter $out/bin/converter
-      ln -s ${converterStatic}/bin/converter $out/bin/converter-static
+      ln -s ${tools}/bin/aspecs $out/bin/aspecs
+      ln -s ${toolsStatic}/bin/aspecs $out/bin/aspecs-static
       ln -s ${renderer}/bin/render $out/bin/render
 
       cp ${specs}/manifest.json $out/manifest.json

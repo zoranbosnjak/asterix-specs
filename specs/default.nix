@@ -1,7 +1,7 @@
 { gitrev ? "devel"
 , packages ? null
-, converter ? import ../converter/default.nix { inShell = false; }
-, converterStatic ? import ../converter/default.nix { inShell = false; static = true; }
+, tools ? import ../tools/default.nix { inShell = false; }
+, toolsStatic ? import ../tools/default.nix { inShell = false; static = true; }
 , renderer ? import ../renderer/default.nix { inShell = false; }
 }:
 
@@ -51,7 +51,7 @@ let
   level1 = catnum:
     let
       asterix-spec = catnumber: spectype: edition:
-        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit converter converterStatic renderer catnumber spectype edition;};
+        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit tools toolsStatic renderer catnumber spectype edition;};
 
       linkCats =
         let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";

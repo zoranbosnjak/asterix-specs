@@ -22,7 +22,7 @@ Before submitting new category, please make sure that
 definitions are:
 
 - complete (including remarks);
-- validated with the [converter](/converter.html) (enable `--warnings`);
-- prettified with the [converter](/converter.html);
+- validated with the [tools](/tools.html) (enable `--warnings`);
+- prettified with the [tools](/tools.html);
 - *code reviewed* by an independent reviewer;
 

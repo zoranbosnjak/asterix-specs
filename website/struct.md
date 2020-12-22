@@ -191,6 +191,6 @@ data Asterix = Asterix
     }
 ```
 
-See [converter source code](https://github.com/zoranbosnjak/asterix-specs/blob/master/converter/src/Data/Asterix/Types.hs)
+See [tools source code](https://github.com/zoranbosnjak/asterix-specs/blob/master/tools/src/Data/Asterix/Types.hs)
 for exact definition.
 

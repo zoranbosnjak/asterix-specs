@@ -4,7 +4,7 @@ title: Home
 
 # Overview
 
-**Asterix** is a binary data format. It is
+**Asterix** is a binary data format, developed and
 maintained by [eurocontrol](https://www.eurocontrol.int/asterix).
 
 The major problem with the original specifications is that
@@ -18,7 +18,7 @@ is all about.
 This project contains:
 
 * [asterix definitions](/specs.html) in *zero overhead* custom text based [format](/syntax.html);
-* [converter](/converter.html) tool to validate and convert specifications between formats;
+* [tools](/tools.html) to validate and convert specifications between formats;
 * auto-generated specifications in *JSON* and *XML* format;
 * auto-generated specifications in *HTML* and *PDF* format;
 * formal description of asterix [structure](/struct.html);

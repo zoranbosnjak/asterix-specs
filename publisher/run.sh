@@ -10,7 +10,7 @@ if [[ $# -ne 2 ]]; then
 fi
 
 cat $1 > specs.input
-converter -f specs.input $2 --json > specs.json
+aspecs -f specs.input $2 --json > specs.json
 render --script rst.py render specs.json > specs.rst
 make html
 make latexpdf

@@ -7,11 +7,11 @@ let
     then import (builtins.fetchGit nixpkgs) { }
     else packages;
 
-  converter = import ../converter/default.nix { packages = pkgs; inShell = false; };
+  tools = import ../tools/default.nix { packages = pkgs; inShell = false; };
 
   renderer = import ../renderer/default.nix { packages = pkgs; inShell = false; };
 
-  deps = import ./deps.nix { inherit pkgs; } ++ [converter renderer];
+  deps = import ./deps.nix { inherit pkgs; } ++ [tools renderer];
 
   env = pkgs.stdenv.mkDerivation rec {
     name = "publisher-envorinment";
