@@ -21,7 +21,7 @@ import           Data.Asterix
 import           Data.Asterix.Common
 import           Data.Asterix.Validation (validate, isValid)
 
-import           Paths_converter (version)
+import           Paths_aspecs (version)
 
 data Input
     = FileInput FilePath
@@ -159,7 +159,7 @@ main = do
               <|> fmap Just options
         execParser (info (options' <**> helper) idm) >>= \case
             Nothing -> do
-                putStrLn $ "Asterix specs converter, version: " ++ showVersion version
+                putStrLn $ "Asterix specs tools, version: " ++ showVersion version
                 exitWith ExitSuccess
             Just opt -> return opt
 

@@ -18,6 +18,8 @@ let
     then with pkgs.haskell.lib; pkgs.haskellPackages.override {
       overrides = self: super: {
         # Dependencies we need to patch
+        # For the moment, use patch from local directory or given url.
+        # hpc-coveralls = appendPatch super.hpc-coveralls (./patches/344217f513b7adfb9037f73026f5d928be98d07f.patch);
         hpc-coveralls = appendPatch super.hpc-coveralls (builtins.fetchurl https://github.com/guillaume-nargeot/hpc-coveralls/pull/73/commits/344217f513b7adfb9037f73026f5d928be98d07f.patch);
       };}
     else pkgs.haskellPackages;
@@ -44,7 +46,7 @@ let
     else drv2;
 
   env = pkgs.stdenv.mkDerivation rec {
-    name = "converter-devel-environment";
+    name = "aspecs-devel-environment";
     buildInputs = drv1.env.nativeBuildInputs ++ [
       pkgs.cabal2nix
       pkgs.ghcid

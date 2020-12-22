@@ -1,4 +1,4 @@
-# Revision history for converter
+# Revision history
 
 ## 0.1.0 -- YYYY-mm-dd
 

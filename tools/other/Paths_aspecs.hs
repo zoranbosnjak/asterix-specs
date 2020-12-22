@@ -7,7 +7,7 @@
     $ ghcid "--command=ghci -Wall -iother -isrc src/Main.hs
 -}
 
-module Paths_converter where
+module Paths_aspecs where
 
 import Data.Version
 

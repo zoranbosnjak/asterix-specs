@@ -5,8 +5,8 @@
 , unordered-containers
 }:
 mkDerivation {
-  pname = "converter";
-  version = "0.6.2";
+  pname = "aspecs";
+  version = "0.7.0";
   src = ./.;
   isLibrary = false;
   isExecutable = true;
@@ -16,6 +16,6 @@ mkDerivation {
     formatting megaparsec optparse-applicative QuickCheck stm text time
     transformers unordered-containers
   ];
-  description = "asterix specs converter";
+  description = "asterix specs tools";
   license = stdenv.lib.licenses.bsd3;
 }
