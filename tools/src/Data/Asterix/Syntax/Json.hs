@@ -3,15 +3,7 @@
 
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
--- |
--- Module:      Data.Asterix.Syntax.Json
--- Copyright:   (c) 2019 Zoran Bošnjak
---              (c) 2019 Sloveniacontrol Ltd. (www.sloveniacontrol.si)
--- License:     GPL-3
--- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
---
--- This module defines '.json' syntax.
---
+-- '.json' syntax implementation
 
 module Data.Asterix.Syntax.Json (syntax) where
 

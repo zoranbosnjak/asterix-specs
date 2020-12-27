@@ -62,22 +62,22 @@ aspecs --help
 aspecs --help
 
 # validate a file (ast/json format)
-aspecs -f input.ast --ast --validate --warnings
-aspecs -f input.json --json --validate --warnings
+aspecs validate -f input.ast --ast --warnings
+aspecs validate -f input.json --json --warnings
 
 # show definition fingerprint, for the same definitions
 # the fingerprint shall be the same, regardless of the format
-aspecs -f input.ast --ast --sha1
-aspecs -f input.json --json --sha1
+aspecs checksum -f input.ast --ast
+aspecs checksum -f input.json --json
 
 # convert ast -> json
-aspecs -f input.ast --ast --json > out.json
+aspecs convert -f input.ast --ast --json > out.json
 
 # convert json -> ast
-aspecs -f input.json --json --ast > out.ast
+aspecs convert -f input.json --json --ast > out.ast
 
 # prettify ast file after editing, the file will be overwritten
-aspecs --prettify input.ast --remove-comments --ast
+aspecs prettify --remove-comments input.ast --ast
 ```
 
 ## Development

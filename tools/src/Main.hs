@@ -1,16 +1,13 @@
-
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Main where
 
-import           Control.Monad
 import           Options.Applicative as Opt
 import qualified Data.Text as T
 import qualified Data.Text.IO
-import qualified System.Environment
 import           System.IO as IO
-import           System.Exit (die, exitWith, ExitCode(ExitSuccess))
+import           System.Exit (die)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BS8
 import           Data.Maybe
@@ -19,151 +16,143 @@ import           Crypto.Hash
 
 import           Data.Asterix
 import           Data.Asterix.Common
-import           Data.Asterix.Validation (validate, isValid)
+import           Data.Asterix.Validation (validate)
 
 import           Paths_aspecs (version)
 
 data Input
     = FileInput FilePath
     | StdInput
+    deriving (Eq, Show)
 
-data Output
-    = ValidateOnly
-    | Sha1
-    | OutputList
-    | OutputSyntax Encoder
+data Command
+    = Validate Input Decoder Bool
+    | Convert Input Decoder Encoder
+    | Prettify FilePath (Decoder, Encoder)
+    | List Input Decoder
+    | Checksum Input Decoder
 
-data Convert = Convert
-    { convInput  :: (Input, Decoder)
-    , convWarnings :: Bool
-    , convOutput :: Output
-    }
+inputOpts :: Parser Input
+inputOpts = fileInput <|> stdInput where
+    fileInput = FileInput <$> strOption
+        ( long "file"
+       <> short 'f'
+       <> metavar "FILENAME"
+       <> help "Input file"
+        )
+    stdInput = flag' StdInput (long "stdin" <> help "Read from stdin")
 
-data Options
-    = OptConvert Convert
-    | OptPrettify FilePath (Decoder, Encoder)
+decoderOpt :: Parser Decoder
+decoderOpt = foldr (<|>) empty $ do
+    (shortName, description, f) <- availableDecoders
+    return $ flag' f (long shortName <> help ("input syntax: " ++ description))
 
-convertOpts :: Opt.Parser Convert
-convertOpts = Convert
+encoderOpt :: Parser Encoder
+encoderOpt = foldr (<|>) empty $ do
+    (shortName, description, f) <- availableEncoders
+    return $ flag' f (long shortName <> help ("output syntax: " ++ description))
+
+prettifyOpt :: Parser (Decoder, Encoder)
+prettifyOpt = foldr (<|>) empty $ do
+    (shortName, description, decoder, encoder) <- availablePrettifiers
+    return $ flag' (decoder, encoder)
+        (long shortName <> help ("syntax: " ++ description))
+
+validateOptions :: Parser Command
+validateOptions = Validate
     <$> inputOpts
-    <*> includeWarnings
-    <*> outputOpts
+    <*> decoderOpt
+    <*> switch (long "warnings" <> help "Include warnings on validation")
+
+convertOptions :: Parser Command
+convertOptions = Convert
+    <$> inputOpts
+    <*> decoderOpt
+    <*> encoderOpt
+
+prettifyOptions :: Parser Command
+prettifyOptions = Prettify <$> targetFile <*> prettifyOpt where
+    targetFile = strOption (long "remove-comments" <> metavar "FILENAME")
+
+listOptions :: Parser Command
+listOptions = List <$> inputOpts <*> decoderOpt
+
+checksumOptions :: Parser Command
+checksumOptions = Checksum <$> inputOpts <*> decoderOpt
+
+optCommand :: Parser Command
+optCommand = hsubparser
+    ( command "validate" (info validateOptions (progDesc "Validate input"))
+   <> command "convert" (info convertOptions (progDesc "Format conversion"))
+   <> command "prettify" (info prettifyOptions (progDesc "Reformat file to normal form"))
+   <> command "list" (info listOptions (progDesc "List items"))
+   <> command "checksum" (info checksumOptions (progDesc "Print file checksum"))
+    )
+
+opts :: ParserInfo Command
+opts = info (helper <*> versionOption <*> optCommand)
+    ( fullDesc <> Opt.header "Asterix specs tools" )
   where
-    inputOpts = (,) <$> (fileInput <|> stdInput) <*> decoderOpt where
-        fileInput = FileInput <$> strOption
-            ( long "file"
-           <> short 'f'
-           <> metavar "FILENAME"
-           <> help "Input file" )
-        stdInput = flag' StdInput
-            ( long "stdin"
-           <> help "Read from stdin" )
-        decoderOpt = foldr (<|>) empty $ do
-            (shortName, description, f) <- availableDecoders
-            return $ flag' f (long shortName <> help ("input syntax: " ++ description))
+    versionOption = Opt.infoOption
+        (showVersion version)
+        (Opt.long "version" <> Opt.help "Show version")
 
-    includeWarnings = switch ( long "warnings" <> help "Include warnings on validation")
-
-    outputOpts = (validateOnly <|> fp_sha1 <|> outList <|> (fmap OutputSyntax astEncoder))
-      where
-        validateOnly = flag' ValidateOnly ( long "validate" <> help "validate only" )
-        fp_sha1 = flag' Sha1 ( long "sha1" <> help "show sha1 fingerprint" )
-        outList = flag' OutputList ( long "list" <> help "list output" )
-        astEncoder = foldr (<|>) empty $ do
-            (shortName, description, f) <- availableEncoders
-            return $ flag' f (long shortName <> help ("output syntax: " ++ description))
-
-options :: Opt.Parser Options
-options = fmap OptConvert convertOpts <|> optPrettify
-  where
-    optPrettify = OptPrettify
-        <$> (strOption ( long "prettify" <> metavar "FILENAME" <> help "Reformat file to normal form.")
-            <* (flag' () ( long "remove-comments" <> help "This process removes comments.")))
-        <*> prettifyOpt
-      where
-        prettifyOpt = foldr (<|>) empty $ do
-            (shortName, description, decoder, encoder) <- availablePrettifiers
-            return $ flag' (decoder, encoder) (long shortName <> help ("syntax: " ++ description))
-
-convert :: Convert -> IO ()
-convert opt = do
-    result <- do
-        let (i, astDecoder) = convInput opt
-        (s, filename) <- case i of
-            FileInput f -> (,) <$> BS.readFile f <*> pure f
-            StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
-        return $ astDecoder filename s
-
-    let warnings = convWarnings opt
-    case result of
-        Left e -> die e
-        Right asterix -> case convOutput opt of
-            ValidateOnly -> case validate warnings asterix of
-                [] -> print ("ok" :: String)
-                lst -> do
-                    mapM_ (Data.Text.IO.hPutStrLn stderr) lst
-                    IO.hPutStrLn stderr ""
-                    die "Validation error(s) present!"
-            Sha1 -> do
-                let sha1 :: BS.ByteString -> Digest SHA1
-                    sha1 = hash
-                print $ sha1 $ BS8.pack $ show asterix
-                unless (isValid warnings asterix) $ do
-                    die "Validation error(s) present, run 'validate' for details!"
-            OutputList -> do
-                case asterix of
-                    AsterixBasic basic -> mapM_ (dumpItem []) (basCatalogue basic)
-                    AsterixExpansion expansion -> case expVariation expansion of
-                        Compound _ lst -> mapM_ (dumpItem []) (catMaybes lst)
-                        _ -> fail "unexpected expansion variation"
-                unless (isValid warnings asterix) $ do
-                    die "Validation error(s) present, run 'validate' for details!"
-            OutputSyntax astEncoder -> do
-                BS.putStr $ astEncoder asterix
-                unless (isValid warnings asterix) $ do
-                    die "Validation error(s) present, run 'validate' for details!"
-  where
-    dumpItem parent = \case
-        Spare _ -> return ()
-        Item name _title variation _doc -> do
-            let path = parent ++ [name]
-                next = \case
-                    Element size _ -> ("Element " <> T.pack (show size), return ())
-                    Group lst -> ("Group", mapM_ (dumpItem path) lst)
-                    Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
-                    Repetitive _ var -> ("Repetitive", snd $ next var)
-                    Explicit -> ("Explicit", return ())
-                    Compound Nothing lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
-                    Compound (Just _n) lst -> ("Compound(n)", mapM_ (dumpItem path) (catMaybes lst))
-                (details, act) = next variation
-            Data.Text.IO.putStrLn (showPath path <> ": " <> details)
-            act
-
-prettify :: FilePath -> Decoder -> Encoder -> IO ()
-prettify filename decoder encoder = do
-    s <- BS.readFile filename
+decodeInput :: Input -> (FilePath -> BS8.ByteString -> Either String b) -> IO b
+decodeInput input decoder = do
+    (s, filename) <- case input of
+        FileInput f -> (,) <$> BS.readFile f <*> pure f
+        StdInput -> (,) <$> BS.hGetContents IO.stdin <*> pure "<stdin>"
     case decoder filename s of
         Left e -> die e
-        Right asterix -> do
-            BS.writeFile filename $ encoder asterix
+        Right val -> return val
 
 main :: IO ()
-main = do
-    _pName <- System.Environment.getProgName
-    _pArgs <- System.Environment.getArgs
+main = execParser opts >>= \case
 
-    opt <- do
-        let ver = flag' True (long "version" <> help "Show version and exit")
-            options'
-                = (ver *> pure Nothing)
-              <|> fmap Just options
-        execParser (info (options' <**> helper) idm) >>= \case
-            Nothing -> do
-                putStrLn $ "Asterix specs tools, version: " ++ showVersion version
-                exitWith ExitSuccess
-            Just opt -> return opt
+    Validate input decoder warnings -> do
+        asterix <- decodeInput input decoder
+        case validate warnings asterix of
+            [] -> print ("ok" :: String)
+            lst -> do
+                mapM_ (Data.Text.IO.hPutStrLn stderr) lst
+                IO.hPutStrLn stderr ""
+                die "Validation error(s) present!"
 
-    case opt of
-        OptConvert convOpt -> convert convOpt
-        OptPrettify filename (decoder, encoder) -> prettify filename decoder encoder
+    Convert input decoder encoder -> do
+        asterix <- decodeInput input decoder
+        BS.putStr $ encoder asterix
+
+    Prettify filename (decoder, encoder) -> do
+        asterix <- decodeInput (FileInput filename) decoder
+        BS.writeFile filename $ encoder asterix
+
+    List input decoder -> do
+        let dumpItem parent = \case
+                Spare _ -> return ()
+                Item name _title variation _doc -> do
+                    let path = parent ++ [name]
+                        next = \case
+                            Element size _ -> ("Element " <> T.pack (show size), return ())
+                            Group lst -> ("Group", mapM_ (dumpItem path) lst)
+                            Extended _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
+                            Repetitive _ var -> ("Repetitive", snd $ next var)
+                            Explicit -> ("Explicit", return ())
+                            Compound Nothing lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
+                            Compound (Just _n) lst -> ("Compound(n)", mapM_ (dumpItem path) (catMaybes lst))
+                        (details, act) = next variation
+                    Data.Text.IO.putStrLn (showPath path <> ": " <> details)
+                    act
+
+        asterix <- decodeInput input decoder
+        case asterix of
+            AsterixBasic basic -> mapM_ (dumpItem []) (basCatalogue basic)
+            AsterixExpansion expansion -> case expVariation expansion of
+                Compound _ lst -> mapM_ (dumpItem []) (catMaybes lst)
+                _ -> fail "unexpected expansion variation"
+
+    Checksum input decoder -> do
+        asterix <- decodeInput input decoder
+        let sha1 :: BS.ByteString -> Digest SHA1
+            sha1 = hash
+        print $ sha1 $ BS8.pack $ show asterix
 

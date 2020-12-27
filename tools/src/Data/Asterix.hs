@@ -1,14 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- |
--- Module:      Data.Asterix
--- Copyright:   (c) 2019 Zoran Bošnjak
---              (c) 2019 Sloveniacontrol Ltd. (www.sloveniacontrol.si)
--- License:     GPL-3
--- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
---
 -- Common asterix data types and functions.
---
 
 module Data.Asterix
 ( module Data.Asterix

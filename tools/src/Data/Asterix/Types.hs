@@ -1,14 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 
--- |
--- Module:   	Data.Asterix.Types
--- Copyright:   (c) 2019 Zoran Bošnjak
---              (c) 2019 Sloveniacontrol Ltd. (www.sloveniacontrol.si)
--- License:     GPL-3
--- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
---
--- This module defines Asterix data types.
---
+-- Asterix data types.
 
 module Data.Asterix.Types where
 

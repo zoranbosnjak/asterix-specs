@@ -1,15 +1,7 @@
 {-# LANGUAGE LambdaCase         #-}
 {-# LANGUAGE OverloadedStrings  #-}
 
--- |
--- Module:      Data.Asterix.Syntax.Ast
--- Copyright:   (c) 2019 Zoran Bošnjak
---              (c) 2019 Sloveniacontrol Ltd. (www.sloveniacontrol.si)
--- License:     GPL-3
--- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
---
--- This module defines '.ast' syntax.
---
+-- '.ast' syntax implementation
 
 module Data.Asterix.Syntax.Ast (syntax) where
 

@@ -1,14 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
--- |
--- Module:      Data.Asterix.Syntax
--- Copyright:   (c) 2019 Zoran Bošnjak
---              (c) 2019 Sloveniacontrol Ltd. (www.sloveniacontrol.si)
--- License:     GPL-3
--- Maintainer:  Zoran Bošnjak <zoran.bosnjak@sloveniacontrol.si>
---
 -- Asterix syntaxes.
---
 
 module Data.Asterix.Syntax
 where

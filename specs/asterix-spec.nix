@@ -38,30 +38,30 @@ in with pkgs; runCommand name
     # (diff will report an error if not)
 
     echo "validate, copy original"
-    ${tools}/bin/aspecs -f ${orig} --ast --validate
+    ${tools}/bin/aspecs validate -f ${orig} --ast
     cp ${orig} $out/definition.ast
 
     echo "create fingerprint"
-    ${tools}/bin/aspecs -f ${orig} --ast --sha1 > $out/fingerprint
-    ${toolsStatic}/bin/aspecs -f ${orig} --ast --sha1 > $out/fingerprint2
+    ${tools}/bin/aspecs checksum -f ${orig} --ast > $out/fingerprint
+    ${toolsStatic}/bin/aspecs checksum -f ${orig} --ast > $out/fingerprint2
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
 
     echo "prettify to .txt"
-    ${tools}/bin/aspecs -f ${orig} --ast --ast > $out/definition.txt
-    ${toolsStatic}/bin/aspecs -f ${orig} --ast --ast > $out/definition.txt2
+    ${tools}/bin/aspecs convert -f ${orig} --ast --ast > $out/definition.txt
+    ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --ast > $out/definition.txt2
     diff $out/definition.txt $out/definition.txt2
     rm $out/definition.txt2
 
     echo "convert to .json"
-    ${tools}/bin/aspecs -f ${orig} --ast --json > $out/definition.json
-    ${toolsStatic}/bin/aspecs -f ${orig} --ast --json > $out/definition.json2
+    ${tools}/bin/aspecs convert -f ${orig} --ast --json > $out/definition.json
+    ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --json > $out/definition.json2
     diff $out/definition.json $out/definition.json2
     rm $out/definition.json2
 
     echo "convert to .xml"
-    ${tools}/bin/aspecs -f ${orig} --ast --xml > $out/definition.xml
-    ${toolsStatic}/bin/aspecs -f ${orig} --ast --xml > $out/definition.xml2
+    ${tools}/bin/aspecs convert -f ${orig} --ast --xml > $out/definition.xml
+    ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --xml > $out/definition.xml2
     diff $out/definition.xml $out/definition.xml2
     rm $out/definition.xml2
 
