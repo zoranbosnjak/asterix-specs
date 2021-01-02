@@ -461,7 +461,7 @@ items
             Vertical distance between the target and the projection of its position
             on the earth's ellipsoid, as defined by WGS84, in two's complement form.
         element 16
-            unsigned quantity 6.25 0 "ft" >= -1500 <= 150000
+            signed quantity 25 2 "ft" >= -1500 <= 150000
         remark
             Notes:
 
@@ -578,7 +578,7 @@ items
         definition
             Calculated rate of climb/descent of an aircraft in two's complement form.
         element 16
-            signed quantity 6.25 0 "ft/min"
+            signed quantity 25 2 "ft/min"
         remark
             Notes:
 
@@ -1049,7 +1049,7 @@ items
                     marking when no flight plan is available. Coding rules are
                     provided in [3] Section 3.1.2.9.1.2 and Table 3-9"
                 element 48
-                    raw
+                    string icao
             MHG "Magnetic Heading"
                 element 16
                     unsigned quantity 360 16 "deg"
@@ -1058,7 +1058,7 @@ items
                     IM ""
                         element 1
                             table
-                                0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
+                                0: Air Speed = IAS, LSB (Bit-1) = 2^-14 NM/s
                                 1: Air Speed = Mach, LSB (Bit-1) = 0.001
                     IAS ""
                         element 15
@@ -1149,10 +1149,10 @@ items
                                 signed quantity 10 0 "ft" >= -1500 <= 150000
                         LAT "Latitude in WGS.84 in Two's Complement"
                             element 24
-                                unsigned quantity 180 23 "deg" >= -90 <= 90
+                                signed quantity 180 23 "deg" >= -90 <= 90
                         LON "Longitude in WGS.84 in Two's Complement"
                             element 24
-                                unsigned quantity 180 23 "deg" >= -180 < 180
+                                signed quantity 180 23 "deg" >= -180 < 180
                         PT "Point Type"
                             element 4
                                 table
@@ -1290,12 +1290,12 @@ items
                 description
                     Barometric Vertical Rate in two's complement form
                 element 16
-                    signed quantity 6.25 0 "ft/min"
+                    signed quantity 25 2 "ft/min"
             GVR "Geometric Vertical Rate"
                 description
                     Geometric Vertical Rate in two's complement form
                 element 16
-                    signed quantity 6.25 0 "ft/min"
+                    signed quantity 25 2 "ft/min"
             RAN "Roll Angle"
                 description
                     Roll Angle in two's complement form
@@ -1303,7 +1303,7 @@ items
                     signed quantity 0.01 0 "deg" >= -180 <= 180
             TAR "Track Angle Rate"
                 group
-                    TI ""
+                    TI "Turn Indicator"
                         element 2
                             table
                                 0: Not available
@@ -1368,7 +1368,7 @@ items
                         2: Reserved
                         3: 7000 kg < medium aircraft < 136000 kg
                         4: Reserved
-                        5: 136000 kg =< heavy aircraft
+                        5: 136000 kg <= heavy aircraft
                         6: Highly manoeuvrable (5g acceleration capability) and high speed (>400 knots cruise)
                         7: Reserved
                         8: Reserved
@@ -1400,7 +1400,7 @@ items
                     This corresponds to a resolution of at least 2.4 meters.
             GAL "Geometric Altitude"
                 element 16
-                    signed quantity 6.25 0 "ft" >= -1500 <= 150000
+                    signed quantity 25 2 "ft" >= -1500 <= 150000
             PUN "Position Uncertainty"
                 group
                     spare 4
@@ -1409,14 +1409,22 @@ items
                             raw
             MB "MODE S MB DATA"
                 repetitive 8
-                    element 56
-                        bds
+                    group
+                        DATA "MB Data"
+                            element 56
+                                bds
+                        BDS1 "Comm B Data Buffer Store 1 Address"
+                            element 4
+                                raw
+                        BDS2 "Comm B Data Buffer Store 2 Address"
+                            element 4
+                                raw
             IAR "Indicated Airspeed"
                 element 16
-                    signed quantity 1 0 "kt" >= 0 <= 1100
+                    unsigned quantity 1 0 "kt" >= 0 <= 1100
             MAC "Mach Number"
                 element 16
-                    signed quantity 0.008 0 "Mach" >= 0 <= 4.096
+                    unsigned quantity 0.008 0 "Mach" >= 0 <= 4.096
             BPS "Barometric Pressure Setting (derived from Mode S BDS 4,0)"
                 group
                     spare 4
@@ -1693,7 +1701,7 @@ items
                             unsigned quantity 180 25 "deg"
             AGA "Estimated Accuracy Of Calculated Track Geometric Altitude"
                 element 8
-                    unsigned quantity 6.25 0 "ft"
+                    unsigned quantity 25 2 "ft"
             ABA "Estimated Accuracy Of Calculated Track Barometric Altitude"
                 element 8
                     unsigned quantity 1 2 "FL"
@@ -1715,7 +1723,7 @@ items
                             unsigned quantity 1 2 "m/s2"
             ARC "Estimated Accuracy Of Rate Of Climb/Descent"
                 element 8
-                    unsigned quantity 6.25 0 "ft/min"
+                    unsigned quantity 25 2 "ft/min"
         remark
             Notes:
 
@@ -1729,7 +1737,7 @@ items
                 8. Maximum value means maximum value or above.
                 9. Maximum value means maximum value or above.
 
-    510 "Track Status"
+    510 "Composed Track Number"
         definition
             Identification of a system track.
         extended 24 24

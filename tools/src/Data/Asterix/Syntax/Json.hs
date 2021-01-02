@@ -7,9 +7,10 @@
 
 module Data.Asterix.Syntax.Json (syntax) where
 
+import           Control.Monad
 import           Data.Aeson hiding (Encoding)
 import           Data.Bool
-import           Data.Aeson.Types (typeMismatch)
+import           Data.Aeson.Types (typeMismatch, Parser)
 import qualified Data.Aeson.Encode.Pretty as JsonP
 import           Data.ByteString.Lazy (toStrict)
 import qualified Data.HashMap.Strict as HMS
@@ -263,7 +264,14 @@ instance ToJSON Uap where
 instance FromJSON Uap  where
     parseJSON = withObject "Uap" $ \v -> case HMS.lookup "type" v of
         Just "uap" -> Uap <$> v .: "items"
-        Just "uaps" -> Uap <$> v .: "variations"
+        Just "uaps" -> Uaps <$> f (v .: "variations")
+          where
+            f :: Parser [Value] -> Parser [(UapName, [Maybe Name])]
+            f p = do
+                lst <- p
+                forM lst $ withObject "(,)" $ \v' -> (,)
+                    <$> v' .: "name"
+                    <*> v' .: "items"
         _ -> typeMismatch "Uap" $ String "wrong type"
 
 instance ToJSON Basic where

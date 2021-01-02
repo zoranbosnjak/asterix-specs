@@ -52,12 +52,18 @@ in with pkgs; runCommand name
     ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --ast > $out/definition.txt2
     diff $out/definition.txt $out/definition.txt2
     rm $out/definition.txt2
+    ${tools}/bin/aspecs checksum -f $out/definition.txt --ast > $out/fingerprint2
+    diff $out/fingerprint $out/fingerprint2
+    rm $out/fingerprint2
 
     echo "convert to .json"
     ${tools}/bin/aspecs convert -f ${orig} --ast --json > $out/definition.json
     ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --json > $out/definition.json2
     diff $out/definition.json $out/definition.json2
     rm $out/definition.json2
+    ${tools}/bin/aspecs checksum -f $out/definition.json --json > $out/fingerprint2
+    diff $out/fingerprint $out/fingerprint2
+    rm $out/fingerprint2
 
     echo "convert to .xml"
     ${tools}/bin/aspecs convert -f ${orig} --ast --xml > $out/definition.xml

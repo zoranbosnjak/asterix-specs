@@ -11,6 +11,7 @@ import           Control.Monad
 import qualified Data.Text as T
 import           Data.Maybe
 import           Data.List
+import           Data.Ratio
 
 import           Data.Asterix
 import           Data.Asterix.Common
@@ -117,7 +118,30 @@ reportWhen True msg = [msg]
 reportUnless :: Bool -> ValidationError -> [ValidationError]
 reportUnless = reportWhen . not
 
+getConstrainNumber :: Constrain -> Number
+getConstrainNumber = \case
+    EqualTo val -> val
+    NotEqualTo val -> val
+    GreaterThan val -> val
+    GreaterThanOrEqualTo val -> val
+    LessThan val -> val
+    LessThanOrEqualTo val -> val
+
+isNegative :: Number -> Bool
+isNegative = \case
+    NumberZ val -> val < 0
+    NumberQ val -> val < 0
+    NumberR val -> val < 0
+
+checkNonNegative :: Signed -> [Constrain] -> [ValidationError]
+checkNonNegative Signed _ = []
+checkNonNegative Unsigned lst = join $ do
+    constrain <- lst
+    [reportWhen (isNegative $ getConstrainNumber constrain)
+        "'unsigned' content, negative constrain"]
+
 instance Validate (RegisterSize, Content) where
+    validate _warnings (_n, ContentRaw) = []
     validate warnings (n, ContentTable lst) = join
         [ reportWhen (keys /= nub keys) "duplicated keys"
         , reportWhen (any T.null values) "empty value"
@@ -149,7 +173,27 @@ instance Validate (RegisterSize, Content) where
             StringAscii -> 8
             StringICAO  -> 6
             StringOctal -> 3
-    validate _ _ = []
+    validate _warnings (_, ContentQuantity sign k _fr _unit cst) = do
+        let reportProblem k' = do
+                let b = denominator k'
+                    problems = [2^x | x <- [1..10::Int]]
+                reportWhen (b `elem` problems) $
+                    "scaling factor problem "
+                    <> T.pack (show k')
+                    <> ", increase fractional bits"
+        join
+            [ case k of
+                NumberZ _ -> []
+                NumberQ k' -> reportProblem k'
+                NumberR k' -> do
+                    let epsilon = 1/(2^(20::Int))
+                    reportProblem $ approxRational k' epsilon
+            , checkNonNegative sign cst
+            ]
+    validate _warnings (_, ContentInteger sign cst) =
+        checkNonNegative sign cst
+    validate _warnings (n, ContentBds) = reportWhen (n /= 56)
+        "unexpected BDS register length"
 
 instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
     validate warnings (n, ContextFree a) = validate warnings (n,a)
