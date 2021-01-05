@@ -8,14 +8,12 @@ where
 import           Data.Asterix.Common
 import qualified Data.Asterix.Syntax.Ast
 import qualified Data.Asterix.Syntax.Json
-import qualified Data.Asterix.Syntax.Xml
 
 -- | Syntax implementations.
 syntaxes :: [(String, Syntax)]
 syntaxes =
     [ ("ast", Data.Asterix.Syntax.Ast.syntax)
     , ("json", Data.Asterix.Syntax.Json.syntax)
-    , ("xml", Data.Asterix.Syntax.Xml.syntax)
     ]
 
 availableEncoders :: [(String, String, Encoder)]

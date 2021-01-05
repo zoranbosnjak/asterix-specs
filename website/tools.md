@@ -25,7 +25,6 @@ Supported formats:
 
 * custom *.ast* format
 * standard *.json* format
-* standard *.xml* format (experimental)
 
 It is possible to extend the converter to other formats
 by implementing appropriate `encodeAsterix` and `decodeAsterix` functions.

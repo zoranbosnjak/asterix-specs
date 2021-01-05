@@ -65,12 +65,6 @@ in with pkgs; runCommand name
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
 
-    echo "convert to .xml"
-    ${tools}/bin/aspecs convert -f ${orig} --ast --xml > $out/definition.xml
-    ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --xml > $out/definition.xml2
-    diff $out/definition.xml $out/definition.xml2
-    rm $out/definition.xml2
-
     echo "render to .rst"
     ${renderer}/bin/render --script ${render_rst} render $out/definition.json > $out/definition.rst
 

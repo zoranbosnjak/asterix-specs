@@ -71,7 +71,7 @@ main = do
                     src = specs ++ "/" ++ dst
 
                 -- copy specs files in various formats
-                forM_ ["ast", "txt", "json", "xml", "rst", "pdf"] $ \fmt -> do
+                forM_ ["ast", "txt", "json", "rst", "pdf"] $ \fmt -> do
                     create [ fromFilePath (dst ++ fmt) ] $ do
                         route idRoute
                         compile $ do

@@ -19,7 +19,7 @@ This project contains:
 
 * [asterix definitions](/specs.html) in *zero overhead* custom text based [format](/syntax.html);
 * [tools](/tools.html) to validate and convert specifications between formats;
-* auto-generated specifications in *JSON* and *XML* format;
+* auto-generated specifications in *JSON* format;
 * auto-generated specifications in *HTML* and *PDF* format;
 * formal description of asterix [structure](/struct.html);
 
