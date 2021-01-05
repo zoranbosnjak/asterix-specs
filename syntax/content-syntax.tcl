@@ -22,7 +22,14 @@ set spec {
                     { loop {} CONSTRAIN }
                 }
             }
-            { line /bds}
+            { line
+                /bds
+                { or
+                    {}
+                    {/addr}
+                    {?}
+                }
+            }
         }
 }
 

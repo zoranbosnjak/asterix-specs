@@ -129,10 +129,6 @@ def renderVariation(parent, variation):
 
         tell('')
 
-    def renderBds(value):
-        tell('- BDS register')
-        tell('')
-
     def renderElement():
         n = variation['size']
         tell('- {} [``{}``]'.format(bits(n), '.'*n))
@@ -168,7 +164,17 @@ def renderVariation(parent, variation):
             elif t == 'Quantity':
                 renderQuantity(value)
             elif t == 'Bds':
-                renderBds(value)
+                if value['variation']['type'] == 'BdsWithAddress':
+                    tell('- BDS register with address')
+                elif value['variation']['type'] == 'BdsAt':
+                    addr = value['variation']['address']
+                    if addr is None:
+                        tell('- BDS register (unknown)')
+                    else:
+                        tell('- BDS register ' + addr)
+                else:
+                    raise Exception('unexpected bds type {}'.format(value['variation']['type']))
+                tell('')
             else:
                 raise Exception('unexpected value type {}'.format(t))
             return n

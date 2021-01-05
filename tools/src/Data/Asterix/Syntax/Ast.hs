@@ -57,8 +57,11 @@ dumpVariation = \case
                         tell $ sformat
                             (F.string % " quantity " % stext % " " % int % " " % F.string % stext )
                             sig (showNumber scaling) fract (show unit) cst
-                    ContentBds -> do
-                        tell "bds"
+                    ContentBds bt -> tell $ "bds" <> case bt of
+                        BdsWithAddress -> ""
+                        BdsAt mAddr -> case mAddr of
+                            Nothing -> " ?"
+                            Just (BdsAddr addr) -> sformat (" " % hex) addr
             case rule of
                 ContextFree cont -> dumpContent cont
                 Dependent name lst -> do
@@ -351,7 +354,13 @@ pContent = tryOne
         <*> L.decimal <* sc
         <*> (T.pack <$> stringLiteral)
         <*> (many (sc >> pConstrain))
-    , MC.string "bds" >> pure ContentBds
+    , ContentBds <$> tryOne
+        [ MC.string "bds" >> sc >> MC.string "?" >> pure (BdsAt Nothing)
+        , MC.string "bds" >> sc >> BdsAt <$> do
+            (a,b) <- (,) <$> hexDigitChar <*> hexDigitChar
+            return $ Just $ BdsAddr $ read $ "0x" ++ a:b:[]
+        , MC.string "bds" >> pure BdsWithAddress
+        ]
     ]
 
 -- | Parse (fixed) type.

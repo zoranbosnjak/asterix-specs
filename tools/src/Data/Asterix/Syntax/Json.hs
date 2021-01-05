@@ -14,6 +14,9 @@ import           Data.Aeson.Types (typeMismatch, Parser)
 import qualified Data.Aeson.Encode.Pretty as JsonP
 import           Data.ByteString.Lazy (toStrict)
 import qualified Data.HashMap.Strict as HMS
+import           Text.Printf (printf)
+import           Text.Read (readMaybe)
+import qualified Data.Text as T
 
 import           Data.Asterix.Types
 import           Data.Asterix.Common
@@ -117,6 +120,31 @@ instance ToJSON StringType where
 instance FromJSON StringType  where
     parseJSON s = read <$> parseJSON s
 
+instance ToJSON BdsAddr where
+    toJSON (BdsAddr val) = toJSON (printf "%2.2x" val :: String)
+
+instance FromJSON BdsAddr where
+    parseJSON = withText "BdsAddr" $ \val -> case readMaybe ("0x" ++ T.unpack val) of
+        Nothing -> fail $ "can not parse BdsAddr: " ++ show val
+        Just x -> return $ BdsAddr x
+
+instance ToJSON BdsType where
+    toJSON = \case
+        BdsWithAddress -> object
+            [ "type" .= ("BdsWithAddress" :: String)
+            ]
+        BdsAt mAddr -> object
+            [ "type" .= ("BdsAt" :: String)
+            , "address" .= mAddr
+            ]
+
+instance FromJSON BdsType where
+    parseJSON = withObject "BdsType" $ \v -> case HMS.lookup "type" v of
+        Just "BdsWithAddress" -> pure BdsWithAddress
+        Just "BdsAt" -> BdsAt
+            <$> v .: "address"
+        _ -> typeMismatch "BdsType" $ String "wrong type"
+
 instance ToJSON Content where
     toJSON = \case
         ContentRaw -> object
@@ -143,8 +171,9 @@ instance ToJSON Content where
             , "unit"    .= unit
             , "constraints" .= constraints
             ]
-        ContentBds -> object
+        ContentBds bt -> object $
             [ "type" .= ("Bds" :: String)
+            , "variation" .= bt
             ]
 
 instance FromJSON Content  where
@@ -163,7 +192,8 @@ instance FromJSON Content  where
             <*> v .: "fractionalBits"
             <*> v .: "unit"
             <*> v .: "constraints"
-        Just "Bds" -> pure ContentBds
+        Just "Bds" -> ContentBds
+            <$> v .: "variation"
         _ -> typeMismatch "Content" $ String "wrong type"
 
 instance ToJSON Variation where

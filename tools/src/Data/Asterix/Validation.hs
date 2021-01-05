@@ -192,8 +192,17 @@ instance Validate (RegisterSize, Content) where
             ]
     validate _warnings (_, ContentInteger sign cst) =
         checkNonNegative sign cst
-    validate _warnings (n, ContentBds) = reportWhen (n /= 56)
-        "unexpected BDS register length"
+    validate _warnings (n, ContentBds bt) = do
+        let expected = case bt of
+                BdsWithAddress -> 64
+                BdsAt _mAddr -> 56
+        join
+            [ reportWhen (n /= expected) "unexpected BDS register length"
+            , case bt of
+                BdsAt (Just (BdsAddr addr)) -> reportWhen (addr < 0 || addr > 255)
+                    "BDS address out of range"
+                _ -> []
+            ]
 
 instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
     validate warnings (n, ContextFree a) = validate warnings (n,a)

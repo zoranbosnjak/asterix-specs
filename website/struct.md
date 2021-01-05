@@ -78,7 +78,7 @@ Remark:
 - *Ascii*, *ICAO* or *Octal String*
 - *Signed* or *Unsigned Integer*
 - *Signed* or *Unsigned Quantity* (including units)
-- *BDS*
+- *BDS* register (with or without address)
 
 Remark:
 
@@ -132,6 +132,10 @@ data StringType
     | StringICAO
     | StringOctal
 
+data BdsType
+    = BdsWithAddress
+    | BdsAt (Maybe BdsAddr)
+
 data Content
     = ContentRaw
     | ContentTable
@@ -148,6 +152,7 @@ data Content
         Unit        -- unit
         [Constrain]
     | ContentBds
+        BdsType
 
 data Variation
     -- leaf of the structure

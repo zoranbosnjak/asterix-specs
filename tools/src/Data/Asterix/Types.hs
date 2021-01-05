@@ -68,6 +68,14 @@ data StringType
     | StringOctal
     deriving (Generic, Eq, Show, Read)
 
+newtype BdsAddr = BdsAddr Int
+    deriving (Generic, Eq, Show, Read)
+
+data BdsType
+    = BdsWithAddress        -- 64 bit value (address is encoded with data)
+    | BdsAt (Maybe BdsAddr) -- 56 bit value (address is maybe a priory known)
+    deriving (Generic, Eq, Show, Read)
+
 data Content
     = ContentRaw
     | ContentTable
@@ -84,6 +92,7 @@ data Content
         Unit        -- unit
         [Constrain]
     | ContentBds
+        BdsType
     deriving (Generic, Eq, Show)
 
 data Variation
@@ -113,7 +122,6 @@ data Basic = Basic
     , basPreamble   :: Maybe Text
     , basCatalogue  :: [Item]
     , basUap        :: Uap
-    -- TODO: encoding rules
     } deriving (Generic, Eq, Show)
 
 data Expansion = Expansion
@@ -122,7 +130,6 @@ data Expansion = Expansion
     , expEdition    :: Edition
     , expDate       :: Date
     , expVariation  :: Variation
-    -- TODO: encoding rules??
     } deriving (Generic, Eq, Show)
 
 data Asterix
