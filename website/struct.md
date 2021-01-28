@@ -94,6 +94,59 @@ Remark:
 > *unsigned integers* are well defined. One such example is a content that
 > represents *seconds*.
 
+## Validation rules
+
+For each defined item or subitem, the following validation rules are
+enforced by the [validator](/tools.html):
+
+- Tables shall not contain duplicated entries.
+- Each table entry shall contain non-empty description.
+- Number of element bits must be sufficient for specified table size,
+  the table however does not need to be completely defined.
+- First word in each table row description shall be capitalized ("Like this").
+- No dot '.' is expected at the end of row description.
+- "ascii", "icao", "octal" strings shall have (8,6,3) bits per
+  character respectively.
+- "scaling factor" and number of "fractional bits" are checked if
+  optimally defined, for example, the scaling factor of "0.5" is
+  suggested to be redefined as "1" fractional bit, to avoid potential rounding error.
+- Values with "negative constraints" shall be of "signed" type.
+- BDS values are expected to be "64" bits long if the address is included or
+  "56" bits long otherwise.
+- Defined subitems within each (sub)items shall have non-duplicated names.
+- Element size must be 'positive'.
+- All elements together within a 'Group' shall be 8-bit aligned.
+- A 'Group' shall contain more than 1 element
+  (single element group shall be simplified to just 'Element').
+- Elements sizes within 'Extended' item shall be properly bit-aligned
+  and "a-priory" known.
+- Repetitive item shall specify a "REP" factor size, which must
+  be positive and 8-bit aligned.
+- Repetitive item content shall be 8-bit aligned.
+- Compound item as a whole shall be 8-bit aligned.
+- Spare item shall have a positive bit size.
+- Short item names shall be `<= 15` character long.
+- Short item names shall only contain characters "A-Z" and digits "0-9",
+  (for example "SAC", "010", ...).
+- Item title shall be all capitalized ("Like This Example"), see the source
+  code for some short words exceptions, like "in", "and", "of"...
+- A dot at the end of item title is not expected.
+- Category number shall be within range `[0,255]`.
+- All defined items in a category shall be referenced by 'UAP'.
+- All items referenced by 'UAP' shall be defined.
+- Top level items (like subitems) shall not be duplicated.
+- Items listed in UAP shall not be duplicated.
+- In case of multiple UAPs, each UAP requires unique name
+  (example: "plot", "track" for cat001).
+- In case of non-context free item definitions, the depending item
+  shall be defined, for example, the meaning of item
+  `I062/380/IAS/IAS` depends on the current value of `I062/380/IAS/IM`.
+  The validation requires that `I062/380/IAS/IM` is also defined and
+  of a fixed size. It is also checked that number of cases does
+  not exceed what that size can represent.
+- Subitem names shall be non-repetitive, in respect to the parent item name,
+  for example: "POSITION/POSITIONX" is suggested to change to "POSITION/X".
+
 ## Asterix definition in `haskell` syntax
 
 The essence of asterix definition is recursively encoded in `Item` and it's `Variation`.
