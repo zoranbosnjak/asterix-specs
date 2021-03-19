@@ -34,7 +34,7 @@ Abstract [internal structure](/struct.html) is the same for all formats.
 ## Installation
 
 Pre-build 64-bit linux binary is available to download from
-[this link](/bin/aspecs-static).
+[this link](/bin/aspecs-static). Current version is `$toolsVersion$`.
 
 To install, download and copy the file to some location and set file mode,
 for example under UbuntuOS:
@@ -42,6 +42,7 @@ for example under UbuntuOS:
 ```bash
 sudo cp aspecs-static /usr/local/bin/aspecs
 sudo chmod 755 /usr/local/bin/aspecs
+aspecs --version
 aspecs --help
 ```
 
@@ -50,7 +51,7 @@ Install or upgrade procedure for [nix](https://nixos.org/) users:
 ```bash
 cd tools
 nix-build
-nix-env -i $(readlink result)
+nix-env -i $$(readlink result)
 aspecs --help
 ```
 

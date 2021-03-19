@@ -46,6 +46,7 @@ main = do
     Just (manifest :: [Cat]) <- decodeFileStrict (specs <> "/" <> "manifest.json")
     syntax <- getEnvVariableExpr "SYNTAX"
     syntaxImages <- listDirectory $ syntax++"/syntax/png"
+    toolsVersion <- getEnvVariableExpr "TOOLS_VERSION"
 
     hakyllWith config $ do
         match "css/*" $ do
@@ -126,6 +127,22 @@ main = do
                 load "syntax.md"
                 >>= renderPandoc
                 >>= (\(Item _a b) -> pure (Item "syntax.html" b))
+                >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                >>= relativizeUrls
+
+        create ["tools.md"] $ do
+            let ctx = defaultContext
+                    <> constField "toolsVersion" toolsVersion
+            compile $ do
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/tools.md" ctx
+
+        create ["tools.html"] $ do
+            route idRoute
+            compile $ do
+                load "tools.md"
+                >>= renderPandoc
+                >>= (\(Item _a b) -> pure (Item "tools.html" b))
                 >>= loadAndApplyTemplate "templates/default.html" defaultContext
                 >>= relativizeUrls
 

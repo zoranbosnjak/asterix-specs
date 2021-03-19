@@ -29,6 +29,7 @@ let
     export SHORT_GITREV=${shortGitrev}
     export SPECS=${specs}
     export SYNTAX=${syntax}
+    export TOOLS_VERSION=${toolsStatic.version}
   '';
 
   env = pkgs.stdenv.mkDerivation rec {
