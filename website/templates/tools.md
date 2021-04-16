@@ -33,26 +33,36 @@ Abstract [internal structure](/struct.html) is the same for all formats.
 
 ## Installation
 
+To install or upgrade asterix specifications tools, use one of the
+following methods.
+
+### Static binary installation
+
 Pre-build 64-bit linux binary is available to download from
 [this link](/bin/aspecs-static). Current version is `$toolsVersion$`.
 
-To install, download and copy the file to some location and set file mode,
-for example under UbuntuOS:
+Download and copy the file to some location and set
+file mode, for example under UbuntuOS:
 
 ```bash
 sudo cp aspecs-static /usr/local/bin/aspecs
 sudo chmod 755 /usr/local/bin/aspecs
+
+# verify installation
 aspecs --version
-aspecs --help
 ```
 
-Install or upgrade procedure for [nix](https://nixos.org/) users:
+### Installation via `nix` package manager
+
+With active [nix](https://nixos.org/) environment:
 
 ```bash
 cd tools
 nix-build
 nix-env -i $$(readlink result)
-aspecs --help
+
+# verify installation
+aspecs --version
 ```
 
 ## Usage
