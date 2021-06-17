@@ -36,9 +36,13 @@ let
       then null
       else builtins.head m;
 
-  catsUnder = catnum: values (map (findAst "cat") (listing catnum));
+  sortEditions = lst:
+    let compareEditions = a: b: builtins.compareVersions a b == 1;
+    in builtins.sort compareEditions lst;
 
-  refsUnder = catnum: values (map (findAst "ref") (listing catnum));
+  catsUnder = catnum: sortEditions (values (map (findAst "cat") (listing catnum)));
+
+  refsUnder = catnum: sortEditions (values (map (findAst "ref") (listing catnum)));
 
   manifest =
     let
