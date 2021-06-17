@@ -1,0 +1,3881 @@
+{
+    "catalogue": [
+        {
+            "definition": "Identification of the radar station from which the data is received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "spare": false,
+            "title": "Data Source Identifier",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SAC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Area Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Identification Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Type and properties of the target report.\n",
+            "description": null,
+            "name": "020",
+            "remark": "Notes:\n\n    1. For Mode S aircraft, the SPI information is also contained in I048/230.\n    2. To bits 3/2 (FOE/FRI): IFF interrogators supporting a three level\n       classification of the processing of the Mode 4 interrogation result\n       shall encode the detailed response information in data item M4E of\n       the Reserved Expansion Field of category 048. In this case the value\n       for FOE/FRI in I048/020 shall be set to “00”.\n       However, even those interrogators shall use I048/020 to encode the information “No reply”.\n    3. To bit 6 (XPP): This bit shall always be set when the X-pulse has\n       been extracted, independent from the Mode it was extracted with.\n    4. To bit 7 (ERR): This bit set to “1” indicates that the range of the\n       target is beyond the maximum range in data item I048/040.In this\n       case – and this case only - the ERR Data Item in the Reserved\n       Expansion Field shall provide the range value of the Measured\n       Position in Polar Coordinates.\n",
+            "spare": false,
+            "title": "Target Report Descriptor",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TYP",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No detection"
+                                        ],
+                                        [
+                                            1,
+                                            "Single PSR detection"
+                                        ],
+                                        [
+                                            2,
+                                            "Single SSR detection"
+                                        ],
+                                        [
+                                            3,
+                                            "SSR + PSR detection"
+                                        ],
+                                        [
+                                            4,
+                                            "Single ModeS All-Call"
+                                        ],
+                                        [
+                                            5,
+                                            "Single ModeS Roll-Call"
+                                        ],
+                                        [
+                                            6,
+                                            "ModeS All-Call + PSR"
+                                        ],
+                                        [
+                                            7,
+                                            "ModeS Roll-Call +PSR"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 3,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Actual target report"
+                                        ],
+                                        [
+                                            1,
+                                            "Simulated target report"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RDP",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Report from RDP Chain 1"
+                                        ],
+                                        [
+                                            1,
+                                            "Report from RDP Chain 2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SPI",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Absence of SPI"
+                                        ],
+                                        [
+                                            1,
+                                            "Special Position Identification"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RAB",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Report from aircraft transponder"
+                                        ],
+                                        [
+                                            1,
+                                            "Report from field monitor (fixed transponder)"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TST",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Real target report"
+                                        ],
+                                        [
+                                            1,
+                                            "Test target report"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "ERR",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No Extended Range"
+                                        ],
+                                        [
+                                            1,
+                                            "Extended Range present"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "XPP",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No X-Pulse present"
+                                        ],
+                                        [
+                                            1,
+                                            "X-Pulse present"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "ME",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No military emergency"
+                                        ],
+                                        [
+                                            1,
+                                            "Military emergency"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MI",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No military identification"
+                                        ],
+                                        [
+                                            1,
+                                            "Military identification"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "FOEFRI",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No Mode 4 interrogation"
+                                        ],
+                                        [
+                                            1,
+                                            "Friendly target"
+                                        ],
+                                        [
+                                            2,
+                                            "Unknown target"
+                                        ],
+                                        [
+                                            3,
+                                            "No reply"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Warning/error conditions detected by a radar station for the target report\ninvolved. Target Classification information for the target involved.\n",
+            "description": null,
+            "name": "030",
+            "remark": "Notes:\n\n    1. It has to be stressed that a series of one or more codes can\n       be reported per target report.\n    2. Data conveyed in this item are of secondary importance, and\n       can generally also be derived from the processing of mandatory items.\n    3. Definitions can be found in SUR.ET1.ST03.1000-STD-01-01 Radar\n       Sensor Performance Analysis.\n    4. Values 25 to 30 have been defined to comply with the updated\n       European Mode S Specification (EMS) and to provide the possibility\n       to report the following information:\n\n           - Code 25: the maximum number of permitted re-interrogations to\n             acquire the surveillance information has been reached;\n           - Code 26: the maximum number of permitted re-interrogations to\n             extract BDS Registers has been reached;\n           - Code 27: inconsistency detected between the contents of the\n             message and the BDS register overlayed;\n           - Code 28: a BDS swap has been detected and the respective information\n             has been discarded;\n           - Code 29: the track has been updated while being in the zenithal\n             gap (also referred to as “Cone of Silence”);\n           - Code 30: the radar had lost track of an aircraft and subsequently\n             re-acquired it.\n",
+            "spare": false,
+            "title": "Warning/Error Conditions and Target Classification",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "CODE",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Not defined; never used"
+                                        ],
+                                        [
+                                            1,
+                                            "Multipath Reply (Reflection)"
+                                        ],
+                                        [
+                                            2,
+                                            "Reply due to sidelobe interrogation/reception"
+                                        ],
+                                        [
+                                            3,
+                                            "Split plot"
+                                        ],
+                                        [
+                                            4,
+                                            "Second time around reply"
+                                        ],
+                                        [
+                                            5,
+                                            "Angel"
+                                        ],
+                                        [
+                                            6,
+                                            "Slow moving target correlated with road infrastructure (terrestrial vehicle)"
+                                        ],
+                                        [
+                                            7,
+                                            "Fixed PSR plot"
+                                        ],
+                                        [
+                                            8,
+                                            "Slow PSR target"
+                                        ],
+                                        [
+                                            9,
+                                            "Low quality PSR plot"
+                                        ],
+                                        [
+                                            10,
+                                            "Phantom SSR plot"
+                                        ],
+                                        [
+                                            11,
+                                            "Non-Matching Mode-3/A Code"
+                                        ],
+                                        [
+                                            12,
+                                            "Mode C code / Mode S altitude code abnormal value compared to the track"
+                                        ],
+                                        [
+                                            13,
+                                            "Target in Clutter Area"
+                                        ],
+                                        [
+                                            14,
+                                            "Maximum Doppler Response in Zero Filter"
+                                        ],
+                                        [
+                                            15,
+                                            "Transponder anomaly detected"
+                                        ],
+                                        [
+                                            16,
+                                            "Duplicated or Illegal Mode S Aircraft Address"
+                                        ],
+                                        [
+                                            17,
+                                            "Mode S error correction applied"
+                                        ],
+                                        [
+                                            18,
+                                            "Undecodable Mode C code / Mode S altitude code"
+                                        ],
+                                        [
+                                            19,
+                                            "Birds"
+                                        ],
+                                        [
+                                            20,
+                                            "Flock of Birds"
+                                        ],
+                                        [
+                                            21,
+                                            "Mode-1 was present in original reply"
+                                        ],
+                                        [
+                                            22,
+                                            "Mode-2 was present in original reply"
+                                        ],
+                                        [
+                                            23,
+                                            "Plot potentially caused by Wind Turbine"
+                                        ],
+                                        [
+                                            24,
+                                            "Helicopter"
+                                        ],
+                                        [
+                                            25,
+                                            "Maximum number of re-interrogations reached (surveillance information)"
+                                        ],
+                                        [
+                                            26,
+                                            "Maximum number of re-interrogations reached (BDS Extractions)"
+                                        ],
+                                        [
+                                            27,
+                                            "BDS Overlay Incoherence"
+                                        ],
+                                        [
+                                            28,
+                                            "Potential BDS Swap Detected"
+                                        ],
+                                        [
+                                            29,
+                                            "Track Update in the Zenithal Gap"
+                                        ],
+                                        [
+                                            30,
+                                            "Mode S Track re-acquired"
+                                        ],
+                                        [
+                                            31,
+                                            "Duplicated Mode 5 Pair NO/PIN detected"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 7,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Measured position of an aircraft in local polar co-ordinates.\n",
+            "description": null,
+            "name": "040",
+            "remark": "Notes:\n\n    1. In case of no detection, the extrapolated position expressed in slant\n       polar co-ordinates may be sent, except for a track cancellation message.\n       No detection is signalled by the TYP field set to zero in I048/020\n       Target Report Descriptor.\n    2. This item represents the measured target position of the plot, even\n       if associated with a track, for the present antenna scan. It is\n       expressed in polar co-ordinates in the local reference system,\n       centred on the radar station.\n    3. In case of combined detection by a PSR and an SSR, then the SSR\n       position is sent.\n    4. For targets having a range beyond the maximum range the data item\n       “Extended Range Report” has been added to the Reserved Expansion\n       Field of category 048. The presence of this data item is indicated\n       by the ERR bit set to one in data item I048/020, first extension.\n       The ERR data item shall only be sent if the value of RHO is equal\n       to or greater than 256NM.\n       Please note that if this data item is used, the Encoding Rule to\n       data item I048/040 still applies, meaning that the extra item in\n       the Reserved Expansion Field shall be transmitted in addition to\n       data item I048/040.\n       If the Extended Range Report item in the Reserved Expansion Field\n       is used, it is recommended to set the value of RHO in data item\n       I048/040 to its maximum, meaning bits 32/17 all set to 1.\n",
+            "spare": false,
+            "title": "Measured Position in Polar Co-ordinates",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RHO",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": "<",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 256
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 8,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "THETA",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 16,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Calculated position of an aircraft in Cartesian co-ordinates.\n",
+            "description": null,
+            "name": "042",
+            "remark": null,
+            "spare": false,
+            "title": "Calculated Position in Cartesian Co-ordinates",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "X",
+                        "remark": null,
+                        "spare": false,
+                        "title": "X-Component",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": ">=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": -256
+                                            }
+                                        },
+                                        {
+                                            "type": "<=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 256
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "Y",
+                        "remark": null,
+                        "spare": false,
+                        "title": "X-Component",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": ">=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": -256
+                                            }
+                                        },
+                                        {
+                                            "type": "<=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 256
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Reply to Mode-2 interrogation.\n",
+            "description": null,
+            "name": "050",
+            "remark": "Notes:\n\n    - Bit 15 has no meaning in the case of a smoothed Mode-2 and is set\n      to 0 for a calculated track.\n",
+            "spare": false,
+            "title": "Mode-2 Code in Octal Representation",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "V",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Code validated"
+                                        ],
+                                        [
+                                            1,
+                                            "Code not validated"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "G",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Default"
+                                        ],
+                                        [
+                                            1,
+                                            "Garbled code"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "L",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Mode-2 code as derived from the reply of the transponder"
+                                        ],
+                                        [
+                                            1,
+                                            "Smoothed Mode-2 code as provided by a local tracker"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 1,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MODE2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Mode-2 Code in Octal Representation",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "String",
+                                    "variation": "StringOctal"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 12,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Reply to Mode-1 interrogation.\n",
+            "description": null,
+            "name": "055",
+            "remark": "Notes:\n\n    1. Bit 7 has no meaning in the case of a smoothed Mode-1 and is set\n       to 0 for a calculated track.\n    2. The values of the bits for V, G, L, A4, A2, A1, B2 and B1 shall be\n       identical to the values of the corresponding bits in subfield #5\n       of data item “MD5 – Mode 5 Reports” and in subfield #5 of data\n       item “MD5 – Mode 5 Reports, New Format” in the Reserved Expansion Field.\n",
+            "spare": false,
+            "title": "Mode-1 Code in Octal Representation",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "V",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Code validated"
+                                        ],
+                                        [
+                                            1,
+                                            "Code not validated"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "G",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Default"
+                                        ],
+                                        [
+                                            1,
+                                            "Garbled code"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "L",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Mode-1 code as derived from the reply of the transponder"
+                                        ],
+                                        [
+                                            1,
+                                            "Smoothed Mode-1 code as provided by a local tracker"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MODE1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Mode-1 Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 5,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Confidence level for each bit of a Mode-2 reply as provided by a monopulse SSR station.\n",
+            "description": null,
+            "name": "060",
+            "remark": null,
+            "spare": false,
+            "title": "Mode-2 Code Confidence Indicator",
+            "variation": {
+                "items": [
+                    {
+                        "length": 4,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Confidence level for each bit of a Mode-1 reply as provided by a monopulse SSR station.\n",
+            "description": null,
+            "name": "065",
+            "remark": null,
+            "spare": false,
+            "title": "Mode-1 Code Confidence Indicator",
+            "variation": {
+                "items": [
+                    {
+                        "length": 3,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Mode-3/A code converted into octal representation.\n",
+            "description": null,
+            "name": "070",
+            "remark": "Notes:\n\n    1. Bit 15 has no meaning in the case of a smoothed Mode-3/A code and\n       is set to 0 for a calculated track. For Mode S, it is set to one\n       when an error correction has been attempted.\n    2. For Mode S, bit 16 is normally set to zero, but can exceptionally\n       be set to one to indicate a non-validated Mode-3/A code (e.g. alert\n       condition detected, but new Mode-3/A code not successfully extracted).\n",
+            "spare": false,
+            "title": "Mode-3/A Code in Octal Representation",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "V",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Code validated"
+                                        ],
+                                        [
+                                            1,
+                                            "Code not validated"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "G",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Default"
+                                        ],
+                                        [
+                                            1,
+                                            "Garbled code"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "L",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Mode-3/A code derived from the reply of the transponder"
+                                        ],
+                                        [
+                                            1,
+                                            "Mode-3/A code not extracted during the last scan"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 1,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MODE3A",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Mode-3/A Reply in Octal Representation",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "String",
+                                    "variation": "StringOctal"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 12,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Confidence level for each bit of a Mode-3/A reply as provided by a monopulse SSR station.\n",
+            "description": null,
+            "name": "080",
+            "remark": null,
+            "spare": false,
+            "title": "Mode-3/A Code Confidence Indicator",
+            "variation": {
+                "items": [
+                    {
+                        "length": 4,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Flight Level converted into binary representation.\n",
+            "description": null,
+            "name": "090",
+            "remark": "Notes:\n\n    1. When Mode C code / Mode S altitude code is present but not decodable,\n       the “Undecodable Mode C code / Mode S altitude code” Warning/Error\n       should be sent in I048/030.\n    2. When local tracking is applied and the received Mode C code / Mode S\n       altitude code corresponds to an abnormal value (the variation with\n       the previous plot is estimated too important by the tracker),\n       the “Mode C code / Mode S altitude code abnormal value compared\n       to the track“ Warning/Error should be sent in I048/030.\n    3. The value shall be within the range described by ICAO Annex 10\n    4. For Mode S, bit 15 (G) is set to one when an error correction has\n       been attempted.\n",
+            "spare": false,
+            "title": "Flight Level in Binary Representation",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "V",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Code validated"
+                                        ],
+                                        [
+                                            1,
+                                            "Code not validated"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "G",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Default"
+                                        ],
+                                        [
+                                            1,
+                                            "Garbled code"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "FL",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 2,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "FL"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 14,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Mode-C height in Gray notation as received from the transponder together\nwith the confidence level for each reply bit as provided by a MSSR/Mode S station.\n",
+            "description": null,
+            "name": "100",
+            "remark": "Notes:\n\n    1. For Mode S, D1 is also designated as Q, and is used to denote either\n       25ft or 100ft reporting.\n    2. For Mode S, bit-31 (G) is set when an error correction has been attempted.\n",
+            "spare": false,
+            "title": "Mode-C Code and Code Confidence Indicator",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "V",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Code validated"
+                                        ],
+                                        [
+                                            1,
+                                            "Code not validated"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "G",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Default"
+                                        ],
+                                        [
+                                            1,
+                                            "Garbled code"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 2,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MODEC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Mode-C Reply in Gray Notation",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 12,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 4,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QC4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse C4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse C4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QA4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse A4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse A4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D1"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D1"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D2"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D2"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QB4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse B4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse B4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "QD4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "High quality pulse D4"
+                                        ],
+                                        [
+                                            1,
+                                            "Low quality pulse D4"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Height of a target as measured by a 3D radar. The height shall use mean\nsea level as the zero reference level.\n",
+            "description": null,
+            "name": "110",
+            "remark": null,
+            "spare": false,
+            "title": "Height Measured by a 3D Radar",
+            "variation": {
+                "items": [
+                    {
+                        "length": 2,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "3DH",
+                        "remark": null,
+                        "spare": false,
+                        "title": "3D Height, in Binary Notation. Negative Values Are Expressed in Two's Complement",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 0,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 25
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "ft"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 14,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Information on the Doppler Speed of the target report.\n",
+            "description": null,
+            "name": "120",
+            "remark": null,
+            "spare": false,
+            "title": "Radial Doppler Speed",
+            "variation": {
+                "fspec": null,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "CAL",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Calculated Doppler Speed",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "D",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Doppler speed is valid"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Doppler speed is doubtful"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 5,
+                                    "spare": true
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "CAL",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Calculated Doppler Speed, Coded in Two's Complement",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "constraints": [],
+                                                "fractionalBits": 0,
+                                                "scaling": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "m/s"
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 10,
+                                        "type": "Element"
+                                    }
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RDS",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Raw Doppler Speed",
+                        "variation": {
+                            "rep": 8,
+                            "type": "Repetitive",
+                            "variation": {
+                                "items": [
+                                    {
+                                        "definition": null,
+                                        "description": null,
+                                        "name": "DOP",
+                                        "remark": null,
+                                        "spare": false,
+                                        "title": "Doppler Speed",
+                                        "variation": {
+                                            "content": {
+                                                "rule": {
+                                                    "constraints": [],
+                                                    "fractionalBits": 0,
+                                                    "scaling": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "signed": false,
+                                                    "type": "Quantity",
+                                                    "unit": "m/s"
+                                                },
+                                                "type": "ContextFree"
+                                            },
+                                            "size": 16,
+                                            "type": "Element"
+                                        }
+                                    },
+                                    {
+                                        "definition": null,
+                                        "description": null,
+                                        "name": "AMB",
+                                        "remark": null,
+                                        "spare": false,
+                                        "title": "Ambiguity Range",
+                                        "variation": {
+                                            "content": {
+                                                "rule": {
+                                                    "constraints": [],
+                                                    "fractionalBits": 0,
+                                                    "scaling": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "signed": false,
+                                                    "type": "Quantity",
+                                                    "unit": "m/s"
+                                                },
+                                                "type": "ContextFree"
+                                            },
+                                            "size": 16,
+                                            "type": "Element"
+                                        }
+                                    },
+                                    {
+                                        "definition": null,
+                                        "description": null,
+                                        "name": "FRQ",
+                                        "remark": null,
+                                        "spare": false,
+                                        "title": "Transmitter Frequency",
+                                        "variation": {
+                                            "content": {
+                                                "rule": {
+                                                    "constraints": [],
+                                                    "fractionalBits": 0,
+                                                    "scaling": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "signed": false,
+                                                    "type": "Quantity",
+                                                    "unit": "Mhz"
+                                                },
+                                                "type": "ContextFree"
+                                            },
+                                            "size": 16,
+                                            "type": "Element"
+                                        }
+                                    }
+                                ],
+                                "type": "Group"
+                            }
+                        }
+                    }
+                ],
+                "type": "Compound"
+            }
+        },
+        {
+            "definition": "Additional information on the quality of the target report.\n",
+            "description": null,
+            "name": "130",
+            "remark": "Notes:\n\n    1. The total range covered is therefore from 0 to 11.21 dg.\n    2. Negative values are coded in two's complement form.\n    3. The total range covered is therefore from 0 to 11.21 dg.\n    4. Negative values are coded in two's complement form.\n    5. Negative values are coded in two's complement form.\n    6. The covered range difference is +/- 0.5 NM.\n    7. Sending the maximum value means that the difference in range\n       is equal or greater than the maximum value.\n    8. Negative values are coded in two's complement form.\n    9. The covered azimuth difference is +/-360/2 7 = +/- 2.8125 dg.\n    10. Sending the maximum value means that the difference in range\n        is equal or greater than the maximum value.\n",
+            "spare": false,
+            "title": "Radar Plot Characteristics",
+            "variation": {
+                "fspec": null,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": "SSR plot runlength, expressed as a positive binary value.\n",
+                        "name": "SRL",
+                        "remark": null,
+                        "spare": false,
+                        "title": "SSR Plot Runlength",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 13,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "dg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": "Number of Received Replies for (M)SSR\n",
+                        "name": "SRR",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Number of Received Replies for (M)SSR",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "signed": false,
+                                    "type": "Integer"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": "Amplitude of (M)SSR Reply\n",
+                        "name": "SAM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Amplitude of (M)SSR Reply",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 0,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "dBm"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": "Primary Plot Runlength, expressed as positive binary value\n",
+                        "name": "PRL",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Primary Plot Runlength",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 13,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "dg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": "Amplitude of Primary Plot\n",
+                        "name": "PAM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Amplitude of Primary Plot",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 0,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "dBm"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": "Range (PSR-SSR)\n",
+                        "name": "RPD",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Difference in Range Between PSR and SSR Plot",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 8,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": "Azimuth (PSR-SSR)\n",
+                        "name": "APD",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Difference in Azimuth Between PSR and SSR Plot",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 14,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "dg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Compound"
+            }
+        },
+        {
+            "definition": "Absolute time stamping expressed as Co-ordinated Universal Time (UTC).\n",
+            "description": null,
+            "name": "140",
+            "remark": "Notes:\n\n    1. The time of day value is reset to 0 each day at midnight.\n    2. Every radar station using ASTERIX should be equipped with at least\n       one synchronised time source\n",
+            "spare": false,
+            "title": "Time of Day",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [
+                            {
+                                "type": "<",
+                                "value": {
+                                    "type": "Integer",
+                                    "value": 86400
+                                }
+                            }
+                        ],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 24,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "An integer value representing a unique reference to a track record within\na particular track file.\n",
+            "description": null,
+            "name": "161",
+            "remark": null,
+            "spare": false,
+            "title": "Track Number",
+            "variation": {
+                "items": [
+                    {
+                        "length": 4,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TRN",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Track Number",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 12,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Status of monoradar track (PSR and/or SSR updated).\n",
+            "description": null,
+            "name": "170",
+            "remark": null,
+            "spare": false,
+            "title": "Track Status",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "CNF",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Confirmed Vs. Tentative Track",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Confirmed Track"
+                                        ],
+                                        [
+                                            1,
+                                            "Tentative Track"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RAD",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Type of Sensor(s) Maintaining Track",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Combined Track"
+                                        ],
+                                        [
+                                            1,
+                                            "PSR Track"
+                                        ],
+                                        [
+                                            2,
+                                            "SSR/Mode S Track"
+                                        ],
+                                        [
+                                            3,
+                                            "Invalid"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "DOU",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Signals Level of Confidence in Plot to Track Association Process",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Normal confidence"
+                                        ],
+                                        [
+                                            1,
+                                            "Low confidence in plot to track association"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MAH",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Manoeuvre Detection in Horizontal Sense",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No horizontal man.sensed"
+                                        ],
+                                        [
+                                            1,
+                                            "Horizontal man. sensed"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "CDM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Climbing / Descending Mode",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Maintaining"
+                                        ],
+                                        [
+                                            1,
+                                            "Climbing"
+                                        ],
+                                        [
+                                            2,
+                                            "Descending"
+                                        ],
+                                        [
+                                            3,
+                                            "Unknown"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TRE",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Signal for End_of_Track",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Track still alive"
+                                        ],
+                                        [
+                                            1,
+                                            "End of track lifetime(last report for this track)"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "GHO",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Ghost Vs. True Target",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "True target track"
+                                        ],
+                                        [
+                                            1,
+                                            "Ghost target track"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SUP",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Track Maintained with Track Information from Neighbouring Node B on the Cluster, or Network",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No"
+                                        ],
+                                        [
+                                            1,
+                                            "Yes"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TCC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Type of Plot Coordinate Transformation Mechanism:",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Tracking performed in so-called 'Radar Plane', i.e. neither slant range correction nor stereographical projection was applied"
+                                        ],
+                                        [
+                                            1,
+                                            "Slant range correction and a suitable projection technique are used to track in a 2D.reference plane, tangential to the earth model at the Radar Site co-ordinates"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 3,
+                        "spare": true
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Calculated track velocity expressed in polar co-ordinates.\n",
+            "description": null,
+            "name": "200",
+            "remark": "Notes:\n\n    - The calculated heading is related to the geographical North at the\n      aircraft position.\n",
+            "spare": false,
+            "title": "Calculated Track Velocity in Polar Co-ordinates",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "GSP",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Calculated Groundspeed",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 14,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM/s"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "HDG",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Calculated Heading",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 16,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Track quality in the form of a vector of standard deviations.\n",
+            "description": null,
+            "name": "210",
+            "remark": "Notes:\n\n    1. The standard deviation is per definition a positive value, hence\n       the range covered is : 0<= Sigma(X)<2 NM\n    2. The standard deviation is per definition a positive value, hence\n       the range covered is : 0<= Sigma(Y)<2 NM\n    3. The standard deviation is per definition a positive value, hence\n       the range covered is: 0<=Sigma (V)<56.25 Kt\n    4. The standard deviation is per definition a positive value; hence\n       the range covered is: 0 <= sigma (H) < 22.5 degrees.\n",
+            "spare": false,
+            "title": "Track Quality",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIGX",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Sigma (X)) Standard Deviation on the Horizontal Axis of the Local Grid System",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIGY",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Sigma (Y)) Standard Deviation on the Vertical Axis of the Local Grid System",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIGV",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Sigma (V)) Standard Deviation on the Groundspeed Within the Local Grid System",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 14,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM/s"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIGH",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Sigma (H)) Standard Deviation on the Heading Within the Local Grid System",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 12,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Aircraft address (24-bits Mode S address) assigned uniquely to each aircraft.\n",
+            "description": null,
+            "name": "220",
+            "remark": null,
+            "spare": false,
+            "title": "Aircraft Address",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Raw"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 24,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Communications capability of the transponder, capability of the on-board\nACAS equipment and flight status.\n",
+            "description": null,
+            "name": "230",
+            "remark": null,
+            "spare": false,
+            "title": "Communications/ACAS Capability and Flight Status",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "COM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Communications Capability of the Transponder",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No communications capability (surveillance only)"
+                                        ],
+                                        [
+                                            1,
+                                            "Comm. A and Comm. B capability"
+                                        ],
+                                        [
+                                            2,
+                                            "Comm. A, Comm. B and Uplink ELM"
+                                        ],
+                                        [
+                                            3,
+                                            "Comm. A, Comm. B, Uplink ELM and Downlink ELM"
+                                        ],
+                                        [
+                                            4,
+                                            "Level 5 Transponder capability"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 3,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "STAT",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Flight Status",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No alert, no SPI, aircraft airborne"
+                                        ],
+                                        [
+                                            1,
+                                            "No alert, no SPI, aircraft on ground"
+                                        ],
+                                        [
+                                            2,
+                                            "Alert, no SPI, aircraft airborne"
+                                        ],
+                                        [
+                                            3,
+                                            "Alert, no SPI, aircraft on ground"
+                                        ],
+                                        [
+                                            4,
+                                            "Alert, SPI, aircraft airborne or on ground"
+                                        ],
+                                        [
+                                            5,
+                                            "No alert, SPI, aircraft airborne or on ground"
+                                        ],
+                                        [
+                                            7,
+                                            "Unknown"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 3,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SI",
+                        "remark": null,
+                        "spare": false,
+                        "title": "SI/II Transponder Capability",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "SI-Code Capable"
+                                        ],
+                                        [
+                                            1,
+                                            "II-Code Capable"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 1,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MSSC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Mode-S Specific Service Capability",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No"
+                                        ],
+                                        [
+                                            1,
+                                            "Yes"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "ARC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Altitude Reporting Capability",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "100 ft resolution"
+                                        ],
+                                        [
+                                            1,
+                                            "25 ft resolution"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "AIC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Aircraft Identification Capability",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No"
+                                        ],
+                                        [
+                                            1,
+                                            "Yes"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "B1A",
+                        "remark": null,
+                        "spare": false,
+                        "title": "BDS 1,0 Bit 16",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "B1B",
+                        "remark": null,
+                        "spare": false,
+                        "title": "BDS 1,0 Bits 37/40",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 4,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Aircraft identification (in 8 characters) obtained from an aircraft\nequipped with a Mode S transponder.\n",
+            "description": null,
+            "name": "240",
+            "remark": "Notes:\n\n    - This data item contains the flight identification as available in\n      the respective Mode S transponder registers.\n",
+            "spare": false,
+            "title": "Aircraft Identification",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "String",
+                        "variation": "StringICAO"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 48,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Mode S Comm B data as extracted from the aircraft transponder.\n",
+            "description": null,
+            "name": "250",
+            "remark": "Notes:\n\n    1. For the transmission of BDS20, item 240 is used.\n    2. For the transmission of BDS30, item 260 is used.\n    3. In case of data extracted via Comm-B broadcast, all bits of fields\n       BDS1 and BDS2 are set to 0; in case of data extracted via GICB\n       requests, the fields BDS1 and BDS2 correspond to the GICB register number.\n",
+            "spare": false,
+            "title": "Mode S MB Data",
+            "variation": {
+                "rep": 8,
+                "type": "Repetitive",
+                "variation": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MBDATA",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Mode S Comm B Message Data",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 56,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "BDS1",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Comm B Data Buffer Store 1 Address",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 4,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "BDS2",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Comm B Data Buffer Store 2 Address",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 4,
+                                "type": "Element"
+                            }
+                        }
+                    ],
+                    "type": "Group"
+                }
+            }
+        },
+        {
+            "definition": "Currently active Resolution Advisory (RA), if any, generated by the ACAS\nassociated with the transponder transmitting the report and threat identity data.\n",
+            "description": null,
+            "name": "260",
+            "remark": "Notes:\n\n    - Refer to ICAO Draft SARPs for ACAS for detailed explanations.\n",
+            "spare": false,
+            "title": "ACAS Resolution Advisory Report",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Raw"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 56,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "spare": false,
+            "title": "Reserved Expansion Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "spare": false,
+            "title": "Special Purpose Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        }
+    ],
+    "date": {
+        "day": 18,
+        "month": 6,
+        "year": 2020
+    },
+    "edition": {
+        "major": 1,
+        "minor": 27
+    },
+    "number": 48,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Monoradar Target Reports",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "140",
+            "020",
+            "040",
+            "070",
+            "090",
+            "130",
+            "220",
+            "240",
+            "250",
+            "161",
+            "042",
+            "200",
+            "170",
+            "210",
+            "030",
+            "080",
+            "100",
+            "110",
+            "120",
+            "230",
+            "260",
+            "055",
+            "050",
+            "065",
+            "060",
+            "SP",
+            "RE"
+        ],
+        "type": "uap"
+    }
+}

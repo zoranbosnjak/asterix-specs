@@ -1,0 +1,593 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the messages\nat the receiver side by further defining the type of transaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": null,
+            "spare": false,
+            "title": "Message Type",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Table",
+                        "values": [
+                            [
+                                2,
+                                "Cartesian vector"
+                            ],
+                            [
+                                253,
+                                "Intermediate-update-step message"
+                            ],
+                            [
+                                254,
+                                "Start-of-picture message"
+                            ],
+                            [
+                                255,
+                                "End-of-picture message"
+                            ]
+                        ]
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Identification of the radar station from which the data are received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    The defined SACs are on the EUROCONTROL ASTERIX website\n    (www.eurocontrol.int/asterix)\n",
+            "spare": false,
+            "title": "Data Source Identifier",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SAC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Area Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Identification Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "This Data Item defines the orientation of the following sequence\nof Cartesian vectors, their intensity level and the relevant\ncoordinate system.\n",
+            "description": null,
+            "name": "020",
+            "remark": "For polar vectors \"S-bits\" are meaningless and shall be set to zero.\n",
+            "spare": false,
+            "title": "Vector Qualifier",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "ORG",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Local Coordinates"
+                                        ],
+                                        [
+                                            1,
+                                            "System Coordinates"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "I",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Intensity Level",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "signed": false,
+                                    "type": "Integer"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 3,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "S",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Shading Orientation with Respect to North",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "0°"
+                                        ],
+                                        [
+                                            1,
+                                            "22.5°"
+                                        ],
+                                        [
+                                            2,
+                                            "45°"
+                                        ],
+                                        [
+                                            3,
+                                            "67.5°"
+                                        ],
+                                        [
+                                            4,
+                                            "90°"
+                                        ],
+                                        [
+                                            5,
+                                            "112.5°"
+                                        ],
+                                        [
+                                            6,
+                                            "135°"
+                                        ],
+                                        [
+                                            7,
+                                            "157.5°"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 3,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Sequence of weather vectors in local or system Cartesian coordinates.\n",
+            "description": null,
+            "name": "030",
+            "remark": "'F' shall be incorporated as a parameter in the SOP message.\n",
+            "spare": false,
+            "title": "Sequence of Cartesian Vectors",
+            "variation": {
+                "rep": 8,
+                "type": "Repetitive",
+                "variation": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "X",
+                            "remark": "Adjust with scaling factor 'F'\n",
+                            "spare": false,
+                            "title": "X-coordinate",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "constraints": [],
+                                        "fractionalBits": 0,
+                                        "scaling": {
+                                            "type": "Integer",
+                                            "value": 1
+                                        },
+                                        "signed": true,
+                                        "type": "Quantity",
+                                        "unit": "NM"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 16,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "Y",
+                            "remark": "Adjust with scaling factor 'F'\n",
+                            "spare": false,
+                            "title": "Y-coordinate",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "constraints": [],
+                                        "fractionalBits": 0,
+                                        "scaling": {
+                                            "type": "Integer",
+                                            "value": 1
+                                        },
+                                        "signed": true,
+                                        "type": "Quantity",
+                                        "unit": "NM"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 16,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "L",
+                            "remark": "Adjust with scaling factor 'F'\n",
+                            "spare": false,
+                            "title": "Vector Length",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "constraints": [],
+                                        "signed": false,
+                                        "type": "Integer"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 16,
+                                "type": "Element"
+                            }
+                        }
+                    ],
+                    "type": "Group"
+                }
+            }
+        },
+        {
+            "definition": "This Data Item provides the serial Step Number.\n",
+            "description": null,
+            "name": "060",
+            "remark": null,
+            "spare": false,
+            "title": "Synchronisation/Control Signal",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SN",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Step Number",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "signed": false,
+                                    "type": "Integer"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 6,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 1,
+                        "spare": true
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Absolute time stamping expressed as UTC time.\n",
+            "description": null,
+            "name": "070",
+            "remark": "The time of day value is reset to zero each day at midnight.\n",
+            "spare": false,
+            "title": "Time of Day",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 24,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Processing status of the Track Server.\n",
+            "description": null,
+            "name": "080",
+            "remark": null,
+            "spare": false,
+            "title": "Processing Status",
+            "variation": {
+                "extents": 8,
+                "first": 24,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "F",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Scaling Factor",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 0,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": ""
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 5,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "R",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Current Reduction Stage in Use",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 3,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "Q",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Processing Parameters",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 15,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Current radar configuration and status of all operational radars.\n",
+            "description": null,
+            "name": "090",
+            "remark": null,
+            "spare": false,
+            "title": "Radar Configuration and Status",
+            "variation": {
+                "rep": 8,
+                "type": "Repetitive",
+                "variation": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "spare": false,
+                            "title": "SAC of Radar Concerned",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 8,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "spare": false,
+                            "title": "SIC of Radar Concerned",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 8,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "length": 3,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CP",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Circular Polarisation",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "WO",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Weather Channel Overload",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "R",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Reduction Step in Use By Radar  Concerned",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 3,
+                                "type": "Element"
+                            }
+                        }
+                    ],
+                    "type": "Group"
+                }
+            }
+        },
+        {
+            "definition": "Total number of vectors defining a complete weather picture.\n",
+            "description": null,
+            "name": "100",
+            "remark": null,
+            "spare": false,
+            "title": "Vector Count",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "signed": false,
+                        "type": "Integer"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 16,
+                "type": "Element"
+            }
+        }
+    ],
+    "date": {
+        "day": 22,
+        "month": 10,
+        "year": 2014
+    },
+    "edition": {
+        "major": 2,
+        "minor": 1
+    },
+    "number": 9,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Composite Weather Reports",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "020",
+            "030",
+            "060",
+            "070",
+            "080",
+            "090",
+            "100"
+        ],
+        "type": "uap"
+    }
+}

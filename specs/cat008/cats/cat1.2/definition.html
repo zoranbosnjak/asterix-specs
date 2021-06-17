@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-008---monoradar-derived-weather-information">Asterix category 008 - Monoradar Derived Weather Information</h1>
+<p><strong>category</strong>: 008</p>
+<p><strong>edition</strong>: 1.2</p>
+<p><strong>date</strong>: 2014-08-24</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i008000---message-type">I008/000 - Message Type</h3>
+<p><em>Definition</em>: This Data Item allows for a more convenient handling of the messages at the receiver side by further defining the type of transaction.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Polar vector<br />
+2: Cartesian vector of start point/length<br />
+3: Contour record<br />
+4: Cartesian start point and end point vector<br />
+254: SOP message<br />
+255: EOP message</div>
+</blockquote></li>
+</ul>
+<h3 id="i008010---data-source-identifier">I008/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the radar station from which the data are received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I008/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>The defined SACs are on the EUROCONTROL ASTERIX website (www.eurocontrol.int/asterix)</p>
+</dd>
+</dl>
+<h3 id="i008020---vector-qualifier">I008/020 - Vector Qualifier</h3>
+<p><em>Definition</em>: Precipitation intensity level, shading orientation of the vectors representing the precipitation area and coordinate system used.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I008/020/ORG</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Local Coordinates<br />
+1: System Coordinates</div>
+</blockquote></li>
+</ul>
+<p><strong>I008/020/I</strong> - <em>Intensity Level</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p><strong>I008/020/S</strong> - <em>Shading Orientation with Respect to North</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: 0°<br />
+1: 22.5°<br />
+2: 45°<br />
+3: 67.5°<br />
+4: 90°<br />
+5: 112.5°<br />
+6: 135°<br />
+7: 157.5°</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I008/020/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+<p><strong>I008/020/TST</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Test vector</div>
+</blockquote></li>
+</ul>
+<p><strong>I008/020/ER</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Error condition encountered</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>For polar vectors bits-4/2 are meaningless and are set to zero.</p>
+</dd>
+</dl>
+<h3 id="i008034---sequence-of-polar-vectors-in-spf-notation">I008/034 - Sequence of Polar Vectors in SPF Notation</h3>
+<p><em>Definition</em>: Sequence of weather vectors in local polar coordinates.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I008/034/STR</strong> - <em>Start Range</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/034/ENDR</strong> - <em>End Range</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/034/AZ</strong> - <em>Azimuth</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 360</li>
+<li>fractional bits: 16</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> deg = <span class="math inline">360/65536</span> deg <span class="math inline"> ≈ 0.0054931640625</span> deg</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>f is a parameter of the SOP message.</p>
+</dd>
+</dl>
+<h3 id="i008036---sequence-of-cartesian-vectors-in-spf-notation">I008/036 - Sequence of Cartesian Vectors in SPF Notation</h3>
+<p><em>Definition</em>: Sequence of weather vectors, in the representation start point/length, in local or in system cartesian coordinates.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I008/036/X</strong> - <em>X-Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/036/Y</strong> - <em>Y-Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/036/LENGTH</strong> - <em>Length</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><ol type="1">
+<li>LSB of [X, Y, L] is calculated as <span class="math inline">2<sup> − 6 + <em>F</em></sup></span>.</li>
+<li>F is a parameter of the SOP message.</li>
+<li>Negative values are expressed in 2’s complement form, bit-24 and bit-16 are set to 0 for positive values and 1 for negative values.</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i008038---sequence-of-weather-vectors-in-spf-notation">I008/038 - Sequence of Weather Vectors in SPF Notation</h3>
+<p><em>Definition</em>: Sequence of weather vectors, in the representation start point/ end point, in local or in system cartesian coordinates.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I008/038/X1</strong> - <em>X1-Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/038/Y1</strong> - <em>Y1-Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/038/X2</strong> - <em>X2-Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/038/Y2</strong> - <em>Y2-Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><ol type="1">
+<li>LSB of [X1, Y1, X2, Y2] is calculated as <span class="math inline">2<sup> − 6 + <em>f</em></sup></span>.</li>
+<li>f is a parameter of the SOP message.</li>
+<li>Negative values are expressed in 2’s complement form, bits-32, 24, 16 and 8 are set to 0 for positive values and 1 for negative values.</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i008040---contour-identifier">I008/040 - Contour Identifier</h3>
+<p><em>Definition</em>: Contour serial number together with the precipitation intensity levels and the coordinates system used.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I008/040/ORG</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Local Coordinates<br />
+1: System Coordinates</div>
+</blockquote></li>
+</ul>
+<p><strong>I008/040/I</strong> - <em>Intensity Level</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/040/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I008/040/FSTLST</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Intermediate record of a contour<br />
+1: Last record of a contour of at least two records<br />
+2: First record of a contour of at least two records<br />
+3: First and only record, fully defining a contour</div>
+</blockquote></li>
+</ul>
+<p><strong>I008/040/CSN</strong> - <em>Contour Serial Number</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>The Contour Serial Number provides an unambiguous identification for each contour record. Within one update cycle, a serial number shall never be assigned twice.</p>
+</dd>
+</dl>
+<h3 id="i008050---sequence-of-contour-points-in-spf-notation">I008/050 - Sequence of Contour Points in SPF Notation</h3>
+<p><em>Definition</em>: Cartesian coordinates of a variable number of points defining a contour.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I008/050/X1</strong></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/050/Y1</strong></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><ol type="1">
+<li>LSB of [X1, Y1] is calculated as <span class="math inline">2<sup> − 6 + <em>f</em></sup></span>.</li>
+<li>f is a parameter of the SOP message.</li>
+<li>Negative values are expressed in 2’s complement form, bit-16 and bit-8 shall be set to 0 for positive values and 1 for negative values.</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i008090---time-of-day">I008/090 - Time of Day</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as Coordinated Universal Time (UTC) time.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<dl>
+<dt>Notes:</dt>
+<dd><ol type="1">
+<li>The time of day value is reset to zero each day at midnight.</li>
+<li>For time management in radar transmission applications, refer to Part 1, paragraph 5.4 [Ref. 1].</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i008100---processing-status">I008/100 - Processing Status</h3>
+<p><em>Definition</em>: Information concerning the scaling factor currently applied, current reduction step in use, etc.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>24 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I008/100/F</strong> - <em>Scaling Factor</em></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>LSB = <span class="math inline">1</span></li>
+</ul>
+<p><strong>I008/100/R</strong> - <em>Current Reduction Stage in Use</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I008/100/Q</strong> - <em>Processing Parameters</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>raw value</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>F: Scaling factor, negative values are represented in 2’s complement form, bit-24 is set to 0 for positive values and 1 for negative values. R: Current reduction stage in use. Normal operation is indicated by a value of zero. The actual bit signification is application dependent. Q: Processing parameters. The actual bit signification isapplication dependent.</p>
+</dd>
+</dl>
+<h3 id="i008110---station-configuration-status">I008/110 - Station Configuration Status</h3>
+<p><em>Definition</em>: Information concerning the use and status of some vital hardware components of a radar system .</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I008/110/DATA</strong> - <em>Unspecified Data</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>raw value</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>Due to the diversity in hardware design and requirements of present and future radar stations, it is felt impractical to attempt to define individual bits.</p>
+</dd>
+</dl>
+<h3 id="i008120---total-number-of-items-constituting-one-weather-picture">I008/120 - Total Number of Items Constituting One Weather Picture</h3>
+<p><em>Definition</em>: Total number of vectors, respectively contour points, constituting the total weather image, provided with the EOP message.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<h3 id="i008sp---special-purpose-field">I008/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h3 id="i008rfs---random-field-sequencing">I008/RFS - Random Field Sequencing</h3>
+<p><em>Definition</em>: Random Field Sequencing</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h1 id="user-application-profile-for-category-008">User Application Profile for Category 008</h1>
+<ul>
+<li><ol type="1">
+<li><code>I008/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I008/000</code> - Message Type</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I008/020</code> - Vector Qualifier</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I008/036</code> - Sequence of Cartesian Vectors in SPF Notation</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I008/034</code> - Sequence of Polar Vectors in SPF Notation</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I008/040</code> - Contour Identifier</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I008/050</code> - Sequence of Contour Points in SPF Notation</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I008/090</code> - Time of Day</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I008/100</code> - Processing Status</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I008/110</code> - Station Configuration Status</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I008/120</code> - Total Number of Items Constituting One Weather Picture</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I008/038</code> - Sequence of Weather Vectors in SPF Notation</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I008/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I008/RFS</code> - Random Field Sequencing</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

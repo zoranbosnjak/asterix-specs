@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-023---cnsatm-ground-station-and-service-status-reports">Asterix category 023 - CNS/ATM Ground Station and Service Status Reports</h1>
+<p><strong>category</strong>: 023</p>
+<p><strong>edition</strong>: 1.2</p>
+<p><strong>date</strong>: 2009-03-01</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i023000---report-type">I023/000 - Report Type</h3>
+<p><em>Definition</em>: This Data Item allows for a more convenient handling of the reports at the receiver side by further defining the type of transaction.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Ground station status report<br />
+2: Service status report<br />
+3: Service statistics report</div>
+</blockquote></li>
+</ul>
+<dl>
+<dt>NOTES:</dt>
+<dd><ol type="1">
+<li>In applications where transactions of various types are exchanged, the Report Type Data Item facilitates the proper report handling at the receiver side.</li>
+<li>All Report Type values are reserved for common standard use.</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i023010---data-source-identifier">I023/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the Ground Station from which the data is received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I023/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I023/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site (<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i023015---service-type-and-identification">I023/015 - Service Type and Identification</h3>
+<p><em>Definition</em>: Identifies the type of service being reported.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I023/015/SID</strong> - <em>Service Identification</em></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I023/015/STYP</strong> - <em>Type of Service</em></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: ADS-B VDL4<br />
+2: ADS-B Ext Squitter<br />
+3: ADS-B UAT<br />
+4: TIS-B VDL4<br />
+5: TIS-B Ext Squitter<br />
+6: TIS-B UAT<br />
+7: FIS-B VDL4<br />
+8: GRAS VDL4<br />
+9: MLT</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>The service identification is allocated by the system.</li>
+<li>The service identification is also available in item I021/015.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i023070---time-of-day">I023/070 - Time of Day</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as UTC time.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The time of day value is reset to zero each day at midnight.</li>
+</ol>
+</blockquote>
+<h3 id="i023100---ground-station-status">I023/100 - Ground Station Status</h3>
+<p><em>Definition</em>: Information concerning the status of a Ground Station.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I023/100/NOGO</strong> - <em>Operational Release Status of the Data</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Data is released for operational use<br />
+1: Data must not be used operationally</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/100/ODP</strong> - <em>Data Processor Overload Indicator</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default, no overload<br />
+1: Overload in DP</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/100/OXT</strong> - <em>Ground Interface Data Communications Overload</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default, no overload<br />
+1: Overload in transmission subsystem</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/100/MSC</strong> - <em>Monitoring System Connected Status</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Monitoring system not connected or unknown<br />
+1: Monitoring system connected</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/100/TSV</strong> - <em>Time Source Validity</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Valid<br />
+1: Invalid</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/100/SPO</strong> - <em>Indication of Spoofing Attack</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No spoofing detected<br />
+1: Potential spoofing attack</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/100/RN</strong> - <em>Renumbering Indication for Track ID</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Track numbering has restarted</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/100/GSSP</strong> - <em>Ground Station Status Reporting Period</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1</span> s</li>
+<li>value <span class="math inline"> &gt;  = 1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 127</span> s</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>A time source is considered as valid when either externally synchronised or running on a local oscillator within the required accuracy of UTC.</li>
+<li>Bit 8 (NOGO), when set to “1” indicates that the data transmitted by the GS is not released for operational use.</li>
+<li>Bit 2 indicates that the allocation of Track-IDs (Item I021/161) was re-started.</li>
+</ol>
+</blockquote>
+<h3 id="i023101---service-configuration">I023/101 - Service Configuration</h3>
+<p><em>Definition</em>: Information concerning the configuration of a Service.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>16 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I023/101/RP</strong> - <em>Report Period for Category 021 Reports</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 1</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>1</sup></span> s = <span class="math inline">1/2</span> s <span class="math inline"> ≈ 0.5</span> s</li>
+</ul>
+<p><strong>I023/101/SC</strong> - <em>Service Class</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No information<br />
+1: NRA class<br />
+2: Reserved for future use<br />
+3: Reserved for future use<br />
+4: Reserved for future use<br />
+5: Reserved for future use<br />
+6: Reserved for future use<br />
+7: Reserved for future use</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/101/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/101/SSRP</strong> - <em>Service Status Reporting Period</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1</span> s</li>
+<li>value <span class="math inline"> &gt;  = 1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 127</span> s</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<h3 id="i023110---service-status">I023/110 - Service Status</h3>
+<p><em>Definition</em>: Information concerning the status of the Service provided by a Ground Station.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I023/110/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I023/110/STAT</strong> - <em>Status of the Service</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: Failed<br />
+2: Disabled<br />
+3: Degraded<br />
+4: Normal<br />
+5: Initialisation</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<h3 id="i023120---service-statistics">I023/120 - Service Statistics</h3>
+<p><em>Definition</em>: Statistics concerning the service. Provides counts of various ADS-B message types that have been received since the report was last sent.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I023/120/TYPE</strong> - <em>Type of Report Counter</em></p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Number of unknown messages received<br />
+1: Number of too old messages received<br />
+2: Number of failed message conversions<br />
+3: Total Number of messages received<br />
+4: Total Number of messages transmitted<br />
+20: Number of TIS-B management messages received<br />
+21: Number of Basic messages received<br />
+22: Number of High Dynamic messages received<br />
+23: Number of Full Position messages received<br />
+24: Number of Basic Ground messages received<br />
+25: Number of TCP messages received<br />
+26: Number of UTC time messages received<br />
+27: Number of Data messages received<br />
+28: Number of High Resolution messages received<br />
+29: Number of Aircraft Target Airborne messages received<br />
+30: Number of Aircraft Target Ground messages received<br />
+31: Number of Ground Vehicle Target messages received<br />
+32: Number of 2 slots TCP messages received</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/120/REF</strong> - <em>Reference from which the Messages Are Countered</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: From midnight<br />
+1: From the last report</div>
+</blockquote></li>
+</ul>
+<p><strong>I023/120/(spare)</strong></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+</ul>
+<p><strong>I023/120/CV</strong> - <em>32-bit Counter Value</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i023200---operational-range">I023/200 - Operational Range</h3>
+<p><em>Definition</em>: Currently active operational range of the Ground Station.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “NM”</li>
+<li>LSB = <span class="math inline">1</span> NM</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Maximum value indicates “maximum value or above”.</li>
+</ol>
+</blockquote>
+<h3 id="i023re---reserved-expansion-field">I023/RE - Reserved Expansion Field</h3>
+<p><em>Definition</em>: Expansion</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h3 id="i023sp---special-purpose-field">I023/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h1 id="user-application-profile-for-category-023">User Application Profile for Category 023</h1>
+<ul>
+<li><ol type="1">
+<li><code>I023/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I023/000</code> - Report Type</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I023/015</code> - Service Type and Identification</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I023/070</code> - Time of Day</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I023/100</code> - Ground Station Status</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I023/101</code> - Service Configuration</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I023/200</code> - Operational Range</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I023/110</code> - Service Status</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I023/120</code> - Service Statistics</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I023/RE</code> - Reserved Expansion Field</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I023/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

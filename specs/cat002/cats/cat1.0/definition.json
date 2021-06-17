@@ -1,0 +1,619 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ntransaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": "Notes:\n    1. In application where transactions of various types are exchanged, the\n    Message Type Data Item facilitates the proper message handling at the\n    receiver side.\n\n    2. Message Type values 1-127 are reserved for common standard use,\n    whereas the values 128-255 are application dependent.\n",
+            "spare": false,
+            "title": "Message Type",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Table",
+                        "values": [
+                            [
+                                1,
+                                "North marker message"
+                            ],
+                            [
+                                2,
+                                "Sector crossing message"
+                            ],
+                            [
+                                3,
+                                "South marker message"
+                            ],
+                            [
+                                8,
+                                "Activation of blind zone filtering"
+                            ],
+                            [
+                                9,
+                                "Stop of blind zone filtering"
+                            ]
+                        ]
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Identification of the system sending the data.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Notes:\n    1. The defined SACs are listed in Part 1, Table 2 [Ref. 2]\n    2. The defined SICs are listed in Part 1, Annex B [Ref. 2]\n",
+            "spare": false,
+            "title": "Data Source Identifier",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SAC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Area Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Identification Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Eight most significant bits of the antenna azimuth defining a\nparticular azimuth sector.\n",
+            "description": null,
+            "name": "020",
+            "remark": "The use of the antenna azimuth as sector number has the\nadvantage of being independent of the number of sectors\nimplemented.\n",
+            "spare": false,
+            "title": "Sector Number",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 8,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 360
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "deg"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Absolute time stamping expressed as UTC time.\n",
+            "description": null,
+            "name": "030",
+            "remark": "Notes:\n\n    1. The time of day value is reset to zero each day at midnight.\n    2. For time management in radar transmission applications, refer to Part 1,\n       paragraph 5.4 [ Ref.2].\n    3. Data Item I002/030 can have various logical meanings. In a particular\n       message, the logical meaning is implicit from its context (e.g. in a North\n       marker message it represents the antenna North crossing time; in a\n       sector message it represents the antenna sector crossing time).\n",
+            "spare": false,
+            "title": "Time of Day",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 24,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Antenna rotation period as measured between two\nconsecutive North crossings or as averaged during a period\nof time.\n",
+            "description": null,
+            "name": "041",
+            "remark": null,
+            "spare": false,
+            "title": "Antenna Rotation Speed",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 16,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Information concerning the use and status of some vital\nhardware components of the radar system.\n",
+            "description": null,
+            "name": "050",
+            "remark": "Due to the diversity in hardware design and requirement of\npresent and future radar stations, it is felt impractical to attempt to\ndefine the individual bits.\n",
+            "spare": false,
+            "title": "Station Configuration Status",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SCS",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 7,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Details concerning the present status with respect to\nprocessing parameters and options.\n",
+            "description": null,
+            "name": "060",
+            "remark": "NOTES:\n    1. Typical information conveyed within this Data Item includes inter alia\n       type of polarisation in use, Moving Target Indicator (MTI) in use and/or\n       definition of the range to which MTI is applied, presence of overload\n       conditions and the type of load reduction measures in use.\n    2. Only the structure of this Data Item is defined, no attempt is made to\n       standardise its contents, in order not to hamper any application or future\n       development.\n",
+            "spare": false,
+            "title": "Station Processing Mode",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SPM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 7,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Plot count values according to various plot categories, either\nfor the last full antenna scan or for the last sector processed.\n",
+            "description": null,
+            "name": "070",
+            "remark": null,
+            "spare": false,
+            "title": "Plot Count Values",
+            "variation": {
+                "rep": 8,
+                "type": "Repetitive",
+                "variation": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "A",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Aerial Identification",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                0,
+                                                "Counter for antenna 1"
+                                            ],
+                                            [
+                                                1,
+                                                "Counter for antenna 2"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "IDENT",
+                            "remark": null,
+                            "spare": false,
+                            "title": "",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                1,
+                                                "Sole primary plots"
+                                            ],
+                                            [
+                                                2,
+                                                "Sole SSR plots"
+                                            ],
+                                            [
+                                                3,
+                                                "Combined plots"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 5,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "COUNTER",
+                            "remark": null,
+                            "spare": false,
+                            "title": "",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "constraints": [],
+                                        "signed": false,
+                                        "type": "Integer"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 10,
+                                "type": "Element"
+                            }
+                        }
+                    ],
+                    "type": "Group"
+                }
+            }
+        },
+        {
+            "definition": "Warning/error conditions affecting the functioning of the\nradar system itself.\n",
+            "description": null,
+            "name": "080",
+            "remark": "NOTE:\n    Warning/error condition values 1-63 are reserved for common\n    Standard use, whereas the values 64-127 are application\n    dependent.\n",
+            "spare": false,
+            "title": "Warning/Error Conditions",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "WE",
+                        "remark": null,
+                        "spare": false,
+                        "title": "W/E Value",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 7,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Averaged difference in range and in azimuth for the primary\ntarget position with respect to the SSR target position as\ncalculated by the radar station.\n",
+            "description": null,
+            "name": "090",
+            "remark": "NOTES\n    1. LSB of RE is calculated as :math:`2^{16-f}`.\n    2. A default quantisation unit of 0.022° and a range between -2.8125° and\n       +2.7905° is obtained for a value of f=2 .\n",
+            "spare": false,
+            "title": "Collimation Error",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RE",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Range Error",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "AE",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Azimuth Error",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 14,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Signals the activation of a certain selective filtering function\nand in a polar coordinates system the respective\ngeographical areas.\n",
+            "description": null,
+            "name": "100",
+            "remark": "The logical meaning of the polar window is defined by its context,\ngiven by the Message Type (Data Item I002/000) in the record\nconcerned.\n",
+            "spare": false,
+            "title": "Dynamic Window Type 1",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RS",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Rho Start",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": "<",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 512
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RE",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Rho End",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": "<",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 512
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TS",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Theta Start",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 16,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TE",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Theta End",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 16,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "spare": false,
+            "title": "Special Purpose Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        },
+        {
+            "definition": "Random Field Sequencing\n",
+            "description": null,
+            "name": "RFS",
+            "remark": null,
+            "spare": false,
+            "title": "Random Field Sequencing",
+            "variation": {
+                "type": "Explicit"
+            }
+        }
+    ],
+    "date": {
+        "day": 1,
+        "month": 11,
+        "year": 1997
+    },
+    "edition": {
+        "major": 1,
+        "minor": 0
+    },
+    "number": 2,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Transmission of Monoradar Service Messages",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "020",
+            "030",
+            "041",
+            "050",
+            "060",
+            "070",
+            "100",
+            "090",
+            "080",
+            null,
+            "SP",
+            "RFS"
+        ],
+        "type": "uap"
+    }
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-247---version-number-exchange">Asterix category 247 - Version Number Exchange</h1>
+<p><strong>category</strong>: 247</p>
+<p><strong>edition</strong>: 1.2</p>
+<p><strong>date</strong>: 2008-02-01</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i247010---data-source-identifier">I247/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the radar station from which the data are received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I247/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I247/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>The defined SACs are on the EUROCONTROL ASTERIX website (www.eurocontrol.int/asterix)</p>
+</dd>
+</dl>
+<h3 id="i247015---service-identification">I247/015 - Service Identification</h3>
+<p><em>Definition</em>: Identification of the service provided to one or more users.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p>The service identification is allocated by the system.</p>
+<h3 id="i247140---time-of-day">I247/140 - Time of Day</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<p>The time of day value is reset to zero each day at midnight.</p>
+<h3 id="i247550---category-version-number-report">I247/550 - Category Version Number Report</h3>
+<p><em>Definition</em>: Version number of Categories used.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I247/550/CAT</strong> - <em>Category</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p><strong>I247/550/MAIN</strong> - <em>Main Version Number</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p><strong>I247/550/SUB</strong> - <em>Sub Version Number</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned integer</li>
+</ul>
+</blockquote>
+<h3 id="i247re---reserved-expansion-field">I247/RE - Reserved Expansion Field</h3>
+<p><em>Definition</em>: Expansion</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h3 id="i247sp---special-purpose-field">I247/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h1 id="user-application-profile-for-category-247">User Application Profile for Category 247</h1>
+<ul>
+<li><ol type="1">
+<li><code>I247/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I247/015</code> - Service Identification</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I247/140</code> - Time of Day</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I247/550</code> - Category Version Number Report</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I247/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I247/RE</code> - Reserved Expansion Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

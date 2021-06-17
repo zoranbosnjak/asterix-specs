@@ -1,0 +1,2097 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-021---ads-b-target-reports">Asterix category 021 - ADS-B Target Reports</h1>
+<p><strong>category</strong>: 021</p>
+<p><strong>edition</strong>: 2.4</p>
+<p><strong>date</strong>: 2015-06-15</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange. ADS-B Target Reports.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i021008---aircraft-operational-status">I021/008 - Aircraft Operational Status</h3>
+<p><em>Definition</em>: Identification of the operational services available in the aircraft while airborne.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/008/RA</strong> - <em>TCAS Resolution Advisory Active</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: TCAS II or ACAS RA not active<br />
+1: TCAS RA active</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/008/TC</strong> - <em>Target Trajectory Change Report Capability</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No capability for Trajectory Change Reports<br />
+1: Support for TC+0 reports only<br />
+2: Support for multiple TC reports<br />
+3: Reserved</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/008/TS</strong> - <em>Target State Report Capability</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No capability to support Target State Reports<br />
+1: Capable of supporting target State Reports</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/008/ARV</strong> - <em>Air-Referenced Velocity Report Capability</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No capability to generate ARV-reports<br />
+1: Capable of generate ARV-reports</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/008/CDTIA</strong> - <em>Cockpit Display of Traffic Information Airborne</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: CDTI not operational<br />
+1: CDTI operational</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/008/NOTTCAS</strong> - <em>TCAS System Status</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: TCAS operational<br />
+1: TCAS not operational</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/008/SA</strong> - <em>Single Antenna</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Antenna Diversity<br />
+1: Single Antenna only</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>Additional Aircraft Status Information is available in the Reserved Expansion Field of Category 021.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i021010---data-source-identification">I021/010 - Data Source Identification</h3>
+<p><em>Definition</em>: Identification of the ADS-B station providing information.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL ASTERIX Web Site (<a href="http://www.eurocontrol.int/services/system-area-code-list">http://www.eurocontrol.int/services/system-area-code-list</a>).</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i021015---service-identification">I021/015 - Service Identification</h3>
+<p><em>Definition</em>: Identification of the service provided to one or more users.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The service identification is allocated by the system.</li>
+<li>The service identification is also available in item I023/015 [Ref. 3].</li>
+</ol>
+</blockquote>
+<h3 id="i021016---service-management">I021/016 - Service Management</h3>
+<p><em>Definition</em>: Identification of services offered by a ground station (identified by a SIC code).</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 1</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>1</sup></span> s = <span class="math inline">1/2</span> s <span class="math inline"> ≈ 0.5</span> s</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This item contains the same information as item I023/101 in ASTERIX category 023 [Ref. 3]. Since not all service users receive category 023 data, this information has to be conveyed in category 021 as well.</li>
+<li>If this item is due to be sent according to the encoding rule above, it shall be sent with the next target report</li>
+</ol>
+</blockquote>
+<h3 id="i021020---emitter-category">I021/020 - Emitter Category</h3>
+<p><em>Definition</em>: Characteristics of the originating ADS-B unit.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No ADS-B Emitter Category Information<br />
+1: Light aircraft &lt;= 15500 lbs<br />
+2: 15500 lbs &lt; small aircraft &lt;75000 lbs<br />
+3: 75000 lbs &lt; medium a/c &lt; 300000 lbs<br />
+4: High Vortex Large<br />
+5: 300000 lbs &lt;= heavy aircraft<br />
+6: Highly manoeuvrable (5g acceleration capability) and high speed (&gt;400 knots cruise)<br />
+7: Reserved<br />
+8: Reserved<br />
+9: Reserved<br />
+10: Rotocraft<br />
+11: Glider / sailplane<br />
+12: Lighter-than-air<br />
+13: Unmanned aerial vehicle<br />
+14: Space / transatmospheric vehicle<br />
+15: Ultralight / handglider / paraglider<br />
+16: Parachutist / skydiver<br />
+17: Reserved<br />
+18: Reserved<br />
+19: Reserved<br />
+20: Surface emergency vehicle<br />
+21: Surface service vehicle<br />
+22: Fixed ground or tethered obstruction<br />
+23: Cluster obstacle<br />
+24: Line obstacle</div>
+</blockquote></li>
+</ul>
+<h3 id="i021040---target-report-descriptor">I021/040 - Target Report Descriptor</h3>
+<p><em>Definition</em>: Type and characteristics of the data as transmitted by a system.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I021/040/ATP</strong> - <em>Address Type</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: 24-Bit ICAO address<br />
+1: Duplicate address<br />
+2: Surface vehicle address<br />
+3: Anonymous address<br />
+4: Reserved for future use<br />
+5: Reserved for future use<br />
+6: Reserved for future use<br />
+7: Reserved for future use</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/ARC</strong> - <em>Altitude Reporting Capability</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: 25 ft<br />
+1: 100 ft<br />
+2: Unknown<br />
+3: Invalid</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/RC</strong> - <em>Range Check</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Range Check passed, CPR Validation pending</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/RAB</strong> - <em>Report Type</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Report from target transponder<br />
+1: Report from field monitor (fixed transponder)</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/DCR</strong> - <em>Differential Correction</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No differential correction (ADS-B)<br />
+1: Differential correction (ADS-B)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/GBS</strong> - <em>Ground Bit Setting</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Ground Bit not set<br />
+1: Ground Bit set</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/SIM</strong> - <em>Simulated Target</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Actual target report<br />
+1: Simulated target report</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/TST</strong> - <em>Test Target</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Test Target</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/SAA</strong> - <em>Selected Altitude Available</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Equipment capable to provide Selected Altitude<br />
+1: Equipment not capable to provide Selected Altitude</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/CL</strong> - <em>Confidence Level</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Report valid<br />
+1: Report suspect<br />
+2: No information<br />
+3: Reserved for future use</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I021/040/LLC</strong> - <em>List Lookup Check</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: List Lookup failed (see note)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/IPC</strong> - <em>Independent Position Check</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default (see note)<br />
+1: Independent Position Check failed</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/NOGO</strong> - <em>No-go Bit Status</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: NOGO-bit not set<br />
+1: NOGO-bit set</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/CPR</strong> - <em>Compact Position Reporting</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: CPR Validation correct<br />
+1: CPR Validation failed</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/LDPJ</strong> - <em>Local Decoding Position Jump</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: LDPJ not detected<br />
+1: LDPJ detected</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/040/RCF</strong> - <em>Range Check</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Range Check failed</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Bit 3 indicates that the position reported by the target is within a credible range from the ground station. The range check is followed by the CPR validation to ensure that global and local position decoding both indicate valid position information. Bit 3=1 indicates that the range check was done, but the CPR validation is not yet completed. Once CPR validation is completed, Bit 3 will be reset to 0.</li>
+<li>The second extension signals the reasons for which the report has been indicated as suspect (indication Confidence Level (CL) in the first extension).</li>
+<li>Bit 2 indicates that the Range Check failed, i.e. the target is reported outside the credible range for the Ground Station. For operational users such a target will be suppressed. In services used for monitoring the Ground Station, the target will be transmitted with bit 2 indicating the fault condition.</li>
+<li>Bit 6, if set to 1, indicates that the position reported by the target was validated by an independent means and a discrepancy was detected. If no independent position check is implemented, the default value “0” is to be used.</li>
+<li>Bit 5 represents the setting of the GO/NOGO-bit as defined in item I023/100 of category 023 [Ref. 3].</li>
+<li>Bit 7, if set to 1, indicates that a lookup in a Black-list/White-list failed, indicating that the target may be suspect</li>
+</ol>
+</blockquote>
+<h3 id="i021070---mode-3a-code-in-octal-representation">I021/070 - Mode 3/A Code in Octal Representation</h3>
+<p><em>Definition</em>: Mode-3/A code converted into octal representation.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/070/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I021/070/MODE3A</strong> - <em>Mode-3/A Reply in Octal Representation</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>Octal string (3-bits per digit)</li>
+</ul>
+</blockquote>
+<h3 id="i021071---time-of-applicability-for-position">I021/071 - Time of Applicability for Position</h3>
+<p><em>Definition</em>: Time of applicability of the reported position, in the form of elapsed time since last midnight, expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The time of applicability value is reset to zero at every midnight.</li>
+<li>The time of applicability indicates the exact time at which the position transmitted in the target report is valid.</li>
+</ol>
+</blockquote>
+<h3 id="i021072---time-of-applicability-for-velocity">I021/072 - Time of Applicability for Velocity</h3>
+<p><em>Definition</em>: Time of applicability (measurement) of the reported velocity, in the form of elapsed time since last midnight, expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The time of the applicability value is reset to zero at every midnight.</li>
+<li>The time of applicability indicates the exact time at which the velocity information transmitted in the target report is valid.</li>
+<li>This item will not be available in some ADS-B technologies.</li>
+</ol>
+</blockquote>
+<h3 id="i021073---time-of-message-reception-for-position">I021/073 - Time of Message Reception for Position</h3>
+<p><em>Definition</em>: Time of reception of the latest position squitter in the Ground Station, in the form of elapsed time since last midnight, expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>The time of message reception value is reset to zero at every midnight.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i021074---time-of-message-reception-of-position-high-precision">I021/074 - Time of Message Reception of Position-High Precision</h3>
+<p><em>Definition</em>: Time at which the latest ADS-B position information was received by the ground station, expressed as fraction of the second of the UTC Time.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/074/FSI</strong> - <em>Full Second Indication</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">3: Reserved<br />
+2: TOMRp whole seconds = (I021/073) Whole seconds - 1<br />
+1: TOMRp whole seconds = (I021/073) Whole seconds + 1<br />
+0: TOMRp whole seconds = (I021/073) Whole seconds</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/074/TOMRP</strong> - <em>Fractional Part of the Time of Message Reception for Position in the Ground Station</em></p>
+<ul>
+<li>30 bits [<code>..............................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 30</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>30</sup></span> s = <span class="math inline">1/1073741824</span> s <span class="math inline"> ≈ 9.313225746154785<em>e</em> − 10</span> s</li>
+</ul>
+</blockquote>
+<h3 id="i021075---time-of-message-reception-for-velocity">I021/075 - Time of Message Reception for Velocity</h3>
+<p><em>Definition</em>: Time of reception of the latest velocity squitter in the Ground Station, in the form of elapsed time since last midnight, expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>The time of message reception value is reset to zero at every midnight.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i021076---time-of-message-reception-of-velocity-high-precision">I021/076 - Time of Message Reception of Velocity-High Precision</h3>
+<p><em>Definition</em>: Time at which the latest ADS-B velocity information was received by the ground station, expressed as fraction of the second of the UTC Time.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/076/FSI</strong> - <em>Full Second Indication</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">3: Reserved<br />
+2: TOMRp whole seconds = (I021/075) Whole seconds - 1<br />
+1: TOMRp whole seconds = (I021/075) Whole seconds + 1<br />
+0: TOMRp whole seconds = (I021/075) Whole seconds</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/076/TOMRP</strong> - <em>Fractional Part of the Time of Message Reception for Position in the Ground Station</em></p>
+<ul>
+<li>30 bits [<code>..............................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 30</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>30</sup></span> s = <span class="math inline">1/1073741824</span> s <span class="math inline"> ≈ 9.313225746154785<em>e</em> − 10</span> s</li>
+</ul>
+</blockquote>
+<h3 id="i021077---time-of-asterix-report-transmission">I021/077 - Time of ASTERIX Report Transmission</h3>
+<p><em>Definition</em>: Time of the transmission of the ASTERIX category 021 report in the form of elapsed time since last midnight, expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>The time of ASTERIX report transmission value is reset to zero at every midnight.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i021080---target-address">I021/080 - Target Address</h3>
+<p><em>Definition</em>: Target address (emitter identifier) assigned uniquely to each target.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>raw value</li>
+</ul>
+<h3 id="i021090---quality-indicators">I021/090 - Quality Indicators</h3>
+<p><em>Definition</em>: ADS-B quality indicators transmitted by a/c according to MOPS version.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I021/090/NUCRNACV</strong> - <em>Navigation Uncertainty Category for Velocity NUCr or the Navigation Accuracy Category for Velocity NACv</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/090/NUCPNIC</strong> - <em>Navigation Uncertainty Category for Position NUCp or Navigation Integrity Category NIC</em></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>raw value</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd><dl>
+<dt>Notes:</dt>
+<dd><ol type="1">
+<li>Apart from the “PIC” item, all items are defined as per the respective link technology protocol version (“MOPS version”, see I021/210).</li>
+<li>The primary subfield is kept for backwards compatibility reasons. Version 2 NIC-values shall be mapped accordingly. This is required to ensure that downstream systems, which are not capable of interpreting extensions 2 and 3 (because they use an ASTERIX</li>
+</ol>
+</dd>
+</dl>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/090/NICBARO</strong> - <em>Navigation Integrity Category for Barometric Altitude</em></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/090/SIL</strong> - <em>Surveillance (version 1) or Source (version 2) Integrity Level</em></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/090/NACP</strong> - <em>Navigation Accuracy Category for Position</em></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/090/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I021/090/SILS</strong> - <em>SIL-Supplement</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Measured per flight-hour<br />
+1: Measured per sample</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/090/SDA</strong> - <em>Horizontal Position System Design Assurance Level (as Defined in Version 2)</em></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/090/GVA</strong> - <em>Geometric Altitude Accuracy</em></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+<li>raw value</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/090/PIC</strong> - <em>Position Integrity Category</em></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/090/(spare)</strong></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Apart from the “PIC” item, all items are defined as per the respective link technology protocol version (“MOPS version”, see I021/210).</li>
+<li>The primary subfield is kept for backwards compatibility reasons. Version 2 NIC-values shall be mapped accordingly. This is required to ensure that downstream systems, which are not capable of interpreting extensions 2 and 3 (because they use an ASTERIX edition earlier than 2.0) still get the required information</li>
+<li>“Version 1” or “Version 2” refers to the MOPS version as defined in data item I021/210, bits 6/4</li>
+<li>“Version 2” refers to the MOPS version as defined in data item I021/210, bits 6/4</li>
+<li>PIC=0 is defined for completeness only. In this case the third extension shall not be generated.</li>
+<li>For ED102A/DO260B PIC values of 7 and 9, the NIC supplements for airborne messages (NIC supplements A/B) and surface messages (NIC supplements A/C) are listed. For ED102A/DO260B PIC=8, the NIC supplements A/B for airborne messages are listed. For DO260A PIC values of 7 and 8, the NIC supplement for airborne messages is shown in brackets. The aircraft air-ground status, and hence message type (airborne or surface), is derived from the GBS-bit in I021/040, 1 st extension.</li>
+</ol>
+</blockquote>
+<h3 id="i021110---trajectory-intent">I021/110 - Trajectory Intent</h3>
+<p><em>Definition</em>: Reports indicating the 4D intended trajectory of the aircraft.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I021/110/TIS</strong> - <em>Trajectory Intent Status</em></p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I021/110/TIS/NAV</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Trajectory Intent Data is available for this aircraft<br />
+1: Trajectory Intent Data is not available for this aircraft</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TIS/NVB</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Trajectory Intent Data is valid<br />
+1: Trajectory Intent Data is not valid</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TIS/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p><strong>I021/110/TID</strong> - <em>Trajectory Intent Data</em></p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I021/110/TID/TCA</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: TCP number available<br />
+1: TCP number not available</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TID/NC</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: TCP compliance<br />
+1: TCP non-compliance</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TID/TCPN</strong></p>
+<p>Trajectory Change Point number</p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/110/TID/ALT</strong> - <em>Altitude in Two’s Complement Form</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 10</li>
+<li>fractional bits: 0</li>
+<li>unit: “ft”</li>
+<li>LSB = <span class="math inline">10</span> ft</li>
+<li>value <span class="math inline"> &gt;  =  − 1500</span> ft</li>
+<li>value <span class="math inline"> &lt;  = 150000</span> ft</li>
+</ul>
+<p><strong>I021/110/TID/LAT</strong> - <em>In WGS.84 in Two’s Complement</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 23</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>23</sup></span> deg = <span class="math inline">180/8388608</span> deg <span class="math inline"> ≈ 2.1457672119140625<em>e</em> − 05</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> deg</li>
+<li>value <span class="math inline"> &lt;  = 90</span> deg</li>
+</ul>
+<p><strong>I021/110/TID/LON</strong> - <em>In WGS.84 in Two’s Complement</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 23</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>23</sup></span> deg = <span class="math inline">180/8388608</span> deg <span class="math inline"> ≈ 2.1457672119140625<em>e</em> − 05</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> deg</li>
+<li>value <span class="math inline"> &lt; 180</span> deg</li>
+</ul>
+<p><strong>I021/110/TID/PT</strong> - <em>Point Type</em></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: Fly by waypoint (LT)<br />
+2: Fly over waypoint (LT)<br />
+3: Hold pattern (LT)<br />
+4: Procedure hold (LT)<br />
+5: Procedure turn (LT)<br />
+6: RF leg (LT)<br />
+7: Top of climb (VT)<br />
+8: Top of descent (VT)<br />
+9: Start of level (VT)<br />
+10: Cross-over altitude (VT)<br />
+11: Transition altitude (VT)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TID/TD</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: N/A<br />
+1: Turn right<br />
+2: Turn left<br />
+3: No turn</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TID/TRA</strong></p>
+<p>Turn Radius Availability</p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: TTR not available<br />
+1: TTR available</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TID/TOA</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: TOV available<br />
+1: TOV not available</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/110/TID/TOV</strong> - <em>Time Over Point</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1</span> s</li>
+</ul>
+<p><strong>I021/110/TID/TTR</strong> - <em>TCP Turn Radius</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.01</li>
+<li>fractional bits: 0</li>
+<li>unit: “Nm”</li>
+<li>LSB = <span class="math inline">0.01</span> Nm</li>
+<li>value <span class="math inline"> &gt;  = 0</span> Nm</li>
+<li>value <span class="math inline"> &lt;  = 655.35</span> Nm</li>
+</ul>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>NC is set to one when the aircraft will not fly the path described by the TCP data.</li>
+<li>TCP numbers start from zero.</li>
+<li>LT = Lateral Type</li>
+<li>VT = Vertical Type</li>
+<li>TOV gives the estimated time before reaching the point. It is defined as the absolute time from midnight.</li>
+<li>TOV is meaningful only if TOA is set to 1.</li>
+</ol>
+</blockquote>
+<h3 id="i021130---position-in-wgs-84-co-ordinates">I021/130 - Position in WGS-84 Co-ordinates</h3>
+<p><em>Definition</em>: Position in WGS-84 Co-ordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/130/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 23</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>23</sup></span> deg = <span class="math inline">180/8388608</span> deg <span class="math inline"> ≈ 2.1457672119140625<em>e</em> − 05</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> deg</li>
+<li>value <span class="math inline"> &lt;  = 90</span> deg</li>
+</ul>
+<p><strong>I021/130/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 23</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>23</sup></span> deg = <span class="math inline">180/8388608</span> deg <span class="math inline"> ≈ 2.1457672119140625<em>e</em> − 05</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> deg</li>
+<li>value <span class="math inline"> &lt; 180</span> deg</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Positive longitude indicates East. Positive latitude indicates North.</li>
+</ul>
+</blockquote>
+<h3 id="i021131---high-resolution-position-in-wgs-84-co-ordinates">I021/131 - High-Resolution Position in WGS-84 Co-ordinates</h3>
+<p><em>Definition</em>: Position in WGS-84 Co-ordinates in high resolution.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/131/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 30</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>30</sup></span> deg = <span class="math inline">180/1073741824</span> deg <span class="math inline"> ≈ 1.6763806343078613<em>e</em> − 07</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> deg</li>
+<li>value <span class="math inline"> &lt;  = 90</span> deg</li>
+</ul>
+<p><strong>I021/131/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 30</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>30</sup></span> deg = <span class="math inline">180/1073741824</span> deg <span class="math inline"> ≈ 1.6763806343078613<em>e</em> − 07</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> deg</li>
+<li>value <span class="math inline"> &lt; 180</span> deg</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Positive longitude indicates East. Positive latitude indicates North.</li>
+</ul>
+</blockquote>
+<h3 id="i021132---message-amplitude">I021/132 - Message Amplitude</h3>
+<p><em>Definition</em>: Amplitude, in dBm, of ADS-B messages received by the ground station, coded in two’s complement.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “dBm”</li>
+<li>LSB = <span class="math inline">1</span> dBm</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><ul>
+<li>The value gives the amplitude of the latest received squitter.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i021140---geometric-height">I021/140 - Geometric Height</h3>
+<p><em>Definition</em>: Minimum height from a plane tangent to the earth’s ellipsoid, defined by WGS-84, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 25</li>
+<li>fractional bits: 2</li>
+<li>unit: “ft”</li>
+<li>LSB = <span class="math inline">25/2<sup>2</sup></span> ft = <span class="math inline">25/4</span> ft <span class="math inline"> ≈ 6.25</span> ft</li>
+<li>value <span class="math inline"> &gt;  =  − 1500</span> ft</li>
+<li>value <span class="math inline"> &lt; 150000</span> ft</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><ol type="1">
+<li>LSB is required to be less than 10 ft by ICAO.</li>
+<li>A value of ‘0111111111111111’ indicates that the aircraft transmits a “greater than” indication.</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i021145---flight-level">I021/145 - Flight Level</h3>
+<p><em>Definition</em>: Flight Level from barometric measurements,not QNH corrected, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “FL”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> FL = <span class="math inline">1/4</span> FL <span class="math inline"> ≈ 0.25</span> FL</li>
+<li>value <span class="math inline"> &gt;  =  − 15</span> FL</li>
+<li>value <span class="math inline"> &lt; 1500</span> FL</li>
+</ul>
+<h3 id="i021146---selected-altitude">I021/146 - Selected Altitude</h3>
+<p><em>Definition</em>: The Selected Altitude as provided by the avionics and corresponding either to the MCP/FCU Selected Altitude (the ATC cleared altitude entered by the flight crew into the avionics) or to the FMS Selected Altitude.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/146/SAS</strong> - <em>Source Availability</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No source information provided<br />
+1: Source Information provided</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/146/S</strong> - <em>Source</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: Aircraft Altitude (Holding Altitude)<br />
+2: MCP/FCU Selected Altitude<br />
+3: FMS Selected Altitude</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/146/ALT</strong> - <em>Altitude</em></p>
+<ul>
+<li>13 bits [<code>.............</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 25</li>
+<li>fractional bits: 0</li>
+<li>unit: “ft”</li>
+<li>LSB = <span class="math inline">25</span> ft</li>
+<li>value <span class="math inline"> &gt;  =  − 1300</span> ft</li>
+<li>value <span class="math inline"> &lt; 100000</span> ft</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The Selected Altitude provided in this field is not necessarily the “Target Altitude” as defined by ICAO.</li>
+<li>The value of “Source” (bits 15/14) indicating “unknown” or “Aircraft Altitude” is kept for backward compatibility as these indications are not provided by “version 2” systems as defined by data item I021/210, bits 6/4.</li>
+<li>Vertical mode indications supporting the determination of the nature of the Selected Altitude are provided in the Reserved Expansion Field in the subfield NAV.</li>
+</ol>
+</blockquote>
+<h3 id="i021148---final-state-selected-altitude">I021/148 - Final State Selected Altitude</h3>
+<p><em>Definition</em>: The vertical intent value that corresponds with the ATC cleared altitude, as derived from the Altitude Control Panel (MCP/FCU).</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/148/MV</strong> - <em>Manage Vertical Mode</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Not active or unknown<br />
+1: Active</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/148/AH</strong> - <em>Altitude Hold Mode</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Not active or unknown<br />
+1: Active</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/148/AM</strong> - <em>Approach Mode</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Not active or unknown<br />
+1: Active</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/148/ALT</strong> - <em>Altitude</em></p>
+<ul>
+<li>13 bits [<code>.............</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 25</li>
+<li>fractional bits: 0</li>
+<li>unit: “ft”</li>
+<li>LSB = <span class="math inline">25</span> ft</li>
+<li>value <span class="math inline"> &gt;  =  − 1300</span> ft</li>
+<li>value <span class="math inline"> &lt; 100000</span> ft</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>This item is kept for backward compatibility but shall not be used for “version 2” ADS-B systems (as defined by data item I021/210, bits 6/4) for which item 146 will be used to forward the MCP/FCU or the FMS selected altitude information. For “version 2” ADS-B systems, the vertical mode indications will be provided through the Reserved Expansion Field in the subfield NAV .</li>
+</ul>
+</blockquote>
+<h3 id="i021150---air-speed">I021/150 - Air Speed</h3>
+<p><em>Definition</em>: Calculated Air Speed (Element of Air Vector).</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/150/IM</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s<br />
+1: Air Speed = Mach, LSB (Bit-1) = 0.001</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/150/AS</strong> - <em>Air Speed (IAS or Mach)</em></p>
+<ul>
+<li><p>15 bits [<code>...............</code>]</p></li>
+<li><p>Content of this item depends on the value of item <code>150/IM</code>.</p>
+<blockquote>
+<ul>
+<li><dl>
+<dt>In case of <code>150/IM == 0</code>:</dt>
+<dd><ul>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 14</li>
+<li>unit: “NM/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s = <span class="math inline">1/16384</span> NM/s <span class="math inline"> ≈ 6.103515625<em>e</em> − 05</span> NM/s</li>
+</ul>
+</dd>
+</dl></li>
+<li><dl>
+<dt>In case of <code>150/IM == 1</code>:</dt>
+<dd><ul>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.001</li>
+<li>fractional bits: 0</li>
+<li>unit: “mach”</li>
+<li>LSB = <span class="math inline">0.001</span> mach</li>
+</ul>
+</dd>
+</dl></li>
+</ul>
+</blockquote></li>
+</ul>
+</blockquote>
+<h3 id="i021151---true-airspeed">I021/151 - True Airspeed</h3>
+<p><em>Definition</em>: True Air Speed.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/151/RE</strong> - <em>Range Exceeded Indicator</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Value in defined range<br />
+1: Value exceeds defined range</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/151/TAS</strong> - <em>True Air Speed</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “kt”</li>
+<li>LSB = <span class="math inline">1</span> kt</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The RE-Bit, if set, indicates that the value to be transmitted is beyond the range defined for this specific data item and the applied technology. In this case the True Air Speed contains the maximum value that can be downloaded from the aircraft avionics and the RE-bit indicates that the actual value is greater than the value contained in the field.</li>
+</ul>
+</blockquote>
+<h3 id="i021152---magnetic-heading">I021/152 - Magnetic Heading</h3>
+<p><em>Definition</em>: Magnetic Heading (Element of Air Vector).</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 360</li>
+<li>fractional bits: 16</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> deg = <span class="math inline">360/65536</span> deg <span class="math inline"> ≈ 0.0054931640625</span> deg</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>True North Heading is defined in the Reserved Expansion Field in the subfield TNH.</li>
+</ul>
+</blockquote>
+<h3 id="i021155---barometric-vertical-rate">I021/155 - Barometric Vertical Rate</h3>
+<p><em>Definition</em>: Barometric Vertical Rate, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/155/RE</strong> - <em>Range Exceeded Indicator</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Value in defined range<br />
+1: Value exceeds defined range</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/155/BVR</strong> - <em>Barometric Vertical Rate</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 25</li>
+<li>fractional bits: 2</li>
+<li>unit: “feet/min”</li>
+<li>LSB = <span class="math inline">25/2<sup>2</sup></span> feet/min = <span class="math inline">25/4</span> feet/min <span class="math inline"> ≈ 6.25</span> feet/min</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The RE-Bit, if set, indicates that the value to be transmitted is beyond the range defined for this specific data item and the applied technology. In this case the Barometric Vertical Rate contains the maximum value that can be downloaded from the aircraft avionics and the RE-bit indicates that the actual value is greater than the value contained in the field.</li>
+</ul>
+</blockquote>
+<h3 id="i021157---geometric-vertical-rate">I021/157 - Geometric Vertical Rate</h3>
+<p><em>Definition</em>: Geometric Vertical Rate, in two’s complement form, with reference to WGS-84.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/157/RE</strong> - <em>Range Exceeded Indicator</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Value in defined range<br />
+1: Value exceeds defined range</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/157/GVR</strong> - <em>Geometric Vertical Rate</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 25</li>
+<li>fractional bits: 2</li>
+<li>unit: “feet/min”</li>
+<li>LSB = <span class="math inline">25/2<sup>2</sup></span> feet/min = <span class="math inline">25/4</span> feet/min <span class="math inline"> ≈ 6.25</span> feet/min</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The RE-Bit, if set, indicates that the value to be transmitted is beyond the range defined for this specific data item and the applied technology. In this case the Geometric Vertical Rate contains the maximum value that can be downloaded from the aircraft avionics and the RE-bit indicates that the actual value is greater than the value contained in the field.</li>
+</ul>
+</blockquote>
+<h3 id="i021160---airborne-ground-vector">I021/160 - Airborne Ground Vector</h3>
+<p><em>Definition</em>: Ground Speed and Track Angle elements of Airborne Ground Vector.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/160/RE</strong> - <em>Range Exceeded Indicator</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Value in defined range<br />
+1: Value exceeds defined range</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/160/GS</strong> - <em>Ground Speed Referenced to WGS-84</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 14</li>
+<li>unit: “NM/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s = <span class="math inline">1/16384</span> NM/s <span class="math inline"> ≈ 6.103515625<em>e</em> − 05</span> NM/s</li>
+<li>value <span class="math inline"> &gt;  = 0</span> NM/s</li>
+<li>value <span class="math inline"> &lt; 2</span> NM/s</li>
+</ul>
+<p><strong>I021/160/TA</strong> - <em>Track Angle Clockwise Reference to True North</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 360</li>
+<li>fractional bits: 16</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> deg = <span class="math inline">360/65536</span> deg <span class="math inline"> ≈ 0.0054931640625</span> deg</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The RE-Bit, if set, indicates that the value to be transmitted is beyond the range defined for this specific data item and the applied technology. In this case the Ground Speed contains the maximum value that can be downloaded from the aircraft avionics and the RE-bit indicates that the actual value is greater than the value contained in the field.</li>
+<li>The Surface Ground Vector format is defined in the Reserved Expansion Field in the subfield SGV.</li>
+</ol>
+</blockquote>
+<h3 id="i021161---track-number">I021/161 - Track Number</h3>
+<p><em>Definition</em>: An integer value representing a unique reference to a track record within a particular track file.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/161/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I021/161/TRNUM</strong> - <em>Track Number</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i021165---track-angle-rate">I021/165 - Track Angle Rate</h3>
+<p><em>Definition</em>: Rate of Turn, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/165/(spare)</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+</ul>
+<p><strong>I021/165/TAR</strong> - <em>Track Angle Rate</em></p>
+<ul>
+<li>10 bits [<code>..........</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 5</li>
+<li>unit: “deg/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>5</sup></span> deg/s = <span class="math inline">1/32</span> deg/s <span class="math inline"> ≈ 0.03125</span> deg/s</li>
+<li>value <span class="math inline"> &gt;  =  − 16</span> deg/s</li>
+<li>value <span class="math inline"> &lt;  = 16</span> deg/s</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>A positive value represents a right turn, whereas a negative value represents a left turn.</li>
+<li>Maximum value means Maximum value or above.</li>
+<li>This item will not be transmitted for the technology 1090 MHz Extended Squitter.</li>
+</ol>
+</blockquote>
+<h3 id="i021170---target-identification">I021/170 - Target Identification</h3>
+<p><em>Definition</em>: Target (aircraft or vehicle) identification in 8 characters, as reported by the target.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>48 bits [<code>................................................</code>]</li>
+<li>ICAO string (6-bits per character)</li>
+</ul>
+<h3 id="i021200---target-status">I021/200 - Target Status</h3>
+<p><em>Definition</em>: Status of the target</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/200/ICF</strong> - <em>Intent Change Flag (see Note)</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No intent change active<br />
+1: Intent change flag raised</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/200/LNAV</strong> - <em>LNAV Mode</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: LNAV Mode engaged<br />
+1: LNAV Mode not engaged</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/200/ME</strong> - <em>Military Emergency</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No military emergency<br />
+1: Military emergency</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/200/PS</strong> - <em>Priority Status</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No emergency / not reported<br />
+1: General emergency<br />
+2: Lifeguard / medical emergency<br />
+3: Minimum fuel<br />
+4: No communications<br />
+5: Unlawful interference<br />
+6: DOWNED Aircraft</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/200/SS</strong> - <em>Surveillance Status</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No condition reported<br />
+1: Permanent Alert (Emergency condition)<br />
+2: Temporary Alert (change in Mode 3/A Code other than emergency)<br />
+3: SPI set</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Bit-8 (ICF), when set to “1” indicates that new information is available in the Mode S GICB registers 40, 41 or 42.</li>
+</ul>
+</blockquote>
+<h3 id="i021210---mops-version">I021/210 - MOPS Version</h3>
+<p><em>Definition</em>: Identification of the MOPS version used by a/c to supply ADS-B information.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/210/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I021/210/VNS</strong> - <em>Version Not Supported</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: The MOPS Version is supported by the GS<br />
+1: The MOPS Version is not supported by the GS</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/210/VN</strong> - <em>Version Number</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: ED102/DO-260 [Ref. 8]<br />
+1: DO-260A [Ref. 9]<br />
+2: ED102A/DO-260B [Ref. 11]</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/210/LTT</strong> - <em>Link Technology Type</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Other<br />
+1: UAT<br />
+2: 1090 ES<br />
+3: VDL 4<br />
+4: Not assigned<br />
+5: Not assigned<br />
+6: Not assigned<br />
+7: Not assigned</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>VN sub-field shall contain a value describing the MOPS used by each aircraft. The versions of other link technologies are assumed to be in line with the 1090 ES MOPS versions and the corresponding MASPS versions.</li>
+<li>Bit 7 (VNS) when set to 1 indicates that the aircraft transmits a MOPS Version indication that is not supported by the Ground Station. However, since MOPS versions are supposed to be backwards compatible, the GS has attempted to interpret the message and achieved a credible result. The fact that the MOPS version received is not supported by the GS is submitted as additional information to subsequent processing systems.</li>
+</ul>
+</blockquote>
+<h3 id="i021220---met-information">I021/220 - Met Information</h3>
+<p><em>Definition</em>: Meteorological information.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I021/220/WS</strong> - <em>Wind Speed</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “kt”</li>
+<li>LSB = <span class="math inline">1</span> kt</li>
+<li>value <span class="math inline"> &gt;  = 0</span> kt</li>
+<li>value <span class="math inline"> &lt;  = 300</span> kt</li>
+</ul>
+<p><strong>I021/220/WD</strong> - <em>Wind Direction</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">1</span> deg</li>
+<li>value <span class="math inline"> &gt;  = 1</span> deg</li>
+<li>value <span class="math inline"> &lt;  = 360</span> deg</li>
+</ul>
+<p><strong>I021/220/TMP</strong> - <em>Temperature</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “degC”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> degC = <span class="math inline">1/4</span> degC <span class="math inline"> ≈ 0.25</span> degC</li>
+<li>value <span class="math inline"> &gt;  =  − 100</span> degC</li>
+<li>value <span class="math inline"> &lt;  = 100</span> degC</li>
+</ul>
+<p><strong>I021/220/TRB</strong> - <em>Turbulence</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 15</span></li>
+</ul>
+</blockquote>
+<h3 id="i021230---roll-angle">I021/230 - Roll Angle</h3>
+<p><em>Definition</em>: The roll angle, in two’s complement form, of an aircraft executing a turn.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 0.01</li>
+<li>fractional bits: 0</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">0.01</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> deg</li>
+<li>value <span class="math inline"> &lt;  = 180</span> deg</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Negative Value indicates “Left Wing Down”.</li>
+<li>Resolution provided by the technology “1090 MHz Extended Squitter” is 1 degree.</li>
+</ol>
+</blockquote>
+<h3 id="i021250---mode-s-mb-data">I021/250 - Mode S MB Data</h3>
+<p><em>Definition</em>: Mode S Comm B data as extracted from the aircraft transponder.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<ul>
+<li>64 bits [<code>................................................................</code>]</li>
+<li>BDS register with address</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>For the transmission of BDS20, item 170 should be used.</li>
+<li>For the transmission of BDS30, item 260 is used.</li>
+</ol>
+</blockquote>
+<h3 id="i021260---acas-resolution-advisory-report">I021/260 - ACAS Resolution Advisory Report</h3>
+<p><em>Definition</em>: Currently active Resolution Advisory (RA), if any, generated by the ACAS associated with the transponder transmitting the RA message and threat identity data.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I021/260/TYP</strong> - <em>Message Type (= 28 for 1090 ES, Version 2)</em></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/260/STYP</strong> - <em>Message Sub-type (= 2 for 1090 ES, Version 2)</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/260/ARA</strong> - <em>Active Resolution Advisories</em></p>
+<ul>
+<li>14 bits [<code>..............</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/260/RAC</strong> - <em>RAC (RA Complement) Record</em></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/260/RAT</strong> - <em>RA Terminated</em></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/260/MTE</strong> - <em>Multiple Threat Encounter</em></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/260/TTI</strong> - <em>Threat Type Indicator</em></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/260/TID</strong> - <em>Threat Identity Data</em></p>
+<ul>
+<li>26 bits [<code>..........................</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Version denotes the MOPS version as defined in I021/210, bits 6/4</li>
+<li>This data items copies the value of BDS register 6,1 for message type 28, subtype 2</li>
+<li>The “TYP” and “STYP” items are implementation (i.e. link technology) dependent.</li>
+<li>Refer to ICAO Annex 10 SARPs for detailed explanations [Ref. 10]</li>
+</ol>
+</blockquote>
+<h3 id="i021271---surface-capabilities-and-characteristics">I021/271 - Surface Capabilities and Characteristics</h3>
+<p><em>Definition</em>: Operational capabilities of the aircraft while on the ground.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I021/271/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I021/271/POA</strong> - <em>Position Offset Applied</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Position transmitted is not ADS-B position reference point<br />
+1: Position transmitted is the ADS-B position reference point</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/271/CDTIS</strong> - <em>Cockpit Display of Traffic Information Surface</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: CDTI not operational<br />
+1: CDTI operational</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/271/B2LOW</strong> - <em>Class B2 Transmit Power Less Than 70 Watts</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: &gt;= 70 Watts<br />
+1: &lt; 70 Watts</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/271/RAS</strong> - <em>Receiving ATC Services</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Aircraft not receiving ATC-services<br />
+1: Aircraft receiving ATC services</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/271/IDENT</strong> - <em>Setting of IDENT Switch</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: IDENT switch not active<br />
+1: IDENT switch active</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/271/LW</strong> - <em>Length and Width of the Aircraft</em></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/271/(spare)</strong></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Version 2 (as defined in I021/210, bits 6/4) data technology protocols encode “No Data or Unknown” with value 0. In this case data item I021/271, first extension is not generated.</li>
+<li>As of edition 2.2 the structure of this data item has been changed. Edition 2.2 is not backwards compatible with previous editions.</li>
+</ol>
+</blockquote>
+<h3 id="i021295---data-ages">I021/295 - Data Ages</h3>
+<p><em>Definition</em>: Ages of the data provided.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I021/295/AOS</strong> - <em>Aircraft Operational Status Age</em></p>
+<p>Age of the information transmitted in item I021/008.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/TRD</strong> - <em>Target Report Descriptor Age</em></p>
+<p>Age of the Target Report Descriptor, item I021/040</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/M3A</strong> - <em>Mode 3/A Age</em></p>
+<p>Age of the Mode 3/A Code, item I021/070</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/QI</strong> - <em>Quality Indicators Age</em></p>
+<p>Age of the Quality Indicators, item I021/090</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/TI1</strong> - <em>Trajectory Intent Age</em></p>
+<p>Age of the Trajectory Intent information, item I021/110</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/MAM</strong> - <em>Message Amplitude Age</em></p>
+<p>Age of the message amplitude, item I021/132</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/GH</strong> - <em>Geometric Height Age</em></p>
+<p>Age of the Geometric Height, item 021/140</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/FL</strong> - <em>Flight Level Age</em></p>
+<p>Age of the Flight Level, item I021/145</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/ISA</strong> - <em>Intermediate State Selected Altitude Age</em></p>
+<p>Age of the Intermediate State Selected Altitude, item I021/146</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/FSA</strong> - <em>Final State Selected Altitude Age</em></p>
+<p>Age of the Final State Selected Altitude, item I021/148</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/AS</strong> - <em>Air Speed Age</em></p>
+<p>Age of the Air Speed, item I021/150</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/TAS</strong> - <em>True Air Speed Age</em></p>
+<p>Age of the True Air Speed, item I021/151</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/MH</strong> - <em>Magnetic Heading Age</em></p>
+<p>Age of the Magnetic Heading, item I021/152</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/BVR</strong> - <em>Barometric Vertical Rate Age</em></p>
+<p>Age of the Barometric Vertical Rate, item I021/155</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/GVR</strong> - <em>Geometric Vertical Rate Age</em></p>
+<p>Age of the Geometric Vertical Rate, item I021/157</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/GV</strong> - <em>Ground Vector Age</em></p>
+<p>Age of the Ground Vector, item I021/160</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/TAR</strong> - <em>Track Angle Rate Age</em></p>
+<p>Age of the Track Angle Rate, item I021/165</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/TI2</strong> - <em>Target Identification Age</em></p>
+<p>Age of the Target Identification, item I021/170</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/TS</strong> - <em>Target Status Age</em></p>
+<p>Age of the Target Status, item I021/200</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/MET</strong> - <em>Met Information Age</em></p>
+<p>Age of the Meteorological Information, item I021/220</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/ROA</strong> - <em>Roll Angle Age</em></p>
+<p>Age of the Roll Angle, item I021/230</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/ARA</strong> - <em>ACAS Resolution Advisory Age</em></p>
+<p>Age of the latest update of an active ACAS Resolution Advisory, item I021/260</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+<p><strong>I021/295/SCC</strong> - <em>Surface Capabilities and Characteristics Age</em></p>
+<p>Age of the information on the surface capabilities and characteristics of the respective target, item I021/271</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">0.1</span> s</li>
+<li>value <span class="math inline"> &lt;  = 25.5</span> s</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>In all the subfields, the maximum value indicates “maximum value or above”.</li>
+</ul>
+</blockquote>
+<h3 id="i021400---receiver-id">I021/400 - Receiver ID</h3>
+<p><em>Definition</em>: Designator of Ground Station in Distributed System.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<h3 id="i021re---reserved-expansion-field">I021/RE - Reserved Expansion Field</h3>
+<p><em>Definition</em>: Expansion</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h3 id="i021sp---special-purpose-field">I021/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h1 id="user-application-profile-for-category-021">User Application Profile for Category 021</h1>
+<ul>
+<li><ol type="1">
+<li><code>I021/010</code> - Data Source Identification</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I021/040</code> - Target Report Descriptor</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I021/161</code> - Track Number</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I021/015</code> - Service Identification</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I021/071</code> - Time of Applicability for Position</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I021/130</code> - Position in WGS-84 Co-ordinates</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I021/131</code> - High-Resolution Position in WGS-84 Co-ordinates</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I021/072</code> - Time of Applicability for Velocity</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I021/150</code> - Air Speed</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I021/151</code> - True Airspeed</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I021/080</code> - Target Address</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I021/073</code> - Time of Message Reception for Position</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I021/074</code> - Time of Message Reception of Position-High Precision</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I021/075</code> - Time of Message Reception for Velocity</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="15" type="1">
+<li><code>I021/076</code> - Time of Message Reception of Velocity-High Precision</li>
+</ol></li>
+<li><ol start="16" type="1">
+<li><code>I021/140</code> - Geometric Height</li>
+</ol></li>
+<li><ol start="17" type="1">
+<li><code>I021/090</code> - Quality Indicators</li>
+</ol></li>
+<li><ol start="18" type="1">
+<li><code>I021/210</code> - MOPS Version</li>
+</ol></li>
+<li><ol start="19" type="1">
+<li><code>I021/070</code> - Mode 3/A Code in Octal Representation</li>
+</ol></li>
+<li><ol start="20" type="1">
+<li><code>I021/230</code> - Roll Angle</li>
+</ol></li>
+<li><ol start="21" type="1">
+<li><code>I021/145</code> - Flight Level</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="22" type="1">
+<li><code>I021/152</code> - Magnetic Heading</li>
+</ol></li>
+<li><ol start="23" type="1">
+<li><code>I021/200</code> - Target Status</li>
+</ol></li>
+<li><ol start="24" type="1">
+<li><code>I021/155</code> - Barometric Vertical Rate</li>
+</ol></li>
+<li><ol start="25" type="1">
+<li><code>I021/157</code> - Geometric Vertical Rate</li>
+</ol></li>
+<li><ol start="26" type="1">
+<li><code>I021/160</code> - Airborne Ground Vector</li>
+</ol></li>
+<li><ol start="27" type="1">
+<li><code>I021/165</code> - Track Angle Rate</li>
+</ol></li>
+<li><ol start="28" type="1">
+<li><code>I021/077</code> - Time of ASTERIX Report Transmission</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="29" type="1">
+<li><code>I021/170</code> - Target Identification</li>
+</ol></li>
+<li><ol start="30" type="1">
+<li><code>I021/020</code> - Emitter Category</li>
+</ol></li>
+<li><ol start="31" type="1">
+<li><code>I021/220</code> - Met Information</li>
+</ol></li>
+<li><ol start="32" type="1">
+<li><code>I021/146</code> - Selected Altitude</li>
+</ol></li>
+<li><ol start="33" type="1">
+<li><code>I021/148</code> - Final State Selected Altitude</li>
+</ol></li>
+<li><ol start="34" type="1">
+<li><code>I021/110</code> - Trajectory Intent</li>
+</ol></li>
+<li><ol start="35" type="1">
+<li><code>I021/016</code> - Service Management</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="36" type="1">
+<li><code>I021/008</code> - Aircraft Operational Status</li>
+</ol></li>
+<li><ol start="37" type="1">
+<li><code>I021/271</code> - Surface Capabilities and Characteristics</li>
+</ol></li>
+<li><ol start="38" type="1">
+<li><code>I021/132</code> - Message Amplitude</li>
+</ol></li>
+<li><ol start="39" type="1">
+<li><code>I021/250</code> - Mode S MB Data</li>
+</ol></li>
+<li><ol start="40" type="1">
+<li><code>I021/260</code> - ACAS Resolution Advisory Report</li>
+</ol></li>
+<li><ol start="41" type="1">
+<li><code>I021/400</code> - Receiver ID</li>
+</ol></li>
+<li><ol start="42" type="1">
+<li><code>I021/295</code> - Data Ages</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="43" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="44" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="45" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="46" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="47" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="48" type="1">
+<li><code>I021/RE</code> - Reserved Expansion Field</li>
+</ol></li>
+<li><ol start="49" type="1">
+<li><code>I021/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

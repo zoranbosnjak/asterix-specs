@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - Structure</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+        <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./specs.html">Specifications</a>
+                <a href="./struct.html">Structure</a>
+                <a href="./syntax.html">Syntax</a>
+                <a href="./tools.html">Tools</a>
+                <a href="./faq.html">FAQ</a>
+                <a href="./source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-structure">Asterix structure</h1>
+<p>Basic principles of asterix are described in the <a href="https://www.eurocontrol.int/publication/eurocontrol-specification-surveillance-data-exchange-part-i">part 1 document</a>. This project reuses the definitions and vocabulary as much as possible.</p>
+<h2 id="example">Example</h2>
+<figure>
+<img src="./images/asterix-example.svg.png" alt /><figcaption>asterix example</figcaption>
+</figure>
+<h2 id="definition-of-terms">Definition of terms</h2>
+<ul>
+<li><p><strong>asterix category</strong> is a toplevel structure containing complete specification.</p></li>
+<li><p><strong>category number</strong> is a number between 0 and 255.</p></li>
+<li><p><strong>edition</strong> is a pair of numbers <code>major</code>.<code>minor</code>. <em>Major</em> and <em>minor</em> numbers have no particular meaning except to determine the order of versions of a category.</p></li>
+<li><p><strong>preamble</strong> represents an arbitrary text to describe a category.</p></li>
+<li><p><strong>item catalogue</strong> is a list of asterix items which represents the main part of the definition.</p></li>
+<li><p><strong>UAP</strong> - user application profile - ordered selection of items from the <strong>item catalogue</strong>.</p></li>
+<li><p><strong>asterix item</strong> - a basic building block to define asterix structure.</p></li>
+<li><p><strong>subitem</strong> - same as <strong>item</strong>, but lower in the hierarchical item structure.</p></li>
+<li><p><strong>item type</strong> or <strong>variation</strong> - possible variations are: <strong>element</strong>, <strong>compound</strong>, <strong>extended</strong>…</p></li>
+<li><p><strong>content</strong> is the interpretation of bits: <strong>raw</strong>, <strong>integer</strong>, <strong>table</strong>…</p></li>
+</ul>
+<h2 id="abstract-structure">Abstract structure</h2>
+<p><strong>Asterix</strong> is a structure containing:</p>
+<ul>
+<li>category number (Integer)</li>
+<li>title (Text)</li>
+<li>edition</li>
+<li>date</li>
+<li>preamble (Text)</li>
+<li>catalogue (list of Items)</li>
+<li>uap (one or more UAP definitions)</li>
+</ul>
+<p><strong>Item</strong> is a structure containing:</p>
+<ul>
+<li>name or item identifier (String, normaly short)</li>
+<li>title (Text)</li>
+<li>definition (Optional Text)</li>
+<li>description (Optional Text)</li>
+<li>Variation</li>
+<li>remark (Optional Text)</li>
+</ul>
+<p><strong>Item</strong> can also be empty (occupying defined number of spare bits).</p>
+<p><strong>Variation</strong> (or <strong>ItemType</strong>) is one of:</p>
+<ul>
+<li>Element (containing number of bits and content definition)</li>
+<li>Group (containing list of Items)</li>
+<li>Extended (containing list of Items and position of FX bits)</li>
+<li>Repetitive (containing number of bits for the first part and recursive ItemType definition)</li>
+<li>Explicit (no further information attached)</li>
+<li>Compound (containing list of Items where some items may be missing)</li>
+</ul>
+<p>Remark:</p>
+<blockquote>
+<p><strong>Item</strong> and <strong>Variation</strong> are defined in terms of mutual recursion.</p>
+</blockquote>
+<p><strong>Content</strong> is one of:</p>
+<ul>
+<li><em>Raw</em> value</li>
+<li><em>Table</em> of possible values</li>
+<li><em>Ascii</em>, <em>ICAO</em> or <em>Octal String</em></li>
+<li><em>Signed</em> or <em>Unsigned Integer</em></li>
+<li><em>Signed</em> or <em>Unsigned Quantity</em> (including units)</li>
+<li><em>BDS</em> register (with or without address)</li>
+</ul>
+<p>Remark:</p>
+<blockquote>
+<p>This structure makes distinction between <em>Raw</em> value and <em>Unsigned Integer</em>. A <em>raw</em> value is a content where the bits don’t have any particular meaning, other then just representing some <em>identifier</em> (this is true in most of the cases, for example the <em>SAC/SIC</em> code).</p>
+<p><em>Unsigned Integer</em> is similar, however semantically there is a small difference. In strongly typed environments, the compiler can prevent some irregular operations over <em>raw</em> values. For example: it makes no sense to <em>add/multiply</em> 2 identifiers, whereas the same arithmetic operations over <em>unsigned integers</em> are well defined. One such example is a content that represents <em>seconds</em>.</p>
+</blockquote>
+<h2 id="validation-rules">Validation rules</h2>
+<p>For each defined item or subitem, the following validation rules are enforced by the <a href="./tools.html">validator</a>:</p>
+<ul>
+<li>Tables shall not contain duplicated entries.</li>
+<li>Each table entry shall contain non-empty description.</li>
+<li>Number of element bits must be sufficient for specified table size, the table however does not need to be completely defined.</li>
+<li>First word in each table row description shall be capitalized (“Like this”).</li>
+<li>No dot ‘.’ is expected at the end of row description.</li>
+<li>“ascii”, “icao”, “octal” strings shall have (8,6,3) bits per character respectively.</li>
+<li>“scaling factor” and number of “fractional bits” are checked if optimally defined, for example, the scaling factor of “0.5” is suggested to be redefined as “1” fractional bit, to avoid potential rounding error.</li>
+<li>Values with “negative constraints” shall be of “signed” type.</li>
+<li>BDS values are expected to be “64” bits long if the address is included or “56” bits long otherwise.</li>
+<li>Defined subitems within each (sub)items shall have non-duplicated names.</li>
+<li>Element size must be ‘positive’.</li>
+<li>All elements together within a ‘Group’ shall be 8-bit aligned.</li>
+<li>A ‘Group’ shall contain more than 1 element (single element group shall be simplified to just ‘Element’).</li>
+<li>Elements sizes within ‘Extended’ item shall be properly bit-aligned and “a-priory” known.</li>
+<li>Repetitive item shall specify a “REP” factor size, which must be positive and 8-bit aligned.</li>
+<li>Repetitive item content shall be 8-bit aligned.</li>
+<li>Compound item as a whole shall be 8-bit aligned.</li>
+<li>Spare item shall have a positive bit size.</li>
+<li>Short item names shall be <code>&lt;= 15</code> character long.</li>
+<li>Short item names shall only contain characters “A-Z” and digits “0-9”, (for example “SAC”, “010”, …).</li>
+<li>Item title shall be all capitalized (“Like This Example”), see the source code for some short words exceptions, like “in”, “and”, “of”…</li>
+<li>A dot at the end of item title is not expected.</li>
+<li>Category number shall be within range <code>[0,255]</code>.</li>
+<li>All defined items in a category shall be referenced by ‘UAP’.</li>
+<li>All items referenced by ‘UAP’ shall be defined.</li>
+<li>Top level items (like subitems) shall not be duplicated.</li>
+<li>Items listed in UAP shall not be duplicated.</li>
+<li>In case of multiple UAPs, each UAP requires unique name (example: “plot”, “track” for cat001).</li>
+<li>In case of non-context free item definitions, the depending item shall be defined, for example, the meaning of item <code>I062/380/IAS/IAS</code> depends on the current value of <code>I062/380/IAS/IM</code>. The validation requires that <code>I062/380/IAS/IM</code> is also defined and of a fixed size. It is also checked that number of cases does not exceed what that size can represent.</li>
+<li>Subitem names shall be non-repetitive, in respect to the parent item name, for example: “POSITION/POSITIONX” is suggested to change to “POSITION/X”.</li>
+</ul>
+<h2 id="asterix-definition-in-haskell-syntax">Asterix definition in <code>haskell</code> syntax</h2>
+<p>The essence of asterix definition is recursively encoded in <code>Item</code> and it’s <code>Variation</code>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">type</span> <span class="dt">RegisterSize</span> <span class="ot">=</span> <span class="dt">Int</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">type</span> <span class="dt">PrimarySize</span> <span class="ot">=</span> <span class="dt">Int</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">type</span> <span class="dt">ExtensionSize</span> <span class="ot">=</span> <span class="dt">Int</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">type</span> <span class="dt">RepetitionSize</span> <span class="ot">=</span> <span class="dt">Int</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">type</span> <span class="dt">FractBits</span> <span class="ot">=</span> <span class="dt">Int</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">type</span> <span class="dt">Name</span> <span class="ot">=</span> <span class="dt">Text</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="kw">type</span> <span class="dt">Title</span> <span class="ot">=</span> <span class="dt">Text</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="kw">type</span> <span class="dt">UapName</span> <span class="ot">=</span> <span class="dt">Text</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">type</span> <span class="dt">Unit</span> <span class="ot">=</span> <span class="dt">Text</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">data</span> <span class="dt">Documentation</span> <span class="ot">=</span> <span class="dt">Documentation</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>    {<span class="ot"> docDefinition     ::</span> <span class="dt">Maybe</span> <span class="dt">Text</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a>    ,<span class="ot"> docDescription    ::</span> <span class="dt">Maybe</span> <span class="dt">Text</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>    ,<span class="ot"> docRemark         ::</span> <span class="dt">Maybe</span> <span class="dt">Text</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>    }</span>
+<span id="cb1-17"><a href="#cb1-17"></a></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="kw">data</span> <span class="dt">Edition</span> <span class="ot">=</span> <span class="dt">Edition</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>    {<span class="ot"> editionMajor ::</span> <span class="dt">Int</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>    ,<span class="ot"> editionMinor ::</span> <span class="dt">Int</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>    }</span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="kw">data</span> <span class="dt">Date</span> <span class="ot">=</span> <span class="dt">Date</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a>    {<span class="ot"> dateYear  ::</span> <span class="dt">Integer</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>    ,<span class="ot"> dateMonth ::</span> <span class="dt">Int</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>    ,<span class="ot"> dateDay   ::</span> <span class="dt">Int</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>    }</span>
+<span id="cb1-28"><a href="#cb1-28"></a></span>
+<span id="cb1-29"><a href="#cb1-29"></a><span class="kw">data</span> <span class="dt">StringType</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a>    <span class="ot">=</span> <span class="dt">StringAscii</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a>    <span class="op">|</span> <span class="dt">StringICAO</span></span>
+<span id="cb1-32"><a href="#cb1-32"></a>    <span class="op">|</span> <span class="dt">StringOctal</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a></span>
+<span id="cb1-34"><a href="#cb1-34"></a><span class="kw">data</span> <span class="dt">BdsType</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>    <span class="ot">=</span> <span class="dt">BdsWithAddress</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>    <span class="op">|</span> <span class="dt">BdsAt</span> (<span class="dt">Maybe</span> <span class="dt">BdsAddr</span>)</span>
+<span id="cb1-37"><a href="#cb1-37"></a></span>
+<span id="cb1-38"><a href="#cb1-38"></a><span class="kw">data</span> <span class="dt">Content</span></span>
+<span id="cb1-39"><a href="#cb1-39"></a>    <span class="ot">=</span> <span class="dt">ContentRaw</span></span>
+<span id="cb1-40"><a href="#cb1-40"></a>    <span class="op">|</span> <span class="dt">ContentTable</span></span>
+<span id="cb1-41"><a href="#cb1-41"></a>        [(<span class="dt">Int</span>, <span class="dt">Text</span>)]</span>
+<span id="cb1-42"><a href="#cb1-42"></a>    <span class="op">|</span> <span class="dt">ContentString</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a>        <span class="dt">StringType</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a>    <span class="op">|</span> <span class="dt">ContentInteger</span></span>
+<span id="cb1-45"><a href="#cb1-45"></a>        <span class="dt">Signed</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a>        [<span class="dt">Constrain</span>]</span>
+<span id="cb1-47"><a href="#cb1-47"></a>    <span class="op">|</span> <span class="dt">ContentQuantity</span></span>
+<span id="cb1-48"><a href="#cb1-48"></a>        <span class="dt">Signed</span>      <span class="co">-- unsigned/signed</span></span>
+<span id="cb1-49"><a href="#cb1-49"></a>        <span class="dt">Number</span>      <span class="co">-- scaling factor</span></span>
+<span id="cb1-50"><a href="#cb1-50"></a>        <span class="dt">FractBits</span>   <span class="co">-- number for fractional bits</span></span>
+<span id="cb1-51"><a href="#cb1-51"></a>        <span class="dt">Unit</span>        <span class="co">-- unit</span></span>
+<span id="cb1-52"><a href="#cb1-52"></a>        [<span class="dt">Constrain</span>]</span>
+<span id="cb1-53"><a href="#cb1-53"></a>    <span class="op">|</span> <span class="dt">ContentBds</span></span>
+<span id="cb1-54"><a href="#cb1-54"></a>        <span class="dt">BdsType</span></span>
+<span id="cb1-55"><a href="#cb1-55"></a></span>
+<span id="cb1-56"><a href="#cb1-56"></a><span class="kw">data</span> <span class="dt">Variation</span></span>
+<span id="cb1-57"><a href="#cb1-57"></a>    <span class="co">-- leaf of the structure</span></span>
+<span id="cb1-58"><a href="#cb1-58"></a>    <span class="ot">=</span> <span class="dt">Element</span> <span class="dt">RegisterSize</span> (<span class="dt">Rule</span> <span class="dt">Content</span>)</span>
+<span id="cb1-59"><a href="#cb1-59"></a></span>
+<span id="cb1-60"><a href="#cb1-60"></a>    <span class="co">-- concatinated subitems, example:</span></span>
+<span id="cb1-61"><a href="#cb1-61"></a>    <span class="co">-- item 010 is concatinated list of subitems SAC and SIC</span></span>
+<span id="cb1-62"><a href="#cb1-62"></a>    <span class="op">|</span> <span class="dt">Group</span> [<span class="dt">Item</span>]</span>
+<span id="cb1-63"><a href="#cb1-63"></a></span>
+<span id="cb1-64"><a href="#cb1-64"></a>    <span class="co">-- extended item with FX extension mechanism</span></span>
+<span id="cb1-65"><a href="#cb1-65"></a>    <span class="op">|</span> <span class="dt">Extended</span> <span class="dt">PrimarySize</span> <span class="dt">ExtensionSize</span> [<span class="dt">Item</span>]</span>
+<span id="cb1-66"><a href="#cb1-66"></a></span>
+<span id="cb1-67"><a href="#cb1-67"></a>    <span class="co">-- N bits reserved for REP lengt field, followed by recursive variation</span></span>
+<span id="cb1-68"><a href="#cb1-68"></a>    <span class="op">|</span> <span class="dt">Repetitive</span> <span class="dt">RepetitionSize</span> <span class="dt">Variation</span></span>
+<span id="cb1-69"><a href="#cb1-69"></a></span>
+<span id="cb1-70"><a href="#cb1-70"></a>    <span class="co">-- item with explicit size</span></span>
+<span id="cb1-71"><a href="#cb1-71"></a>    <span class="op">|</span> <span class="dt">Explicit</span></span>
+<span id="cb1-72"><a href="#cb1-72"></a></span>
+<span id="cb1-73"><a href="#cb1-73"></a>    <span class="co">-- list of subitems with FSPEC mechanism</span></span>
+<span id="cb1-74"><a href="#cb1-74"></a>    <span class="co">-- Some subitems may not be defined in which case the respective</span></span>
+<span id="cb1-75"><a href="#cb1-75"></a>    <span class="co">-- presence bit in the first part is always zero</span></span>
+<span id="cb1-76"><a href="#cb1-76"></a>    <span class="op">|</span> <span class="dt">Compound</span> [<span class="dt">Maybe</span> <span class="dt">Item</span>]</span>
+<span id="cb1-77"><a href="#cb1-77"></a></span>
+<span id="cb1-78"><a href="#cb1-78"></a><span class="kw">data</span> <span class="dt">Item</span></span>
+<span id="cb1-79"><a href="#cb1-79"></a>    <span class="ot">=</span> <span class="dt">Spare</span> <span class="dt">RegisterSize</span></span>
+<span id="cb1-80"><a href="#cb1-80"></a>    <span class="op">|</span> <span class="dt">Item</span> <span class="dt">Name</span> <span class="dt">Title</span> <span class="dt">Variation</span> <span class="dt">Documentation</span></span>
+<span id="cb1-81"><a href="#cb1-81"></a></span>
+<span id="cb1-82"><a href="#cb1-82"></a><span class="co">-- User applicaton profile type</span></span>
+<span id="cb1-83"><a href="#cb1-83"></a><span class="kw">data</span> <span class="dt">Uap</span></span>
+<span id="cb1-84"><a href="#cb1-84"></a>    <span class="ot">=</span> <span class="dt">Uap</span> [<span class="dt">Maybe</span> <span class="dt">Name</span>]                  <span class="co">-- single UAP</span></span>
+<span id="cb1-85"><a href="#cb1-85"></a>    <span class="op">|</span> <span class="dt">Uaps</span> [(<span class="dt">UapName</span>, [<span class="dt">Maybe</span> <span class="dt">Name</span>])]    <span class="co">-- multiple UAPs</span></span>
+<span id="cb1-86"><a href="#cb1-86"></a></span>
+<span id="cb1-87"><a href="#cb1-87"></a><span class="kw">data</span> <span class="dt">Asterix</span> <span class="ot">=</span> <span class="dt">Asterix</span></span>
+<span id="cb1-88"><a href="#cb1-88"></a>    {<span class="ot"> astCategory   ::</span> <span class="dt">Int</span>              <span class="co">-- category number</span></span>
+<span id="cb1-89"><a href="#cb1-89"></a>    ,<span class="ot"> astTitle      ::</span> <span class="dt">Text</span>             <span class="co">-- title</span></span>
+<span id="cb1-90"><a href="#cb1-90"></a>    ,<span class="ot"> astEdition    ::</span> <span class="dt">Edition</span>          <span class="co">-- edition</span></span>
+<span id="cb1-91"><a href="#cb1-91"></a>    ,<span class="ot"> astDate       ::</span> <span class="dt">Date</span>             <span class="co">-- release date</span></span>
+<span id="cb1-92"><a href="#cb1-92"></a>    ,<span class="ot"> astPreamble   ::</span> <span class="dt">Maybe</span> <span class="dt">Text</span>       <span class="co">-- optional preamble text</span></span>
+<span id="cb1-93"><a href="#cb1-93"></a>    ,<span class="ot"> astCatalogue  ::</span> [<span class="dt">Item</span>]           <span class="co">-- the cataloguq</span></span>
+<span id="cb1-94"><a href="#cb1-94"></a>    ,<span class="ot"> astUap        ::</span> <span class="dt">Uap</span>              <span class="co">-- one or more UAPs</span></span>
+<span id="cb1-95"><a href="#cb1-95"></a>    }</span></code></pre></div>
+<p>See <a href="https://github.com/zoranbosnjak/asterix-specs/blob/master/tools/src/Data/Asterix/Types.hs">tools source code</a> for exact definition.</p>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

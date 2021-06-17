@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - Home</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+        <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./specs.html">Specifications</a>
+                <a href="./struct.html">Structure</a>
+                <a href="./syntax.html">Syntax</a>
+                <a href="./tools.html">Tools</a>
+                <a href="./faq.html">FAQ</a>
+                <a href="./source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="overview">Overview</h1>
+<p><strong>Asterix</strong> is a binary data format, developed and maintained by <a href="https://www.eurocontrol.int/asterix">eurocontrol</a>.</p>
+<p>The major problem with the original specifications is that they are provided in a form of free text (PDF files). As a consequence, the very first step in every asterix project is to retype the specifications to a parsable form. And this is what this projects is all about.</p>
+<h1 id="project-content">Project content</h1>
+<p>This project contains:</p>
+<ul>
+<li><a href="./specs.html">asterix definitions</a> in <em>zero overhead</em> custom text based <a href="./syntax.html">format</a>;</li>
+<li><a href="./tools.html">tools</a> to validate and convert specifications between formats;</li>
+<li>auto-generated specifications in <em>JSON</em> format;</li>
+<li>auto-generated specifications in <em>HTML</em> and <em>PDF</em> format;</li>
+<li>formal description of asterix <a href="./struct.html">structure</a>;</li>
+</ul>
+<h2 id="asterix-definitions">Asterix definitions</h2>
+<p>In this project, the asterix definitions are stored and maintained in a compact text based parsable form. The intention of this <a href="./syntax.html">format</a> is to be:</p>
+<ul>
+<li>exact and complete (including definition text and remarks);</li>
+<li>easy to read and write with any text editor;</li>
+<li>easy to parse and reuse in other projects;</li>
+<li>clutter free;</li>
+</ul>
+<p>Example definition snippet:</p>
+<pre><code>asterix 008 &quot;Monoradar Derived Weather Information&quot;
+edition 1.2
+date 2014-08-24
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 &quot;Message Type&quot;
+        definition
+            This Data Item allows for a more convenient handling of the messages
+            at the receiver side by further defining the type of transaction.
+        element 8
+            table
+                1: Polar vector
+                2: Cartesian vector of start point/length
+                3: Contour record
+                4: Cartesian start point and end point vector
+                254: SOP message
+                255: EOP message
+
+    010 &quot;Data Source Identifier&quot;
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC &quot;System Area Code&quot;
+                element 8
+                    raw
+            SIC &quot;System Identification Code&quot;
+                element 8
+                    raw
+        remark
+            Note:
+                The defined SACs are on the EUROCONTROL ASTERIX website
+                (www.eurocontrol.int/asterix)
+    ...</code></pre>
+<p>See the <a href="./struct.html">structure description</a> for more details.</p>
+<h1 id="how-to-use-it">How to use it?</h1>
+<p>The <a href="./specs.html">specifications</a> are provided in various formats.</p>
+<ul>
+<li><p>For new projects it is recommended to use the definitions directly in the original <em>ast</em> or <em>json</em> format.</p></li>
+<li><p>For the existing projects, the odds are that some subset of the specifications is already defined in some other structured format (like <em>json</em> or <em>xml</em>). In this case, the reasonable approach would be to write <em>additional converter</em> from the specifications in this project to the format required by the target project.<br />
+<br />
+This is one-time effort and pays off quickly by:</p>
+<ul>
+<li>reusing all <a href="./specs.html">existing</a> definitions;</li>
+<li>writing new definitions in a clutter free format;</li>
+</ul></li>
+</ul>
+<p>If you are creating new categories, consider <a href="./source.html">contributing</a> definitions to the upstream repository.</p>
+<h2 id="example-traversing-specification-with-python-script">Example: traversing specification with <code>python</code> script</h2>
+<p>This example is using asterix category description in <code>json</code> format.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="im">import</span> json</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># load definition and decode json</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'definition.json'</span>) <span class="im">as</span> f:</span>
+<span id="cb2-6"><a href="#cb2-6"></a>    s <span class="op">=</span> f.read()</span>
+<span id="cb2-7"><a href="#cb2-7"></a>root <span class="op">=</span> json.loads(s)</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># show category info</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="bu">print</span>(root[<span class="st">'number'</span>], root[<span class="st">'edition'</span>], root[<span class="st">'date'</span>])</span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co"># show top level items</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="cf">for</span> i <span class="kw">in</span> root[<span class="st">'catalogue'</span>]:</span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="bu">print</span>(i[<span class="st">'name'</span>])</span>
+<span id="cb2-15"><a href="#cb2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co"># show user application profile</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="cf">for</span> i <span class="kw">in</span> root[<span class="st">'uap'</span>][<span class="st">'items'</span>]:</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="bu">print</span>(i)</span>
+<span id="cb2-19"><a href="#cb2-19"></a></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co"># recursivly walk over the structure and show all items</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="kw">def</span> dump_item(item, parent<span class="op">=</span><span class="st">''</span>):</span>
+<span id="cb2-23"><a href="#cb2-23"></a>    path <span class="op">=</span> parent</span>
+<span id="cb2-24"><a href="#cb2-24"></a>    <span class="cf">if</span> item[<span class="st">'spare'</span>]:</span>
+<span id="cb2-25"><a href="#cb2-25"></a>        path <span class="op">=</span> path <span class="op">+</span> <span class="st">'/spare'</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>        n <span class="op">=</span> item[<span class="st">'length'</span>]</span>
+<span id="cb2-27"><a href="#cb2-27"></a>        <span class="bu">print</span>(<span class="st">'</span><span class="sc">{}</span><span class="st">, bits: </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(path, n))</span>
+<span id="cb2-28"><a href="#cb2-28"></a>        <span class="cf">return</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a>    path <span class="op">=</span> path <span class="op">+</span> <span class="st">'/'</span> <span class="op">+</span> item[<span class="st">'name'</span>]</span>
+<span id="cb2-30"><a href="#cb2-30"></a>    dump_variation(item[<span class="st">'variation'</span>], path)</span>
+<span id="cb2-31"><a href="#cb2-31"></a></span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="kw">def</span> dump_variation(variation, path):</span>
+<span id="cb2-33"><a href="#cb2-33"></a>    t <span class="op">=</span> variation[<span class="st">'type'</span>]</span>
+<span id="cb2-34"><a href="#cb2-34"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Element'</span>:</span>
+<span id="cb2-35"><a href="#cb2-35"></a>        n <span class="op">=</span> variation[<span class="st">'size'</span>]</span>
+<span id="cb2-36"><a href="#cb2-36"></a>        <span class="bu">print</span>(<span class="st">'</span><span class="sc">{}</span><span class="st"> Element, bits: </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(path, n))</span>
+<span id="cb2-37"><a href="#cb2-37"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Group'</span>:</span>
+<span id="cb2-38"><a href="#cb2-38"></a>        <span class="bu">print</span>(<span class="st">'</span><span class="sc">{}</span><span class="st"> Gorup'</span>.<span class="bu">format</span>(path))</span>
+<span id="cb2-39"><a href="#cb2-39"></a>        <span class="cf">for</span> i <span class="kw">in</span> variation[<span class="st">'items'</span>]:</span>
+<span id="cb2-40"><a href="#cb2-40"></a>            dump_item(i, path)</span>
+<span id="cb2-41"><a href="#cb2-41"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Extended'</span>:</span>
+<span id="cb2-42"><a href="#cb2-42"></a>        n1 <span class="op">=</span> variation[<span class="st">'first'</span>]</span>
+<span id="cb2-43"><a href="#cb2-43"></a>        n2 <span class="op">=</span> variation[<span class="st">'extents'</span>]</span>
+<span id="cb2-44"><a href="#cb2-44"></a>        <span class="bu">print</span>(<span class="st">'</span><span class="sc">{}</span><span class="st"> Extended, first part </span><span class="sc">{}</span><span class="st">, extents </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(path, n1, n2))</span>
+<span id="cb2-45"><a href="#cb2-45"></a>        <span class="cf">for</span> i <span class="kw">in</span> variation[<span class="st">'items'</span>]:</span>
+<span id="cb2-46"><a href="#cb2-46"></a>            dump_item(i, path)</span>
+<span id="cb2-47"><a href="#cb2-47"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Repetitive'</span>:</span>
+<span id="cb2-48"><a href="#cb2-48"></a>        n <span class="op">=</span> variation[<span class="st">'rep'</span>]</span>
+<span id="cb2-49"><a href="#cb2-49"></a>        <span class="bu">print</span>(<span class="st">'</span><span class="sc">{}</span><span class="st"> Repetitive (</span><span class="sc">{}</span><span class="st">)'</span>.<span class="bu">format</span>(path, n))</span>
+<span id="cb2-50"><a href="#cb2-50"></a>        dump_variation(variation[<span class="st">'variation'</span>], path)</span>
+<span id="cb2-51"><a href="#cb2-51"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Explicit'</span>:</span>
+<span id="cb2-52"><a href="#cb2-52"></a>        <span class="bu">print</span>(<span class="st">'</span><span class="sc">{}</span><span class="st"> Explicit'</span>.<span class="bu">format</span>(path))</span>
+<span id="cb2-53"><a href="#cb2-53"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Compound'</span>:</span>
+<span id="cb2-54"><a href="#cb2-54"></a>        <span class="bu">print</span>(<span class="st">'</span><span class="sc">{}</span><span class="st"> Compound'</span>.<span class="bu">format</span>(path))</span>
+<span id="cb2-55"><a href="#cb2-55"></a>        <span class="cf">for</span> i <span class="kw">in</span> variation[<span class="st">'items'</span>]:</span>
+<span id="cb2-56"><a href="#cb2-56"></a>            <span class="cf">if</span> i <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb2-57"><a href="#cb2-57"></a>                dump_item(i, path)</span>
+<span id="cb2-58"><a href="#cb2-58"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-59"><a href="#cb2-59"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected variation type </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(t))</span>
+<span id="cb2-60"><a href="#cb2-60"></a></span>
+<span id="cb2-61"><a href="#cb2-61"></a><span class="cf">for</span> i <span class="kw">in</span> root[<span class="st">'catalogue'</span>]:</span>
+<span id="cb2-62"><a href="#cb2-62"></a>    dump_item(i)</span></code></pre></div>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

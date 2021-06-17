@@ -1,0 +1,1918 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of\nthe messages at the receiver side by further defining\nthe type of transaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": "Notes:\n\n    1. In applications where transactions of various\n       types are exchanged, the Message Type Data Item facilitates the\n       proper message handling at the receiver side.\n    2. All Message Type values are reserved for common standard use.\n    3. The list of items present for the four message types is defined in\n       the following table.\n\n       M stands for mandatory, O for optional, X for never present.\n\n       TODO: message types table\n",
+            "spare": false,
+            "title": "Message Type",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Table",
+                        "values": [
+                            [
+                                1,
+                                "North marker message"
+                            ],
+                            [
+                                2,
+                                "Sector crossing message"
+                            ],
+                            [
+                                3,
+                                "Geographical filtering message"
+                            ],
+                            [
+                                4,
+                                "Jamming strobe message"
+                            ]
+                        ]
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Identification of the radar station from which the data are received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "spare": false,
+            "title": "Data Source Identifier",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SAC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Area Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Identification Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Eight most significant bits of the antenna azimuth defining a particular azimuth sector.\n",
+            "description": null,
+            "name": "020",
+            "remark": null,
+            "spare": false,
+            "title": "Sector Number",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 8,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 360
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "deg"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Absolute time stamping expressed as UTC time.\n",
+            "description": null,
+            "name": "030",
+            "remark": "Notes:\n\n    - The time of day value is reset to zero each day at midnight.\n",
+            "spare": false,
+            "title": "Time of Day",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 24,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Antenna rotation period as measured between two consecutive North crossings\nor as averaged during a period of time.\n",
+            "description": null,
+            "name": "041",
+            "remark": "Notes:\n\n    - This item represents the antenna rotation period as measured by the\n      radar station between two consecutive North crossings, or a calculated\n      antenna rotation speed as averaged during a period of time, or during a\n      number of antenna rotation scans.\n",
+            "spare": false,
+            "title": "Antenna Rotation Speed",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 16,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Information concerning the configuration and status of a System.\n",
+            "description": null,
+            "name": "050",
+            "remark": null,
+            "spare": false,
+            "title": "System Configuration and Status",
+            "variation": {
+                "fspec": null,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "COM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Common Part",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "NOGO",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Operational Release Status of the System",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "System is released for operational use"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Operational use of System is inhibited, i.e. the data shall be discarded by an operational SDPS"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "RDPC",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Radar Data Processor Chain Selection Status",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "RDPC-1 selected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "RDPC-2 selected"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "RDPR",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Event to Signal a Reset/restart of the Selected Radar Data Processor Chain, I.e. Expect a New Assignment of Track Numbers",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Default situation"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Reset of RDPC"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "OVLRDP",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Radar Data Processor Overload Indicator",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Default, no overload"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Overload in RDP"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "OVLXMT",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Transmission Subsystem Overload Status",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Default, no overload"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Overload in transmission subsystem"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "MSC",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Monitoring System Connected Status",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Monitoring system connected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Monitoring system disconnected"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "TSV",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Time Source Validity",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Valid"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Invalid"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 1,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    null,
+                    null,
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "PSR",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Specific Status Information for a PSR Sensor",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "ANT",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Selected Antenna",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Antenna 1"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Antenna 2"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "CHAB",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Channel A/B Selection Status",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No channel selected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Channel A only selected"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Channel B only selected"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Diversity mode ; Channel A and B selected"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 2,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "OVL",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Overload Condition",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No overload"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Overload"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "MSC",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Monitoring System Connected Status",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Monitoring system connected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Monitoring system disconnected"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 3,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SSR",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Specific Status Information for a SSR Sensor",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "ANT",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Selected Antenna",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Antenna 1"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Antenna 2"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "CHAB",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Channel A/B Selection Status",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No channel selected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Channel A only selected"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Channel B only selected"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Invalid combination"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 2,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "OVL",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Overload Condition",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No overload"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Overload"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "MSC",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Monitoring System Connected Status:",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Monitoring system connected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Monitoring system disconnected"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 3,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MDS",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Specific Status Information for a Mode S Sensor",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "ANT",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Selected Antenna",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Antenna 1"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Antenna 2"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "CHAB",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Channel A/B Selection Status",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No channel selected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Channel A only selected"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Channel B only selected"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Illegal combination"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 2,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "OVLSUR",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Overload Condition",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No overload"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Overload"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "MSC",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Monitoring System Connected Status:",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Monitoring system connected"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Monitoring system disconnected"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "SCF",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Channel A/B Selection Status for Surveillance Co-ordination Function",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Channel A in use"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Channel B in use"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "DLF",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Channel A/B Selection Status for Data Link Function",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Channel A in use"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Channel B in use"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "OVLSCF",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Overload in Surveillance Co-ordination Function",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No overload"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Overload"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "OVLDLF",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Overload in Data Link Function",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No overload"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Overload"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 7,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    null
+                ],
+                "type": "Compound"
+            }
+        },
+        {
+            "definition": "Status concerning the processing options, in use during the last antenna\nrevolution, for the various Sensors, composing the System.\n",
+            "description": null,
+            "name": "060",
+            "remark": "Notes:\n\n    - Applicable to all defined secondary subfields. The actual mapping\n      between the up to seven data reduction steps and their associated\n      data reduction measures is not subject to standardisation.\n",
+            "spare": false,
+            "title": "System Processing Mode",
+            "variation": {
+                "fspec": null,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "COM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Common Part",
+                        "variation": {
+                            "items": [
+                                {
+                                    "length": 1,
+                                    "spare": true
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "REDRDP",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Reduction Steps in Use for An Overload of the RDP",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No reduction active"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Reduction step 1 active"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Reduction step 2 active"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Reduction step 3 active"
+                                                    ],
+                                                    [
+                                                        4,
+                                                        "Reduction step 4 active"
+                                                    ],
+                                                    [
+                                                        5,
+                                                        "Reduction step 5 active"
+                                                    ],
+                                                    [
+                                                        6,
+                                                        "Reduction step 6 active"
+                                                    ],
+                                                    [
+                                                        7,
+                                                        "Reduction step 7 active"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "REDXMT",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Reduction Steps in Use for An Overload of the Transmission Subsystem",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No reduction active"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Reduction step 1 active"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Reduction step 2 active"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Reduction step 3 active"
+                                                    ],
+                                                    [
+                                                        4,
+                                                        "Reduction step 4 active"
+                                                    ],
+                                                    [
+                                                        5,
+                                                        "Reduction step 5 active"
+                                                    ],
+                                                    [
+                                                        6,
+                                                        "Reduction step 6 active"
+                                                    ],
+                                                    [
+                                                        7,
+                                                        "Reduction step 7 active"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 1,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    null,
+                    null,
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "PSR",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Specific Processing Mode Information for a PSR Sensor",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "POL",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Polarization in Use by PSR",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Linear polarization"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Circular polarization"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "REDRAP",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Reduction Steps in Use as Result of An Overload Within the PSR Subsystem",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No reduction active"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Reduction step 1 active"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Reduction step 2 active"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Reduction step 3 active"
+                                                    ],
+                                                    [
+                                                        4,
+                                                        "Reduction step 4 active"
+                                                    ],
+                                                    [
+                                                        5,
+                                                        "Reduction step 5 active"
+                                                    ],
+                                                    [
+                                                        6,
+                                                        "Reduction step 6 active"
+                                                    ],
+                                                    [
+                                                        7,
+                                                        "Reduction step 7 active"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "STC",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Sensitivity Time Control Map in Use",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "STC Map-1"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "STC Map-2"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "STC Map-3"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "STC Map-4"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 2,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 2,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SSR",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Specific Processing Mode Information for a SSR Sensor",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "REDRAD",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Reduction Steps in Use as Result of An Overload Within the SSR Subsystem",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No reduction active"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Reduction step 1 active"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Reduction step 2 active"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Reduction step 3 active"
+                                                    ],
+                                                    [
+                                                        4,
+                                                        "Reduction step 4 active"
+                                                    ],
+                                                    [
+                                                        5,
+                                                        "Reduction step 5 active"
+                                                    ],
+                                                    [
+                                                        6,
+                                                        "Reduction step 6 active"
+                                                    ],
+                                                    [
+                                                        7,
+                                                        "Reduction step 7 active"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 5,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "MDS",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Specific Processing Mode Information for a Mode S Sensor",
+                        "variation": {
+                            "items": [
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "REDRAD",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Reduction Steps in Use as Result of An Overload Within the Mode S Subsystem",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "No reduction active"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Reduction step 1 active"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Reduction step 2 active"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Reduction step 3 active"
+                                                    ],
+                                                    [
+                                                        4,
+                                                        "Reduction step 4 active"
+                                                    ],
+                                                    [
+                                                        5,
+                                                        "Reduction step 5 active"
+                                                    ],
+                                                    [
+                                                        6,
+                                                        "Reduction step 6 active"
+                                                    ],
+                                                    [
+                                                        7,
+                                                        "Reduction step 7 active"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "definition": null,
+                                    "description": null,
+                                    "name": "CLU",
+                                    "remark": null,
+                                    "spare": false,
+                                    "title": "Cluster State",
+                                    "variation": {
+                                        "content": {
+                                            "rule": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Autonomous"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Not autonomous"
+                                                    ]
+                                                ]
+                                            },
+                                            "type": "ContextFree"
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                {
+                                    "length": 4,
+                                    "spare": true
+                                }
+                            ],
+                            "type": "Group"
+                        }
+                    }
+                ],
+                "type": "Compound"
+            }
+        },
+        {
+            "definition": "Message Count values, according the various types of messages, for the\nlast completed antenna revolution, counted between two North crossings\n",
+            "description": null,
+            "name": "070",
+            "remark": null,
+            "spare": false,
+            "title": "Message Count Values",
+            "variation": {
+                "rep": 8,
+                "type": "Repetitive",
+                "variation": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TYP",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Type of Message Counter",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                0,
+                                                "No detection (number of misses)"
+                                            ],
+                                            [
+                                                1,
+                                                "Single PSR target reports"
+                                            ],
+                                            [
+                                                2,
+                                                "Single SSR target reports (Non-Mode S)"
+                                            ],
+                                            [
+                                                3,
+                                                "SSR+PSR target reports (Non-Mode S)"
+                                            ],
+                                            [
+                                                4,
+                                                "Single All-Call target reports (Mode S)"
+                                            ],
+                                            [
+                                                5,
+                                                "Single Roll-Call target reports (Mode S)"
+                                            ],
+                                            [
+                                                6,
+                                                "All-Call + PSR (Mode S) target reports"
+                                            ],
+                                            [
+                                                7,
+                                                "Roll-Call + PSR (Mode S) target reports"
+                                            ],
+                                            [
+                                                8,
+                                                "Filter for Weather data"
+                                            ],
+                                            [
+                                                9,
+                                                "Filter for Jamming Strobe"
+                                            ],
+                                            [
+                                                10,
+                                                "Filter for PSR data"
+                                            ],
+                                            [
+                                                11,
+                                                "Filter for SSR/Mode S data"
+                                            ],
+                                            [
+                                                12,
+                                                "Filter for SSR/Mode S+PSR data"
+                                            ],
+                                            [
+                                                13,
+                                                "Filter for Enhanced Surveillance data"
+                                            ],
+                                            [
+                                                14,
+                                                "Filter for PSR+Enhanced Surveillance"
+                                            ],
+                                            [
+                                                15,
+                                                "Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of Prime Interest"
+                                            ],
+                                            [
+                                                16,
+                                                "Filter for PSR+Enhanced Surveillance + all SSR/Mode S data"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 5,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "COUNT",
+                            "remark": null,
+                            "spare": false,
+                            "title": "COUNTER",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "constraints": [],
+                                        "signed": false,
+                                        "type": "Integer"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 11,
+                                "type": "Element"
+                            }
+                        }
+                    ],
+                    "type": "Group"
+                }
+            }
+        },
+        {
+            "definition": "Averaged difference in range and in azimuth for the primary target position\nwith respect to the SSR target position as calculated by the radar station.\n",
+            "description": null,
+            "name": "090",
+            "remark": "Notes:\n\n    - Negative values are coded in two’s complement form.\n",
+            "spare": false,
+            "title": "Collimation Error",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RNG",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Range Error",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 7,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "AZM",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Azimuth Error",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 14,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Geographical window defined in polar co-ordinates.\n",
+            "description": null,
+            "name": "100",
+            "remark": null,
+            "spare": false,
+            "title": "Generic Polar Window",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RHOST",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Rho Start",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": "<=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 256
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 8,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "RHOEND",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Rho End",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": "<=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 256
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 8,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "NM"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "THETAST",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Theta Start",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 16,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "THETAEND",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Theta End",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 16,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Data Filter, which allows suppression of individual data types.\n",
+            "description": null,
+            "name": "110",
+            "remark": "Notes:\n\n    1. This Data Item is often used in conjunction with I034/100 and\n       represents a Data Filter for a specific geographical subarea.\n       A Data Source may have zero, one or multiple data filters active at any time.\n    2. If I034/110 is not accompanied with I034/100, then the Data Filter\n       is valid throughout the total area of coverage.\n",
+            "spare": false,
+            "title": "Data Filter",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Table",
+                        "values": [
+                            [
+                                0,
+                                "Invalid value"
+                            ],
+                            [
+                                1,
+                                "Filter for Weather data"
+                            ],
+                            [
+                                2,
+                                "Filter for Jamming Strobe"
+                            ],
+                            [
+                                3,
+                                "Filter for PSR data"
+                            ],
+                            [
+                                4,
+                                "Filter for SSR/Mode S data"
+                            ],
+                            [
+                                5,
+                                "Filter for SSR/Mode S + PSR data"
+                            ],
+                            [
+                                6,
+                                "Enhanced Surveillance data"
+                            ],
+                            [
+                                7,
+                                "Filter for PSR+Enhanced Surveillance data"
+                            ],
+                            [
+                                8,
+                                "Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of Prime Interest"
+                            ],
+                            [
+                                9,
+                                "Filter for PSR+Enhanced Surveillance + all SSR/Mode S data"
+                            ]
+                        ]
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "3D-Position of Data Source in WGS 84 Co-ordinates\n",
+            "description": null,
+            "name": "120",
+            "remark": null,
+            "spare": false,
+            "title": "3D-Position Of Data Source",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "HGT",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Height of Data Source",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [],
+                                    "fractionalBits": 0,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 1
+                                    },
+                                    "signed": false,
+                                    "type": "Quantity",
+                                    "unit": "m"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 16,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "LAT",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Latitude",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": ">=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": -90
+                                            }
+                                        },
+                                        {
+                                            "type": "<=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 90
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 23,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 180
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 24,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "LON",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Longitude",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": ">=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": -180
+                                            }
+                                        },
+                                        {
+                                            "type": "<=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 180
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 23,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 180
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 24,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "spare": false,
+            "title": "Reserved Expansion Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "spare": false,
+            "title": "Special Purpose Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        }
+    ],
+    "date": {
+        "day": 1,
+        "month": 5,
+        "year": 2007
+    },
+    "edition": {
+        "major": 1,
+        "minor": 27
+    },
+    "number": 34,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Transmission of Monoradar Service Messages",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "030",
+            "020",
+            "041",
+            "050",
+            "060",
+            "070",
+            "100",
+            "110",
+            "120",
+            "090",
+            "RE",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}

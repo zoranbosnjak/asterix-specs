@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-expansion-021---ads-b-target-reports-expansion">Asterix expansion 021 - ADS-B Target Reports Expansion</h1>
+<p><strong>category</strong>: 021</p>
+<p><strong>edition</strong>: 1.4</p>
+<p><strong>date</strong>: 2018-03-08</p>
+<h2 id="description-of-asterix-expansion">Description of asterix expansion</h2>
+<p>Compound item (fspec=8 bits)</p>
+<blockquote>
+<p><strong>I021/BPS</strong> - <em>Barometric Pressure Setting</em></p>
+<blockquote>
+<p><strong>I021/BPS/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I021/BPS/BPS</strong> - <em>Barometric Pressure Setting</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “hPa”</li>
+<li>LSB = <span class="math inline">0.1</span> hPa</li>
+<li>value <span class="math inline"> &gt;  = 0</span> hPa</li>
+<li>value <span class="math inline"> &lt;  = 409.5</span> hPa</li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd><p>Notes:</p>
+<blockquote>
+<ul>
+<li>BPS is the barometric pressure setting of the aircraft minus 800 hPa</li>
+<li>A value of “0” indicates that in the aircraft a value of 800 hPa or less has been selected.</li>
+<li>A value of “409.5” indicates that in the aircraft a value of 1209.5 hPa or more has been selected.</li>
+</ul>
+</blockquote>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I021/SH</strong> - <em>Selected Heading</em></p>
+<blockquote>
+<p><strong>I021/SH/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I021/SH/HDR</strong> - <em>Horizontal Reference Direction</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: True North<br />
+1: Magnetic North</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/SH/STAT</strong> - <em>Selected Heading Status</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Data is either unavailable or invalid<br />
+1: Data is available and valid</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/SH/SH</strong> - <em>Selected Heading</em></p>
+<ul>
+<li>10 bits [<code>..........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 45</li>
+<li>fractional bits: 6</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">45/2<sup>6</sup></span> deg = <span class="math inline">45/64</span> deg <span class="math inline"> ≈ 0.703125</span> deg</li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd><p>On many aircraft, the ADS-B Transmitting Subsystem receives Selected Heading from a Mode Control Panel / Flight Control Unit (MCP / FCU). Users of this data are cautioned that the Selected Heading value transmitted by the ADS-B Transmitting Subsystem does not necessarily reflect the true intention of the airplane during certain flight modes (e.g., during LNAV mode).</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I021/NAV</strong> - <em>Navigation Mode</em></p>
+<blockquote>
+<p><strong>I021/NAV/AP</strong> - <em>Autopilot</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Autopilot not engaged<br />
+1: Autopilot engaged</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/NAV/VN</strong> - <em>Vertical Navigation</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Vertical Navigation not active<br />
+1: Vertical Navigation active</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/NAV/AH</strong> - <em>Altitude Hold</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Altitude Hold not engaged<br />
+1: Altitude Hold engaged</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/NAV/AM</strong> - <em>Approach Mode</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Approach Mode not active<br />
+1: Approach Mode active</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/NAV/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd><p>This data-item should only be transmitted if an ADS-B indication has been received that the mode bits have been “actively populated”.by the avionics (1090 ES version 2 (as defined in I021/210) BDS 6,2, subtype 1, bit 47: “Status of MCP / FCU Mode Bits”)</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I021/GAO</strong> - <em>GPS Antenna Offset</em></p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>raw value</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd><p>The value of this field is copied from the respective bits 33-40 of version 2 (as defined in I021/210) of 1090 ES BDS register 6,5 (Aircraft Operational Status)</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I021/SGV</strong> - <em>Surface Ground Vector</em></p>
+<p>Extended item with first part <code>16 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I021/SGV/STP</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Aircraft has not stopped<br />
+1: Aircraft has stopped</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/SGV/HTS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Heading/Ground Track data is not valid<br />
+1: Heading/Ground Track data is valid</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/SGV/HTT</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Heading data provided<br />
+1: Ground Track provided</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/SGV/HRD</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: True North<br />
+1: Magnetic North</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/SGV/GSS</strong> - <em>Ground Speed</em></p>
+<ul>
+<li>11 bits [<code>...........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 3</li>
+<li>unit: “kts”</li>
+<li>LSB = <span class="math inline">1/2<sup>3</sup></span> kts = <span class="math inline">1/8</span> kts <span class="math inline"> ≈ 0.125</span> kts</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/SGV/HGT</strong> - <em>Heading/Ground Track Information</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 45</li>
+<li>fractional bits: 4</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">45/2<sup>4</sup></span> deg = <span class="math inline">45/16</span> deg <span class="math inline"> ≈ 2.8125</span> deg</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p><strong>I021/STA</strong> - <em>Aircraft Status</em></p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I021/STA/ES</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Target is not 1090 ES IN capable<br />
+1: Target is 1090 ES IN capable</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/STA/UAT</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Target is not UAT IN capable<br />
+1: Target is UAT IN capable</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/STA/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p><strong>I021/TNH</strong> - <em>True North Heading</em></p>
+<ul>
+<li><p>16 bits [<code>................</code>]</p></li>
+<li><p>unsigned quantity</p></li>
+<li><p>scaling factor: 360</p></li>
+<li><p>fractional bits: 16</p></li>
+<li><p>unit: “deg”</p></li>
+<li><p>LSB = <span class="math inline">360/2<sup>16</sup></span> deg = <span class="math inline">360/65536</span> deg <span class="math inline"> ≈ 0.0054931640625</span> deg</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd><p>Magnetic Heading is defined in I021/152.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES</strong> - <em>Military Extended Squitter</em></p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I021/MES/SUM</strong> - <em>Mode 5 Summary</em></p>
+<blockquote>
+<p><strong>I021/MES/SUM/M5</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No Mode 5 interrogation<br />
+1: Mode 5 interrogation</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/SUM/ID</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No authenticated Mode 5 ID reply/report<br />
+1: Authenticated Mode 5 ID reply/report</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/SUM/DA</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No authenticated Mode 5 Data reply or Report<br />
+1: Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply type other than ID)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/SUM/M1</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode 1 code not present or not from Mode 5 reply/report<br />
+1: Mode 1 code from Mode 5 reply/report</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/SUM/M2</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode 2 code not present or not from Mode 5 reply/report<br />
+1: Mode 2 code from Mode 5 reply/report</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/SUM/M3</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode 3 code not present or not from Mode 5 reply/report<br />
+1: Mode 3 code from Mode 5 reply/report</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/SUM/MC</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Flightlevel not present or not from Mode 5 reply/report<br />
+1: Flightlevel from Mode 5 reply/report</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/SUM/PO</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Position not from Mode 5 report (ADS-B report)<br />
+1: Position from Mode 5 report</div>
+</blockquote></li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd><p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The flag M2 refers to the contents of Subfield #6 below, M3, MC refer to the contents of data items I021/070 and I021/145 respectively. The flag M1 refers to the contents of Subfield #3 below (Extended Mode 1 Code in Octal Representation).</li>
+<li>If a Mode 5 reply/report is received with the Emergency bit set, then the Military Emergency bit (ME) in Data Item I021/200, Target Status, shall be set.</li>
+<li>If a Mode 5 reply/report is received with the Identification of Position bit set, then the Special Position Identification bit (SPI) in Data Item I021/200, Target Status, shall be set.</li>
+<li>If a Mode 5 report (ID or Data) is received and fullfill the autentication criteria the corresponding authentication bit shall be set.</li>
+</ol>
+</blockquote>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I021/MES/PNO</strong> - <em>Mode 5 PIN / National Origin</em></p>
+<blockquote>
+<p><strong>I021/MES/PNO/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I021/MES/PNO/PIN</strong> - <em>PIN Code</em></p>
+<ul>
+<li>14 bits [<code>..............</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I021/MES/PNO/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+<p><strong>I021/MES/PNO/NO</strong> - <em>National Origin Code</em></p>
+<ul>
+<li>11 bits [<code>...........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p><strong>I021/MES/EM1</strong> - <em>Extended Mode 1 Code in Octal Representation</em></p>
+<blockquote>
+<p><strong>I021/MES/EM1/V</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Code validated<br />
+1: Code not validated</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/EM1/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I021/MES/EM1/L</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode 1 code as derived from the report of the transponder<br />
+1: Smoothed Mode 1 code as provided by a local tracker</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/EM1/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I021/MES/EM1/EM1</strong> - <em>Extended Mode 1 Code in Octal Representation</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>Octal string (3-bits per digit)</li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd><p>Notes:</p>
+<blockquote>
+<ul>
+<li>Subfield #1 is present, the M1 bit in Subfield #1 indicates whether the Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If Subfield #1 is not present, the Extended Mode 1 Code is from a Mode 1 reply.</li>
+<li>If Subfield #3 is not present the Mode 1 Code was not reported or all Code Bits were equal to 0.</li>
+<li>The valid bit is set if the Code was only reported once for that target.</li>
+</ul>
+</blockquote>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I021/MES/XP</strong> - <em>X Pulse Presence</em></p>
+<blockquote>
+<p><strong>I021/MES/XP/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I021/MES/XP/XP</strong> - <em>X-pulse from Mode 5 PIN Reply/report</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: X-Pulse not present<br />
+1: X-pulse present</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/XP/X5</strong> - <em>X-pulse from Mode 5 Data Reply or Report</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: X-pulse set to zero or no authenticated Data reply or Report received<br />
+1: X-pulse set to one (present)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/XP/XC</strong> - <em>X-pulse from Mode C Reply</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: X-pulse set to zero or no Mode C reply<br />
+1: X-pulse set to one (present)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/XP/X3</strong> - <em>X-pulse from Mode 3/A Reply</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: X-pulse set to zero or no Mode 3/A reply<br />
+1: X-pulse set to one (present)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/XP/X2</strong> - <em>X-pulse from Mode 2 Reply</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: 0 X-pulse set to zero or no Mode 2 reply<br />
+1: X-pulse set to one (present)</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/XP/X1</strong> - <em>X-pulse from Mode 1 Reply</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: X-pulse set to zero or no Mode 1 reply<br />
+1: X-pulse set to one (present)</div>
+</blockquote></li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd><p>Within Mode 5 reports, the X-Pulse can be set for the following cases:</p>
+<p>1. In a combined Mode 1 and Mode 2 report: in this case the X5 bit and the X2 bit shall be set;</p>
+<p>2. In a combined Mode 3 and Mode C report: in this case the X5 bit and the X3 bit shall be set;</p>
+<p>3. In a Mode 5 PIN data report: in this case the X5 bit and the XP bit shall be set. The X1 bit and the XC bit are meaningless as in Mode 1 and Mode C replies/reports the X Pulse is not defined. They are kept for compatibility reasons.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I021/MES/FOM</strong> - <em>Figure of Merit</em></p>
+<blockquote>
+<p><strong>I021/MES/FOM/(spare)</strong></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+</ul>
+<p><strong>I021/MES/FOM/FOM</strong> - <em>Figure of Merit</em></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p><strong>I021/MES/M2</strong> - <em>Mode 2 Code in Octal Representation</em></p>
+<blockquote>
+<p><strong>I021/MES/M2/V</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Code validated<br />
+1: Code not validated</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/M2/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I021/MES/M2/L</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode-2 code as derived from the reply of the transponder<br />
+1: Smoothed Mode-2 code as provided by a local tracker</div>
+</blockquote></li>
+</ul>
+<p><strong>I021/MES/M2/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I021/MES/M2/MODE2</strong> - <em>Mode 2 Code in Octal Representation</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>Octal string (3-bits per digit)</li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd><p>If Subfield 6 is not present the Mode 2 Code was no reported or all Code Bits were equal to 0.</p>
+</dd>
+</dl>
+</blockquote>
+<dl>
+<dt>remark</dt>
+<dd><p>Notes:</p>
+<blockquote>
+<ul>
+<li>The Reserved Expansion Field is optional. When used to transmit MES, it shall be sent when the targets are represented by Mode 5 Level 2 reports.</li>
+<li>The information contained in this data item is specific to 1090MHz Extended Squitter messages transmitted by military aircraft (Mode 5 Level 2 squitter).</li>
+</ul>
+</blockquote>
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

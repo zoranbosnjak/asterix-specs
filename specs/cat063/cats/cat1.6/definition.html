@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-063---sensor-status-reports">Asterix category 063 - Sensor Status Reports</h1>
+<p><strong>category</strong>: 063</p>
+<p><strong>edition</strong>: 1.6</p>
+<p><strong>date</strong>: 2020-08-04</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i063010---data-source-identifier">I063/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the radar station from which the data are received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I063/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I063/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>The defined SACs are on the EUROCONTROL ASTERIX website (www.eurocontrol.int/asterix)</p>
+</dd>
+</dl>
+<h3 id="i063015---service-identification">I063/015 - Service Identification</h3>
+<p><em>Definition</em>: Identification of the service provided to one or more users.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p>The service identification is allocated by the SDPS</p>
+<h3 id="i063030---time-of-message">I063/030 - Time of Message</h3>
+<p><em>Definition</em>: Absolute time stamping of the message, in the form of elapsed time since last midnight, expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<p>The time of the day value is reset to zero at every midnight.</p>
+<h3 id="i063050---sensor-identifier">I063/050 - Sensor Identifier</h3>
+<p><em>Definition</em>: None</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I063/050/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I063/050/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site (<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+<li>If the SAC/SIC refers to an SDPS used as input, the respective sensor status information will be transmitted using the Reserved Expansion Field.</li>
+</ul>
+<h3 id="i063060---sensor-configuration-and-status">I063/060 - Sensor Configuration and Status</h3>
+<p><em>Definition</em>: Configuration and status of the sensor</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I063/060/CON</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Operational<br />
+1: Degraded<br />
+2: Initialization<br />
+3: Not currently connected</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/PSR</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: PSR GO<br />
+1: PSR NOGO</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/SSR</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: SSR GO<br />
+1: SSR NOGO</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/MDS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: MDS GO<br />
+1: MDS NOGO</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/ADS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: ADS GO<br />
+1: ADS NOGO</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/MLT</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: MLT GO<br />
+1: MLT NOGO</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/OPS</strong> - <em>Operational Release Status of the System</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: System is released for operational use<br />
+1: Operational use of System is inhibited</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/ODP</strong> - <em>Data Processor Overload Indicator</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default, no overload<br />
+1: Overload in DP</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/OXT</strong> - <em>Transmission Subsystem Overload Status</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default, no overload<br />
+1: Overload in transmission subsystem</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/MSC</strong> - <em>Monitoring System Connected Status</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Monitoring system connected<br />
+1: Monitoring system disconnected</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/TSV</strong> - <em>Time Source Validity</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Valid<br />
+1: Invalid</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/NPW</strong> - <em>No Plot Warning</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default (no meaning)<br />
+1: No plots being received</div>
+</blockquote></li>
+</ul>
+<p><strong>I063/060/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<ol type="1">
+<li>GO/NOGO information from PSR, SSR, Mode S, ADS and MLT is derived from monosensor categories and has a meaning only for operational sensors, whereas (CON) is derived by the SDPS.</li>
+<li>The information (OPS), (ODP), (OXT), (MSC) and (TSV) are only related to CNS/ATM Ground Station and are derived from monosensor category (ASTERIX Cat 023).</li>
+</ol>
+<h3 id="i063070---time-stamping-bias">I063/070 - Time Stamping Bias</h3>
+<p><em>Definition</em>: Plot Time stamping bias, in two’s complement form</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “ms”</li>
+<li>LSB = <span class="math inline">1</span> ms</li>
+</ul>
+<h3 id="i063080---ssr-mode-s-range-gain-and-bias">I063/080 - SSR / Mode S Range Gain and Bias</h3>
+<p><em>Definition</em>: SSR / Mode S Range Gain and Range Bias, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I063/080/SRG</strong> - <em>Mode S Range Gain</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 0.00001</li>
+<li>fractional bits: 0</li>
+<li>LSB = <span class="math inline">0.00001</span></li>
+</ul>
+<p><strong>I063/080/SRB</strong> - <em>Mode S Range Bias</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “NM”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> NM = <span class="math inline">1/128</span> NM <span class="math inline"> ≈ 0.0078125</span> NM</li>
+</ul>
+</blockquote>
+<p>Note:</p>
+<blockquote>
+<p>The following formula is used to correct range:</p>
+<p><br /><span class="math display">$$\rho_\mathrm{corrected} = \frac{\rho_\mathrm{measured} - range\_bias}{1 + range\_gain}$$</span><br /></p>
+</blockquote>
+<h3 id="i063081---ssr-mode-s-azimuth-bias">I063/081 - SSR Mode S Azimuth Bias</h3>
+<p><em>Definition</em>: SSR / Mode S Azimuth Bias, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 360</li>
+<li>fractional bits: 16</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> deg = <span class="math inline">360/65536</span> deg <span class="math inline"> ≈ 0.0054931640625</span> deg</li>
+</ul>
+<p>Note:</p>
+<blockquote>
+<p>The following formula is used to correct azimuth:</p>
+<p><br /><span class="math display"><em>θ</em><sub><em>c</em><em>o</em><em>r</em><em>r</em><em>e</em><em>c</em><em>t</em><em>e</em><em>d</em></sub> = <em>θ</em><sub><em>m</em><em>e</em><em>a</em><em>s</em><em>u</em><em>r</em><em>e</em><em>d</em></sub> − <em>a</em><em>z</em><em>i</em><em>m</em><em>u</em><em>t</em><em>h</em>_<em>b</em><em>i</em><em>a</em><em>s</em></span><br /></p>
+</blockquote>
+<h3 id="i063090---psr-range-gain-and-bias">I063/090 - PSR Range Gain and Bias</h3>
+<p><em>Definition</em>: PSR Range Gain and PSR Range Bias, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I063/090/PRG</strong> - <em>PSR Range Gain</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 0.00001</li>
+<li>fractional bits: 0</li>
+<li>LSB = <span class="math inline">0.00001</span></li>
+</ul>
+<p><strong>I063/090/PRB</strong> - <em>PSR Range Bias</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “NM”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> NM = <span class="math inline">1/128</span> NM <span class="math inline"> ≈ 0.0078125</span> NM</li>
+</ul>
+</blockquote>
+<p>Note:</p>
+<blockquote>
+<p>The following formula is used to correct range:</p>
+</blockquote>
+<h3 id="i063091---psr-azimuth-bias">I063/091 - PSR Azimuth Bias</h3>
+<p><em>Definition</em>: PSR Azimuth Bias, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 360</li>
+<li>fractional bits: 16</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> deg = <span class="math inline">360/65536</span> deg <span class="math inline"> ≈ 0.0054931640625</span> deg</li>
+</ul>
+<p>Note:</p>
+<blockquote>
+<p>The following formula is used to correct azimuth:</p>
+<p><br /><span class="math display"><em>θ</em><sub><em>c</em><em>o</em><em>r</em><em>r</em><em>e</em><em>c</em><em>t</em><em>e</em><em>d</em></sub> = <em>θ</em><sub><em>m</em><em>e</em><em>a</em><em>s</em><em>u</em><em>r</em><em>e</em><em>d</em></sub> − <em>a</em><em>z</em><em>i</em><em>m</em><em>u</em><em>t</em><em>h</em>_<em>b</em><em>i</em><em>a</em><em>s</em></span><br /></p>
+</blockquote>
+<h3 id="i063092---psr-elevation-bias">I063/092 - PSR Elevation Bias</h3>
+<p><em>Definition</em>: PSR Elevation Bias, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 360</li>
+<li>fractional bits: 16</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> deg = <span class="math inline">360/65536</span> deg <span class="math inline"> ≈ 0.0054931640625</span> deg</li>
+</ul>
+<h3 id="i063re---reserved-expansion-field">I063/RE - Reserved Expansion Field</h3>
+<p><em>Definition</em>: Expansion</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h3 id="i063sp---special-purpose-field">I063/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h1 id="user-application-profile-for-category-063">User Application Profile for Category 063</h1>
+<ul>
+<li><ol type="1">
+<li><code>I063/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I063/015</code> - Service Identification</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I063/030</code> - Time of Message</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I063/050</code> - Sensor Identifier</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I063/060</code> - Sensor Configuration and Status</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I063/070</code> - Time Stamping Bias</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I063/080</code> - SSR / Mode S Range Gain and Bias</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I063/081</code> - SSR Mode S Azimuth Bias</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I063/090</code> - PSR Range Gain and Bias</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I063/091</code> - PSR Azimuth Bias</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I063/092</code> - PSR Elevation Bias</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I063/RE</code> - Reserved Expansion Field</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I063/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - Faq</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+        <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./specs.html">Specifications</a>
+                <a href="./struct.html">Structure</a>
+                <a href="./syntax.html">Syntax</a>
+                <a href="./tools.html">Tools</a>
+                <a href="./faq.html">FAQ</a>
+                <a href="./source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="faq---frequently-asked-questions">FAQ - Frequently Asked Questions</h1>
+<h2 id="why-custom-format-why-not-json-or-xml-or">Why custom format? Why not <code>json</code> or <code>xml</code> or …?</h2>
+<p>In short: a custom <code>ast</code> format is only to <em>edit</em> and <em>store</em> the files. <code>json</code> format is available too and is a prefered format for processing asterix descriptions.</p>
+<p>Users (author included) normally prefer standard formats like <code>json</code> or <code>xml</code>. However, for the purpose of editing and storing asterix specifications, a custom format is much more convenient.</p>
+<p>It’s a form of a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific language</a> with a lot of benefits. Comparing to <code>json</code>, the custom format is:</p>
+<ul>
+<li>5-6 times shorter in terms of characters or lines required;</li>
+<li>easier to read and write;</li>
+<li>better fit to capture the essence of asterix definition;</li>
+</ul>
+<p>Compare for example the <em>same definitions</em> snippet</p>
+<p>… in <code>.ast</code></p>
+<pre><code>SAC &quot;System Area Code&quot;
+    element 8
+        raw</code></pre>
+<p>… and in <code>.json</code> format.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="dt">&quot;definition&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;SAC&quot;</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="dt">&quot;remark&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="dt">&quot;spare&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;System Area Code&quot;</span><span class="fu">,</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="dt">&quot;variation&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>        <span class="dt">&quot;content&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>            <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Raw&quot;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>        <span class="fu">},</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>        <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">8</span><span class="fu">,</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Element&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="fu">}</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="fu">}</span></span></code></pre></div>
+<p>Admittedly, the <code>null</code> values could be excluded, but the definitions still contain a lot of overhead.</p>
+<h2 id="i-dont-like-a-converter-in-a-processing-chain.">I don’t like a converter in a processing chain.</h2>
+<p>This is reasonable, but in order to keep the definitions clean and correct, some form of a tool (editor, converter) can not be avoided.</p>
+<p>The speciffications need to be <em>validated</em>, which requires <em>reading</em> and <em>parsing</em> function.</p>
+<p>Also, when the definitions are written by hand (using a general purpose editor), there should be a mechanism to <em>write</em> a <em>normalized</em> version of a file (align indents, sort key/value pairs…).</p>
+<p>In other words, <em>reading</em> and <em>writing</em> of the specs files <strong>is required</strong>, regardless of the format.</p>
+<p>It is important to note that <a href="./tools.html">tools</a> handles the conversion in very safe way.</p>
+<p>During automatic conversion process, it is verified that all supported formats generate the same file signature, which is very strong assurance that all formats contains the same definitions.</p>
+<h2 id="why-lsb-is-missing-in-definitions">Why LSB is missing in definitions?</h2>
+<p>It’s not missing. It’s defined using <em>scaling factor</em> and number of <em>fractional bits</em>. The LSB value is calculated using this formula:</p>
+<pre class="math"><code>LSB = scaling_factor / 2^fractional_bits</code></pre>
+<p>It is implemented this way to avoid rounding error in the specifications.</p>
+<p>For example, the extreme case is item <code>I062/105/LAT</code>. It’s defined using:</p>
+<ul>
+<li>scaling factor: <code>180</code></li>
+<li>fractional bits: <code>25</code></li>
+</ul>
+<p>Both factors are precise, and the resulting LSB is calculated as <code>180/2^25</code>. If specified as decimal number, like <code>0.00000536442</code>, some unexpected rounding error might be generated.</p>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

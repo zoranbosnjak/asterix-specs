@@ -1,0 +1,1043 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ninformation.\n",
+            "description": null,
+            "name": "000",
+            "remark": "NOTES:\n  1. In applications where data of various types is exchanged, the Message\n     Type Data Item facilitates the proper message handling at the receiver\n     side.\n  2. All Message Type values are reserved for common standard use.\n",
+            "spare": false,
+            "title": "Message Type",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Table",
+                        "values": [
+                            [
+                                1,
+                                "Start of Update Cycle"
+                            ],
+                            [
+                                2,
+                                "Periodic Status Message"
+                            ],
+                            [
+                                3,
+                                "Event-triggered Status Message"
+                            ]
+                        ]
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Identification of the system from which the data is received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "spare": false,
+            "title": "Data Source Identifier",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SAC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Area Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Identification Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Absolute time stamping expressed as UTC.\n",
+            "description": null,
+            "name": "140",
+            "remark": "Note:\n\n    The time of day value is reset to zero each day at midnight.\n",
+            "spare": false,
+            "title": "Time of Day",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 24,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Information concerning the configuration and status of a System.\n",
+            "description": null,
+            "name": "550",
+            "remark": "Note:\n\n    A time source is considered as valid when either externally synchronised\n    or running on a local oscillator within the required accuracy of UTC.\n",
+            "spare": false,
+            "title": "System Status",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "NOGO",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Operational Release Status of the System",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Operational"
+                                        ],
+                                        [
+                                            1,
+                                            "Degraded"
+                                        ],
+                                        [
+                                            2,
+                                            "NOGO"
+                                        ],
+                                        [
+                                            3,
+                                            "Undefined"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "OVL",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Overload Indicator",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "No overload"
+                                        ],
+                                        [
+                                            1,
+                                            "Overload"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TSV",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Time Source Validity",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Valid"
+                                        ],
+                                        [
+                                            1,
+                                            "Invalid"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TTF",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Test Target",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Test Target Operative"
+                                        ],
+                                        [
+                                            1,
+                                            "Test Target Failure"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 3,
+                        "spare": true
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Information concerning the configuration and status of the Tracking processors.\n",
+            "description": null,
+            "name": "551",
+            "remark": "Note:\n\n    Both Bits of one TP set to zero means, that this TP is not used\n    in the system.\n",
+            "spare": false,
+            "title": "Tracking Processor Detailed Status",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP1A",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Standby"
+                                        ],
+                                        [
+                                            1,
+                                            "Exec"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP1B",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            1,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP2A",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Standby"
+                                        ],
+                                        [
+                                            1,
+                                            "Exec"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP2B",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            1,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP3A",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Standby"
+                                        ],
+                                        [
+                                            1,
+                                            "Exec"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP3B",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            1,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP4A",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Standby"
+                                        ],
+                                        [
+                                            1,
+                                            "Exec"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TP4B",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            1,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Information concerning the configuration and status of the Remote Sensors (RS)\n",
+            "description": null,
+            "name": "552",
+            "remark": null,
+            "spare": false,
+            "title": "Remote Sensor Detailed Status",
+            "variation": {
+                "rep": 8,
+                "type": "Repetitive",
+                "variation": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RSI",
+                            "remark": null,
+                            "spare": false,
+                            "title": "8-bit Identification Number of RS",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Raw"
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 8,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "length": 1,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RS1090",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Receiver 1090 MHz",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                0,
+                                                "Not present"
+                                            ],
+                                            [
+                                                1,
+                                                "Present"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TX1030",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Transmitter 1030 MHz",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                0,
+                                                "Not present"
+                                            ],
+                                            [
+                                                1,
+                                                "Present"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TX1090",
+                            "remark": null,
+                            "spare": false,
+                            "title": "Transmitter 1090 MHz",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                0,
+                                                "Not present"
+                                            ],
+                                            [
+                                                1,
+                                                "Present"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RSS",
+                            "remark": null,
+                            "spare": false,
+                            "title": "RS Status",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                0,
+                                                "Faulted"
+                                            ],
+                                            [
+                                                1,
+                                                "Good"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RSO",
+                            "remark": null,
+                            "spare": false,
+                            "title": "RS Operational",
+                            "variation": {
+                                "content": {
+                                    "rule": {
+                                        "type": "Table",
+                                        "values": [
+                                            [
+                                                0,
+                                                "Offline"
+                                            ],
+                                            [
+                                                1,
+                                                "Online"
+                                            ]
+                                        ]
+                                    },
+                                    "type": "ContextFree"
+                                },
+                                "size": 1,
+                                "type": "Element"
+                            }
+                        },
+                        {
+                            "length": 2,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            }
+        },
+        {
+            "definition": "Information concerning the configuration and status of the Reference Transponder.\n",
+            "description": null,
+            "name": "553",
+            "remark": null,
+            "spare": false,
+            "title": "Reference Transponder Detailed Status",
+            "variation": {
+                "extents": 8,
+                "first": 8,
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "REFTR1",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Ref Trans 1 Status",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            1,
+                                            "Warning"
+                                        ],
+                                        [
+                                            2,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            3,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 2,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "REFTR2",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Ref Trans 2 Status",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            1,
+                                            "Warning"
+                                        ],
+                                        [
+                                            2,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            3,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 1,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "REFTR3",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Ref Trans 3 Status",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            1,
+                                            "Warning"
+                                        ],
+                                        [
+                                            2,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            3,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 2,
+                        "spare": true
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "REFTR4",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Ref Trans 4 Status",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            1,
+                                            "Warning"
+                                        ],
+                                        [
+                                            2,
+                                            "Faulted"
+                                        ],
+                                        [
+                                            3,
+                                            "Good"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 1,
+                        "spare": true
+                    }
+                ],
+                "type": "Extended"
+            }
+        },
+        {
+            "definition": "Position of the MLT reference point in WGS-84 Coordinates.\n",
+            "description": null,
+            "name": "600",
+            "remark": null,
+            "spare": false,
+            "title": "Position of the MLT System Reference Point",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "LAT",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Latitude",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": ">=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": -90
+                                            }
+                                        },
+                                        {
+                                            "type": "<=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 90
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 30,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 180
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 32,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "LON",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Longitude",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "constraints": [
+                                        {
+                                            "type": ">=",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": -180
+                                            }
+                                        },
+                                        {
+                                            "type": "<",
+                                            "value": {
+                                                "type": "Integer",
+                                                "value": 180
+                                            }
+                                        }
+                                    ],
+                                    "fractionalBits": 30,
+                                    "scaling": {
+                                        "type": "Integer",
+                                        "value": 180
+                                    },
+                                    "signed": true,
+                                    "type": "Quantity",
+                                    "unit": "deg"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 32,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Height of the MLT system reference point in two’s complement form.\nThe height shall use mean sea level as the zero reference level.\n",
+            "description": null,
+            "name": "610",
+            "remark": null,
+            "spare": false,
+            "title": "Height of the MLT System Reference Point",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [
+                            {
+                                "type": ">=",
+                                "value": {
+                                    "type": "Integer",
+                                    "value": -8192
+                                }
+                            },
+                            {
+                                "type": "<=",
+                                "value": {
+                                    "type": "Integer",
+                                    "value": 8192
+                                }
+                            }
+                        ],
+                        "fractionalBits": 2,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": true,
+                        "type": "Quantity",
+                        "unit": "m"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 16,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "WGS-84 undulation value of the MLT system reference point, in meters.\nGeoid undulation value is the difference between the ellipsoidal height\nand the height above mean sea level\n",
+            "description": null,
+            "name": "620",
+            "remark": null,
+            "spare": false,
+            "title": "WGS-84 Undulation",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 0,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": true,
+                        "type": "Quantity",
+                        "unit": "m"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "spare": false,
+            "title": "Reserved Expansion Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "spare": false,
+            "title": "Special Purpose Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        }
+    ],
+    "date": {
+        "day": 1,
+        "month": 12,
+        "year": 2010
+    },
+    "edition": {
+        "major": 1,
+        "minor": 3
+    },
+    "number": 19,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Multilateration System Status Messages",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "140",
+            "550",
+            "551",
+            "552",
+            "553",
+            "600",
+            "610",
+            "620",
+            null,
+            null,
+            "RE",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}

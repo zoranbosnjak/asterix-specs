@@ -1,0 +1,450 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ntransaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": "Notes:\n    - In application where transactions of various types are exchanged, the\n      Message Type Data Item facilitates the proper message handling at the\n      receiver side.\n",
+            "spare": false,
+            "title": "Message Type",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Table",
+                        "values": [
+                            [
+                                1,
+                                "SDPS Status"
+                            ],
+                            [
+                                2,
+                                "End of Batch"
+                            ],
+                            [
+                                3,
+                                "Service Status Report"
+                            ]
+                        ]
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Identification of the system sending the data.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "spare": false,
+            "title": "Data Source Identifier",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SAC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Area Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "SIC",
+                        "remark": null,
+                        "spare": false,
+                        "title": "System Identification Code",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 8,
+                            "type": "Element"
+                        }
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Identification of the service provided to one or more users.\n",
+            "description": null,
+            "name": "015",
+            "remark": "Note:\n    - The service identification is allocated by the SDPS.\n",
+            "spare": false,
+            "title": "Service Identification",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Raw"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "A number indicating the completion of a service for that batch of track\ndata, from 0 to N-1, N being the number of batches used to make\none complete processing cycle.\n",
+            "description": null,
+            "name": "020",
+            "remark": null,
+            "spare": false,
+            "title": "Batch Number",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "signed": false,
+                        "type": "Integer"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Absolute time stamping of the message, in the form of elapsed time\nsince last midnight, expressed as UTC.\n",
+            "description": null,
+            "name": "030",
+            "remark": "Note:\n    - The time is reset to zero at every midnight.\n",
+            "spare": false,
+            "title": "Time of Message",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "constraints": [],
+                        "fractionalBits": 7,
+                        "scaling": {
+                            "type": "Integer",
+                            "value": 1
+                        },
+                        "signed": false,
+                        "type": "Quantity",
+                        "unit": "s"
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 24,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Status of an SDPS.\n",
+            "description": null,
+            "name": "040",
+            "remark": null,
+            "spare": false,
+            "title": "SDPS Configuration and Status",
+            "variation": {
+                "items": [
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "NOGO",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Operational"
+                                        ],
+                                        [
+                                            1,
+                                            "Degraded"
+                                        ],
+                                        [
+                                            2,
+                                            "Not currently connected"
+                                        ],
+                                        [
+                                            3,
+                                            "Unknown"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "OVL",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Default"
+                                        ],
+                                        [
+                                            1,
+                                            "Overload"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "TSV",
+                        "remark": null,
+                        "spare": false,
+                        "title": "",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Default"
+                                        ],
+                                        [
+                                            1,
+                                            "Invalid Time Source"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "PSS",
+                        "remark": null,
+                        "spare": false,
+                        "title": "Processing System Status",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Table",
+                                    "values": [
+                                        [
+                                            0,
+                                            "Not applicable"
+                                        ],
+                                        [
+                                            1,
+                                            "SDPS-1 selected"
+                                        ],
+                                        [
+                                            2,
+                                            "SDPS-2 selected"
+                                        ],
+                                        [
+                                            3,
+                                            "SDPS-3 selected"
+                                        ]
+                                    ]
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 2,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "definition": null,
+                        "description": null,
+                        "name": "STTN",
+                        "remark": "The STTN bit indicates when track numbering has been restarted. The STTN bit\nis a toggle bit that changes its value whenever the SDPS system starts re-numbering\nits tracks. Re-numbering of the track takes place either after SDPS start-up (cold or hot\nstart-up) or when a configuration set has been changed (please note that the latter\ncase is ARTAS specific behaviour and may be different in another SDPS).\n",
+                        "spare": false,
+                        "title": "Track Re-numbering Indication",
+                        "variation": {
+                            "content": {
+                                "rule": {
+                                    "type": "Raw"
+                                },
+                                "type": "ContextFree"
+                            },
+                            "size": 1,
+                            "type": "Element"
+                        }
+                    },
+                    {
+                        "length": 1,
+                        "spare": true
+                    }
+                ],
+                "type": "Group"
+            }
+        },
+        {
+            "definition": "Report sent by the SDPS related to a service\n",
+            "description": null,
+            "name": "050",
+            "remark": null,
+            "spare": false,
+            "title": "Service Status Report",
+            "variation": {
+                "content": {
+                    "rule": {
+                        "type": "Table",
+                        "values": [
+                            [
+                                1,
+                                "Service degradation"
+                            ],
+                            [
+                                2,
+                                "Service degradation ended"
+                            ],
+                            [
+                                3,
+                                "Main radar out of service"
+                            ],
+                            [
+                                4,
+                                "Service interrupted by the operator"
+                            ],
+                            [
+                                5,
+                                "Service interrupted due to contingency"
+                            ],
+                            [
+                                6,
+                                "Ready for service restart after contingency"
+                            ],
+                            [
+                                7,
+                                "Service ended by the operator"
+                            ],
+                            [
+                                8,
+                                "Failure of user main radar"
+                            ],
+                            [
+                                9,
+                                "Service restarted by the operator"
+                            ],
+                            [
+                                10,
+                                "Main radar becoming operational"
+                            ],
+                            [
+                                11,
+                                "Main radar becoming degraded"
+                            ],
+                            [
+                                12,
+                                "Service continuity interrupted due to disconnection with adjacent unit"
+                            ],
+                            [
+                                13,
+                                "Service continuity restarted"
+                            ],
+                            [
+                                14,
+                                "Service synchronised on backup radar"
+                            ],
+                            [
+                                15,
+                                "Service synchronised on main radar"
+                            ],
+                            [
+                                16,
+                                "Main and backup radar, if any, failed"
+                            ]
+                        ]
+                    },
+                    "type": "ContextFree"
+                },
+                "size": 8,
+                "type": "Element"
+            }
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "spare": false,
+            "title": "Reserved Expansion Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "spare": false,
+            "title": "Special Purpose Field",
+            "variation": {
+                "type": "Explicit"
+            }
+        }
+    ],
+    "date": {
+        "day": 18,
+        "month": 6,
+        "year": 2020
+    },
+    "edition": {
+        "major": 1,
+        "minor": 5
+    },
+    "number": 65,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "SDPS Service Status Reports",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "015",
+            "030",
+            "020",
+            "040",
+            "050",
+            null,
+            null,
+            null,
+            null,
+            null,
+            "RE",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}

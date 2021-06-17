@@ -1,0 +1,1697 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications is structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-011---transmission-of-a-smgcs-data">Asterix category 011 - Transmission of A-SMGCS Data</h1>
+<p><strong>category</strong>: 011</p>
+<p><strong>edition</strong>: 1.3</p>
+<p><strong>date</strong>: 2020-05-11</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i011000---message-type">I011/000 - Message Type</h3>
+<p><em>Definition</em>: This Data Item allows for a more convenient handling of the messages at the receiver side by further defining the type of transaction.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Target reports, flight plan data and basic alerts<br />
+2: Manual attachment of flight plan to track<br />
+3: Manual detachment of flight plan to track<br />
+4: Insertion of flight plan data<br />
+5: Suppression of flight plan data<br />
+6: Modification of flight plan data<br />
+7: Holdbar status</div>
+</blockquote></li>
+</ul>
+<h3 id="i011010---data-source-identifier">I011/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the radar station from which the data are received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/010/SAC</strong> - <em>System Area Code Fixed to Zero</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I011/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>The SAC is fixed to zero to indicate a data flow local to the airport.</p>
+</dd>
+</dl>
+<h3 id="i011015---service-identification">I011/015 - Service Identification</h3>
+<p><em>Definition</em>: Identification of the service provided to one or more users.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><p>The service identification is allocated by the A-SMGCS</p>
+</dd>
+</dl>
+<h3 id="i011041---position-in-wgs-84-coordinates">I011/041 - Position in WGS-84 Coordinates</h3>
+<p><em>Definition</em>: Position of a target in WGS-84 Coordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/041/LAT</strong> - <em>Latitude in WGS-84 in Two’s Complement</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 31</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> deg = <span class="math inline">180/2147483648</span> deg <span class="math inline"> ≈ 8.381903171539307<em>e</em> − 08</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> deg</li>
+<li>value <span class="math inline"> &lt;  = 90</span> deg</li>
+</ul>
+<p><strong>I011/041/LON</strong> - <em>Longitude in WGS-84 in Two’s Complement</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 31</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> deg = <span class="math inline">180/2147483648</span> deg <span class="math inline"> ≈ 8.381903171539307<em>e</em> − 08</span> deg</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> deg</li>
+<li>value <span class="math inline"> &lt; 180</span> deg</li>
+</ul>
+</blockquote>
+<h3 id="i011042---calculated-position-in-cartesian-co-ordinates">I011/042 - Calculated Position in Cartesian Co-ordinates</h3>
+<p><em>Definition</em>: Calculated position of a target in Cartesian co-ordinates (two’s complement form).</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/042/X</strong> - <em>X-Component</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 32768</span> m</li>
+<li>value <span class="math inline"> &lt;  = 32768</span> m</li>
+</ul>
+<p><strong>I011/042/Y</strong> - <em>Y-Component</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 32768</span> m</li>
+<li>value <span class="math inline"> &lt;  = 32768</span> m</li>
+</ul>
+</blockquote>
+<h3 id="i011060---mode-3a-code-in-octal-representation">I011/060 - Mode-3/A Code in Octal Representation</h3>
+<p><em>Definition</em>: Track Mode-3/A code converted into Octal Representation.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/060/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I011/060/MOD3A</strong> - <em>Mode-3/A Reply in Octal Representation</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>Octal string (3-bits per digit)</li>
+</ul>
+</blockquote>
+<h3 id="i011090---measured-flight-level">I011/090 - Measured Flight Level</h3>
+<p><em>Definition</em>: Last valid and credible flight level used to update the track, in two’s complement representation.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “FL”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> FL = <span class="math inline">1/4</span> FL <span class="math inline"> ≈ 0.25</span> FL</li>
+<li>value <span class="math inline"> &gt;  =  − 12</span> FL</li>
+<li>value <span class="math inline"> &lt;  = 1500</span> FL</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><p>The criteria to determine the credibility of the flight level are Tracker dependent. Credible means: within reasonable range of change with respect to the previous detection.</p>
+</dd>
+</dl>
+<h3 id="i011092---calculated-track-geometric-altitude">I011/092 - Calculated Track Geometric Altitude</h3>
+<p><em>Definition</em>: Calculated geometric vertical distance above mean sea level, not related to barometric pressure.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 25</li>
+<li>fractional bits: 2</li>
+<li>unit: “ft”</li>
+<li>LSB = <span class="math inline">25/2<sup>2</sup></span> ft = <span class="math inline">25/4</span> ft <span class="math inline"> ≈ 6.25</span> ft</li>
+<li>value <span class="math inline"> &gt;  =  − 1500</span> ft</li>
+<li>value <span class="math inline"> &lt;  = 150000</span> ft</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><p>The source of altitude is identified in bits (SRC) of item I011/170 Track Status.</p>
+</dd>
+</dl>
+<h3 id="i011093---calculated-track-barometric-altitude">I011/093 - Calculated Track Barometric Altitude</h3>
+<p><em>Definition</em>: Calculated Barometric Altitude of the track.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/093/QNH</strong> - <em>QNH Correction Applied</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No QNH Correction Applied<br />
+1: QNH Correction Applied</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/093/CTBA</strong> - <em>Calculated Track Barometric Altitude</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “FL”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> FL = <span class="math inline">1/4</span> FL <span class="math inline"> ≈ 0.25</span> FL</li>
+<li>value <span class="math inline"> &gt;  =  − 15</span> FL</li>
+<li>value <span class="math inline"> &lt;  = 1500</span> FL</li>
+</ul>
+</blockquote>
+<h3 id="i011140---time-of-track-information">I011/140 - Time of Track Information</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 7</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s = <span class="math inline">1/128</span> s <span class="math inline"> ≈ 0.0078125</span> s</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd><p>The Time of Track Information value is reset to zero each day at midnight.</p>
+</dd>
+</dl>
+<h3 id="i011161---track-number">I011/161 - Track Number</h3>
+<p><em>Definition</em>: Identification of a fusion track (single track number).</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/161/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I011/161/FTN</strong> - <em>Fusion Track Number</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i011170---track-status">I011/170 - Track Status</h3>
+<p><em>Definition</em>: Status of track.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I011/170/MON</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Multisensor Track<br />
+1: Monosensor Track</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/GBS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Transponder Ground bit not set or unknown<br />
+1: Transponder Ground bit set</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/MRH</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Barometric altitude (Mode C) more reliable<br />
+1: Geometric altitude more reliable</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/SRC</strong></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No source<br />
+1: GPS<br />
+2: 3d radar<br />
+3: Triangulation<br />
+4: Height from coverage<br />
+5: Speed look-up table<br />
+6: Default height<br />
+7: Multilateration</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/CNF</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Confirmed track<br />
+1: Tentative track</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/SIM</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Actual Track<br />
+1: Simulated track</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/TSE</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Track service end (i.e. last message transmitted to the user for the track)</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/TSB</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Track service begin (i.e. first message transmitted to the user for the track)</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/FRIFOE</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No Mode 4 interrogationt<br />
+1: Friendly target<br />
+2: Unknown target<br />
+3: No reply</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/ME</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Military Emergency present in the last report received from a sensor capable of decoding this data</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/MI</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: End of Data Item<br />
+1: Military Identification present in the last report received from a sensor capable of decoding this data</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/AMA</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Track not resulting from amalgamation process<br />
+1: Track resulting from amalgamation process</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/SPI</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: SPI present in the last report received from a sensor capable of decoding this data</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/CST</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Age of the last received track update is higher than system dependent threshold (coasting)</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/FPC</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Not flight-plan correlated<br />
+1: Flight plan correlated</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/AFF</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: ADS-B data inconsistent with other surveillance information</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I011/170/PSR</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Age of the last received PSR track update is higher than system dependent threshold</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/SSR</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Age of the last received SSR track update is higher than system dependent threshold</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/MDS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Age of the last received Mode S track update is higher than system dependent threshold</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/ADS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Age of the last received ADS track update is higher than system dependent threshold</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/SUC</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Special Used Code (Mode A codes to be defined in the system to mark a track with special interest)</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/170/AAC</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default value<br />
+1: Assigned Mode A Code Conflict (same individual Mode A Code assigned to another track)</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Track type and coasting can also be derived from Data Item I011/290 System Track Update Ages</p>
+<h3 id="i011202---calculated-track-velocity-in-cartesian-coordinates">I011/202 - Calculated Track Velocity in Cartesian Coordinates</h3>
+<p><em>Definition</em>: Calculated track velocity expressed in Cartesian co-ordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/202/VX</strong> - <em>Vx</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s = <span class="math inline">1/4</span> m/s <span class="math inline"> ≈ 0.25</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 8192</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 8192</span> m/s</li>
+</ul>
+<p><strong>I011/202/VY</strong> - <em>Vy</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s = <span class="math inline">1/4</span> m/s <span class="math inline"> ≈ 0.25</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 8192</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 8192</span> m/s</li>
+</ul>
+</blockquote>
+<h3 id="i011210---calculated-acceleration">I011/210 - Calculated Acceleration</h3>
+<p><em>Definition</em>: Calculated Acceleration of the target, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/210/AX</strong> - <em>Ax</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “m/s2”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s2 = <span class="math inline">1/4</span> m/s2 <span class="math inline"> ≈ 0.25</span> m/s2</li>
+<li>value <span class="math inline"> &gt;  =  − 31</span> m/s2</li>
+<li>value <span class="math inline"> &lt;  = 31</span> m/s2</li>
+</ul>
+<p><strong>I011/210/AY</strong> - <em>Ay</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “m/s2”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s2 = <span class="math inline">1/4</span> m/s2 <span class="math inline"> ≈ 0.25</span> m/s2</li>
+<li>value <span class="math inline"> &gt;  =  − 31</span> m/s2</li>
+<li>value <span class="math inline"> &lt;  = 31</span> m/s2</li>
+</ul>
+</blockquote>
+<h3 id="i011215---calculated-rate-of-climbdescent">I011/215 - Calculated Rate Of Climb/Descent</h3>
+<p><em>Definition</em>: Calculated rate of Climb/Descent of an aircraft, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 25</li>
+<li>fractional bits: 2</li>
+<li>unit: “ft/min”</li>
+<li>LSB = <span class="math inline">25/2<sup>2</sup></span> ft/min = <span class="math inline">25/4</span> ft/min <span class="math inline"> ≈ 6.25</span> ft/min</li>
+<li>value <span class="math inline"> &gt;  =  − 204800</span> ft/min</li>
+<li>value <span class="math inline"> &lt;  = 204800</span> ft/min</li>
+</ul>
+<h3 id="i011245---target-identification">I011/245 - Target Identification</h3>
+<p><em>Definition</em>: Target (aircraft or vehicle) identification in 8 characters.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/245/STI</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Callsign or registration downlinked from transponder<br />
+1: Callsign not downlinked from transponder<br />
+2: Registration not downlinked from transponder</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/245/(spare)</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+</ul>
+<p><strong>I011/245/TID</strong> - <em>Target Identification</em></p>
+<ul>
+<li>48 bits [<code>................................................</code>]</li>
+<li>ICAO string (6-bits per character)</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>Characters 1-8 (coded on 6 bits each) defining target identification</p>
+</dd>
+</dl>
+<h3 id="i011270---target-size-and-orientation">I011/270 - Target Size and Orientation</h3>
+<p><em>Definition</em>: Target size defined as length and with of the detected target, and orientation.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item with first part <code>8 bits</code> long and optional <code>8 bits</code> extends.</p>
+<blockquote>
+<p><strong>I011/270/LENGTH</strong> - <em>Length</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/270/ORIENTATION</strong> - <em>Orientation</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 360</li>
+<li>fractional bits: 7</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">360/2<sup>7</sup></span> deg = <span class="math inline">360/128</span> deg <span class="math inline"> ≈ 2.8125</span> deg</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/270/WIDTH</strong> - <em>Width</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 0</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>The orientation gives the direction to which the aircraft nose is pointing, relative to the Geographical North.</p>
+</dd>
+</dl>
+<h3 id="i011290---system-track-update-ages">I011/290 - System Track Update Ages</h3>
+<p><em>Definition</em>: Ages of the last plot/local track, or the last valid mode-A/mode-C, used to update the system track.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I011/290/PSR</strong> - <em>Age of the Last Primary Report Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/SSR</strong> - <em>Age of the Last Secondary Report Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/MDA</strong> - <em>Age of the Last Valid Mode A Report Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/MFL</strong> - <em>Age of the Last Valid and Credible Mode C Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/MDS</strong> - <em>Age of the Last Mode S Report Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/ADS</strong> - <em>Age of the Last ADS Report Used to Update the Track</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/ADB</strong> - <em>Age of the Last ADS-B Report Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/MD1</strong> - <em>Age of the Last Valid Mode 1 Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/MD2</strong> - <em>Age of the Last Valid Mode 2 Used to Update the Track</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/LOP</strong> - <em>Age of the Last Magentic Loop Detection</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/TRK</strong> - <em>Actual Track Age Since First Occurrence</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+<p><strong>I011/290/MUL</strong> - <em>Age of the Last Multilateration Detection</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> s = <span class="math inline">1/4</span> s <span class="math inline"> ≈ 0.25</span> s</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd><p>The ages are counted from Data Item I011/140, Time Of Track Information, using the following formula: Age = Time of track information - Time of last (valid) update If the computed age is greater than the maximum value or if the data has never been received, then the corresponding subfield is not sent.</p>
+</dd>
+</dl>
+<h3 id="i011300---vehicle-fleet-identification">I011/300 - Vehicle Fleet Identification</h3>
+<p><em>Definition</em>: Vehicle fleet identification number.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Flyco (follow me)<br />
+1: ATC equipment maintenance<br />
+2: Airport maintenance<br />
+3: Fire<br />
+4: Bird scarer<br />
+5: Snow plough<br />
+6: Runway sweeper<br />
+7: Emergency<br />
+8: Police<br />
+9: Bus<br />
+10: Tug (push/tow)<br />
+11: Grass cutter<br />
+12: Fuel<br />
+13: Baggage<br />
+14: Catering<br />
+15: Aircraft maintenance<br />
+16: Unknown</div>
+</blockquote></li>
+</ul>
+<h3 id="i011310---pre-programmed-message">I011/310 - Pre-programmed Message</h3>
+<p><em>Definition</em>: Number related to a pre-programmed message that can be transmitted by a vehicle.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/310/TRB</strong> - <em>In Trouble</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: In Trouble</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/310/MSG</strong> - <em>Message</em></p>
+<ul>
+<li><p>7 bits [<code>.......</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Towing aircraft<br />
+2: FOLLOW-ME operation<br />
+3: Runway check<br />
+4: Emergency operation (fire, medical…)<br />
+5: Work in progress (maintenance, birds scarer, sweepers…)</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<h3 id="i011380---mode-s-ads-b-related-data">I011/380 - Mode-S / ADS-B Related Data</h3>
+<p><em>Definition</em>: Data specific to Mode-S ADS-B.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I011/380/MB</strong> - <em>BDS</em></p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<ul>
+<li>64 bits [<code>................................................................</code>]</li>
+<li>BDS register with address</li>
+</ul>
+</blockquote>
+<p><strong>I011/380/ADR</strong> - <em>24 Bits Aircraft Address</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>raw value</li>
+</ul>
+<p>(empty subitem)</p>
+<p><strong>I011/380/COMACAS</strong> - <em>Communications/ACAS Capability and Flight Status</em></p>
+<blockquote>
+<p><strong>I011/380/COMACAS/COM</strong> - <em>Communications Capability of the Transponder</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No communications capability (surveillance only)<br />
+1: Comm. A and Comm. B capability<br />
+2: Comm. A, Comm. B and Uplink ELM<br />
+3: Comm. A, Comm. B, Uplink ELM and Downlink ELM<br />
+4: Level 5 Transponder capability<br />
+5: Not assigned<br />
+6: Not assigned<br />
+7: Not assigned</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/STAT</strong> - <em>Flight Status</em></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No alert, no SPI, aircraft airborne<br />
+1: No alert, no SPI, aircraft on ground<br />
+2: Alert, no SPI, aircraft airborne<br />
+3: Alert, no SPI, aircraft on ground<br />
+4: Alert, SPI, aircraft airborne or on ground<br />
+5: No alert, SPI, aircraft airborne or on ground<br />
+6: General Emergency<br />
+7: Lifeguard / medical<br />
+8: Minimum fuel<br />
+9: No communications<br />
+10: Unlawful interference</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I011/380/COMACAS/SSC</strong> - <em>Specific Service Capability</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No<br />
+1: Yes</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/ARC</strong> - <em>Altitude Reporting Capability</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: 100 ft resolution<br />
+1: 25 ft resolution</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/AIC</strong> - <em>Aircraft Identification Capability</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No<br />
+1: Yes</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/B1A</strong> - <em>BDS 1,0 Bit 16</em></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I011/380/COMACAS/B1B</strong> - <em>BDS 1,0 Bit 37/40</em></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I011/380/COMACAS/AC</strong> - <em>ACAS Operational</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No<br />
+1: Yes</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/MN</strong> - <em>Multiple Navigational Aids Operating</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No<br />
+1: Yes</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/DC</strong> - <em>Differential Correction</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Yes<br />
+1: No</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/COMACAS/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+</blockquote>
+<p>(empty subitem)</p>
+<p>(empty subitem)</p>
+<p>(empty subitem)</p>
+<p><strong>I011/380/ACT</strong> - <em>Aircraft Derived Aircraft Type</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I011/380/ECAT</strong> - <em>Emitter Category</em></p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Light aircraft &lt;= 7000 kg<br />
+2: Reserved<br />
+3: 7000 kg &amp;lt; medium aircraft &amp;lt; 136000 kg<br />
+4: Reserved<br />
+5: 136000 kg &lt;= heavy aircraft<br />
+6: Highly manoeuvrable (5g acceleration capability) and high speed (&amp;gt;400 knots cruise)<br />
+7: Reserved<br />
+8: Reserved<br />
+9: Reserved<br />
+10: Rotocraft<br />
+11: Glider / sailplane<br />
+12: Lighter-than-air<br />
+13: Unmanned aerial vehicle<br />
+14: Space / transatmospheric vehicle<br />
+15: Ultralight / handglider / paraglider<br />
+16: Parachutist / skydiver<br />
+17: Reserved<br />
+18: Reserved<br />
+19: Reserved<br />
+20: Surface emergency vehicle<br />
+21: Surface service vehicle<br />
+22: Fixed ground or tethered obstruction<br />
+23: Reserved<br />
+24: Reserved</div>
+</blockquote></li>
+</ul>
+<p>(empty subitem)</p>
+<p><strong>I011/380/AVTECH</strong> - <em>Available Technologies</em></p>
+<blockquote>
+<p><strong>I011/380/AVTECH/VDL</strong> - <em>VDL Mode 4</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: VDL Mode 4 available<br />
+1: VDL Mode 4 not available</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/AVTECH/MDS</strong> - <em>Mode S</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode S available<br />
+1: Mode S not available</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/AVTECH/UAT</strong> - <em>UAT</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: UAT available<br />
+1: UAT not available</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/380/AVTECH/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+</blockquote>
+<p>(empty subitem)</p>
+</blockquote>
+<h3 id="i011390---flight-plan-related-data">I011/390 - Flight Plan Related Data</h3>
+<p><em>Definition</em>: All flight plan related information.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I011/390/FPPSID</strong> - <em>FPPS Identification Tag</em></p>
+<blockquote>
+<p><strong>I011/390/FPPSID/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I011/390/FPPSID/SIC</strong> - <em>System Identity Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p><strong>I011/390/CSN</strong> - <em>Callsign</em></p>
+<ul>
+<li>56 bits [<code>........................................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I011/390/IFPSFLIGHTID</strong> - <em>IFPS_FLIGHT_ID</em></p>
+<blockquote>
+<p><strong>I011/390/IFPSFLIGHTID/TYP</strong> - <em>IFPS Flight ID Type</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Plan number<br />
+1: Unit 1 internal flight number<br />
+2: Unit 2 internal flight number<br />
+3: Unit 3 internal flight number</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/IFPSFLIGHTID/(spare)</strong></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+</ul>
+<p><strong>I011/390/IFPSFLIGHTID/NBR</strong> - <em>IFPS Flight ID Number</em></p>
+<ul>
+<li>27 bits [<code>...........................</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p><strong>I011/390/FLIGHTCAT</strong> - <em>Flight Category</em></p>
+<blockquote>
+<p><strong>I011/390/FLIGHTCAT/GATOAT</strong> - <em>Flight Type</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: General Air Traffic<br />
+2: Operational Air Traffic<br />
+3: Not applicable</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/FLIGHTCAT/FR1FR2</strong> - <em>Flight Rules</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Instrument Flight Rules<br />
+1: Visual Flight Rules<br />
+2: Not applicable<br />
+3: Controlled Visual Flight Rules</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/FLIGHTCAT/RVSM</strong> - <em>RVSM</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: Approved<br />
+2: Exempt<br />
+3: Not Approved</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/FLIGHTCAT/HPR</strong> - <em>Flight Priority</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Normal Priority Flight<br />
+1: High Priority Flight</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/FLIGHTCAT/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+</blockquote>
+<p><strong>I011/390/TOA</strong> - <em>Type of Aircraft</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I011/390/WTC</strong> - <em>Wake Turbulence Category</em></p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">76: Light<br />
+77: Medium<br />
+72: Heavy<br />
+74: Super</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/ADEP</strong> - <em>Departure Airport</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I011/390/ADES</strong> - <em>Destination Airport</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I011/390/RWY</strong> - <em>Runway Designation</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I011/390/CFL</strong> - <em>Current Cleared Flight Level</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “FL”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> FL = <span class="math inline">1/4</span> FL <span class="math inline"> ≈ 0.25</span> FL</li>
+</ul>
+<p><strong>I011/390/CCP</strong> - <em>Current Control Position</em></p>
+<blockquote>
+<p><strong>I011/390/CCP/CENTRE</strong> - <em>8-bit Group Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I011/390/CCP/POSITION</strong> - <em>8-bit Control Position Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p><strong>I011/390/TOD</strong> - <em>Time of Departure</em></p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I011/390/TOD/TYP</strong> - <em>Time Type</em></p>
+<ul>
+<li><p>5 bits [<code>.....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Scheduled off-block time<br />
+1: Estimated off-block time<br />
+2: Estimated take-off time<br />
+3: Actual off-block time<br />
+4: Predicted time at runway hold<br />
+5: Actual time at runway hold<br />
+6: Actual line-up time<br />
+7: Actual take-off time<br />
+8: Estimated time of arrival<br />
+9: Predicted landing time<br />
+10: Actual landing time<br />
+11: Actual time off runway<br />
+12: Predicted time to gate<br />
+13: Actual on-block time</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/TOD/DAY</strong> - <em>Day</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Today<br />
+1: Yesterday<br />
+2: Tomorrow</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/TOD/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I011/390/TOD/HOR</strong> - <em>Hours, from 0 to 23</em></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 23</span></li>
+</ul>
+<p><strong>I011/390/TOD/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I011/390/TOD/MIN</strong> - <em>Minutes, from 0 to 59</em></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 59</span></li>
+</ul>
+<p><strong>I011/390/TOD/AVS</strong> - <em>Seconds Available</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Seconds available<br />
+1: Seconds not available</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/TOD/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I011/390/TOD/SEC</strong> - <em>Seconds, from 0 to 59</em></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 59</span></li>
+</ul>
+</blockquote>
+<p><strong>I011/390/AST</strong> - <em>Aircraft Stand</em></p>
+<ul>
+<li>48 bits [<code>................................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I011/390/STS</strong> - <em>Stand Status</em></p>
+<blockquote>
+<p><strong>I011/390/STS/EMP</strong> - <em>Stand Empty</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Empty<br />
+1: Occupied<br />
+2: Unknown</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/STS/AVL</strong> - <em>Stand Available</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Available<br />
+1: Not available<br />
+2: Unknown</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/390/STS/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i011430---phase-of-flight">I011/430 - Phase of Flight</h3>
+<p><em>Definition</em>: Current phase of the flight.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: On stand<br />
+2: Taxiing for departure<br />
+3: Taxiing for arrival<br />
+4: Runway for departure<br />
+5: Runway for arrival<br />
+6: Hold for departure<br />
+7: Hold for arrival<br />
+8: Push back<br />
+9: On finals</div>
+</blockquote></li>
+</ul>
+<h3 id="i011500---estimated-accuracies">I011/500 - Estimated Accuracies</h3>
+<p><em>Definition</em>: Overview of all important accuracies (standard deviations).</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I011/500/APC</strong> - <em>Estimated Accuracy Of Track Position (Cartesian)</em></p>
+<blockquote>
+<p><strong>I011/500/APC/X</strong> - <em>Estimated Accuracy of the Calculated Position of X Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m = <span class="math inline">1/4</span> m <span class="math inline"> ≈ 0.25</span> m</li>
+</ul>
+<p><strong>I011/500/APC/Y</strong> - <em>Estimated Accuracy of the Calculated Position of Y Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 2</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m = <span class="math inline">1/4</span> m <span class="math inline"> ≈ 0.25</span> m</li>
+</ul>
+</blockquote>
+<p><strong>I011/500/APW</strong> - <em>Estimated Accuracy Of Track Position (WGS84)</em></p>
+<blockquote>
+<p><strong>I011/500/APW/LAT</strong> - <em>APW Latitude Component Accuracy</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 31</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> deg = <span class="math inline">180/2147483648</span> deg <span class="math inline"> ≈ 8.381903171539307<em>e</em> − 08</span> deg</li>
+</ul>
+<p><strong>I011/500/APW/LON</strong> - <em>APW Longitude Component Accuracy</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 180</li>
+<li>fractional bits: 31</li>
+<li>unit: “deg”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> deg = <span class="math inline">180/2147483648</span> deg <span class="math inline"> ≈ 8.381903171539307<em>e</em> − 08</span> deg</li>
+</ul>
+</blockquote>
+<p><strong>I011/500/ATH</strong> - <em>Estimated Accuracy Of Track Height</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 1</li>
+<li>fractional bits: 1</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>1</sup></span> m = <span class="math inline">1/2</span> m <span class="math inline"> ≈ 0.5</span> m</li>
+</ul>
+<p><strong>I011/500/AVC</strong> - <em>Estimated Accuracy Of Track Velocity (Cartesian)</em></p>
+<blockquote>
+<p><strong>I011/500/AVC/X</strong> - <em>Estimated Accuracy of the Calculated Velocity of X Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">0.1</span> m/s</li>
+</ul>
+<p><strong>I011/500/AVC/Y</strong> - <em>Estimated Accuracy of the Calculated Velocity of Y Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">0.1</span> m/s</li>
+</ul>
+</blockquote>
+<p><strong>I011/500/ARC</strong> - <em>Estimated Accuracy Of Rate Of Climb / Descent</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>scaling factor: 0.1</li>
+<li>fractional bits: 0</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">0.1</span> m/s</li>
+</ul>
+<p><strong>I011/500/AAC</strong> - <em>Estimated Accuracy Of Acceleration (Cartesian)</em></p>
+<blockquote>
+<p><strong>I011/500/AAC/X</strong> - <em>Estimated Accuracy Of Acceleration of X Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.01</li>
+<li>fractional bits: 0</li>
+<li>unit: “m/s2”</li>
+<li>LSB = <span class="math inline">0.01</span> m/s2</li>
+</ul>
+<p><strong>I011/500/AAC/Y</strong> - <em>Estimated Accuracy Of Acceleration of Y Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>scaling factor: 0.01</li>
+<li>fractional bits: 0</li>
+<li>unit: “m/s2”</li>
+<li>LSB = <span class="math inline">0.01</span> m/s2</li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i011600---alert-messages">I011/600 - Alert Messages</h3>
+<p><em>Definition</em>: Alert involving the targets indicated in I011/605.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I011/600/ACK</strong> - <em>Alert Acknowleged</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Alert acknowledged<br />
+1: Alert not acknowledged</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/600/SVR</strong> - <em>Alert Severity</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: End fo alert<br />
+1: Pre-alarm<br />
+2: Severe alert</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/600/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+<p><strong>I011/600/AT</strong> - <em>Alert Type</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I011/600/AN</strong> - <em>Alert Number</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i011605---tracks-in-alert">I011/605 - Tracks in Alert</h3>
+<p><em>Definition</em>: List of track numbers of the targets concerned by the alert described in I011/600.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I011/605/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I011/605/FTN</strong> - <em>Fusion Track Number</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i011610---holdbar-status">I011/610 - Holdbar Status</h3>
+<p><em>Definition</em>: Status of up to sixteen banks of twelve indicators.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I011/610/BKN</strong> - <em>Bank Number</em></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I011/610/I1</strong> - <em>Indicator 1</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I2</strong> - <em>Indicator 2</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I3</strong> - <em>Indicator 3</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I4</strong> - <em>Indicator 4</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I5</strong> - <em>Indicator 5</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I6</strong> - <em>Indicator 6</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I7</strong> - <em>Indicator 7</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I8</strong> - <em>Indicator 8</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I9</strong> - <em>Indicator 9</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I10</strong> - <em>Indicator 10</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I11</strong> - <em>Indicator 11</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+<p><strong>I011/610/I12</strong> - <em>Indicator 12</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Indicator on<br />
+1: Indicator off</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<h3 id="i011sp---special-purpose-field">I011/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h3 id="i011re---reserved-expansion-field">I011/RE - Reserved Expansion Field</h3>
+<p><em>Definition</em>: Expansion</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item</p>
+<h1 id="user-application-profile-for-category-011">User Application Profile for Category 011</h1>
+<ul>
+<li><ol type="1">
+<li><code>I011/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I011/000</code> - Message Type</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I011/015</code> - Service Identification</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I011/140</code> - Time of Track Information</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I011/041</code> - Position in WGS-84 Coordinates</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I011/042</code> - Calculated Position in Cartesian Co-ordinates</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I011/202</code> - Calculated Track Velocity in Cartesian Coordinates</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I011/210</code> - Calculated Acceleration</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I011/060</code> - Mode-3/A Code in Octal Representation</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I011/245</code> - Target Identification</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I011/380</code> - Mode-S / ADS-B Related Data</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I011/161</code> - Track Number</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I011/170</code> - Track Status</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I011/290</code> - System Track Update Ages</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="15" type="1">
+<li><code>I011/430</code> - Phase of Flight</li>
+</ol></li>
+<li><ol start="16" type="1">
+<li><code>I011/090</code> - Measured Flight Level</li>
+</ol></li>
+<li><ol start="17" type="1">
+<li><code>I011/093</code> - Calculated Track Barometric Altitude</li>
+</ol></li>
+<li><ol start="18" type="1">
+<li><code>I011/092</code> - Calculated Track Geometric Altitude</li>
+</ol></li>
+<li><ol start="19" type="1">
+<li><code>I011/215</code> - Calculated Rate Of Climb/Descent</li>
+</ol></li>
+<li><ol start="20" type="1">
+<li><code>I011/270</code> - Target Size and Orientation</li>
+</ol></li>
+<li><ol start="21" type="1">
+<li><code>I011/390</code> - Flight Plan Related Data</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="22" type="1">
+<li><code>I011/300</code> - Vehicle Fleet Identification</li>
+</ol></li>
+<li><ol start="23" type="1">
+<li><code>I011/310</code> - Pre-programmed Message</li>
+</ol></li>
+<li><ol start="24" type="1">
+<li><code>I011/500</code> - Estimated Accuracies</li>
+</ol></li>
+<li><ol start="25" type="1">
+<li><code>I011/600</code> - Alert Messages</li>
+</ol></li>
+<li><ol start="26" type="1">
+<li><code>I011/605</code> - Tracks in Alert</li>
+</ol></li>
+<li><ol start="27" type="1">
+<li><code>I011/610</code> - Holdbar Status</li>
+</ol></li>
+<li><ol start="28" type="1">
+<li><code>I011/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="29" type="1">
+<li><code>I011/RE</code> - Reserved Expansion Field</li>
+</ol></li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+
