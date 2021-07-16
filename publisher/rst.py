@@ -135,7 +135,7 @@ def renderVariation(parent, variation):
         tell('')
 
         def case1(val):
-            value = val['rule']
+            value = val['content']
             t = value['type']
 
             if t == 'Raw':
@@ -187,11 +187,11 @@ def renderVariation(parent, variation):
                 for (a,b) in val['rules']:
                     tell('* In case of ``{} == {}``:'.format(otherItem, a))
                     with indent:
-                        case1({'rule': b})
+                        case1({'content': b})
             tell('')
             return n
 
-        return renderRule(variation['content'], case1, case2)
+        return renderRule(variation['rule'], case1, case2)
 
     def renderMaybeItem(parent, item):
         if item['spare']:

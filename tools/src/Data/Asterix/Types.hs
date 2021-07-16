@@ -25,11 +25,6 @@ data Documentation = Documentation
     , docRemark         :: Maybe Text
     } deriving (Generic, Eq, Show)
 
-data Rule a
-    = ContextFree a
-    | Dependent [Name] [(Int, a)]
-    deriving (Generic, Eq, Show)
-
 data Edition = Edition
     { editionMajor :: Int
     , editionMinor :: Int
@@ -95,8 +90,13 @@ data Content
         BdsType
     deriving (Generic, Eq, Show)
 
+data Rule
+    = ContextFree Content
+    | Dependent [Name] [(Int, Content)]
+    deriving (Generic, Eq, Show)
+
 data Variation
-    = Element RegisterSize (Rule Content)
+    = Element RegisterSize Rule
     | Group [Item]
     | Extended PrimarySize ExtensionSize [Item]
     | Repetitive RepetitionSize Variation

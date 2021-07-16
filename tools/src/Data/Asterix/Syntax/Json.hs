@@ -21,27 +21,6 @@ import qualified Data.Text as T
 import           Data.Asterix.Types
 import           Data.Asterix.Common
 
-instance ToJSON a => ToJSON (Rule a)
-  where
-    toJSON (ContextFree rule) = object
-        [ "type" .= ("ContextFree" :: String)
-        , "rule" .= rule
-        ]
-    toJSON (Dependent name rules) = object
-        [ "type" .= ("Dependent" :: String)
-        , "name" .= name
-        , "rules" .= rules
-        ]
-
-instance FromJSON a => FromJSON (Rule a) where
-    parseJSON = withObject "Rule" $ \v -> case HMS.lookup "type" v of
-        Just "ContextFree" -> ContextFree
-            <$> v .: "rule"
-        Just "Dependent" -> Dependent
-            <$> v .: "name"
-            <*> v .: "rules"
-        _ -> typeMismatch "Rule" $ String "wrong type"
-
 instance ToJSON Edition where
     toJSON (Edition a b) = object
         [ "major" .= a
@@ -196,11 +175,32 @@ instance FromJSON Content  where
             <$> v .: "variation"
         _ -> typeMismatch "Content" $ String "wrong type"
 
+instance ToJSON Rule
+  where
+    toJSON (ContextFree content) = object
+        [ "type"    .= ("ContextFree" :: String)
+        , "content" .= content
+        ]
+    toJSON (Dependent name rules) = object
+        [ "type" .= ("Dependent" :: String)
+        , "name" .= name
+        , "rules" .= rules
+        ]
+
+instance FromJSON Rule where
+    parseJSON = withObject "Rule" $ \v -> case HMS.lookup "type" v of
+        Just "ContextFree" -> ContextFree
+            <$> v .: "content"
+        Just "Dependent" -> Dependent
+            <$> v .: "name"
+            <*> v .: "rules"
+        _ -> typeMismatch "Rule" $ String "wrong type"
+
 instance ToJSON Variation where
-    toJSON (Element n content) = object
+    toJSON (Element n rule) = object
         [ "type"    .= ("Element" :: String)
         , "size"    .= n
-        , "content" .= content
+        , "rule"    .= rule
         ]
     toJSON (Group lst) = object
         [ "type"    .= ("Group" :: String)
@@ -230,7 +230,7 @@ instance FromJSON Variation  where
     parseJSON = withObject "Variation" $ \v -> case HMS.lookup "type" v of
         Just "Element" -> Element
             <$> v .: "size"
-            <*> v .: "content"
+            <*> v .: "rule"
         Just "Group" -> Group
             <$> v .: "items"
         Just "Extended" -> Extended

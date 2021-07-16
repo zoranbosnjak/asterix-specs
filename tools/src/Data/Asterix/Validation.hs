@@ -204,7 +204,7 @@ instance Validate (RegisterSize, Content) where
                 _ -> []
             ]
 
-instance Validate (RegisterSize, a) => Validate (RegisterSize, Rule a) where
+instance Validate (RegisterSize, Rule) where
     validate warnings (n, ContextFree a) = validate warnings (n,a)
     validate warnings (n, Dependent _someItem rules) = join
         [ reportWhen (keys /= nub keys) "duplicated keys"
