@@ -253,6 +253,7 @@ instance Validate Variation where
         , validate warnings items
         , let items' = catMaybes items
           in reportWhen (duplicatedNames items') "duplicated names"
+        , reportWhen (isNothing $ last items) "last element in compound is empty"
         ]
 
 instance Validate Item where
