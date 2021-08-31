@@ -1,5 +1,6 @@
 { gitrev ? "devel"
 , packages ? null
+, inShell ? null
 }:
 
 let
@@ -20,5 +21,7 @@ let
   };
 
 in
-  if pkgs.lib.inNixShell then env else drv
+  if inShell == false
+    then drv
+    else if pkgs.lib.inNixShell then env else drv
 
