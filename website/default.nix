@@ -57,6 +57,8 @@ let
       rm -rf _site _cache
       ${site}/bin/site rebuild
       cp -a _site/* $out
+
+      echo ${gitrev} > $out/gitrev.txt
     '';
   };
 

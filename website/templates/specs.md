@@ -9,6 +9,8 @@ revision `#$gitrev$`.
 
 Category listing: [manifest.json](/manifest.json).
 
+Revision: [gitrev.txt](/gitrev.txt)
+
 ---
 
 $for(nums)$
