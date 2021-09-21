@@ -50,7 +50,7 @@ SAC "System Area Code"
     }
 }
 ```
-Admittedly, the `null` values could be excluded, but the json definitions
+Admittedly, the `null` values could be excluded, but the `json` definitions
 still contain a lot of overhead.
 
 ## I don't like a converter in a processing chain.

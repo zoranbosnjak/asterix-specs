@@ -164,3 +164,20 @@ for i in root['catalogue']:
     dump_item(i)
 ```
 
+# Related projects
+
+* [asterix-data](https://github.com/zoranbosnjak/asterix-data) is a set of
+  machine-readable asterix definition files in *xml* format. The *xml* files
+  are generated automatically out of asterix specifications from this
+  project (*json* to *xml* conversion). In turn, various other projects
+  are using generated *xml* definition files for encoding and decoding
+  asterix data.
+
+* [asterix](https://github.com/CroatiaControlLtd/asterix) is a *python* module
+  and application for reading and parsing asterix data. It includes custom *xml*
+  configuration files for asterix category definitions, similar but not the
+  same as `asterix-data` project mentioned above.
+  [This directory](https://github.com/CroatiaControlLtd/asterix/tree/master/asterix-specs-converter)
+  contains an automatically generated version of the *xml* configuration files,
+  together with the conversion script.
+
