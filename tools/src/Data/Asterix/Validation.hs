@@ -254,7 +254,11 @@ instance Validate Variation where
         , let items' = catMaybes items
           in reportWhen (duplicatedNames items') "duplicated names"
         , reportWhen (isNothing $ last items) "last element in compound is empty"
+        , reportWhen (any isSpare items) "unexpected spare item inside compound"
         ]
+      where
+        isSpare (Just (Spare _)) = True
+        isSpare _ = False
 
 instance Validate Item where
     validate _warnings (Spare n) = reportUnless (n > 0) "size error"
