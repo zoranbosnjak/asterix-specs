@@ -1,13 +1,3 @@
-{-# LANGUAGE DeriveGeneric #-}
-
--- Asterix data types.
-
-module Data.Asterix.Types where
-
-import           GHC.Generics (Generic)
-import           Data.Ratio (Ratio)
-import           Data.Text
-
 type RegisterSize = Int
 type PrimarySize = Int
 type ExtensionSize = Int
@@ -23,28 +13,23 @@ data Documentation = Documentation
     { docDefinition     :: Maybe Text
     , docDescription    :: Maybe Text
     , docRemark         :: Maybe Text
-    } deriving (Generic, Eq, Show)
+    }
 
 data Edition = Edition
     { editionMajor :: Int
     , editionMinor :: Int
-    } deriving (Generic, Eq, Show)
-
-instance Ord Edition where
-    compare (Edition a1 b1) (Edition a2 b2) =
-        compare a1 a2 <> compare b1 b2
+    }
 
 data Date = Date
     { dateYear  :: Integer
     , dateMonth :: Int
     , dateDay   :: Int
-    } deriving (Generic, Eq, Show)
+    }
 
 data Number
     = NumberZ Integer
     | NumberQ (Ratio Int)
     | NumberR Double
-    deriving (Generic, Eq, Ord, Show)
 
 data Constrain
     = EqualTo Number
@@ -58,21 +43,17 @@ data Constrain
 data Signed
     = Signed
     | Unsigned
-    deriving (Generic, Eq, Show)
 
 data StringType
     = StringAscii
     | StringICAO
     | StringOctal
-    deriving (Generic, Eq, Show, Read)
 
 newtype BdsAddr = BdsAddr Int
-    deriving (Generic, Eq, Show, Read)
 
 data BdsType
     = BdsWithAddress        -- 64 bit value (address is encoded with data)
     | BdsAt (Maybe BdsAddr) -- 56 bit value (address is maybe a priory known)
-    deriving (Generic, Eq, Show, Read)
 
 data Content
     = ContentRaw
@@ -91,12 +72,10 @@ data Content
         [Constrain]
     | ContentBds
         BdsType
-    deriving (Generic, Eq, Show)
 
 data Rule
     = ContextFree Content
     | Dependent [Name] [(Int, Content)]
-    deriving (Generic, Eq, Show)
 
 data Variation
     -- leaf of the structure
@@ -119,18 +98,15 @@ data Variation
     -- Some subitems may not be defined in which case the respective
     -- presence bit in the first part is always zero
     | Compound (Maybe RegisterSize) [Maybe Item]
-    deriving (Generic, Eq, Show)
 
 data Item
     = Spare RegisterSize
     | Item Name Title Variation Documentation
-    deriving (Generic, Eq, Show)
 
 -- User applicaton profile type
 data Uap
     = Uap [Maybe Name]                  -- single UAP
     | Uaps [(UapName, [Maybe Name])]    -- multiple UAPs
-    deriving (Generic, Eq, Show)
 
 -- Basic category definition
 data Basic = Basic
@@ -141,7 +117,7 @@ data Basic = Basic
     , basPreamble   :: Maybe Text
     , basCatalogue  :: [Item]
     , basUap        :: Uap
-    } deriving (Generic, Eq, Show)
+    }
 
 -- Expansion category definition
 data Expansion = Expansion
@@ -150,10 +126,9 @@ data Expansion = Expansion
     , expEdition    :: Edition
     , expDate       :: Date
     , expVariation  :: Variation
-    } deriving (Generic, Eq, Show)
+    }
 
 data Asterix
     = AsterixBasic Basic
     | AsterixExpansion Expansion
-    deriving (Generic, Eq, Show)
 
