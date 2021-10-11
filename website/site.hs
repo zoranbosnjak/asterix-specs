@@ -47,6 +47,7 @@ main = do
     syntax <- getEnvVariableExpr "SYNTAX"
     syntaxImages <- listDirectory $ syntax++"/syntax/png"
     toolsVersion <- getEnvVariableExpr "TOOLS_VERSION"
+    typesSimple <- readFile "types_simple.hs"
 
     hakyllWith config $ do
         match "css/*" $ do
@@ -89,23 +90,6 @@ main = do
                         >>= loadAndApplyTemplate "templates/default.html" defaultContext
                         >>= relativizeUrls
 
-        create ["specs.md"] $ do
-            let ctx = defaultContext
-                    <> constField "gitrev" gitrev
-                    <> listField "nums" catCtx (mapM makeItem manifest)
-            compile $ do
-                makeItem ""
-                    >>= loadAndApplyTemplate "templates/specs.md" ctx
-
-        create ["specs.html"] $ do
-            route idRoute
-            compile $ do
-                load "specs.md"
-                >>= renderPandoc
-                >>= (\(Item _a b) -> pure (Item "specs.html" b))
-                >>= loadAndApplyTemplate "templates/default.html" defaultContext
-                >>= relativizeUrls
-
         -- syntax images
         forM_ syntaxImages $ \img -> do
             create [ fromFilePath ("syntax/" ++ img) ] $ do
@@ -113,38 +97,35 @@ main = do
                 compile $ do
                     unsafeCompiler (BSL.readFile $ syntax ++ "/syntax/png/" ++ img) >>= makeItem
 
-        create ["syntax.md"] $ do
-            let imgCtx = field "img" (\(Item _ i) -> pure i)
-                ctx = defaultContext
-                   <> listField "images" imgCtx (mapM makeItem syntaxImages)
-            compile $ do
+        -- templates
+        let files =
+                [ ("specs", defaultContext
+                    <> constField "gitrev" gitrev
+                    <> listField "nums" catCtx (mapM makeItem manifest))
+                , ("struct", defaultContext
+                    <> constField "typesSimple" typesSimple)
+                , ("syntax",
+                    let imgCtx = field "img" (\(Item _ i) -> pure i)
+                    in defaultContext
+                        <> listField "images" imgCtx (mapM makeItem syntaxImages))
+                , ("tools", defaultContext
+                        <> constField "toolsVersion" toolsVersion)
+                ]
+
+        forM_ files $ \(name, ctx) -> do
+            let n a b = fromFilePath (a <> name <> b)
+            create [n "" ".md"] $ compile $ do
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/syntax.md" ctx
+                    >>= loadAndApplyTemplate (n "templates/" ".md") ctx
 
-        create ["syntax.html"] $ do
-            route idRoute
-            compile $ do
-                load "syntax.md"
-                >>= renderPandoc
-                >>= (\(Item _a b) -> pure (Item "syntax.html" b))
-                >>= loadAndApplyTemplate "templates/default.html" defaultContext
-                >>= relativizeUrls
-
-        create ["tools.md"] $ do
-            let ctx = defaultContext
-                    <> constField "toolsVersion" toolsVersion
-            compile $ do
-                makeItem ""
-                    >>= loadAndApplyTemplate "templates/tools.md" ctx
-
-        create ["tools.html"] $ do
-            route idRoute
-            compile $ do
-                load "tools.md"
-                >>= renderPandoc
-                >>= (\(Item _a b) -> pure (Item "tools.html" b))
-                >>= loadAndApplyTemplate "templates/default.html" defaultContext
-                >>= relativizeUrls
+            create [n "" ".html"] $ do
+                route idRoute
+                compile $ do
+                    load $ n "" ".md"
+                    >>= renderPandoc
+                    >>= (\(Item _a b) -> pure (Item (n "" ".html") b))
+                    >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                    >>= relativizeUrls
 
         match "templates/*" $ compile templateBodyCompiler
 
