@@ -181,3 +181,10 @@ for i in root['catalogue']:
   contains an automatically generated version of the *xml* configuration files,
   together with the conversion script.
 
+* [wireshark](https://www.wireshark.org/) is a well known
+  network protocol analyzer, also capable of decoding asterix data format.
+  Asterix related `C/C++` structures and decoding functions are
+  automatically generated from *json* `asterix-specs` definitions. See
+  [asterix parser generator](https://gitlab.com/wireshark/wireshark/-/tree/master/tools/asterix)
+  (part of wireshark source code) for details.
+
