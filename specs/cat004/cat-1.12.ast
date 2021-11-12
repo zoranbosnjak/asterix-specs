@@ -42,7 +42,7 @@ items
                 28: Vertical Path Monitor (VPM)
                 29: RIMCAS Taxiway Traffic Alert (TTA)
                 30: RIMCAS Arrival/Departure Close Runway Alert (CRA)
-                31: RIMCAS Arrival/Departure Aircraft Separation Monitor
+                31: RIMCAS Arrival/Departure Aircraft Separation Monitor (ASM)
                 32: RIMCAS ILS Area Violation Monitor (IAVM)
                 33: Final Target Distance Indicator (FTD)
                 34: Initial Target Distance Indicator (ITD)
@@ -213,8 +213,9 @@ items
                     raw
 
         remark
-            NOTE - The up-to-date list of SACs is published on the EUROCONTROL Web
-            Site (http://www.eurocontrol.int/asterix).
+            Note:
+                - The up-to-date list of SACs is published on the EUROCONTROL Web
+                  Site (http://www.eurocontrol.int/asterix).
 
     015 "SDPS Identifier"
         definition
@@ -228,8 +229,9 @@ items
                     element 8
                         raw
         remark
-            NOTE - The up-to-date list of SACs is published on the EUROCONTROL Web
-            Site (http://www.eurocontrol.int/asterix).
+            Note:
+                - The up-to-date list of SACs is published on the EUROCONTROL Web
+                Site (http://www.eurocontrol.int/asterix).
 
     020 "Time of Message"
         definition
@@ -369,12 +371,12 @@ items
                 element 1
                     table
                         0: Default
-                        1: ACAS RA function
+                        1: NTCA function
             DG ""
                 element 1
                     table
                         0: Default
-                        1: DG function
+                        1: System degraded
             OF ""
                 element 1
                     table
@@ -394,7 +396,7 @@ items
                 element 1
                     table
                         0: Default
-                        1: PAIW function
+                        1: pAIW function
             OCAT ""
                 element 1
                     table
@@ -434,37 +436,37 @@ items
                 element 1
                     table
                         0: Default
-                        1: DBPSMTL sub-function
+                        1: DBPSM TL sub-function
             VRAMCRM ""
                 element 1
                     table
                         0: Default
-                        1: VRAMCRM sub-function
+                        1: VRAM CRM sub-function
             VRAMVTM ""
                 element 1
                     table
                         0: Default
-                        1: VRAMVTM sub-function
+                        1: VRAM VTM sub-function
             VRAMVRM ""
                 element 1
                     table
                         0: Default
-                        1: VRAMVRM sub-function
+                        1: VRAM VRM sub-function
             HAMHD ""
                 element 1
                     table
                         0: Default
-                        1: HAMHD sub-function
+                        1: HAM HD sub-function
             HAMRD ""
                 element 1
                     table
                         0: Default
-                        1: HAMRD sub-function
+                        1: HAM RD sub-function
             HAMVD ""
                 element 1
                     table
                         0: Default
-                        1: HAMVD sub-function
+                        1: HAM VD sub-function
             HVI ""
                 element 1
                     table
@@ -514,7 +516,7 @@ items
                 element 1
                     table
                         0: Default
-                        1: IAA function
+                        1: IIA function
             SQW ""
                 element 1
                     table
@@ -603,12 +605,12 @@ items
             CVS "Current Vertical Separation"
                 description
                     Current vertical separation
-                element 24
+                element 16
                     unsigned quantity 25 0 "ft"
             MVS "Estimated Minimum Vertical Separation"
                 description
                     Estimated Minimum Vertical Separation
-                element 24
+                element 16
                     unsigned quantity 25 0 "ft"
 
     074 "Longitudinal Deviation"
@@ -617,19 +619,21 @@ items
         element 16
             signed quantity 32 0 "m"
         remark
-            NOTE - Longitudinal deviation will be positive if the aircraft is ahead of its
-            planned position.
-                   Longitudinal deviation will be negative if the aircraft is behind its
-            planned position.
+            Note:
+                - Longitudinal deviation will be positive if the aircraft is ahead of its
+                  planned position.
+                  Longitudinal deviation will be negative if the aircraft is behind its
+                  planned position.
 
     075 "Transversal Distance Deviation"
         definition
             Transversal distance deviation for Route Adherence Monitoring, in two’s complement.
         element 24
-            signed quantity 32 0 "m"
+            signed quantity 1 1 "m"
         remark
-            NOTE - Deviation to the right of the track will be coded as a positive value.
-                   Deviation to the left of the track will be coded as a negative value
+            Note:
+               - Deviation to the right of the track will be coded as a positive value.
+                 Deviation to the left of the track will be coded as a negative value
 
     076 "Vertical Deviation"
         definition
@@ -637,8 +641,9 @@ items
         element 16
             signed quantity 25 0 "ft"
         remark
-            NOTE - Positive value if aircraft is above planned altitude
-                   Negative value if aircraft is below planned altitude
+            Note:
+                - Positive value if aircraft is above planned altitude
+                  Negative value if aircraft is below planned altitude
 
     100 "Area Definition"
         definition
@@ -646,34 +651,41 @@ items
         compound
             AN "Area Name"
                 description
+                    Name of the area involved in a Safety Net alarm.
                     Characters 1-8 (coded on 6 bits each) defining the name of the area.
                     Coding rules are provided in [3]Section 3.1.2.9"
                 element 48
                     string icao
             CAN "Crossing Area Name"
                 description
+                    Name of Crossing Area Involved in RIMCA.
                     Each octet is an ASCII character defining the name of the crossing
                     area involved in a runway/taxiway crossing alert (message type 013)
                 element 56
                     string ascii
             RT1 "Runway/Taxiway Designator 1"
                 description
+                    Designator of Runway/Taxiway 1 Involved in a RIMCA
                     Each octet is an ASCII character defining the runway designator
                 element 56
                     string ascii
-            RT2 "Runway/Taxiway Designator 1"
+            RT2 "Runway/Taxiway Designator 2"
                 description
+                    Designator of Runway/Taxiway 2 Involved in a RIMCA
                     Each octet is an ASCII character defining the runway designator
                 element 56
                     string ascii
             SB "Stop Bar Designator"
                 description
+                    Designator of Stop-Bar Involved in RIMCA
                     Each octet is an ASCII character defining the stop-bar involved
                     in a stop-bar crossed alert (message type 016)
                 element 56
                     string ascii
             G "Gate Designator"
                 description
+                    Gate Designator (in 7 characters) of the approaching aircraft in
+                    a RIMCA or a STOCC message,
                     Each octet is an ASCII character defining the gate for the
                     approaching aircraft
                 element 56
@@ -719,14 +731,17 @@ items
                     element 8
                         raw
         remark
-            NOTE - The Centre identification code and the Control position identification
-            code must be defined between the communication partners.
+            Note:
+                - The Centre identification code and the Control position identification
+                  code must be defined between the communication partners.
 
     120 "Conflict Characteristics"
         definition
             Description of the Conflict Properties
         compound
             CN "Conflict Nature"
+                description
+                    Nature of the conflict expressed by a set of properties
                 extended 8 8
                     MAS "Conflict Location in Military Airspace"
                         element 1
@@ -797,12 +812,17 @@ items
                         element 1
                             table
                                 0: Default
-                                1: Msg Type 25 (HAM) indicates HD
+                                1: Msg Type 29 (HAM) indicates HD
+                    HAMRD ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 29 (HAM) indicates RD
                     HAMVD ""
                         element 1
                             table
                                 0: Default
-                                1: Msg Type 25 (HAM) indicates VD
+                                1: Msg Type 29 (HAM) indicates VD
                     DBPSMARR ""
                         element 1
                             table
@@ -825,18 +845,246 @@ items
                                 1: Msg Type 99 (AIW) indicates pAIW Alert
                     spare 2
             CC "Conflict Classification"
+                description
+                    Severity classification of the conflict
                 group
                     TID "Identification of Conflict Categories Definition Table"
                         element 4
                             raw
                     CP "Conflict Properties Class"
                         element 3
-                            raw
+                            case 000
+                                005:
+                                    case 120/CC/TID
+                                        0001:
+                                            table
+                                                0: APW Low Severity
+                                                1: APW Medium Severity
+                                                2: APW High Severity
+                                007:
+                                    case 120/CC/TID
+                                        0000:
+                                            table
+                                                001: major seperation infringement and not (crossed and diverging)
+                                                010: minor seperation infringement and not (crossed and diverging)
+                                                011: major seperation infringement and (crossed and diverging)
+                                                100: minor seperation infringement and (crossed and diverging)
+                                        0001:
+                                            group
+                                                LPF "Linear Prediction Filter"
+                                                    element 1
+                                                    table
+                                                        0: Filter not set
+                                                        1: Filter set
+                                                CPF "Current Proximity Filter"
+                                                    element 1
+                                                    table
+                                                        0: Filter not set
+                                                        1: Filter set
+                                                MHF "Manoeuvre Hazard Filter"
+                                                    element 1
+                                                    table
+                                                        0: Filter not set
+                                                        1: Filter set
+                                009:
+                                010:
+                                011:
+                                012:
+                                013:
+                                014:
+                                016:
+                                    case 120/CC/TID
+                                        0010:
+                                            group
+                                                RAS "RIMCAS Alert Stage"
+                                                    element 1
+                                                    table
+                                                        0: Stage One Alert
+                                                        1: Stage Two Alert
+                                                spare 2
+                                015:
+                                    case 120/CC/TID
+                                        0001:
+                                          description
+                                              Taxiway Conflict Properties
+                                           table
+                                              000: 2 aircraft, same taxiway, oposite direction
+                                              001: aircraft entering wrong direction
+                                              010: aircraft entering wrong taxiway
+                                              011: speed violation
+                                        0010:
+                                            group
+                                                RAS "RIMCAS Alert Stage"
+                                                    element 1
+                                                    table
+                                                        0: Stage One Alert
+                                                        1: Stage Two Alert
+                                                spare 2
+                                024:
+                                    case 120/CC/TID
+                                        0001:
+                                           description
+                                               VRM Conflict Classification
+                                           table
+                                              000: VRM Slow Climb
+                                              001: VRM Slow Descent
+                                        0010:
+                                            description
+                                                VTM Conflict Classificationelement 1
+                                            table
+                                                000: VTM Fast Climb
+                                                001: VTM Fast Descent
+                                026:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                DSAM Deviation Classification
+                                            table
+                                                000: Vertical manoeuvre deviation prior to reaching its expected level
+                                                001: Vertical manoeuvre deviation past its expected level
+                                027:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                RD Conflict Classification
+                                            table
+                                                000: Slow Descent
+                                                001: Fast Descent
+                                                010: Slow Climb
+                                                011: Fast Climb
+                                        0010:
+                                            description
+                                                VD Conflict Classification
+                                            table
+                                                000: Above
+                                                001: Below
+                                033:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                Separation Type (see Note 2 below)
+                                           table
+                                                000: Table - Single RWY Operation
+                                                001: MRS - Single RWY Operation
+                                                010: ROT - Single RWY Operation
+                                                011: GAP - Single RWY Operation
+                                                100: Table - Parallel RWY Operation
+                                                101: MRS - Parallel RWY Operation
+                                                110: ROT - Parallel RWY Operation
+                                                111: GAP - Parallel RWY Operation
+                                034:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                Separation Type (see Note 2 below)
+                                           table
+                                                000: Table - Single RWY Operation
+                                                001: MRS - Single RWY Operation
+                                                010: ROT - Single RWY Operation
+                                                011: GAP - Single RWY Operation
+                                                100: Table - Parallel RWY Operation
+                                                101: MRS - Parallel RWY Operation
+                                                110: ROT - Parallel RWY Operation
+                                                111: GAP - Parallel RWY Operation
+                                035:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                Indicator Type
+                                            table
+                                                000: End of Alert
+                                                001: Planned Alert
+                                                010: Alert on TABLE Indicator
+                                                011: Alert on MRS Indicator
+                                                100: Alert on ROT Indicator
+                                                101: Alert on GAP Indicator
+                                038:
+                                    case 120/CC/TID
+                                        0000:
+                                            description
+                                                Line-Up Clearance Conflict Properties
+                                            table
+                                                000: Line-Up vs. Line-Up
+                                                001: Line-Up vs. Cross or Enter
+                                                010: Line-Up vs. Take-Off
+                                                011: Line-Up vs. Landing
+                                        0001:
+                                            description
+                                                Cross or Enter Clearance Conflict Properties
+                                            table
+                                                000: Cross or Enter  vs. Line-Up
+                                                001: Cross or Enter  vs. Cross or Enter
+                                                010: Cross or Enter  vs. Take-Off
+                                                011: Cross or Enter  vs. Landing
+                                        0010:
+                                            description
+                                                Take-Off Clearance Conflict Properties
+                                            table
+                                                000: Take-Off vs. Line-Up
+                                                001: Take-Off vs. Cross or Enter
+                                                010: Take-Off vs. Take-Off
+                                                011: Take-Off vs. Landing
+                                        0011:
+                                            description
+                                                Landing Clearance Conflict Properties
+                                            table
+                                                000: Landing vs. Line-Up
+                                                001: Landing vs. Cross or Enter
+                                                010: Landing vs. Take-Off
+                                                011: Landing vs. Landing
+                                        0100:
+                                            description
+                                                Push-Back Clearance Conflict Properties
+                                            table
+                                                000: Push-Back vs. Push-Back
+                                                001: Push-Back vs. Taxi
+                                        0101:
+                                            description
+                                                Taxi Clearance Conflict Properties
+                                            table
+                                                000: Taxi vs. Push-Back
+                                                001: TAxi vs. Taxi
+                                039:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                ATC Clearance missing
+                                            table
+                                                000: No Push-Back Clearance
+                                                001: No Taxi Clearance
+                                                010: No Line-Up Clearance
+                                                011: No Crossing Clearance
+                                                100: No Enter Clearance
+                                                101: No Take-Off Clearance
+                                                110: Landing Clearance
+                                 040:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                Target not moving despite ATC Clearance
+                                            table
+                                                000: After Push-Back Clearance
+                                                001: After Taxi Clearance
+                                                010: After Line-Up Clearance
+                                                011: After Crossing Clearance
+                                                100: After Enter Clearance
+                                                101: After Take-Off Clearance
+                                                110: Stationary on Runway
+                                                111: Stationary on Taxiway
+                                 041:
+                                    case 120/CC/TID
+                                        0001:
+                                            description
+                                                Handover Type
+                                            table
+                                                000: No contact (receiving ATSU)
+                                                001: No transfer (leaving ATSU)                                                
                     CS "Conflict Severity"
                         element 1
                             table
                                 0: LOW
                                 1: HIGH
+                                
             CP "Conflict Probability"
                 description
                     Probability of the conflict
@@ -847,6 +1095,22 @@ items
                     The duration of the conflict is the elapsed time since the declaration of the conflict.
                 element 24
                     unsigned quantity 1 7 "s"
+        remark
+            Note: 
+                If no Table Id is defined for a message type, only the value of the CS 
+                bit may be of relevance. In that case, for this message type, Table Id 
+                and Conflict Properties are meaningless and shall be set to "0000" 
+                and "000" respectively.
+                1. Additional conflict classes may be defined by introducing additional 
+                   properties of a conflict. 
+                2. For FTD (Message Type = 033), ITD (Message Type = 034) and IIA 
+                   (Message Type = 035) the following types of separation have been 
+                   applied: 
+                   Table: application of the values contained in the separation table 
+                   according to the different wake vortex categories of the two aircraft. 
+                   MRS: Minimum Radar Separation for the arrival runway 
+                   ROT: Runway Occupancy Time – separation to achieve a specific ROT. 
+                   GAP: separation based on a gap manually input by the ATCO 
 
     170 "Aircraft Identification and Characteristics 1"
         definition
@@ -1043,7 +1307,7 @@ items
             AI2 "Aircraft Identifier (in 7 characters) of Aircraft 2 Involved in the Conflict"
                 element 56
                     string ascii
-            M32 "Mode 3/A Code Aircraft 1"
+            M32 "Mode 3/A Code Aircraft 2"
                 group
                     spare 4
                     MODE3A "Mode-3/A Code (Converted Into Octal Representation) of Aircraft 2 Involved in the Conflict"
