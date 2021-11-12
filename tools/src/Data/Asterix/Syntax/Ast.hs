@@ -55,8 +55,8 @@ dumpVariation = \case
                                 [] -> ""
                                 lst -> " " <> T.intercalate " " (fmap showConstrain lst)
                         tell $ sformat
-                            (F.string % " quantity " % stext % " " % int % " " % F.string % stext )
-                            sig (showNumber scaling) fract (show unit) cst
+                            (F.string % " quantity " % stext % " " % int % " " % "\"" % stext % "\"" % stext )
+                            sig (showNumber scaling) fract unit cst
                     ContentBds bt -> tell $ "bds" <> case bt of
                         BdsWithAddress -> ""
                         BdsAt mAddr -> case mAddr of
@@ -97,7 +97,7 @@ dumpItem :: Item -> Accumulator ()
 dumpItem = \case
     Spare n -> tell $ sformat ("spare " % int) n
     Item name title variation doc -> do
-        tell $ sformat (stext % " " % F.string) name (show title)
+        tell $ sformat (stext % " \"" % stext % "\"") name title
         block $ dumpText "definition" (docDefinition doc)
         block $ dumpText "description" (docDescription doc)
         block $ do

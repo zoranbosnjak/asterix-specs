@@ -3,6 +3,7 @@
 
 module Main where
 
+import           Main.Utf8 (withUtf8)
 import           Options.Applicative as Opt
 import qualified Data.Text as T
 import qualified Data.Text.IO
@@ -107,7 +108,7 @@ decodeInput input decoder = do
         Right val -> return val
 
 main :: IO ()
-main = execParser opts >>= \case
+main = withUtf8 $ execParser opts >>= \case
 
     Validate input decoder warnings -> do
         asterix <- decodeInput input decoder

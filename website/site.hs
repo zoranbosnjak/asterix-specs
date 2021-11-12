@@ -31,12 +31,6 @@ getEnvVariableExpr envKey = do
         Nothing -> error $ "Environment variable " ++ envKey ++ " not defined."
         Just value -> pure value
 
-pandocCompileString :: Item String -> Compiler (Item String)
-pandocCompileString content = do
-    itemPandoc <- readPandocWith defaultHakyllReaderOptions content
-    itemPandoc' <- traverse (return . id) itemPandoc
-    return $ writePandocWith defaultHakyllWriterOptions itemPandoc'
-
 main :: IO ()
 main = do
     E.setLocaleEncoding E.utf8

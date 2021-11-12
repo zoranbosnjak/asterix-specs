@@ -1,12 +1,12 @@
 { mkDerivation, aeson, aeson-pretty, base, base16-bytestring
 , base64-bytestring, bytestring, clock, containers, cryptonite
-, directory, filepath, formatting, megaparsec, optparse-applicative
-, QuickCheck, stdenv, stm, text, time, transformers
-, unordered-containers
+, directory, filepath, formatting, lib, megaparsec
+, optparse-applicative, QuickCheck, stm, text, time, transformers
+, unordered-containers, with-utf8
 }:
 mkDerivation {
   pname = "aspecs";
-  version = "0.10.2";
+  version = "0.11.0";
   src = ./.;
   isLibrary = false;
   isExecutable = true;
@@ -14,8 +14,8 @@ mkDerivation {
     aeson aeson-pretty base base16-bytestring base64-bytestring
     bytestring clock containers cryptonite directory filepath
     formatting megaparsec optparse-applicative QuickCheck stm text time
-    transformers unordered-containers
+    transformers unordered-containers with-utf8
   ];
   description = "asterix specs tools";
-  license = stdenv.lib.licenses.bsd3;
+  license = lib.licenses.bsd3;
 }

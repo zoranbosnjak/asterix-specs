@@ -16,18 +16,28 @@ let
 
   shortGitrev = builtins.substring 0 7 gitrev;
 
-  render_rst = ../publisher/rst.py;
-
-  publisher = ../publisher;
-  publisher_deps = import ../publisher/deps.nix { inherit pkgs; };
+  render_rst = ./rst.py;
+  preamble = ./preamble.tex;
 
   name = "asterix-${catnumber}-${spectype}-${edition}";
   src = builtins.readFile (./. + "/cat" + catnumber + ("/" + spectype) + "-" + edition + ".ast" );
   orig = pkgs.writeText (name + "-source") src;
 
+  tex = pkgs.texlive.combine {
+    inherit (pkgs.texlive)
+      scheme-basic collection-fontsrecommended
+      unicode-math xcolor sectsty enumitem
+      xetex;
+    };
+
+  deps = with pkgs; [
+    tex
+    pandoc
+  ];
+
 in with pkgs; runCommand name
-  { propagatedBuildInputs = publisher_deps;
-    FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = pkgs.texlive.dejavu.pkgs; };
+  { propagatedBuildInputs = deps;
+    FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = [pkgs.dejavu_fonts]; };
   }
   ''
     echo ${name}
@@ -68,15 +78,14 @@ in with pkgs; runCommand name
     echo "render to .rst"
     ${renderer}/bin/render --script ${render_rst} render $out/definition.json > $out/definition.rst
 
-    echo "generate html and pdf version"
-    cp -a ${publisher}/* .
-    cp $out/definition.json ./specs.json
-    cp $out/definition.rst ./specs.rst
-
-    chmod 755 _build
-    make html
-    make latexpdf
-    cp -a _build/html/. $out/definition.html
-    cp _build/latex/test.pdf $out/definition.pdf
+    echo "generate pdf"
+    pandoc "$out/definition.rst" \
+      -f rst \
+      --include-in-header ${preamble} \
+      -V linkcolor:blue \
+      -V geometry:a4paper \
+      -V geometry:margin=2cm \
+      --pdf-engine=xelatex \
+      -o "$out/definition.pdf"
   ''
 

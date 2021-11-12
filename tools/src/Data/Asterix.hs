@@ -8,7 +8,7 @@ module Data.Asterix
 , module Data.Asterix.Syntax
 ) where
 
-import           Data.List
+import           Data.List (find)
 import           Data.Maybe (catMaybes)
 
 import           Data.Asterix.Types

@@ -10,7 +10,7 @@ module Data.Asterix.Validation where
 import           Control.Monad
 import qualified Data.Text as T
 import           Data.Maybe
-import           Data.List
+import           Data.List (inits, nub, (\\))
 import           Data.Ratio
 
 import           Data.Asterix
@@ -37,13 +37,11 @@ isFixed = isJust . size
 isCapital :: T.Text -> Bool
 isCapital w
     | elem w exceptions = True
-    | T.head w == '(' || T.last w == ')' = True
-    | otherwise = elem (T.head w) (['A'..'Z'] <> ['0'..'9'])
+    | otherwise = not $ elem (T.head w) ['a'..'z']
   where
     exceptions =
         [ "of", "in", "by", "to", "from", "the", "for", "and", "or"
-        , "with", "which", "is", "as", "/", "=", "on", "a"
-        , ">", ">=", "<", "<=", "=="
+        , "with", "which", "is", "as", "on", "a", "vs."
         ]
 
 -- Bit alignment property.

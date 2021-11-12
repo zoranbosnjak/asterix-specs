@@ -14,15 +14,9 @@ let
     then normalPkgs.pkgsMusl.pkgsMusl
     else normalPkgs;
 
-  haskellPackages = if static == true
-    then with pkgs.haskell.lib; pkgs.haskellPackages.override {
-      overrides = self: super: {
-        # Dependencies we need to patch
-        # For the moment, use patch from local directory or given url.
-        # hpc-coveralls = appendPatch super.hpc-coveralls (./patches/344217f513b7adfb9037f73026f5d928be98d07f.patch);
-        hpc-coveralls = appendPatch super.hpc-coveralls (builtins.fetchurl https://github.com/guillaume-nargeot/hpc-coveralls/pull/73/commits/344217f513b7adfb9037f73026f5d928be98d07f.patch);
-      };}
-    else pkgs.haskellPackages;
+  haskellPackages = with pkgs.haskell.lib; pkgs.haskellPackages.override {
+    overrides = self: super: {
+  };};
 
   drv1 = haskellPackages.callPackage ./generated.nix { };
 
