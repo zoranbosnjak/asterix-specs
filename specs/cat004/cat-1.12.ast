@@ -396,7 +396,7 @@ items
                 element 1
                     table
                         0: Default
-                        1: pAIW function
+                        1: PAIW function
             OCAT ""
                 element 1
                     table
@@ -843,7 +843,7 @@ items
                             table
                                 0: Default
                                 1: Msg Type 99 (AIW) indicates pAIW Alert
-                    spare 2
+                    spare 1
             CC "Conflict Classification"
                 description
                     Severity classification of the conflict
@@ -853,6 +853,13 @@ items
                             raw
                     CP "Conflict Properties Class"
                         element 3
+                            raw
+
+                            /* TODO
+                                - implement 'case' one level up
+                                - update parsers and pretty printers
+                                - update validation rules, to cover consistency
+
                             case 000
                                 005:
                                     case 120/CC/TID
@@ -892,6 +899,7 @@ items
                                 012:
                                 013:
                                 014:
+                                015:
                                 016:
                                     case 120/CC/TID
                                         0010:
@@ -1078,13 +1086,14 @@ items
                                                 Handover Type
                                             table
                                                 000: No contact (receiving ATSU)
-                                                001: No transfer (leaving ATSU)                                                
+                                                001: No transfer (leaving ATSU)
+                            */
                     CS "Conflict Severity"
                         element 1
                             table
                                 0: LOW
                                 1: HIGH
-                                
+
             CP "Conflict Probability"
                 description
                     Probability of the conflict
@@ -1096,21 +1105,21 @@ items
                 element 24
                     unsigned quantity 1 7 "s"
         remark
-            Note: 
-                If no Table Id is defined for a message type, only the value of the CS 
-                bit may be of relevance. In that case, for this message type, Table Id 
-                and Conflict Properties are meaningless and shall be set to "0000" 
+            Note:
+                If no Table Id is defined for a message type, only the value of the CS
+                bit may be of relevance. In that case, for this message type, Table Id
+                and Conflict Properties are meaningless and shall be set to "0000"
                 and "000" respectively.
-                1. Additional conflict classes may be defined by introducing additional 
-                   properties of a conflict. 
-                2. For FTD (Message Type = 033), ITD (Message Type = 034) and IIA 
-                   (Message Type = 035) the following types of separation have been 
-                   applied: 
-                   Table: application of the values contained in the separation table 
-                   according to the different wake vortex categories of the two aircraft. 
-                   MRS: Minimum Radar Separation for the arrival runway 
-                   ROT: Runway Occupancy Time – separation to achieve a specific ROT. 
-                   GAP: separation based on a gap manually input by the ATCO 
+                1. Additional conflict classes may be defined by introducing additional
+                   properties of a conflict.
+                2. For FTD (Message Type = 033), ITD (Message Type = 034) and IIA
+                   (Message Type = 035) the following types of separation have been
+                   applied:
+                   Table: application of the values contained in the separation table
+                   according to the different wake vortex categories of the two aircraft.
+                   MRS: Minimum Radar Separation for the arrival runway
+                   ROT: Runway Occupancy Time – separation to achieve a specific ROT.
+                   GAP: separation based on a gap manually input by the ATCO
 
     170 "Aircraft Identification and Characteristics 1"
         definition
