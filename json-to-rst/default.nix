@@ -10,13 +10,14 @@ let
     else packages;
 
   version = builtins.replaceStrings ["\n"] [""] (builtins.readFile ./VERSION.txt);
+
   deps = with pkgs; [
     python3
     python3Packages.setuptools
   ];
 
   drv = pkgs.python3Packages.buildPythonApplication {
-    pname = "asterix-renderer";
+    pname = "json-to-rst-${version}";
     version = version;
     src = builtins.filterSource
       (path: type: type != "symlink" || baseNameOf path != "result")
@@ -25,7 +26,6 @@ let
     preCheck = ''
     '';
     postInstall = ''
-      cp README.md $out
     '';
     makeWrapperArgs = [
       "--set VERSION ${version}"
@@ -36,7 +36,6 @@ let
     name = "python-envorinment";
     buildInputs = deps;
     shellHook = ''
-      export VERSION=${version};
       export PYTHONPATH=$(pwd):$PYTHONPATH
     '';
   };

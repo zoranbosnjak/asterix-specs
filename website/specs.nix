@@ -1,8 +1,5 @@
 { gitrev ? "devel"
 , packages ? null
-, tools ? import ../tools/default.nix { inShell = false; }
-, toolsStatic ? import ../tools/default.nix { inShell = false; static = true; }
-, renderer ? import ../renderer/default.nix { inShell = false; }
 }:
 
 let
@@ -22,13 +19,13 @@ let
 
       isCat = key: val:
         (val == "directory" && toCatNumber key != null);
-    in map toCatNumber (builtins.attrNames (pkgs.lib.attrsets.filterAttrs isCat (builtins.readDir ./.)));
+    in map toCatNumber (builtins.attrNames (pkgs.lib.attrsets.filterAttrs isCat (builtins.readDir ../specs)));
 
   values = lst: builtins.filter (x: x != null) lst;
 
   isRegular = key: val: (val == "regular");
 
-  listing = catnum: builtins.attrNames (pkgs.lib.attrsets.filterAttrs isRegular (builtins.readDir (./. + "/cat" + catnum)));
+  listing = catnum: builtins.attrNames (pkgs.lib.attrsets.filterAttrs isRegular (builtins.readDir (../specs/. + "/cat" + catnum)));
 
   findAst = x: s:
     let m = builtins.match (x + "-(.*).ast") s;
@@ -55,7 +52,7 @@ let
   level1 = catnum:
     let
       asterix-spec = catnumber: spectype: edition:
-        import ./asterix-spec.nix { inherit gitrev; packages = pkgs; inherit tools toolsStatic renderer catnumber spectype edition;};
+        import ./spec.nix { inherit gitrev; packages = pkgs; inherit catnumber spectype edition;};
 
       linkCats =
         let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";
@@ -76,7 +73,6 @@ let
 
         installPhase = ''
           mkdir -p $out
-          echo ${catnum} > $out/category
 
           mkdir -p $out/cats
           for i in ${linkCats}; do
@@ -102,7 +98,7 @@ let
       (path: type:
           (type != "directory" || baseNameOf path != ".git")
        && (type != "symlink" || baseNameOf path != "result"))
-      ./.;
+      ../specs;
 
     installPhase = ''
       mkdir -p $out

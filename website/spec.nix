@@ -1,8 +1,5 @@
 { gitrev ? "devel"
 , packages ? null
-, tools
-, toolsStatic
-, renderer
 , catnumber
 , spectype
 , edition
@@ -16,23 +13,17 @@ let
 
   shortGitrev = builtins.substring 0 7 gitrev;
 
-  render_rst = ./rst.py;
-  preamble = ./preamble.tex;
-
   name = "asterix-${catnumber}-${spectype}-${edition}";
-  src = builtins.readFile (./. + "/cat" + catnumber + ("/" + spectype) + "-" + edition + ".ast" );
+  src = builtins.readFile (../specs/. + "/cat" + catnumber + ("/" + spectype) + "-" + edition + ".ast" );
   orig = pkgs.writeText (name + "-source") src;
 
-  tex = pkgs.texlive.combine {
-    inherit (pkgs.texlive)
-      scheme-basic collection-fontsrecommended
-      unicode-math xcolor sectsty enumitem
-      xetex;
-    };
+  tools = import ../tools/default.nix { packages = pkgs; inShell = false; };
+  toolsStatic = import ../tools/default.nix { packages = pkgs; inShell = false; static = true; };
+
+  json-to-rst = import ../json-to-rst/default.nix { packages = pkgs; inShell = false; };
+  rst-to-pdf = import ../rst-to-pdf/default.nix { packages = pkgs; inShell = false; };
 
   deps = with pkgs; [
-    tex
-    pandoc
   ];
 
 in with pkgs; runCommand name
@@ -57,7 +48,7 @@ in with pkgs; runCommand name
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
 
-    echo "prettify to .txt"
+    echo "prettify ast -> txt"
     ${tools}/bin/aspecs convert -f ${orig} --ast --ast > $out/definition.txt
     ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --ast > $out/definition.txt2
     diff $out/definition.txt $out/definition.txt2
@@ -66,7 +57,7 @@ in with pkgs; runCommand name
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
 
-    echo "convert to .json"
+    echo "convert ast -> json"
     ${tools}/bin/aspecs convert -f ${orig} --ast --json > $out/definition.json
     ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --json > $out/definition.json2
     diff $out/definition.json $out/definition.json2
@@ -75,17 +66,10 @@ in with pkgs; runCommand name
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
 
-    echo "render to .rst"
-    ${renderer}/bin/render --script ${render_rst} render $out/definition.json > $out/definition.rst
+    echo "render json -> rst"
+    ${json-to-rst}/bin/json-to-rst $out/definition.json > $out/definition.rst
 
-    echo "generate pdf"
-    pandoc "$out/definition.rst" \
-      -f rst \
-      --include-in-header ${preamble} \
-      -V linkcolor:blue \
-      -V geometry:a4paper \
-      -V geometry:margin=2cm \
-      --pdf-engine=xelatex \
-      -o "$out/definition.pdf"
+    echo "convert rst -> pdf"
+    ${rst-to-pdf}/bin/rst-to-pdf $out/definition.rst $out/definition.pdf
   ''
 

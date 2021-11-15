@@ -14,14 +14,14 @@ let
   haskellPackages = pkgs.haskellPackages;
 
   tools = import ../tools/default.nix { packages = pkgs; inShell = false; };
-
   toolsStatic = import ../tools/default.nix { packages = pkgs; inShell = false; static = true; };
 
-  renderer = import ../renderer/default.nix { packages = pkgs; inShell = false; };
+  json-to-rst = import ../json-to-rst/default.nix { packages = pkgs; inShell = false; };
+  rst-to-pdf  = import ../rst-to-pdf/default.nix { packages = pkgs; inShell = false; };
+
+  specs = import ./specs.nix { inherit gitrev; packages = pkgs;};
 
   site = haskellPackages.callPackage ./generated.nix { };
-
-  specs = import ../specs/default.nix { inherit gitrev; packages = pkgs; };
 
   syntax = import ../syntax/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
 
@@ -35,6 +35,8 @@ let
   env = pkgs.stdenv.mkDerivation rec {
     name = "website-devel-environment";
     buildInputs = site.env.nativeBuildInputs ++ [
+      json-to-rst
+      rst-to-pdf
     ];
     shellHook = envVars;
   };
@@ -45,11 +47,13 @@ let
     src = ./.;
     installPhase = ''
       mkdir -p $out
+      echo ${gitrev} > $out/gitrev.txt
 
       mkdir -p $out/bin
       ln -s ${tools}/bin/aspecs $out/bin/aspecs
       ln -s ${toolsStatic}/bin/aspecs $out/bin/aspecs-static
-      ln -s ${renderer}/bin/render $out/bin/render
+      ln -s ${json-to-rst}/bin/json-to-rst $out/bin/json-to-rst
+      ln -s ${rst-to-pdf}/bin/rst-to-pdf $out/bin/rst-to-pdf
 
       cp ${specs}/manifest.json $out/manifest.json
 
@@ -58,7 +62,6 @@ let
       ${site}/bin/site rebuild
       cp -a _site/* $out
 
-      echo ${gitrev} > $out/gitrev.txt
     '';
   };
 

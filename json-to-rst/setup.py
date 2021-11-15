@@ -1,9 +1,9 @@
 
 from setuptools import setup, find_packages
 setup(
-    name = 'asterix-renderer',
+    name = 'json-to-rst',
     version = open('VERSION.txt').read().strip(),
     packages = find_packages(),
-    scripts = ['bin/render']
+    scripts = ['json-to-rst']
 )
 
