@@ -6,7 +6,7 @@ title: Structure
 
 Basic principles of asterix are described in the
 [part 1 document](https://www.eurocontrol.int/publication/eurocontrol-specification-surveillance-data-exchange-part-i).
-This project reuses the definitions and vocabulary as much as possible.
+This project reuses the definitions and vocabulary to the maximum possible extent.
 
 ## Example
 
@@ -14,7 +14,7 @@ This project reuses the definitions and vocabulary as much as possible.
 
 ## Definition of terms
 
-* **asterix category** is a toplevel structure containing complete specification.
+* **asterix category** is a top-level structure containing complete specification.
 
 * **category number** is a number between 0 and 255.
 
@@ -25,11 +25,11 @@ This project reuses the definitions and vocabulary as much as possible.
 
 * **item catalogue** is a list of asterix items which represents the main part of the definition.
 
-* **UAP** - user application profile - ordered selection of items from the **item catalogue**.
+* **UAP** - user application profile - is ordered selection of items from the **item catalogue**.
 
-* **asterix item** - a basic building block to define asterix structure.
+* **asterix item** - is a basic building block to define asterix structure.
 
-* **subitem** - same as **item**, but lower in the hierarchical item structure.
+* **subitem** - means the same as **item**, but lower in the hierarchical item structure.
 
 * **item type** or **variation** - possible variations are: **element**, **compound**, **extended**...
 
@@ -49,7 +49,7 @@ This project reuses the definitions and vocabulary as much as possible.
 
 **Item** is a structure containing:
 
-- name or item identifier (String, normaly short)
+- name or item identifier (String, normally short)
 - title (Text)
 - definition (Optional Text)
 - description (Optional Text)
@@ -58,7 +58,7 @@ This project reuses the definitions and vocabulary as much as possible.
 
 **Item** can also be empty (occupying defined number of spare bits).
 
-**Variation** (or **ItemType**) is one of:
+**Variation** (or **ItemType**) could be:
 
 - Element (containing number of bits and content definition)
 - Group (containing list of Items)
@@ -71,7 +71,7 @@ Remark:
 
 > **Item** and **Variation** are defined in terms of mutual recursion.
 
-**Content** is one of:
+**Content** could be:
 
 - *Raw* value
 - *Table* of possible values
@@ -83,15 +83,16 @@ Remark:
 Remark:
 
 > This structure makes distinction between *Raw* value and *Unsigned Integer*.
-> A *raw* value is a content where the bits don't have any particular meaning,
-> other then just representing some *identifier* (this is true in most of the
+> A *raw* value is a content in which bits do not have any particular meaning,
+> other than just representing some *identifier* (this is true in most
 > cases, for example the *SAC/SIC* code).
 >
-> *Unsigned Integer* is similar, however semantically there is a small difference.
+> *Unsigned Integer* is similar to *Raw* value, however semantically there is a
+> small difference.
 > In strongly typed environments, the compiler can prevent some irregular
-> operations over *raw* values. For example: it makes no sense to
-> *add/multiply* 2 identifiers, whereas the same arithmetic operations over
-> *unsigned integers* are well defined. One such example is a content that
+> operations over *Raw* values. For example: it makes no sense to
+> *add/multiply* two identifiers, whereas the same arithmetic operations over
+> *unsigned integers* are well defined. One example on this is a content that
 > represents *seconds*.
 
 ## Validation rules
@@ -101,11 +102,11 @@ enforced by the [validator](/tools.html):
 
 - Tables shall not contain duplicated entries.
 - Each table entry shall contain non-empty description.
-- Number of element bits must be sufficient for specified table size,
+- Number of element bits must be sufficient for a specified table size,
   the table however does not need to be completely defined.
 - First word in each table row description shall be capitalized ("Like this").
 - No dot '.' is expected at the end of row description.
-- "ascii", "icao", "octal" strings shall have (8,6,3) bits per
+- "ascii", "icao", "octal" strings shall have (8, 6, 3) bits per
   character respectively.
 - "scaling factor" and number of "fractional bits" are checked if
   optimally defined, for example, the scaling factor of "0.5" is
@@ -126,24 +127,24 @@ enforced by the [validator](/tools.html):
 - Compound item as a whole shall be 8-bit aligned.
 - Spare item shall have a positive bit size.
 - Short item names shall be `<= 15` character long.
-- Short item names shall only contain characters "A-Z" and digits "0-9",
+- Short item names shall only contain characters "A-Z" and digits "0-9"
   (for example "SAC", "010", ...).
 - Item title shall be all capitalized ("Like This Example"), see the source
   code for some short words exceptions, like "in", "and", "of"...
 - A dot at the end of item title is not expected.
 - Category number shall be within range `[0,255]`.
-- All defined items in a category shall be referenced by 'UAP'.
-- All items referenced by 'UAP' shall be defined.
+- All defined items in a category shall be referenced by the 'UAP'.
+- All items referenced by the 'UAP' shall be defined.
 - Top level items (like subitems) shall not be duplicated.
 - Items listed in UAP shall not be duplicated.
-- In case of multiple UAPs, each UAP requires unique name
+- In case of multiple UAPs, each UAP requires a unique name
   (example: "plot", "track" for cat001).
 - In case of non-context free item definitions, the depending item
-  shall be defined, for example, the meaning of item
+  shall be defined, for example: the meaning of item
   `I062/380/IAS/IAS` depends on the current value of `I062/380/IAS/IM`.
   The validation requires that `I062/380/IAS/IM` is also defined and
-  of a fixed size. It is also checked that number of cases does
-  not exceed what that size can represent.
+  should be of a fixed size. It is also checked that the number of cases does
+  not exceed the value that size can represent.
 - Subitem names shall be non-repetitive, in respect to the parent item name,
   for example: "POSITION/POSITIONX" is suggested to change to "POSITION/X".
 

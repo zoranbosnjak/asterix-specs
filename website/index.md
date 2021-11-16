@@ -10,7 +10,7 @@ maintained by [eurocontrol](https://www.eurocontrol.int/asterix).
 The major problem with the original specifications is that
 they are provided in a form of free text (PDF files). As a consequence,
 the very first step in every asterix project is to retype the
-specifications to a parsable form. And this is what this projects
+specifications to a parsable form. And this is what this project
 is all about.
 
 # Project content
@@ -32,7 +32,7 @@ is to be:
 * exact and complete (including definition text and remarks);
 * easy to read and write with any text editor;
 * easy to parse and reuse in other projects;
-* clutter free;
+* clutter free.
 
 Example definition snippet:
 ```
@@ -88,9 +88,9 @@ specifications is already defined in some other structured format
 be to write *additional converter* from the specifications in this
 project to the format required by the target project.\
 \
-This is one-time effort and pays off quickly by:
-    * reusing all [existing](/specs.html) definitions;
-    * writing new definitions in a clutter free format;
+This is a one-time effort and pays off quickly by:
+    * reusing all the [existing](/specs.html) definitions;
+    * writing new definitions in a clutter free format.
 
 If you are creating new categories, consider [contributing](/source.html)
 definitions to the upstream repository.
@@ -176,7 +176,7 @@ for i in root['catalogue']:
 * [asterix](https://github.com/CroatiaControlLtd/asterix) is a *python* module
   and application for reading and parsing asterix data. It includes custom *xml*
   configuration files for asterix category definitions, similar but not the
-  same as `asterix-data` project mentioned above.
+  same as the `asterix-data` project mentioned above.
   [This directory](https://github.com/CroatiaControlLtd/asterix/tree/master/asterix-specs-converter)
   contains an automatically generated version of the *xml* configuration files,
   together with the conversion script.

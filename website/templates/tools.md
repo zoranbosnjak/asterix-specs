@@ -15,7 +15,7 @@ Features:
 * show asterix definition signature (like a fingerprint, but not
   depending on a particular file format).
 
-Conversion process works in following steps:
+Conversion process works in the following steps:
 
 #. parse input file to internal (abstract) structure
 #. validate internal structure
