@@ -46,18 +46,45 @@ definitions are:
 
 # Development
 
+[nix](https://nixos.org/) package manager is required for development.
+To install it, use:
+
 ```bash
-# install nix package manager
 curl -L https://nixos.org/nix/install | sh
+```
 
-# clone repository
+... then logout and login again for changes to take effect.
+
+## Clone project to local disk
+
+```bash
 git clone https://github.com/zoranbosnjak/asterix-specs.git
-cd asterix-specs/
+```
 
-# (re)build complete project
-# It might take some time to compile everything for the first time,
-# or when switching to a new version of nix packages.
-# Subsequent rebuilds on local changes are reasonably fast.
+> **NOTE:** It might take some time for *nix* do download all required
+dependencies for the first time or when switching to a new version of
+nix packages.  Subsequent rebuilds on local changes are reasonably fast.
+
+## Single category development
+
+```bash
+cd asterix-specs/specs/
+nix-shell
+
+# build selected file, for example
+./build_spec.sh cat008/cat-1.3.ast
+
+# check the result
+firefox output/
+
+# cleanup generated files when done
+git clean -xdf output/
+```
+
+## Complete project requild procedure
+
+```bash
+cd asterix-specs/
 nix-build
 
 # show locally generated web site
