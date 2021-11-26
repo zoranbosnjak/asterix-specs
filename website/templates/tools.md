@@ -39,7 +39,10 @@ following methods.
 ### Static binary installation
 
 Pre-build 64-bit linux binary is available to download from
-[this link](/bin/aspecs-static). Current version is `$toolsVersion$`.
+[this link](/bin/aspecs-static).
+
+- current version: `$toolsVersion$`
+- SHA256SUM: `$toolsSha256Sum$`
 
 Download and copy the file to some location and set
 file mode, for example under UbuntuOS:

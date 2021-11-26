@@ -41,6 +41,7 @@ main = do
     syntax <- getEnvVariableExpr "SYNTAX"
     syntaxImages <- listDirectory $ syntax++"/syntax/png"
     toolsVersion <- getEnvVariableExpr "TOOLS_VERSION"
+    toolsSha256Sum <- getEnvVariableExpr "TOOLS_SHA256"
     typesSimple <- readFile "types_simple.hs"
 
     hakyllWith config $ do
@@ -103,7 +104,9 @@ main = do
                     in defaultContext
                         <> listField "images" imgCtx (mapM makeItem syntaxImages))
                 , ("tools", defaultContext
-                        <> constField "toolsVersion" toolsVersion)
+                    <> constField "toolsVersion" toolsVersion
+                    <> constField "toolsSha256Sum" toolsSha256Sum
+                  )
                 ]
 
         forM_ files $ \(name, ctx) -> do

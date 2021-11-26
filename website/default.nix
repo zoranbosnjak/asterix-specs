@@ -30,6 +30,7 @@ let
     export SPECS=${specs}
     export SYNTAX=${syntax}
     export TOOLS_VERSION=${toolsStatic.version}
+    export TOOLS_SHA256=$(sha256sum ${toolsStatic}/bin/aspecs | cut -d " " -f1)
   '';
 
   env = pkgs.stdenv.mkDerivation rec {
