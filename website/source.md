@@ -71,8 +71,15 @@ nix packages.  Subsequent rebuilds on local changes are reasonably fast.
 cd asterix-specs/specs/
 nix-shell
 
-# build selected file, for example
-./build_spec.sh cat008/cat-1.3.ast
+# this project uses unix file format for specs files
+# convert file from dos to unix if necessary
+perl -pi -e 's/\r\n/\n/g' [file_name]
+
+# prettify spec file
+aspecs prettify --remove-comments [file_name] --ast
+
+# build selected file
+./build_spec.sh [file_name]
 
 # check the result
 firefox output/
