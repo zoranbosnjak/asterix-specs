@@ -65,7 +65,7 @@ git clone https://github.com/zoranbosnjak/asterix-specs.git
 dependencies for the first time or when switching to a new version of
 nix packages.  Subsequent rebuilds on local changes are reasonably fast.
 
-## Single category development
+## Asterix category development
 
 ```bash
 cd asterix-specs/specs/
@@ -73,19 +73,29 @@ nix-shell
 
 # this project uses unix file format for specs files
 # convert file from dos to unix if necessary
-perl -pi -e 's/\r\n/\n/g' [file_name]
+perl -pi -e 's/\r\n/\n/g' {file_name}
 
 # prettify spec file
-aspecs prettify --remove-comments [file_name] --ast
+aspecs prettify --remove-comments {file_name} --ast
 
 # build selected file
-./build_spec.sh [file_name]
+./build_spec.sh {file_name}
 
 # check the result
 firefox output/
 
 # cleanup generated files when done
 git clean -xdf output/
+
+# validate selected file
+aspecs validate -f {file_name} --ast --warnings
+
+# validate all '.ast' files
+for i in $(find . -type f | grep "\.ast$")
+do
+    aspecs validate -f $i --ast --warnings
+    if [ $? -ne 0 ]; then echo $i; break; fi
+done
 ```
 
 ## Complete project requild procedure

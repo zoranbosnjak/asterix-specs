@@ -277,6 +277,9 @@ instance Validate Item where
         -- no dot at the end of title
         , reportWhen (warnings && title /= "" && T.last title == '.') $
             name <> ":Unexpected dot at the end of title -> " <> title
+        -- title whitespaces
+        , reportWhen (T.strip title /= title) $
+            name <> ":Title contain leading or trailing whitespaces -> " <> title
         -- check variation
         , validateVariation
         ]
