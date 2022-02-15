@@ -6,7 +6,7 @@
 }:
 mkDerivation {
   pname = "aspecs";
-  version = "0.12.0";
+  version = "0.12.1";
   src = ./.;
   isLibrary = false;
   isExecutable = true;

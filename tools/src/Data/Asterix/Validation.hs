@@ -346,9 +346,11 @@ instance Validate Basic where
                         return (uapName <> ":" <> x)
                 ]
           where
-            validateList lst =
-                let x = catMaybes lst
-                in reportWhen (nub x /= x) "duplicated items in UAP"
+            validateList lst = join
+                [ let x = catMaybes lst
+                  in reportWhen (nub x /= x) "duplicated items in UAP"
+                , reportWhen (isNothing $ last lst) "spare at the end of UAP is redundant"
+                ]
 
         validateDepItem :: Item -> [ValidationError]
         validateDepItem (Spare _n) = []
