@@ -186,7 +186,8 @@ def renderVariation(parent, variation):
 
     def renderElement():
         n = variation['size']
-        tell('- {} [``{}``]'.format(bits(n), '.'*n))
+        dots = '.'*n if n <= 32 else '... {} bits ...'.format(n)
+        tell('- {} [``{}``]'.format(bits(n), dots))
         tell('')
 
         def case1(val):
