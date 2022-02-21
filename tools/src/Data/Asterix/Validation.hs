@@ -156,6 +156,11 @@ instance Validate (RegisterSize, Content) where
             val <- values
             return $ reportWhen (val /= "" && T.last val == '.') $
                 "Unexpected dot at the end of table entry -> " <> val
+        , join $ do
+            guard warnings
+            val <- values
+            return $ reportWhen (elem '"' (T.unpack val)) $
+                "Value contain quotes -> " <> val
         ]
       where
         keys = fst <$> lst
@@ -280,6 +285,8 @@ instance Validate Item where
         -- title whitespaces
         , reportWhen (T.strip title /= title) $
             name <> ":Title contain leading or trailing whitespaces -> " <> title
+        , reportWhen (warnings && elem '"' (T.unpack title)) $
+            name <> ":Title contain quotes -> " <> title
         -- check variation
         , validateVariation
         ]
