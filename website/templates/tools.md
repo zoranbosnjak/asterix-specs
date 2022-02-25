@@ -78,6 +78,9 @@ aspecs --help
 aspecs validate -f input.ast --ast --warnings
 aspecs validate -f input.json --json --warnings
 
+# prettify ast file after editing, the file will be overwritten
+aspecs prettify --remove-comments input.ast --ast
+
 # show definition fingerprint, for the same definitions
 # the fingerprint shall be the same, regardless of the format
 aspecs checksum -f input.ast --ast
@@ -88,25 +91,41 @@ aspecs convert -f input.ast --ast --json > out.json
 
 # convert json -> ast
 aspecs convert -f input.json --json --ast > out.ast
-
-# prettify ast file after editing, the file will be overwritten
-aspecs prettify --remove-comments input.ast --ast
 ```
 
 ## Development
 
+Install nix package manager, clone repository
+
 ```bash
-# install nix package manager
 curl -L https://nixos.org/nix/install | sh
-
-# clone repository
 git clone https://github.com/zoranbosnjak/asterix-specs.git
-
-# (re)build tools
 cd asterix-specs/tools/
-nix-build
+```
 
-# run it
+(Re)build tools with `nix-build` and run it
+
+```bash
+nix-build
 ./result/bin/aspecs --help
+```
+
+Use `nix-shell` environment
+
+```bash
+nix-shell
+
+# monitor changes, auto rebuild on any source change
+ghcid "--command=ghci -Wall -iother -isrc src/Main.hs"
+
+# run program without rebuild
+runhaskell -iother -isrc src/Main.hs --help
+
+# (re)build with 'cabal' and run program
+cabal build
+find . -type f -executable
+$$(find . -type f -executable) --help
+
+exit
 ```
 

@@ -75,6 +75,9 @@ nix-shell
 # convert file from dos to unix if necessary
 perl -pi -e 's/\r\n/\n/g' {file_name}
 
+# validate selected file
+aspecs validate -f {file_name} --ast --warnings
+
 # prettify spec file
 aspecs prettify --remove-comments {file_name} --ast
 
@@ -86,9 +89,6 @@ firefox output/
 
 # cleanup generated files when done
 git clean -xdf output/
-
-# validate selected file
-aspecs validate -f {file_name} --ast --warnings
 
 # validate all '.ast' files
 for i in $(find . -type f | grep "\.ast$")
