@@ -21,8 +21,10 @@ let
   drv1 = haskellPackages.callPackage ./generated.nix { };
 
   drv2 = drv1.overrideDerivation (oldAttrs: {
-      src = builtins.filterSource
-        (path: type: type != "symlink" || baseNameOf path != "result")
+    src = builtins.filterSource
+      (path: type:
+           (type != "directory" || baseNameOf path != "folds")
+        && (type != "symlink" || baseNameOf path != "result"))
         ./.;
     }) // { inherit env; };
 
@@ -45,6 +47,9 @@ let
       pkgs.cabal2nix
       pkgs.ghcid
     ];
+    shellHook = ''
+      export LC_ALL=C.UTF-8
+    '';
   };
 
 in
