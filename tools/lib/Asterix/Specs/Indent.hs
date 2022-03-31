@@ -2,7 +2,7 @@
 
 -- Text indent handling.
 
-module Data.Asterix.Indent where
+module Asterix.Specs.Indent where
 
 import           Control.Monad.Trans.State
 import           Data.Text (Text)

@@ -2,17 +2,17 @@
 
 -- Common asterix data types and functions.
 
-module Data.Asterix
-( module Data.Asterix
-, module Data.Asterix.Types
-, module Data.Asterix.Syntax
+module Asterix.Specs
+( module Asterix.Specs
+, module Asterix.Specs.Types
+, module Asterix.Specs.Syntax
 ) where
 
 import           Data.List (find)
 import           Data.Maybe (catMaybes)
 
-import           Data.Asterix.Types
-import           Data.Asterix.Syntax
+import           Asterix.Specs.Types
+import           Asterix.Specs.Syntax
 
 findItemByName :: Basic -> [Name] -> Maybe Item
 findItemByName _ [] = Nothing

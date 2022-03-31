@@ -4,7 +4,7 @@
     for example with 'ghcid':
 
     $ nix-shell
-    $ ghcid "--command=ghci -Wall -iother -isrc src/Main.hs
+    $ ghcid "--command=ghci -Wall -iother -ilib -iapp app/Main.hs
 -}
 
 module Paths_aspecs where

@@ -3,7 +3,7 @@
 
 -- '.ast' syntax implementation
 
-module Data.Asterix.Syntax.Ast (syntax) where
+module Asterix.Specs.Syntax.Ast (syntax) where
 
 import           Control.Monad
 import           Control.Monad.Trans.State
@@ -20,9 +20,9 @@ import           Text.Megaparsec hiding (State)
 import           Text.Megaparsec.Char as MC
 import qualified Text.Megaparsec.Char.Lexer as L
 
-import           Data.Asterix.Types
-import           Data.Asterix.Common
-import           Data.Asterix.Indent
+import           Asterix.Specs.Types
+import           Asterix.Specs.Common
+import           Asterix.Specs.Indent
 
 -- | Dump to Text
 

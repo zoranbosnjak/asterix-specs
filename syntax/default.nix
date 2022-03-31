@@ -1,21 +1,16 @@
 { gitrev ? "devel"
-, packages ? null
+, sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 , inShell ? null
 }:
 
 let
-
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
-
-  deps = with pkgs; [
+  deps = with packages; [
     tk
     ghostscript
   ];
 
-  drv = pkgs.stdenv.mkDerivation rec {
+  drv = packages.stdenv.mkDerivation rec {
     pname = "asterix-specs-syntax";
     version = "0.0";
     src = ./.;
@@ -51,7 +46,7 @@ let
     '';
   } // { inherit env; };
 
-  env = pkgs.stdenv.mkDerivation rec {
+  env = packages.stdenv.mkDerivation rec {
     name = "asterix-syntax-envorinment";
     buildInputs = deps;
     shellHook = ''
@@ -61,5 +56,5 @@ let
 in
   if inShell == false
     then drv
-    else if pkgs.lib.inNixShell then drv.env else drv
+    else if packages.lib.inNixShell then drv.env else drv
 

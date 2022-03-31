@@ -156,6 +156,6 @@ The essence of asterix definition is recursively encoded in `Item` and it's `Var
 $typesSimple$
 ```
 
-See [tools source code](https://github.com/zoranbosnjak/asterix-specs/blob/master/tools/src/Data/Asterix/Types.hs)
+See [source code](https://github.com/zoranbosnjak/asterix-specs)
 for exact definition.
 

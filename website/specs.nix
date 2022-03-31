@@ -1,13 +1,9 @@
 { gitrev ? "devel"
-, packages ? null
+, sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 }:
 
 let
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
-
   cats =
     let
       toCatNumber = s:
@@ -19,13 +15,13 @@ let
 
       isCat = key: val:
         (val == "directory" && toCatNumber key != null);
-    in map toCatNumber (builtins.attrNames (pkgs.lib.attrsets.filterAttrs isCat (builtins.readDir ../specs)));
+    in map toCatNumber (builtins.attrNames (packages.lib.attrsets.filterAttrs isCat (builtins.readDir ../specs)));
 
   values = lst: builtins.filter (x: x != null) lst;
 
   isRegular = key: val: (val == "regular");
 
-  listing = catnum: builtins.attrNames (pkgs.lib.attrsets.filterAttrs isRegular (builtins.readDir (../specs/. + "/cat" + catnum)));
+  listing = catnum: builtins.attrNames (packages.lib.attrsets.filterAttrs isRegular (builtins.readDir (../specs/. + "/cat" + catnum)));
 
   findAst = x: s:
     let m = builtins.match (x + "-(.*).ast") s;
@@ -45,14 +41,14 @@ let
     let
       obj = map (catnum: { category = catnum; cats = catsUnder catnum; refs = refsUnder catnum;}) cats;
     in
-      pkgs.writeText "asterix-specs-manifest" ''
+      packages.writeText "asterix-specs-manifest" ''
         ${builtins.toJSON obj}
       '';
 
   level1 = catnum:
     let
       asterix-spec = catnumber: spectype: edition:
-        import ./spec.nix { inherit gitrev; packages = pkgs; inherit catnumber spectype edition;};
+        import ./spec.nix { inherit gitrev; inherit packages; inherit catnumber spectype edition;};
 
       linkCats =
         let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";
@@ -63,7 +59,7 @@ let
         in toString (map linkRef (refsUnder catnum));
 
     in
-      pkgs.stdenv.mkDerivation {
+      packages.stdenv.mkDerivation {
         name = "asterix-category-" + catnum;
         src = builtins.filterSource
           (path: type:
@@ -92,7 +88,7 @@ let
     let linkCategory = cat: "\"" + cat + " " + level1 cat + "\"";
     in toString (map linkCategory cats);
 
-  drv = pkgs.stdenv.mkDerivation {
+  drv = packages.stdenv.mkDerivation {
     name = "asterix-specs";
     src = builtins.filterSource
       (path: type:
@@ -103,7 +99,7 @@ let
     installPhase = ''
       mkdir -p $out
 
-      cat ${manifest} | ${pkgs.jq}/bin/jq > $out/manifest.json
+      cat ${manifest} | ${packages.jq}/bin/jq > $out/manifest.json
 
       mkdir -p $out/specs
       for i in ${linkCategories}; do

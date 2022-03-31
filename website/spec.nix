@@ -1,34 +1,30 @@
 { gitrev ? "devel"
-, packages ? null
+, sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 , catnumber
 , spectype
 , edition
 }:
 
 let
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
-
   shortGitrev = builtins.substring 0 7 gitrev;
 
   name = "asterix-${catnumber}-${spectype}-${edition}";
   src = builtins.readFile (../specs/. + "/cat" + catnumber + ("/" + spectype) + "-" + edition + ".ast" );
-  orig = pkgs.writeText (name + "-source") src;
+  orig = packages.writeText (name + "-source") src;
 
-  tools = import ../tools/default.nix { packages = pkgs; inShell = false; };
-  toolsStatic = import ../tools/default.nix { packages = pkgs; inShell = false; static = true; };
+  tools = import ../tools/default.nix { inherit packages; inShell = false; };
+  toolsStatic = import ../tools/default.nix { inherit packages; inShell = false; static = true; };
 
-  json-to-rst = import ../json-to-rst/default.nix { packages = pkgs; inShell = false; };
-  rst-to-pdf = import ../rst-to-pdf/default.nix { packages = pkgs; inShell = false; };
+  json-to-rst = import ../json-to-rst/default.nix { inherit packages; inShell = false; };
+  rst-to-pdf = import ../rst-to-pdf/default.nix { inherit packages; inShell = false; };
 
-  deps = with pkgs; [
+  deps = with packages; [
   ];
 
-in with pkgs; runCommand name
+in with packages; runCommand name
   { propagatedBuildInputs = deps;
-    FONTCONFIG_FILE = pkgs.makeFontsConf { fontDirectories = [pkgs.dejavu_fonts]; };
+    FONTCONFIG_FILE = packages.makeFontsConf { fontDirectories = [packages.dejavu_fonts]; };
   }
   ''
     echo ${name}

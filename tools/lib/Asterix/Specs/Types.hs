@@ -2,7 +2,7 @@
 
 -- Asterix data types.
 
-module Data.Asterix.Types where
+module Asterix.Specs.Types where
 
 import           GHC.Generics (Generic)
 import           Data.Ratio (Ratio)

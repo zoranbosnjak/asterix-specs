@@ -2,18 +2,18 @@
 
 -- Asterix syntaxes.
 
-module Data.Asterix.Syntax
+module Asterix.Specs.Syntax
 where
 
-import           Data.Asterix.Common
-import qualified Data.Asterix.Syntax.Ast
-import qualified Data.Asterix.Syntax.Json
+import           Asterix.Specs.Common
+import qualified Asterix.Specs.Syntax.Ast
+import qualified Asterix.Specs.Syntax.Json
 
 -- | Syntax implementations.
 syntaxes :: [(String, Syntax)]
 syntaxes =
-    [ ("ast", Data.Asterix.Syntax.Ast.syntax)
-    , ("json", Data.Asterix.Syntax.Json.syntax)
+    [ ("ast", Asterix.Specs.Syntax.Ast.syntax)
+    , ("json", Asterix.Specs.Syntax.Json.syntax)
     ]
 
 availableEncoders :: [(String, String, Encoder)]

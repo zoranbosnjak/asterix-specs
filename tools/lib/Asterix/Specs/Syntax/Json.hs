@@ -5,7 +5,7 @@
 
 -- '.json' syntax implementation
 
-module Data.Asterix.Syntax.Json (syntax) where
+module Asterix.Specs.Syntax.Json (syntax) where
 
 import           Control.Monad
 import           Data.Aeson hiding (Encoding)
@@ -18,8 +18,8 @@ import           Text.Printf (printf)
 import           Text.Read (readMaybe)
 import qualified Data.Text as T
 
-import           Data.Asterix.Types
-import           Data.Asterix.Common
+import           Asterix.Specs.Types
+import           Asterix.Specs.Common
 
 instance ToJSON Edition where
     toJSON (Edition a b) = object

@@ -1,0 +1,66 @@
+cabal-version:      2.4
+name:               aspecs
+version:            1.0.0
+synopsis:           Asterix specifications tools.
+-- description:
+homepage:           https://zoranbosnjak.github.io/asterix-specs/
+bug-reports:        https://github.com/zoranbosnjak/asterix-specs/issues
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Zoran Bošnjak
+maintainer:         zoran.bosnjak@sloveniacontrol.si
+-- copyright:
+category:           Data
+extra-source-files: CHANGELOG.md
+
+library
+    exposed-modules:
+        Asterix.Specs
+        Asterix.Specs.Common
+        Asterix.Specs.Indent
+        Asterix.Specs.Syntax
+        Asterix.Specs.Syntax.Ast
+        Asterix.Specs.Syntax.Json
+        Asterix.Specs.Types
+        Asterix.Specs.Validation
+    -- other-modules:
+    -- other-extensions:
+    hs-source-dirs:   lib
+    default-language: Haskell2010
+    build-depends:
+        base < 5
+        , formatting
+        , megaparsec
+        , aeson
+        , aeson-pretty
+        , unordered-containers
+        , transformers
+        , text
+        , bytestring
+
+executable aspecs
+    main-is:          Main.hs
+    other-modules:
+        Paths_aspecs
+    -- other-extensions:
+    hs-source-dirs:   app
+    default-language: Haskell2010
+
+    ghc-options:
+        -O2 -rtsopts -funbox-strict-fields -with-rtsopts=-T -threaded
+        -Wall
+        -Wincomplete-uni-patterns
+        -Wincomplete-record-updates
+        -Wcompat
+        -Widentities
+        -Wredundant-constraints
+    default-extensions: StrictData
+    build-depends:
+        base < 5
+        , aspecs
+        , with-utf8
+        , optparse-applicative
+        , text
+        , bytestring
+        , cryptonite
+

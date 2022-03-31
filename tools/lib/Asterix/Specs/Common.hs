@@ -3,7 +3,7 @@
 
 -- Common asterix definitions.
 
-module Data.Asterix.Common where
+module Asterix.Specs.Common where
 
 import           Data.ByteString (ByteString)
 import           Data.Text (Text)
@@ -12,7 +12,7 @@ import qualified Data.Ratio
 import           Numeric
 import           Formatting as F
 
-import           Data.Asterix.Types
+import           Asterix.Specs.Types
 
 type Encoder = Asterix -> ByteString
 type Decoder = FilePath -> ByteString -> Either String Asterix

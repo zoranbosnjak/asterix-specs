@@ -1,22 +1,17 @@
-{ packages ? null
+{ sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 , inShell ? null
 }:
 
 let
-
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
-
   version = builtins.replaceStrings ["\n"] [""] (builtins.readFile ./VERSION.txt);
 
-  deps = with pkgs; [
+  deps = with packages; [
     python3
     python3Packages.setuptools
   ];
 
-  drv = pkgs.python3Packages.buildPythonApplication {
+  drv = packages.python3Packages.buildPythonApplication {
     pname = "json-to-rst-${version}";
     version = version;
     src = builtins.filterSource
@@ -32,7 +27,7 @@ let
     ];
   } // { inherit env; };
 
-  env = pkgs.stdenv.mkDerivation rec {
+  env = packages.stdenv.mkDerivation rec {
     name = "python-envorinment";
     buildInputs = deps;
     shellHook = ''
@@ -43,5 +38,5 @@ let
 in
   if inShell == false
     then drv
-    else if pkgs.lib.inNixShell then drv.env else drv
+    else if packages.lib.inNixShell then drv.env else drv
 

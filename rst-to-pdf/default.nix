@@ -1,42 +1,37 @@
-{ packages ? null
+{ sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 , inShell ? null
 }:
 
 let
-
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
-
-  tex = pkgs.texlive.combine {
-    inherit (pkgs.texlive)
+  tex = packages.texlive.combine {
+    inherit (packages.texlive)
       scheme-basic collection-fontsrecommended
       unicode-math xcolor sectsty enumitem
       xetex;
     };
 
-  deps = with pkgs; [
+  deps = with packages; [
     tex
     pandoc
   ];
 
-  drv = pkgs.stdenv.mkDerivation rec {
+  drv = packages.stdenv.mkDerivation rec {
     name = "rst-to-pdf";
     src = builtins.filterSource
       (path: type: type != "symlink" || baseNameOf path != "result")
       ./.;
     propagatedBuildInputs = deps;
-    nativeBuildInputs = [ pkgs.makeWrapper ];
+    nativeBuildInputs = [ packages.makeWrapper ];
     installPhase = ''
       mkdir -p $out/bin
       cp $src/preamble.tex $out
       cp $src/rst-to-pdf $out/bin
-      wrapProgram $out/bin/rst-to-pdf --prefix PATH ":" ${pkgs.pandoc}/bin --prefix PATH ":" ${tex}/bin;
+      wrapProgram $out/bin/rst-to-pdf --prefix PATH ":" ${packages.pandoc}/bin --prefix PATH ":" ${tex}/bin;
     '';
   } // { inherit env; };
 
-  env = pkgs.stdenv.mkDerivation rec {
+  env = packages.stdenv.mkDerivation rec {
     name = "pandoc-envorinment";
     buildInputs = deps;
     shellHook = ''
@@ -46,5 +41,5 @@ let
 in
   if inShell == false
     then drv
-    else if pkgs.lib.inNixShell then drv.env else drv
+    else if packages.lib.inNixShell then drv.env else drv
 

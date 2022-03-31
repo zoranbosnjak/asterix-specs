@@ -1,29 +1,25 @@
 { gitrev ? "devel"
-, packages ? null
+, sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 , inShell ? null
 }:
 
 let
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
-
   shortGitrev = builtins.substring 0 7 gitrev;
 
-  haskellPackages = pkgs.haskellPackages;
+  haskellPackages = packages.haskellPackages;
 
-  tools = import ../tools/default.nix { packages = pkgs; inShell = false; };
-  toolsStatic = import ../tools/default.nix { packages = pkgs; inShell = false; static = true; };
+  tools = import ../tools/default.nix { inherit  packages; inShell = false; };
+  toolsStatic = import ../tools/default.nix { inherit packages; inShell = false; static = true; };
 
-  json-to-rst = import ../json-to-rst/default.nix { packages = pkgs; inShell = false; };
-  rst-to-pdf  = import ../rst-to-pdf/default.nix { packages = pkgs; inShell = false; };
+  json-to-rst = import ../json-to-rst/default.nix { inherit packages; inShell = false; };
+  rst-to-pdf  = import ../rst-to-pdf/default.nix { inherit packages; inShell = false; };
 
-  specs = import ./specs.nix { inherit gitrev; packages = pkgs;};
+  specs = import ./specs.nix { inherit gitrev; inherit packages;};
 
   site = haskellPackages.callPackage ./generated.nix { };
 
-  syntax = import ../syntax/default.nix { inherit gitrev; packages = pkgs; inShell = false; };
+  syntax = import ../syntax/default.nix { inherit gitrev; inherit packages; inShell = false; };
 
   envVars = ''
     export SHORT_GITREV=${shortGitrev}
@@ -33,7 +29,7 @@ let
     export TOOLS_SHA256=$(sha256sum ${toolsStatic}/bin/aspecs | cut -d " " -f1)
   '';
 
-  env = pkgs.stdenv.mkDerivation rec {
+  env = packages.stdenv.mkDerivation rec {
     name = "website-devel-environment";
     buildInputs = site.env.nativeBuildInputs ++ [
       json-to-rst
@@ -42,7 +38,7 @@ let
     shellHook = envVars;
   };
 
-  drv = pkgs.stdenv.mkDerivation {
+  drv = packages.stdenv.mkDerivation {
     name = "asterix-specs-website";
     preBuild = envVars;
     src = ./.;
@@ -69,5 +65,5 @@ let
 in
   if inShell == false
     then drv
-    else if pkgs.lib.inNixShell then env else drv
+    else if packages.lib.inNixShell then env else drv
 

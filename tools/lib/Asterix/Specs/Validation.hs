@@ -5,7 +5,7 @@
 
 -- Validators for asterix data types.
 
-module Data.Asterix.Validation where
+module Asterix.Specs.Validation where
 
 import           Control.Monad
 import qualified Data.Text as T
@@ -13,8 +13,8 @@ import           Data.Maybe
 import           Data.List (inits, nub, (\\))
 import           Data.Ratio
 
-import           Data.Asterix
-import           Data.Asterix.Common
+import           Asterix.Specs
+import           Asterix.Specs.Common
 
 type ValidationError = T.Text
 

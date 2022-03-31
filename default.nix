@@ -1,17 +1,13 @@
 { gitrev ? "devel"
-, packages ? null
+, sources ? import ./nix/sources.nix
+, packages ? import sources.nixpkgs {}
 , inShell ? null
 }:
 
 let
-  nixpkgs = builtins.fromJSON (builtins.readFile ./nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
+  drv = import ./website { inherit gitrev; inherit  packages; inShell = false; };
 
-  drv = import ./website { inherit gitrev; packages = pkgs; inShell = false; };
-
-  env = pkgs.stdenv.mkDerivation {
+  env = packages.stdenv.mkDerivation {
     name = "asterix-specs-environment";
     buildInputs = [];
     shellHook = ''
@@ -23,5 +19,5 @@ let
 in
   if inShell == false
     then drv
-    else if pkgs.lib.inNixShell then env else drv
+    else if packages.lib.inNixShell then env else drv
 

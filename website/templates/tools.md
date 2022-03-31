@@ -116,15 +116,15 @@ Use `nix-shell` environment
 nix-shell
 
 # monitor changes, auto rebuild on any source change
-ghcid "--command=ghci -Wall -iother -isrc src/Main.hs"
+ghcid "--command=ghci -Wall -iother -ilib -iapp app/Main.hs"
 
 # run program without rebuild
-runhaskell -iother -isrc src/Main.hs --help
+runhaskell -iother -ilib -iapp app/Main.hs --help
 
 # (re)build with 'cabal' and run program
 cabal build
-find . -type f -executable
-$$(find . -type f -executable) --help
+find . -type f -executable | grep -v "\.so"
+$$(find . -type f -executable | grep -v "\.so") --help
 
 exit
 ```

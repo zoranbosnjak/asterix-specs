@@ -1,18 +1,14 @@
-{ packages ? null
+{ sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 , inShell ? null
 , strip ? true
 , static ? false    # build static binary
 }:
 
 let
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  normalPkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
-
   pkgs = if static == true
-    then normalPkgs.pkgsMusl.pkgsMusl
-    else normalPkgs;
+    then packages.pkgsMusl.pkgsMusl
+    else packages;
 
   haskellPackages = with pkgs.haskell.lib; pkgs.haskellPackages.override {
     overrides = self: super: {
@@ -32,6 +28,7 @@ let
     then drv2.overrideDerivation (oldAttrs: {
       configureFlags = [
         "--ghc-option=-optl=-static"
+        "--disable-shared"
         "--extra-lib-dirs=${pkgs.gmp6.override { withStatic = true; }}/lib"
         "--extra-lib-dirs=${pkgs.zlib.static}/lib"
         "--extra-lib-dirs=${pkgs.libffi.overrideAttrs (old: { dontDisableStatic = true; })}/lib"

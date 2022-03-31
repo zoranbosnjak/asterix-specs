@@ -1,21 +1,21 @@
-{ mkDerivation, aeson, aeson-pretty, base, base16-bytestring
-, base64-bytestring, bytestring, clock, containers, cryptonite
-, directory, filepath, formatting, lib, megaparsec
-, optparse-applicative, QuickCheck, stm, text, time, transformers
-, unordered-containers, with-utf8
+{ mkDerivation, aeson, aeson-pretty, base, bytestring, cryptonite
+, formatting, lib, megaparsec, optparse-applicative, text
+, transformers, unordered-containers, with-utf8
 }:
 mkDerivation {
   pname = "aspecs";
-  version = "0.12.2";
+  version = "1.0.0";
   src = ./.;
-  isLibrary = false;
+  isLibrary = true;
   isExecutable = true;
-  executableHaskellDepends = [
-    aeson aeson-pretty base base16-bytestring base64-bytestring
-    bytestring clock containers cryptonite directory filepath
-    formatting megaparsec optparse-applicative QuickCheck stm text time
-    transformers unordered-containers with-utf8
+  libraryHaskellDepends = [
+    aeson aeson-pretty base bytestring formatting megaparsec text
+    transformers unordered-containers
   ];
-  description = "asterix specs tools";
+  executableHaskellDepends = [
+    base bytestring cryptonite optparse-applicative text with-utf8
+  ];
+  homepage = "https://zoranbosnjak.github.io/asterix-specs/";
+  description = "Asterix specifications tools";
   license = lib.licenses.bsd3;
 }

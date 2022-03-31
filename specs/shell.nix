@@ -1,29 +1,25 @@
-{ packages ? null
+{ sources ? import ../nix/sources.nix
+, packages ? import sources.nixpkgs {}
 }:
 
 let
-  nixpkgs = builtins.fromJSON (builtins.readFile ../nixpkgs.json);
-  pkgs = if packages == null
-    then import (builtins.fetchGit nixpkgs) { }
-    else packages;
+  tools = import ../tools/default.nix { inherit packages; inShell = false; };
+  json-to-rst = import ../json-to-rst/default.nix { inherit packages; inShell = false; };
+  rst-to-pdf  = import ../rst-to-pdf/default.nix { inherint packages; inShell = false; };
 
-  tools = import ../tools/default.nix { packages = pkgs; inShell = false; };
-  json-to-rst = import ../json-to-rst/default.nix { packages = pkgs; inShell = false; };
-  rst-to-pdf  = import ../rst-to-pdf/default.nix { packages = pkgs; inShell = false; };
-
-  env = pkgs.stdenv.mkDerivation rec {
+  env = packages.stdenv.mkDerivation rec {
     name = "website-devel-environment";
     buildInputs = [
       tools
       json-to-rst
       rst-to-pdf
-      pkgs.pandoc
+      packages.pandoc
     ];
     shellHook = ''
       export PATH=${tools}/bin:$PATH
       export PATH=${json-to-rst}/bin:$PATH
       export PATH=${rst-to-pdf}/bin:$PATH
-      export PATH=${pkgs.pandoc}/bin:$PATH
+      export PATH=${packages.pandoc}/bin:$PATH
     '';
   };
 
