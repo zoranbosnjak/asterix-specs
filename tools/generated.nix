@@ -1,5 +1,5 @@
 { mkDerivation, aeson, aeson-pretty, base, bytestring, cryptonite
-, formatting, lib, megaparsec, optparse-applicative, text
+, formatting, lens, lib, megaparsec, optparse-applicative, text
 , transformers, unordered-containers, with-utf8
 }:
 mkDerivation {
@@ -9,7 +9,7 @@ mkDerivation {
   isLibrary = true;
   isExecutable = true;
   libraryHaskellDepends = [
-    aeson aeson-pretty base bytestring formatting megaparsec text
+    aeson aeson-pretty base bytestring formatting lens megaparsec text
     transformers unordered-containers
   ];
   executableHaskellDepends = [

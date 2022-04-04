@@ -1,19 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE LambdaCase #-}
 
-import           Main.Utf8 (withUtf8)
+-- Gather all units from 'Quantity' elements
+
 import           Options.Applicative as Opt
+import qualified Data.Set as Set
+import           Main.Utf8 (withUtf8)
 import qualified Data.ByteString as BS
 import           Control.Monad
 import qualified Data.Text.IO as T
 import qualified Data.Text as T
-import qualified Data.Set as Set
 
-import           Data.Version (showVersion)
-import           Paths_aspecs (version)
-
-import           Data.Asterix
-import           Data.Asterix.Common
+import           Folds
 
 data Options = Options
     { paths :: [FilePath]
@@ -22,63 +20,22 @@ data Options = Options
 
 parseOptions :: Parser Options
 parseOptions = Options
-    <$> some (argument str (metavar "PATH..."))
+    <$> some (Opt.argument str (metavar "PATH..."))
     <*> switch ( long "verbose")
 
 opts :: ParserInfo Options
-opts = info (helper <*> versionOption <*> parseOptions)
-    ( fullDesc <> Opt.header "Gather units" )
-  where
-    versionOption = Opt.infoOption
-        (showVersion version)
-        (Opt.long "version" <> Opt.help "Show version")
+opts = info (parseOptions <**> helper) fullDesc
 
--- | Load spec file from disk.
-loadSpec :: Monad m => String -> String -> m BS.ByteString -> m Asterix
-loadSpec fmt path getS = do
-    s <- getS -- BS.readFile path
-    let Just syntax = lookup fmt syntaxes
-        Just decoder = syntaxDecoder syntax
-        Right ast = decoder path s
-    return ast
+focus :: Fold Asterix Unit
+focus
+    = focusAsterixVariation
+    . focusVariationRule
+    . focusRuleContent
+    . focusContentUnit
+    . _Just
 
-class HasUnit a where
-    units :: a -> Set.Set Unit
-
-instance HasUnit a => HasUnit (Maybe a) where
-    units Nothing = mempty
-    units (Just val) = units val
-
-instance HasUnit Content where
-    units = \case
-        ContentQuantity _Signed _Number _FractBits unit _constraints -> Set.singleton unit
-        _ -> mempty
-
-instance HasUnit Rule where
-    units (ContextFree content) = units content
-    units (Dependent _name lst) = mconcat [units cont | (_,cont) <- lst]
-
-instance HasUnit Variation where
-    units (Element _RegisterSize rule) = units rule
-    units (Group lst) = mconcat $ fmap units lst
-    units (Extended _PrimarySize _ExtensionSize lst) = mconcat $ fmap units lst
-    units (Repetitive _RepetitionSize variation) = units variation
-    units (Explicit) = mempty
-    units (Compound _regSize lst) = mconcat $ fmap units lst
-
-instance HasUnit Item where
-    units (Spare _n) = mempty
-    units (Item _name _title variation _doc) = units variation
-
-instance HasUnit Basic where
-    units val = mconcat $ fmap units (basCatalogue val)
-
-instance HasUnit Expansion where
-    units val = units (expVariation val)
-
-instance HasUnit Asterix where
-    units (AsterixBasic val) = units val
-    units (AsterixExpansion val) = units val
+units :: Asterix -> Set.Set Unit
+units = foldMapOf focus Set.singleton
 
 main :: IO ()
 main = withUtf8 $ do
