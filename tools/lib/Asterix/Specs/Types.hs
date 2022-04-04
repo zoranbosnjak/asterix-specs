@@ -5,7 +5,6 @@
 module Asterix.Specs.Types where
 
 import           GHC.Generics (Generic)
-import           Data.Ratio (Ratio)
 import           Data.Text
 
 type RegisterSize = Int
@@ -42,8 +41,8 @@ data Date = Date
 
 data Number
     = NumberZ Integer
-    | NumberQ (Ratio Int)
-    | NumberR Double
+    | NumberQ Rational
+    | NumberR Rational
     deriving (Generic, Eq, Ord, Show)
 
 data Constrain

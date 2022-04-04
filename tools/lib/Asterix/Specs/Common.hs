@@ -31,7 +31,7 @@ showNumber = \case
     NumberZ i -> sformat (int) i
     NumberQ q -> sformat (int % "/" % int)
         (Data.Ratio.numerator q) (Data.Ratio.denominator q)
-    NumberR r -> sformat (F.string) (showFFloat Nothing r "")
+    NumberR r -> sformat (F.string) (showFFloat Nothing (fromRational r :: Double) "")
 
 showConstrain :: Constrain -> Text
 showConstrain = \case

@@ -28,8 +28,8 @@ data Date = Date
 
 data Number
     = NumberZ Integer
-    | NumberQ (Ratio Int)
-    | NumberR Double
+    | NumberQ Rational
+    | NumberR Rational
 
 data Constrain
     = EqualTo Number
@@ -38,7 +38,6 @@ data Constrain
     | GreaterThanOrEqualTo Number
     | LessThan Number
     | LessThanOrEqualTo Number
-    deriving (Generic, Eq, Ord, Show)
 
 data Signed
     = Signed

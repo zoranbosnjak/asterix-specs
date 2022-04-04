@@ -188,9 +188,7 @@ instance Validate (RegisterSize, Content) where
             [ case k of
                 NumberZ _ -> []
                 NumberQ k' -> reportProblem k'
-                NumberR k' -> do
-                    let epsilon = 1/(2^(20::Int))
-                    reportProblem $ approxRational k' epsilon
+                NumberR k' -> reportProblem k'
             , checkNonNegative sign cst
             ]
     validate _warnings (_, ContentInteger sign cst) =

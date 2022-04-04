@@ -11,6 +11,7 @@ import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
 import qualified Data.Ratio
+import           Numeric
 import           Formatting as F
 import           Data.Char (toLower)
 import           Data.Text (Text)
@@ -290,9 +291,9 @@ parseList parseHeader parseChunk = do
 
 pNumber :: Parser Number
 pNumber = tryOne
-    [ NumberR <$> (L.signed space L.float)
-    , NumberQ <$> pRatio
-    , NumberZ <$> (L.signed space L.decimal)
+    [ NumberQ <$> L.signed space pRatio
+    , NumberR <$> L.signed space pReal
+    , NumberZ <$> L.signed space L.decimal
     ]
   where
     pRatio = do
@@ -300,6 +301,11 @@ pNumber = tryOne
         void $ MC.string "/"
         b <- L.decimal
         return $ (a Data.Ratio.% b)
+    pReal = do
+        a <- some digitChar
+        void $ MC.string "."
+        b <- some digitChar
+        return $ fst . head $ readFloat $ a <> "." <> b
 
 -- | Parser valid name.
 pName :: Parser Name

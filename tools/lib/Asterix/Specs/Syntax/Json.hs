@@ -57,7 +57,7 @@ instance ToJSON Number where
             ]
         NumberR val -> object
             [ "type" .= ("Real" :: String)
-            , "value" .= val
+            , "value" .= (fromRational val :: Double)
             ]
 
 instance FromJSON Number where
