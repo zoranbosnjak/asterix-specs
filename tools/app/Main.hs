@@ -16,7 +16,6 @@ import           Data.Version (showVersion)
 import           Crypto.Hash
 
 import           Asterix.Specs
-import           Asterix.Specs.Common
 import           Asterix.Specs.Validation (validate)
 
 import           Paths_aspecs (version)

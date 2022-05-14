@@ -5,7 +5,7 @@
 let
   tools = import ../tools/default.nix { inherit packages; inShell = false; };
   json-to-rst = import ../json-to-rst/default.nix { inherit packages; inShell = false; };
-  rst-to-pdf  = import ../rst-to-pdf/default.nix { inherint packages; inShell = false; };
+  rst-to-pdf  = import ../rst-to-pdf/default.nix { inherit packages; inShell = false; };
 
   env = packages.stdenv.mkDerivation rec {
     name = "website-devel-environment";

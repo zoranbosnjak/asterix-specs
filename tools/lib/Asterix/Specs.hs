@@ -4,6 +4,7 @@
 
 module Asterix.Specs
 ( module Asterix.Specs
+, module Asterix.Specs.Common
 , module Asterix.Specs.Types
 , module Asterix.Specs.Syntax
 ) where
@@ -11,6 +12,7 @@ module Asterix.Specs
 import           Data.List (find)
 import           Data.Maybe (catMaybes)
 
+import           Asterix.Specs.Common
 import           Asterix.Specs.Types
 import           Asterix.Specs.Syntax
 
