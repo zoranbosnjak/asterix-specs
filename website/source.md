@@ -55,6 +55,14 @@ curl -L https://nixos.org/nix/install | sh
 
 ... then logout and login again for changes to take effect.
 
+Optionally install cachix client and use binary cache,
+to speed up first build.
+
+```bash
+nix-env -iA cachix -f https://cachix.org/api/v1/install
+cachix use zoranbosnjak
+```
+
 ## Clone project to local disk
 
 ```bash
