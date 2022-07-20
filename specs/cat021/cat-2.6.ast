@@ -1,6 +1,6 @@
 asterix 021 "ADS-B Target Reports"
-edition 2.5
-date 2021-02-18
+edition 2.6
+date 2021-12-21
 preamble
     Surveillance data exchange.
     ADS-B Target Reports.
@@ -222,6 +222,24 @@ items
                     table
                         0: Default
                         1: Range Check failed
+            TBC "Total Bits Corrected"
+                group
+                    EP "Element Populated Bit"
+                        element 1
+                            table
+                                0: Element not populated
+                                1: Element populated
+                    VAL "Value"
+                        element 6
+                            unsigned integer
+                        remark
+                            Bits 7/2 contain the total number of bit corrections applied to all
+                            Extended Squitter Messages used for the composition of this
+                            Category 021 Target Report (regardless of the ages of the Extended
+                            Squitter messages). More details on the techniques applied for error
+                            correction can be found in EUROCAE ED-102B/RTCA DO-260C
+                            [11], Appendix I “Extended Squitter Enhanced Reception
+                            Techniques”.
         remark
             Notes:
 
@@ -876,6 +894,36 @@ items
                   Version 3 (see I021/210) as defined in Ref. [11] this flag is no
                   longer used and shall be set to “0”.
 
+                - 2: The logic for setting the LNAV indication is reversed compared to
+                  the definition of the LNAV indication in EUROCAE ED-102()/RTCA
+                  DO-260(). Whether or not this bit is actively set is indicated in the
+                  setting of the “Status of the MCP/FCO Mode Bits” defined in
+                  EUROCAE ED-102B/RTCA DO-260C (Ref. [11] chapter
+                  2.2.3.2.7.1.3.11) and in the Reserved Expansion Field of Category
+                  021, item I021/REF/NAV/MFM. If MFM#VAL is set to 0, LNAV shall
+                  be set to 1.
+
+                - Bits 5/3 (PS) have been redefined in Version 3 ADS-B systems
+                  as defined in EUROCAE ED-102B/RTCA DO-260C (Ref. [11]). For
+                  Version 3 ADS-B systems (see I021/210 - VN) the Priority Status
+                  shall be encoded in the Reserved Expansion Field, Item STA,
+                  Primary Subfield Bits 6/5.
+                  However, since values have been re-defined in ADS-B Version 3,
+                  mapping is required to ensure that information is not lost. This
+                  mapping shall be done according to the following table: ::
+
+                    ADS-B Version 3 (PS3)           ADS-Version < 3 (I021/200 - PS)
+                    0 (No Emergency/not reported)   0 (No Emergency/not reported)
+                    1 (General emergency)           1 (General emergency)
+                    2 (UAS/RPAS Lost Link)          4 (No communication)
+                    3 (Minimum fuel)                3 (Minimum fuel)
+                    4 (No communication)            4 (No communication)
+                    5 (Unlawful interference)       5 (Unlawful interference)
+                    6 (Aircraft in distress -       1 (General emergency)
+                      automatic activation)
+                    7 (Aircraft in distress -       1 (General emergency)
+                      manual activation)
+
     210 "MOPS Version"
         definition
             Identification of the MOPS version used by a/c to supply ADS-B information.
@@ -1009,6 +1057,13 @@ items
                 3. The “TYP” and “STYP” items are implementation (i.e. link technology)
                    dependent.
                 4. Refer to ICAO Annex 10 SARPs for detailed explanations [Ref. 5]
+                5. Collision Avoidance System ACAS Xu (as defined in EUROCAE
+                   ED-275/RTCA DO-386 [13]) uses two BDS Registers to transmit
+                   the Resolution Advisory (BDS Register 3,0 and BDS Register 3,1).
+                   While BDS Register 3,0 is transmitted by ADS-B (in Message Type
+                   Code 28, Subtype Code 2), BDS Register 3,1 is not transmitted as
+                   part of the ADS-B TCAS RA Broadcast (confirm EUROCAE ED-
+                   275/RTCA DO-386 [13] chapter 2.2.3.8.3.2.10)
 
     271 "Surface Capabilities and Characteristics"
         definition
@@ -1097,9 +1152,9 @@ items
                     Age of the Flight Level, item I021/145
                 element 8
                     unsigned quantity 0.1 0 "s" <= 25.5
-            ISA "Intermediate State Selected Altitude Age"
+            SAL "Selected Altitude Age"
                 description
-                    Age of the Intermediate State Selected Altitude, item I021/146
+                    Age of the Selected Altitude, item I021/146
                 element 8
                     unsigned quantity 0.1 0 "s" <= 25.5
             FSA "Final State Selected Altitude Age"
