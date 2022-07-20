@@ -14,7 +14,6 @@ import           Data.List (inits, nub, (\\))
 import           Data.Ratio
 
 import           Asterix.Specs
-import           Asterix.Specs.Common
 
 type ValidationError = T.Text
 
@@ -228,9 +227,8 @@ instance Validate Variation where
         [ reportUnless (n > 0) "element size"
         , validate warnings (n, content)
         ]
-    validate warnings x@(Group items) = join
-        [ reportUnless (isAligned x) "bit alignment"
-        , validate warnings items
+    validate warnings (Group items) = join
+        [ validate warnings items
         , reportWhen (length items <= 1) "group requires more items"
         , reportWhen (duplicatedNames items) "duplicated names"
         ]
