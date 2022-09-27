@@ -11,9 +11,9 @@ import           Control.Monad
 import           Data.Aeson hiding (Encoding)
 import           Data.Bool
 import           Data.Aeson.Types (typeMismatch, Parser)
+import qualified Data.Aeson.KeyMap as KM
 import qualified Data.Aeson.Encode.Pretty as JsonP
 import           Data.ByteString.Lazy (toStrict)
-import qualified Data.HashMap.Strict as HMS
 import           Text.Printf (printf)
 import           Text.Read (readMaybe)
 import qualified Data.Text as T
@@ -61,7 +61,7 @@ instance ToJSON Number where
             ]
 
 instance FromJSON Number where
-    parseJSON = withObject "Number" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "Number" $ \v -> case KM.lookup "type" v of
         Just "Integer" -> NumberZ <$> v .: "value"
         Just "Ratio" -> NumberQ <$> v .: "value"
         Just "Real" -> NumberR <$> v .: "value"
@@ -76,7 +76,7 @@ instance ToJSON Constrain where
     toJSON (LessThanOrEqualTo val) = object ["type" .= ("<="::String), "value" .= val]
 
 instance FromJSON Constrain where
-    parseJSON = withObject "Constrain" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "Constrain" $ \v -> case KM.lookup "type" v of
         Just "==" -> EqualTo <$> v .: "value"
         Just "/=" -> NotEqualTo <$> v .: "value"
         Just ">" -> GreaterThan <$> v .: "value"
@@ -118,7 +118,7 @@ instance ToJSON BdsType where
             ]
 
 instance FromJSON BdsType where
-    parseJSON = withObject "BdsType" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "BdsType" $ \v -> case KM.lookup "type" v of
         Just "BdsWithAddress" -> pure BdsWithAddress
         Just "BdsAt" -> BdsAt
             <$> v .: "address"
@@ -156,7 +156,7 @@ instance ToJSON Content where
             ]
 
 instance FromJSON Content  where
-    parseJSON = withObject "Content" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "Content" $ \v -> case KM.lookup "type" v of
         Just "Raw" -> pure ContentRaw
         Just "Table" -> ContentTable
             <$> v .: "values"
@@ -188,7 +188,7 @@ instance ToJSON Rule
         ]
 
 instance FromJSON Rule where
-    parseJSON = withObject "Rule" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "Rule" $ \v -> case KM.lookup "type" v of
         Just "ContextFree" -> ContextFree
             <$> v .: "content"
         Just "Dependent" -> Dependent
@@ -227,7 +227,7 @@ instance ToJSON Variation where
         ]
 
 instance FromJSON Variation  where
-    parseJSON = withObject "Variation" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "Variation" $ \v -> case KM.lookup "type" v of
         Just "Element" -> Element
             <$> v .: "size"
             <*> v .: "rule"
@@ -262,7 +262,7 @@ instance ToJSON Item where
         ]
 
 instance FromJSON Item  where
-    parseJSON = withObject "Item" $ \v -> case HMS.lookup "spare" v of
+    parseJSON = withObject "Item" $ \v -> case KM.lookup "spare" v of
         Just (Bool True) -> Spare
             <$> v .: "length"
         Just (Bool False) -> Item
@@ -292,7 +292,7 @@ instance ToJSON Uap where
             ]
 
 instance FromJSON Uap  where
-    parseJSON = withObject "Uap" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "Uap" $ \v -> case KM.lookup "type" v of
         Just "uap" -> Uap <$> v .: "items"
         Just "uaps" -> Uaps <$> f (v .: "variations")
           where
@@ -350,7 +350,7 @@ instance ToJSON Asterix where
         AsterixExpansion x -> toJSON x
 
 instance FromJSON Asterix  where
-    parseJSON = withObject "Asterix" $ \v -> case HMS.lookup "type" v of
+    parseJSON = withObject "Asterix" $ \v -> case KM.lookup "type" v of
         Just "Basic" -> AsterixBasic <$> parseJSON (Object v)
         Just "Expansion" -> AsterixExpansion <$> parseJSON (Object v)
         _ -> typeMismatch "Asterix" $ String "wrong type"

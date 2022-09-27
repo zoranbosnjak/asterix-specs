@@ -17,7 +17,7 @@ let
 
   specs = import ./specs.nix { inherit gitrev; inherit packages;};
 
-  site = haskellPackages.callPackage ./generated.nix { };
+  site = haskellPackages.callCabal2nix "website" ./. { };
 
   syntax = import ../syntax/default.nix { inherit gitrev; inherit packages; inShell = false; };
 

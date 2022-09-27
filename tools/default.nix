@@ -14,7 +14,7 @@ let
     overrides = self: super: {
   };};
 
-  drv1 = haskellPackages.callPackage ./generated.nix { };
+  drv1 = haskellPackages.callCabal2nix "aspecs" ./. { };
 
   drv2 = drv1.overrideDerivation (oldAttrs: {
     src = builtins.filterSource
