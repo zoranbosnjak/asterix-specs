@@ -11,6 +11,11 @@ Category listing: [manifest.json](/manifest.json).
 
 Revision: [gitrev.txt](/gitrev.txt)
 
+All specs:
+    [[tar](/specs.tar)]
+    [[tgz](/specs.tgz)]
+    [[zip](/specs.zip)]
+
 ---
 
 $for(nums)$

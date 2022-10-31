@@ -42,6 +42,9 @@ let
     name = "asterix-specs-website";
     preBuild = envVars;
     src = ./.;
+    buildInputs = [
+      packages.zip
+    ];
     installPhase = ''
       mkdir -p $out
       echo ${gitrev} > $out/gitrev.txt
@@ -59,6 +62,10 @@ let
       ${site}/bin/site rebuild
       cp -a _site/* $out
 
+      cd $out
+      tar -cvf  specs.tar specs
+      tar -cvzf specs.tgz specs
+      zip -r    specs.zip specs
     '';
   };
 
