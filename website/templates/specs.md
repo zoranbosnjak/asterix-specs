@@ -11,7 +11,7 @@ Category listing: [manifest.json](/manifest.json).
 
 Revision: [gitrev.txt](/gitrev.txt)
 
-All specs:
+Archive of all specifications:
     [[tar](/specs.tar)]
     [[tgz](/specs.tgz)]
     [[zip](/specs.zip)]
