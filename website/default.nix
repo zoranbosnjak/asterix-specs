@@ -12,7 +12,6 @@ let
   tools = import ../tools/default.nix { inherit  packages; inShell = false; };
   toolsStatic = import ../tools/default.nix { inherit packages; inShell = false; static = true; };
 
-  json-to-rst = import ../json-to-rst/default.nix { inherit packages; inShell = false; };
   rst-to-pdf  = import ../rst-to-pdf/default.nix { inherit packages; inShell = false; };
 
   specs = import ./specs.nix { inherit gitrev; inherit packages;};
@@ -32,7 +31,6 @@ let
   env = packages.stdenv.mkDerivation rec {
     name = "website-devel-environment";
     buildInputs = site.env.nativeBuildInputs ++ [
-      json-to-rst
       rst-to-pdf
     ];
     shellHook = envVars;
@@ -51,8 +49,9 @@ let
 
       mkdir -p $out/bin
       ln -s ${tools}/bin/aspecs $out/bin/aspecs
+      ln -s ${tools}/bin/ast-to-rst $out/bin/ast-to-rst
       ln -s ${toolsStatic}/bin/aspecs $out/bin/aspecs-static
-      ln -s ${json-to-rst}/bin/json-to-rst $out/bin/json-to-rst
+      ln -s ${toolsStatic}/bin/ast-to-rst $out/bin/ast-to-rst-static
       ln -s ${rst-to-pdf}/bin/rst-to-pdf $out/bin/rst-to-pdf
 
       cp ${specs}/manifest.json $out/manifest.json

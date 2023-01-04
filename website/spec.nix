@@ -16,7 +16,6 @@ let
   tools = import ../tools/default.nix { inherit packages; inShell = false; };
   toolsStatic = import ../tools/default.nix { inherit packages; inShell = false; static = true; };
 
-  json-to-rst = import ../json-to-rst/default.nix { inherit packages; inShell = false; };
   rst-to-pdf = import ../rst-to-pdf/default.nix { inherit packages; inShell = false; };
 
   deps = with packages; [
@@ -62,8 +61,8 @@ in with packages; runCommand name
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
 
-    echo "render json -> rst"
-    ${json-to-rst}/bin/json-to-rst $out/definition.json > $out/definition.rst
+    echo "render rst"
+    ${tools}/bin/ast-to-rst $out/definition.ast > $out/definition.rst
 
     echo "convert rst -> pdf"
     ${rst-to-pdf}/bin/rst-to-pdf $out/definition.rst $out/definition.pdf

@@ -1,12 +1,8 @@
-{-# LANGUAGE LambdaCase         #-}
-{-# LANGUAGE OverloadedStrings  #-}
-
 -- '.ast' syntax implementation
 
 module Asterix.Specs.Syntax.Ast (syntax) where
 
 import           Control.Monad
-import           Control.Monad.Trans.State
 import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
@@ -23,159 +19,177 @@ import qualified Text.Megaparsec.Char.Lexer as L
 
 import           Asterix.Specs.Types
 import           Asterix.Specs.Common
-import           Asterix.Specs.Indent
+import           Asterix.Indent
 
 -- | Dump to Text
 
--- | Dump variation.
-dumpVariation :: Variation -> Accumulator ()
-dumpVariation = \case
-    Element n rule -> do
-        tell $ sformat ("element " % int) n
-        block $ do
-            let dumpContent = \case
-                    ContentRaw -> do
-                        tell "raw"
-                    ContentTable lst -> do
-                        tell "table"
-                        block $ forM_ lst $ \(key, value) -> do
-                            tell $ sformat (int % ": " % stext) key value
-                    ContentString st -> tell $ "string " <> case st of
-                        StringAscii -> "ascii"
-                        StringICAO -> "icao"
-                        StringOctal -> "octal"
-                    ContentInteger signed constraints -> do
-                        let sig = toLower <$> show signed
-                            cst = case constraints of
-                                [] -> ""
-                                lst -> " " <> T.intercalate " " (fmap showConstrain lst)
-                        tell $ sformat (F.string % " integer" % stext) sig cst
-                    ContentQuantity signed scaling fract unit constraints -> do
-                        let sig = toLower <$> show signed
-                            cst = case constraints of
-                                [] -> ""
-                                lst -> " " <> T.intercalate " " (fmap showConstrain lst)
-                        tell $ sformat
-                            (F.string % " quantity " % stext % " " % int % " " % "\"" % stext % "\"" % stext )
-                            sig (showNumber scaling) fract unit cst
-                    ContentBds bt -> tell $ "bds" <> case bt of
-                        BdsWithAddress -> ""
-                        BdsAt mAddr -> case mAddr of
-                            Nothing -> " ?"
-                            Just (BdsAddr addr) -> sformat (" " % hex) addr
-            case rule of
-                ContextFree cont -> dumpContent cont
-                Dependent name lst -> do
-                    tell $ sformat ("case " % stext) (showPath name)
-                    block $ forM_ lst $ \(x,a) -> do
-                        tell $ sformat (int % ":") x
-                        block $ dumpContent a
+class IsBlock a where
+    mkBlock :: a -> Block Text
 
-    Group lst -> do
-        tell "group"
-        block $ mapM_ dumpItem lst
+instance IsBlock Content where
+    mkBlock = \case
+        ContentRaw -> "raw"
+        ContentTable lst -> mconcat
+            [ "table"
+            , indent $ mconcat $ do
+                (key, value) <- lst
+                pure $ line $ sformat (int % ": " % stext) key value
+            ]
+        ContentString st -> line $ "string " <> case st of
+            StringAscii -> "ascii"
+            StringICAO -> "icao"
+            StringOctal -> "octal"
+        ContentInteger signed constraints ->
+            let sig = toLower <$> show signed
+                cst = case constraints of
+                    [] -> ""
+                    lst -> " " <> T.intercalate " " (fmap showConstrain lst)
+            in line $ sformat (F.string % " integer" % stext) sig cst
+        ContentQuantity signed scaling fract unit constraints ->
+            let sig = toLower <$> show signed
+                cst = case constraints of
+                    [] -> ""
+                    lst -> " " <> T.intercalate " " (fmap showConstrain lst)
+            in line $ sformat
+                (F.string % " quantity " % stext % " " % int % " " % "\"" % stext % "\"" % stext )
+                sig (showNumber scaling) fract unit cst
+        ContentBds bt -> line $ "bds" <> case bt of
+            BdsWithAddress -> ""
+            BdsAt mAddr -> case mAddr of
+                Nothing -> " ?"
+                Just (BdsAddr addr) -> sformat (" " % hex) addr
 
-    Extended n1 n2 lst -> do
-        tell $ sformat ("extended " % int % " " % int) n1 n2
-        block $ mapM_ dumpItem lst
+instance IsBlock Variation where
+    mkBlock = \case
+        Element n rule -> mconcat
+            [ line $ sformat ("element " % int) n
+            , indent $ case rule of
+                ContextFree cont -> mkBlock cont
+                Dependent name lst -> mconcat
+                    [ line $ sformat ("case " % stext) (showPath name)
+                    , indent $ mconcat $ do
+                        (x,a) <- lst
+                        pure $ mconcat
+                            [ line $ sformat (int % ":") x
+                            , indent $ mkBlock a
+                            ]
+                    ]
+            ]
 
-    Repetitive rep variation -> do
-        tell $ sformat ("repetitive " % int) rep
-        block $ dumpVariation variation
+        Group lst -> mconcat
+            [ "group"
+            , indent $ mconcat $ fmap mkBlock lst
+            ]
 
-    Explicit -> do
-        tell "explicit"
+        Extended n1 n2 lst -> mconcat
+            [ line $ sformat ("extended " % int % " " % int) n1 n2
+            , indent $ mconcat $ fmap mkBlock lst
+            ]
 
-    Compound mFspecSize lst -> do
-        case mFspecSize of
-            Nothing -> tell "compound"
-            Just n -> tell $ sformat ("compound " % int) n
-        block $ forM_ lst $ \case
-            Nothing -> tell "-"
-            Just item -> dumpItem item
+        Repetitive rep variation -> mconcat
+            [ line $ sformat ("repetitive " % int) rep
+            , indent $ mkBlock variation
+            ]
 
-dumpItem :: Item -> Accumulator ()
-dumpItem = \case
-    Spare n -> tell $ sformat ("spare " % int) n
-    Item name title variation doc -> do
-        tell $ sformat (stext % " \"" % stext % "\"") name title
-        block $ dumpText "definition" (docDefinition doc)
-        block $ dumpText "description" (docDescription doc)
-        block $ do
-            dumpVariation variation
-            dumpText "remark" (docRemark doc)
-  where
-    dumpText title = \case
-        Nothing -> return ()
-        Just t -> do
-            tell title
-            block $ tell t
+        Explicit -> "explicit"
 
--- | Encode Uap.
-dumpUap :: Uap -> Accumulator ()
-dumpUap = \case
-    Uap lst -> do
-        tell "uap"
-        dumpList lst
-    Uaps variations -> do
-        tell "uaps"
-        block $ forM_ variations $ \(name, lst) -> do
-            tell name
-            dumpList lst
-  where
-    dumpList lst = block $ forM_ lst $ \item -> do
-        tell $ maybe "-" id item
+        Compound mFspecSize lst -> mconcat
+            [ case mFspecSize of
+                Nothing -> "compound"
+                Just n -> line $ sformat ("compound " % int) n
+            , indent $ mconcat $ do
+                mItem <- lst
+                pure $ case mItem of
+                    Nothing -> "-"
+                    Just item -> mkBlock item
+            ]
 
--- | Encode asterix basic category description.
-dumpBasic :: Basic -> Accumulator ()
-dumpBasic basic = do
-    tell $ sformat ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
-    tell $ sformat ("edition " % int % "." % int) ed1 ed2
-    tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-    case basPreamble basic of
-        Nothing -> return ()
-        Just preamble -> do
-            tell "preamble"
-            block $ do
-                tell preamble
+instance IsBlock Item where
+    mkBlock = \case
+        Spare n -> line $ sformat ("spare " % int) n
+        Item name title variation doc -> mconcat
+            [ line $ sformat (stext % " \"" % stext % "\"") name title
+            , indent $ dumpText "definition" (docDefinition doc)
+            , indent $ dumpText "description" (docDescription doc)
+            , indent $ mconcat
+                [ mkBlock variation
+                , dumpText "remark" (docRemark doc)
+                ]
+            ]
+      where
+        dumpText title = \case
+            Nothing -> mempty
+            Just t -> mconcat
+                [ line title
+                , indent $ mconcat [line i | i <- T.lines t]
+                ]
 
-    tell ""
-    tell "items"
-    block $ forM_ (basCatalogue basic) $ \item -> do
-        tell ""
-        dumpItem item
+instance IsBlock Uap where
+    mkBlock = \case
+        Uap lst -> mconcat
+            [ "uap"
+            , indent $ dumpList lst
+            ]
+        Uaps variations -> mconcat
+            [ "uaps"
+            , mconcat $ do
+                (name, lst) <- variations
+                pure $ indent $ mconcat
+                    [ line $ name
+                    , indent $ dumpList lst
+                    ]
+            ]
+      where
+        dumpList lst = mconcat $ do
+            item <- lst
+            pure $ line $ maybe "-" id item
 
-    tell ""
-    dumpUap $ basUap basic
-  where
-    cat = basCategory basic
-    title = basTitle basic
-    edition = basEdition basic
-    ed1 = editionMajor edition
-    ed2 = editionMinor edition
-    (Date year month day) = basDate basic
+instance IsBlock Basic where
+    mkBlock basic = mconcat
+        [ line $ sformat ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
+        , line $ sformat ("edition " % int % "." % int) ed1 ed2
+        , line $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+        , case basPreamble basic of
+            Nothing -> mempty
+            Just preamble -> mconcat
+                [ "preamble"
+                , indent $ mconcat [line i | i <- T.lines preamble]
+                ]
+        , emptyLine
+        , "items"
+        , emptyLine
+        , indent $ blocksLn (mkBlock <$> basCatalogue basic)
+        , emptyLine
+        , mkBlock $ basUap basic
+        ]
+      where
+        cat = basCategory basic
+        title = basTitle basic
+        edition = basEdition basic
+        ed1 = editionMajor edition
+        ed2 = editionMinor edition
+        (Date year month day) = basDate basic
 
--- | Encode expansion
-dumpExpansion :: Expansion -> Accumulator ()
-dumpExpansion x = do
-    tell $ sformat ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
-    tell $ sformat ("edition " % int % "." % int) ed1 ed2
-    tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-    tell ""
-    dumpVariation $ expVariation x
-  where
-    cat = expCategory x
-    title = expTitle x
-    edition = expEdition x
-    ed1 = editionMajor edition
-    ed2 = editionMinor edition
-    (Date year month day) = expDate x
+instance IsBlock Expansion where
+    mkBlock x = mconcat
+        [ line $ sformat ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
+        , line $ sformat ("edition " % int % "." % int) ed1 ed2
+        , line $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+        , emptyLine
+        , mkBlock $ expVariation x
+        ]
+      where
+        cat = expCategory x
+        title = expTitle x
+        edition = expEdition x
+        ed1 = editionMajor edition
+        ed2 = editionMinor edition
+        (Date year month day) = expDate x
 
--- | Encode asterix description.
-dumpAsterix :: Asterix -> Accumulator ()
-dumpAsterix = \case
-    AsterixBasic basic -> dumpBasic basic
-    AsterixExpansion expansion -> dumpExpansion expansion
+instance IsBlock Asterix where
+    mkBlock = \case
+        AsterixBasic basic -> mkBlock basic
+        AsterixExpansion expansion -> mkBlock expansion
 
 -- | Parse from Text
 
@@ -515,7 +529,7 @@ syntax = Syntax
     , syntaxDecoder = Just decoder
     }
   where
-    encoder = encodeUtf8 . renderBuffer 4 . snd . flip execState (0,[]) . dumpAsterix
+    encoder = encodeUtf8 . renderBlock 4 . mkBlock
     decoder filename s = first errorBundlePretty $
         parse pAsterix filename (decodeUtf8 s)
 

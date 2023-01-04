@@ -1,5 +1,3 @@
-{-# LANGUAGE DeriveGeneric #-}
-
 -- Asterix data types.
 
 module Asterix.Specs.Types where

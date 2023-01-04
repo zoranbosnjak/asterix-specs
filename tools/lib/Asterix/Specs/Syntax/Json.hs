@@ -1,6 +1,3 @@
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE OverloadedStrings #-}
-
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- '.json' syntax implementation

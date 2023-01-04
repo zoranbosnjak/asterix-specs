@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 -- Asterix syntaxes.
 
 module Asterix.Specs.Syntax

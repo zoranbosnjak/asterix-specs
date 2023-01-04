@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 -- Common asterix data types and functions.
 
 module Asterix.Specs

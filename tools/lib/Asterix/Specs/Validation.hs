@@ -1,8 +1,3 @@
-{-# LANGUAGE LambdaCase        #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE FlexibleContexts  #-}
-
 -- Validators for asterix data types.
 
 module Asterix.Specs.Validation where
@@ -298,8 +293,14 @@ instance Validate Basic where
         , allItemsDefined
         , validateUap
         , join (validateDepItem <$> basCatalogue basic)
+        , join (topAlignment <$> basCatalogue basic)
         ]
       where
+        topAlignment :: Item -> [ValidationError]
+        topAlignment i = reportUnless (isAligned i) $ case i of
+            Spare _ -> error "unexpected spare"
+            Item name _title _var _doc -> "Top level item " <> name <> " alignment error."
+
         validateCat :: [ValidationError]
         validateCat = reportUnless (basCategory basic `elem` [0..255])
             "category number out of range"
@@ -390,6 +391,7 @@ instance Validate Basic where
 instance Validate Expansion where
     validate warnings x = join
         [ validate warnings $ expVariation x
+        , reportUnless (isAligned $ expVariation x) "Top level alignment error."
         ]
 
 instance Validate Asterix where
