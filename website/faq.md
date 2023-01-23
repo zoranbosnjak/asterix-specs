@@ -164,3 +164,7 @@ you some time when implementing asterix encoder/decoder.
 * Some encoding rules are complex. This project does not include any
   encoding rules, such as: "This item is optional/mandatory...".
 
+* Some item names include special characters, for example, the `FOE/FRI`
+  in `["I048", "020", "FOE/FRI"]`, where "slash" is part of the name. In
+  this project, special characters are removed from item names.
+
