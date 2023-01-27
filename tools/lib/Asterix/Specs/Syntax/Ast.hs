@@ -81,10 +81,14 @@ instance IsBlock Variation where
             , indent $ mconcat $ fmap mkBlock lst
             ]
 
-        Extended n1 n2 lst -> mconcat
-            [ line $ sformat ("extended " % int % " " % int) n1 n2
+        Extended et n1 n2 lst -> mconcat
+            [ line $ sformat ("extended " % F.string % int % " " % int) fx n1 n2
             , indent $ mconcat $ fmap mkBlock lst
             ]
+          where
+            fx = case et of
+                ExtendedRegular -> ""
+                ExtendedNoTrailingFx -> "no-trailing-fx "
 
         Repetitive rep variation -> mconcat
             [ line $ sformat ("repetitive " % int) rep
@@ -408,14 +412,17 @@ pGroup = Group . snd <$> parseList (MC.string "group") pItem
 -- | Parse 'extended' item.
 pExtended :: Parser Variation
 pExtended = do
-    ((n1,n2), lst) <- parseList parseHeader pItem
-    return $ Extended n1 n2 lst
+    ((et, n1,n2), lst) <- parseList parseHeader pItem
+    return $ Extended et n1 n2 lst
   where
     parseHeader = do
         MC.string "extended" >> sc
+        et <-
+            (try (MC.string "no-trailing-fx" <* sc) >> pure ExtendedNoTrailingFx)
+            <|> pure ExtendedRegular
         n1 <- L.decimal <* sc
         n2 <- L.decimal
-        return (n1, n2)
+        return (et, n1, n2)
 
 -- | Parse 'repetitive' item.
 pRepetitive :: Parser Variation

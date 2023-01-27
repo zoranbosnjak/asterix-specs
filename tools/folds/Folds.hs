@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
-
 module Folds
 ( module Folds
 , module Control.Lens
@@ -38,7 +35,7 @@ focusVariationRule :: Fold Variation Rule
 focusVariationRule = folding $ \case
     Element _n rule -> [rule]
     Group lst -> lst ^.. folded . focusItemVariation . _Just . focusVariationRule
-    Extended _n1 _n2 lst -> lst ^.. folded . focusItemVariation . _Just . focusVariationRule
+    Extended _et _n1 _n2 lst -> lst ^.. folded . focusItemVariation . _Just . focusVariationRule
     Repetitive _n variation -> variation ^.. focusVariationRule
     Explicit -> []
     Compound _mn lst -> lst ^.. folded . _Just . focusItemVariation . _Just . focusVariationRule

@@ -162,21 +162,6 @@ dots n
     | n <= 32 = T.replicate n "."
     | otherwise = "... " <> tShow n <> " bits ..."
 
-class Fixed a where
-    bitSize :: a -> RegisterSize
-
-instance Fixed a => Fixed [a] where
-    bitSize lst = foldr (+) 0 (fmap bitSize lst)
-
-instance Fixed Variation where
-    bitSize (Element n _) = n
-    bitSize (Group lst) = bitSize lst
-    bitSize _ = error "non-fixed item"
-
-instance Fixed Item where
-    bitSize (Spare n) = n
-    bitSize (Item _ _ var _) = bitSize var
-
 instance IsBlock Variation where
 
     mkBlock p (Element n rule) = blocksLn
@@ -186,16 +171,27 @@ instance IsBlock Variation where
 
     mkBlock p (Group lst) = blocksLn (mkBlock p <$> lst)
 
-    mkBlock p (Extended n1 n2 lst) = mconcat
+    mkBlock p (Extended et n1 n2 lst) = mconcat
         [ line $ "Extended item with first part ``"
             <> tShow n1 <> " bits`` long and optional ``"
             <> tShow n2 <> " bits`` extends."
+            <> case et of
+                ExtendedRegular -> ""
+                ExtendedNoTrailingFx -> " No trailing FX bit!"
         , emptyLine
         , blocksLn $ do
-            grp <- groups ns lst
+            grp <- init groups
             pure (blocksLn (fmap (mkBlock p) grp) <> emptyLine <> fx)
+        , emptyLine
+        , (blocksLn (fmap (mkBlock p) (last groups)) <> case et of
+            ExtendedRegular -> emptyLine <> fx
+            ExtendedNoTrailingFx -> mempty
+            )
         ]
       where
+        groups = maybe (error "Failed to create extended groups") id
+            (extendedItemGroups et n1 n2 lst)
+
         fx = indent $ mconcat
             [ "``(FX)``"
             , emptyLine
@@ -206,16 +202,6 @@ instance IsBlock Variation where
                 , "| 1: Extension into next extent"
                 ]
             ]
-        ns = fmap pred ([n1] <> repeat n2)
-        groups :: [PrimarySize] -> [Item] -> [[Item]]
-        groups _ [] = []
-        groups xs items =
-            let findN x
-                    | bitSize (take x items) == (head xs) = x
-                    | otherwise = findN $ succ x
-                n = findN 1
-            in (take n items) : groups (tail xs) (drop n items)
-
     mkBlock p (Repetitive rep var) = mconcat
         [ line $ "Repetitive item, repetition factor " <> tShow rep <> " bits."
         , emptyLine

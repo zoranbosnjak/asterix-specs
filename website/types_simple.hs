@@ -1,6 +1,4 @@
 type RegisterSize = Int
-type PrimarySize = Int
-type ExtensionSize = Int
 type RepetitionSize = Int
 type FractBits = Int
 
@@ -76,6 +74,10 @@ data Rule
     = ContextFree Content
     | Dependent [Name] [(Int, Content)]
 
+data ExtendedType
+    = ExtendedRegular
+    | ExtendedNoTrailingFx
+
 data Variation
     -- leaf of the structure
     = Element RegisterSize Rule
@@ -85,7 +87,7 @@ data Variation
     | Group [Item]
 
     -- extended item with FX extension mechanism
-    | Extended PrimarySize ExtensionSize [Item]
+    | Extended ExtendedType RegisterSize RegisterSize [Item]
 
     -- N bits reserved for REP lengt field, followed by recursive variation
     | Repetitive RepetitionSize Variation

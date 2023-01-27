@@ -193,6 +193,17 @@ instance FromJSON Rule where
             <*> v .: "rules"
         _ -> typeMismatch "Rule" $ String "wrong type"
 
+instance ToJSON ExtendedType where
+    toJSON = \case
+        ExtendedRegular -> "regular"
+        ExtendedNoTrailingFx -> "no-trailing-fx"
+
+instance FromJSON ExtendedType where
+    parseJSON = withText "ExtendedType" $ \case
+        "regular" -> pure ExtendedRegular
+        "no-trailing-fx" -> pure ExtendedNoTrailingFx
+        val -> fail $ "unexpected value: " ++ show val
+
 instance ToJSON Variation where
     toJSON (Element n rule) = object
         [ "type"    .= ("Element" :: String)
@@ -203,8 +214,9 @@ instance ToJSON Variation where
         [ "type"    .= ("Group" :: String)
         , "items"   .= lst
         ]
-    toJSON (Extended n1 n2 lst) = object
+    toJSON (Extended et n1 n2 lst) = object
         [ "type"    .= ("Extended" :: String)
+        , "fx"      .= et
         , "first"   .= n1
         , "extents" .= n2
         , "items"   .= lst
@@ -223,7 +235,7 @@ instance ToJSON Variation where
         , "items"   .= lst
         ]
 
-instance FromJSON Variation  where
+instance FromJSON Variation where
     parseJSON = withObject "Variation" $ \v -> case KM.lookup "type" v of
         Just "Element" -> Element
             <$> v .: "size"
@@ -231,7 +243,8 @@ instance FromJSON Variation  where
         Just "Group" -> Group
             <$> v .: "items"
         Just "Extended" -> Extended
-            <$> v .: "first"
+            <$> v .: "fx"
+            <*> v .: "first"
             <*> v .: "extents"
             <*> v .: "items"
         Just "Repetitive" -> Repetitive

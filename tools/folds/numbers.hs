@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
-
 -- What kind of numbers do we have in scaling factor?
 
 import           Options.Applicative as Opt
