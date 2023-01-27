@@ -168,3 +168,7 @@ you some time when implementing asterix encoder/decoder.
   in `["I048", "020", "FOE/FRI"]`, where "slash" is part of the name. In
   this project, special characters are removed from item names.
 
+* Item `I021/271` (up to edition 2.1 of cat021) contains exception
+  to the normal *extended item* encoding rules. The first extension does
+  not end with the `FX` bit.
+
