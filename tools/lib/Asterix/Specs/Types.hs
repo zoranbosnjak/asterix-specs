@@ -126,10 +126,18 @@ data Item
     | Item Name Title Variation Documentation
     deriving (Generic, Eq, Ord, Show)
 
+data UapSelector = UapSelector
+    { selItem :: [Name]             -- UAP depends on this item
+    , selTable :: [(Int, UapName)]  -- value lookup table
+    } deriving (Generic, Eq, Ord, Show)
+
 -- User applicaton profile type
 data Uap
-    = Uap [Maybe Name]                  -- single UAP
-    | Uaps [(UapName, [Maybe Name])]    -- multiple UAPs
+    -- single UAP
+    = Uap [Maybe Name]
+
+    -- multiple UAPs
+    | Uaps [(UapName, [Maybe Name])] (Maybe UapSelector)
     deriving (Generic, Eq, Ord, Show)
 
 -- Basic category definition

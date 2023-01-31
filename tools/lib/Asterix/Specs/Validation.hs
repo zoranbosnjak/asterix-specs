@@ -284,7 +284,7 @@ instance Validate Basic where
             required :: [Name]
             required = catMaybes $ case basUap basic of
                 Uap lst -> lst
-                Uaps lst -> nub $ join $ fmap snd lst
+                Uaps lst _msel -> nub $ join $ fmap snd lst
 
             defined :: [Name]
             defined = basCatalogue basic >>= \case
@@ -312,7 +312,7 @@ instance Validate Basic where
         validateUap :: [ValidationError]
         validateUap = case basUap basic of
             Uap lst -> validateList lst
-            Uaps lst -> join
+            Uaps lst msel -> join
                 [ do
                     let dupNames = nub x /= x where x = fst <$> lst
                     reportWhen dupNames "duplicated UAP names"
@@ -321,12 +321,27 @@ instance Validate Basic where
                     do
                         x <- validateList lst'
                         return (uapName <> ":" <> x)
+                , case msel of
+                    Nothing -> []
+                    Just sel -> validateSelector lst sel
                 ]
           where
             validateList lst = join
                 [ let x = catMaybes lst
                   in reportWhen (nub x /= x) "duplicated items in UAP"
                 , reportWhen (isNothing $ last lst) "spare at the end of UAP is redundant"
+                ]
+            validateSelector lst (UapSelector name table) = join
+                [ case findItemByName basic name of
+                    Nothing -> [showPath name <> " not defined"]
+                    Just i -> case bitSize i of
+                        Nothing -> [showPath name <> " unknown size"]
+                        Just m ->
+                            let ln = compare (length table) (2 ^ m)
+                            in reportWhen (ln == GT) ("too many variations")
+                , do
+                    uap <- fmap snd table
+                    reportWhen (uap `notElem` (fmap fst lst)) ("unknown uap: " <> uap)
                 ]
 
         validateDepItem :: Item -> [ValidationError]

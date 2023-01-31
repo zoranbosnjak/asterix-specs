@@ -118,10 +118,6 @@ you some time when implementing asterix encoder/decoder.
     - cat252
     - cat253
 
-  This project can specify multiple UAPs for such categories. However,
-  it does **NOT** specify the mechanism on how to select
-  the UAP from the given data (this needs to be handled in the application).
-
 * In case of a category with multiple UAPs, it is not always clear from
   the received data, which UAP to use. In those cases, the UAP needs
   to be agreed between the source and the destination (example: cat253).

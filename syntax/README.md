@@ -7,7 +7,7 @@ Example (regenerate single):
 
 ```bash
 <edit content-syntax.tcl>
-nix-shell --run "./bubbleToPostscript.tcl < content-syntax.tcl > content-syntax.tcl.ps"
+nix-shell --run "./bubbleToPostscript.tcl < content-syntax.tcl > content-syntax.ps"
 git add *tcl *ps
 ```
 

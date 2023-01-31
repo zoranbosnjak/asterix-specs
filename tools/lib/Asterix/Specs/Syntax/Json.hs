@@ -286,14 +286,26 @@ instance FromJSON Item  where
                 )
         _ -> typeMismatch "Item" $ String "spare field not present"
 
+instance ToJSON UapSelector where
+    toJSON (UapSelector item lst) = object
+        [ "name" .= item
+        , "rules" .= lst
+        ]
+
+instance FromJSON UapSelector where
+    parseJSON = withObject "UapSelector" $ \v -> UapSelector
+        <$> v .: "name"
+        <*> v .: "rules"
+
 instance ToJSON Uap where
     toJSON (Uap lst) = object
         [ "type" .= ("uap" :: String)
         , "items" .= lst
         ]
-    toJSON (Uaps variations) = object
+    toJSON (Uaps variations msel) = object
         [ "type" .= ("uaps" :: String)
         , "variations" .= fmap variation variations
+        , "selector" .= msel
         ]
       where
         variation (uapName, lst) = object
@@ -304,10 +316,10 @@ instance ToJSON Uap where
 instance FromJSON Uap  where
     parseJSON = withObject "Uap" $ \v -> case KM.lookup "type" v of
         Just "uap" -> Uap <$> v .: "items"
-        Just "uaps" -> Uaps <$> f (v .: "variations")
+        Just "uaps" -> Uaps <$> var (v .: "variations") <*> (v .: "selector")
           where
-            f :: Parser [Value] -> Parser [(UapName, [Maybe Name])]
-            f p = do
+            var :: Parser [Value] -> Parser [(UapName, [Maybe Name])]
+            var p = do
                 lst <- p
                 forM lst $ withObject "(,)" $ \v' -> (,)
                     <$> v' .: "name"

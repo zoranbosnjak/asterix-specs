@@ -302,8 +302,18 @@ instance IsBlock Basic where
         ref = "I" <> showN 3 cat
         fmtUap = \case
             Uap lst -> oneUap lst
-            Uaps lsts -> mconcat
+            Uaps lsts msel -> mconcat
                 [ "This category has multiple UAPs."
+                , emptyLine
+                , case msel of
+                    Nothing -> "UAP selection is not defined."
+                    Just sel -> mconcat
+                        [ line $ "UAP selection is based on the value of: ``" <> tPath (selItem sel) <> "``:"
+                        , emptyLine
+                        , indent $ mconcat $ do
+                            (a, b) <- selTable sel
+                            pure $ line $ "* ``" <> tShow a <> "``: " <> b
+                        ]
                 , emptyLine
                 , blocksLn $ do
                     (name, lst) <- lsts

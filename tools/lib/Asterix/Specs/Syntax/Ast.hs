@@ -134,14 +134,25 @@ instance IsBlock Uap where
             [ "uap"
             , indent $ dumpList lst
             ]
-        Uaps variations -> mconcat
+        Uaps variations msel -> mconcat
             [ "uaps"
-            , mconcat $ do
-                (name, lst) <- variations
-                pure $ indent $ mconcat
-                    [ line $ name
-                    , indent $ dumpList lst
-                    ]
+            , indent $ mconcat
+                [ "variations"
+                , mconcat $ do
+                    (name, lst) <- variations
+                    pure $ indent $ mconcat
+                        [ line $ name
+                        , indent $ dumpList lst
+                        ]
+                , case msel of
+                    Nothing -> mempty
+                    Just sel -> mconcat
+                        [ line $ sformat ("case " % stext) (showPath $ selItem sel)
+                        , indent $ mconcat $ do
+                            (x,uapName) <- selTable sel
+                            pure $ line $ sformat (int % ": " % stext) x uapName
+                        ]
+                ]
             ]
       where
         dumpList lst = mconcat $ do
@@ -494,13 +505,39 @@ pItems = snd <$> parseList (MC.string "items") pItem
 pUap :: Parser Uap
 pUap = uaps <|> uap
   where
-    parseOne _sc'
-        = (MC.char '-' >> return Nothing)
-      <|> (fmap Just pName)
+    parseOne _sc' = do
+        result <- (MC.char '-' >> return Nothing)
+                <|> (fmap Just pName)
+        scn
+        pure result
+
     uap = Uap . snd <$> parseList (MC.string "uap") parseOne
+
+    pVariations = do
+        (_, lst) <- parseList (MC.string "variations") (\_ -> parseList pUapName parseOne)
+        pure lst
+
+    pSelector = do
+        (name, lst) <- parseList pHeader pCase
+        pure $ UapSelector name lst
+      where
+        pHeader = MC.string "case" >> sc >> pPaths
+        pCase _ = (,)
+            <$> (pInt <* (MC.char ':' >> sc))
+            <*> fmap T.pack pLine
+
     uaps = do
-        (_, lst) <- parseList (MC.string "uaps") (\_ -> parseList pUapName parseOne)
-        return $ Uaps lst
+        i0 <- L.indentLevel
+        MC.string "uaps" >> scn
+        vars <- do
+            i1 <- lookAhead L.indentLevel
+            guard $ i1 > i0
+            pVariations
+        cs <- optional $ try $ do
+            i1 <- lookAhead L.indentLevel
+            guard $ i1 > i0
+            pSelector
+        pure $ Uaps vars cs
 
 -- | Parse basic category description.
 pBasic :: Parser Basic
@@ -520,7 +557,7 @@ pExtension = Expansion
     <*> (scn >> (T.pack <$> stringLiteral))
     <*> (scn >> pEdition)
     <*> (scn >> pDate)
-    <*> (scn >> pCompound)
+    <*> (scn >> (pCompound <* scn))
 
 -- | Parse asterix.
 pAsterix :: Parser Asterix
@@ -538,5 +575,5 @@ syntax = Syntax
   where
     encoder = encodeUtf8 . renderBlock 4 . mkBlock
     decoder filename s = first errorBundlePretty $
-        parse pAsterix filename (decodeUtf8 s)
+        parse (pAsterix <* eof) filename (decodeUtf8 s)
 
