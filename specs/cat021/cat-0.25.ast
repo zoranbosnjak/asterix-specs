@@ -1,6 +1,6 @@
 asterix 021 "ADS-B Target Reports"
-edition 0.26
-date 2005-06-27
+edition 0.25
+date 2005-03-01
 preamble
     Surveillance data exchange.
     ADS-B Target Reports.
@@ -125,37 +125,6 @@ items
                         1: 25 ft
                         2: 100 ft
             spare 3
-
-    070 "Mode 3/A Code in Octal Representation"
-        definition
-            Mode-3/A code converted into octal representation.
-        group
-            V ""
-                element 1
-                    table
-                        0: Code validated
-                        1: Code not validated
-            G ""
-                element 1
-                    table
-                        0: Default
-                        1: Garbled code
-            L ""
-                element 1
-                    table
-                        0: Mode-3/A code derived during last update
-                        1: Mode-3/A code not extracted during the last update
-            spare 1
-            MODE3A "Mode-3/A Reply in Octal Representation"
-                element 12
-                    string octal
-        remark
-            Notes:
-
-                1. Bit 15 (G) is set to one when an error correction has been attempted.
-                2. Bit 16 (V) is normally set to zero, but can exceptionally be set to one
-                to indicate a non-validated Mode-3/A code (e.g. alert condition detected,
-                but new Mode-3/A code not successfully extracted)
 
     080 "Target Address"
         definition
@@ -318,16 +287,6 @@ items
                 
                 1. Positive longitude indicates East. Positive latitude indicates North.
                 2. The LSB provides a resolution at least better than 0.6m.
-
-    131 "Signal Amplitude"
-        definition
-            Relative strength of received signal.
-        element 8
-            raw
-        remark
-            Note:
-                The value is implementation-dependent, 0 being the minimum detectable 
-                level for that system.
 
     140 "Geometric Altitude"
         definition
@@ -581,8 +540,8 @@ uap
     146
     148
     110
-    070
-    131
+    -
+    -
     -
     -
     -
