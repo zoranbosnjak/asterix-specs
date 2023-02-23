@@ -103,6 +103,121 @@ bds 0c "Air/air state information 2 (aircraft intent)"
             signed quantity 45 6 "°" >=-90 <=89
         spare 3
 
+bds 10 "Data link capability report"
+    group
+        BDS1 "BDS1"
+            element 4
+                raw
+        BDS2 "BDS2"
+            element 4
+                raw
+        CF "Continuation flag"
+            element 1
+                table
+                    0: Subsequent register shall not be extracted
+                    1: Subsequent register shall be extracted
+        spare 5
+        OCC "Overlay Command Capability"
+            element 1
+                table
+                    0: No Overlay Command Capability
+                    1: Overlay Command Capability
+        ACAS "ACAS Status"
+            element 1
+                table
+                    0: ACAS has failed or is on standby
+                    1: ACAS is operational
+        MDSV "Mode S subnetwork version number"
+            element 7
+                table
+                    0: Mode S subnetwork not available
+                    1: ICAO Doc 9688 (1996)
+                    2: ICAO Doc 9688 (1998)
+                    3: ICAO Annex 10, Vol III, Amdt 77
+                    4: ICAO Doc 9871, Edition 1
+                    5: ICAO Doc 9871, Edition 2
+                    6: Reserved
+        TEPI "Transponder enhanced protocol indicator"
+            element 1
+                table
+                    0: Level 2 to 4 transponder
+                    1: Level 5 transponder
+        MSSSC "Mode S specific services capability"
+            element 1
+                table
+                    0: No support
+                    1: At least one Mode S specific service is supported
+        UELMC "Uplink ELM average throughput capability"
+            element 3
+                table
+                    0: No UELM Capability
+                    1: 16 UELM segments in 1 second
+                    2: 16 UELM segments in 500 ms
+                    3: 16 UELM segments in 250 ms
+                    4: 16 UELM segments in 125 ms
+                    5: 16 UELM segments in 60 ms
+                    6: 16 UELM segments in 30 ms
+                    7: Reserved
+        DELMC "Downlink ELM throughput capability"
+            element 4
+                table
+                    0: No DELM Capability
+                    1: One 4 segment DELM every second
+                    2: One 8 segment DELM every second
+                    3: One 16 segment DELM every second
+                    4: One 16 segment DELM every 500 ms
+                    5: One 16 segment DELM every 250 ms
+                    6: One 16 segment DELM every 125 ms
+                    7: Reserved
+                    8: Reserved
+                    9: Reserved
+                    10: Reserved
+                    11: Reserved
+                    12: Reserved
+                    13: Reserved
+                    14: Reserved
+                    15: Reserved
+        AIC "Aircraft identification capability"
+            element 1
+                table
+                    0: Aircraft Identification data not available
+                    1: Aircraft Identification data available
+        SCS "Squitter capability subfield (SCS)"
+            element 1
+                table
+                    0: No update for registers 05_16 and 06_16 in last 10 +- 1 seconds
+                    1: Both registers 05_16 and 06_16 have been updated within the last 1- +- 1 seconds
+        SIC "Surveillance identifier code (SIC)"
+            element 1
+                table
+                    0: no surveillance identifier code capability
+                    1: surveillance identifier code capability
+        CUGCR "Common usage GICB capability report"
+            element 1
+                table
+                    0: No change in Common usage GICB capability report
+                    1: Change in Common usage GICB capability report
+        CHS "Capability of hybrid surveillance"
+            element 1
+                table
+                    0: No hybrid surveillance capability
+                    1. Hybrid surveillance capability available
+        TARA "ACAS capability to generate TA RA"
+            element 1
+                table
+                    0: ACAS generating TAs only
+                    1: ACAS generating both TA and RAs
+        MOPS "Applicable MOPS Documents"
+            element 2
+                table
+                    0: RTCA DO-185
+                    1: RTCA DO-185A
+                    2: RTCA DO-185B
+                    3: Reserved for future versions
+        SDTE "Support Status of DTE"
+            element 16
+                raw
+
 bds 40 "Selected vertical intention"
     group
         STATUS1 ""
