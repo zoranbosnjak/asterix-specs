@@ -4,13 +4,19 @@ import           Main.Utf8 (withUtf8)
 import           Options.Applicative as Opt
 import           Data.Version (showVersion)
 import           Data.Text (Text)
+import           Numeric (showHex)
 import           Data.List (intersperse)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
-import           Data.Ratio
-import           Numeric (showHex)
+import           Data.Ratio hiding ((%))
+import           Control.Monad
+import           Formatting as F
+
+import           Data.Text.Lazy.Builder (Builder)
+import qualified Data.Text.Lazy.Builder as BL
+import qualified Data.Text.Lazy as TL
 
 import           Asterix.Indent
 import           Asterix.Specs
@@ -43,27 +49,26 @@ opts = info (helper <*> versionOption <*> parseOptions)
 loadSpec :: Monad m => FilePath -> m ByteString -> m Asterix
 loadSpec path getS = do
     s <- getS
-    let fmt = reverse $ fst $ break (== '.') $ reverse path
-        syntax = maybe (error "syntax lookup") id $ lookup fmt syntaxes
+    let astFmt = reverse $ fst $ break (== '.') $ reverse path
+        syntax = maybe (error "syntax lookup") id $ lookup astFmt syntaxes
         decoder = maybe (error "decoder") id $ syntaxDecoder syntax
         ast = either error id $ decoder path s
     pure ast
 
 type Path = [Text]
 
-class IsBlock a where
-    mkBlock :: Path -> a -> Block Text
+class MkBlock a where
+    mkBlock :: Path -> a -> BlockM Builder ()
 
-tShow :: Show a => a -> Text
-tShow = T.pack . show
+-- | The same as 'line $ bformat (formating) arg1 arg2 ...'
+fmt :: Format (BlockM Builder ()) a -> a
+fmt m = runFormat m line
 
-showN :: Show a => Int -> a -> Text
-showN i = T.pack . reverse . take i . (\x -> x ++ repeat '0') . reverse . show
-
-underline :: Char -> Text -> Block Text
-underline ch t
-    = line t
-   <> line (T.replicate (T.length t) (T.singleton ch))
+underline :: Char -> Builder -> BlockM Builder ()
+underline ch t = do
+    let n = fromIntegral $ TL.length $ BL.toLazyText t
+    line t
+    line $ BL.fromText $ (T.replicate n (T.singleton ch))
 
 tPath :: Path -> Text
 tPath = mconcat . intersperse "/"
@@ -79,217 +84,212 @@ tSig = \case
     Signed -> "signed"
     Unsigned -> "unsigned"
 
-instance IsBlock Content where
+instance MkBlock Content where
     mkBlock _parent = \case
         ContentRaw -> "- raw value"
-        ContentTable lst -> mconcat
-            [ "- values:"
-            , emptyLine
-            , indent $ mconcat $ do
-                (k,v) <- lst
-                pure $ line $ "| " <> tShow k <> ": " <> v
-            ]
+        ContentTable lst -> do
+            line "- values:"
+            emptyLine
+            indent $ forM_ lst $ \(k,v) -> do
+                fmt ("| " % int % ": " % stext) k v
         ContentString st -> case st of
             StringAscii -> "- Ascii string (8-bits per character)"
             StringICAO  -> "- ICAO string (6-bits per character)"
             StringOctal -> "- Octal string (3-bits per digit)"
-        ContentInteger sig constr -> mconcat
-            [ line $ "- " <> tSig sig <> " integer"
-            , mconcat $ do
-                co <- constr
-                pure $ line $ "- value :math:`" <> showConstrain co <> "`"
-            ]
-        ContentQuantity sig scal frac unit constr -> mconcat
-            [ line $ "- " <> tSig sig <> " quantity"
-            , line $ "- scaling factor: " <> scal'
-            , line $ "- fractional bits: " <> tShow frac
-            , unit'
-            , lsb
-            , mconcat $ do
-                co <- constr
-                pure $ line $ "- value :math:`" <> showConstrain co <> "` " <> unit
-            ]
+        ContentInteger sig constr -> do
+            fmt ("- " % stext % " integer") (tSig sig)
+            forM_ constr $ \co -> do
+                fmt ("- value :math:`" % stext % "`") (showConstrain co)
+        ContentQuantity sig scal frac unit constr -> do
+            fmt ("- " % stext % " quantity") (tSig sig)
+            fmt ("- scaling factor: " % stext) scal'
+            fmt ("- fractional bits: " % int) frac
+            unit'
+            lsb
+            forM_ constr $ \co -> do
+                fmt ("- value :math:`" % stext % "` " % stext) (showConstrain co) unit
           where
             scal' = showNumber scal
             unit' = case unit of
                 "" -> mempty
-                _ -> line $ "- unit: \"" <> unit <> "\""
+                _ -> fmt ("- unit: \"" % stext % "\"") unit
             unit'' = case unit of
                 "" -> mempty
                 _ -> " " <> unit
             lsb = case frac of
-                0 -> line $ "- LSB = " <> ":math:`" <> scal' <> "`" <> unit''
+                0 -> fmt ("- LSB = :math:`" % stext % "`" % stext) scal' unit''
                 _ ->
-                    let b = "{2^{" <> tShow frac <> "}}"
+                    let b = sformat ("{2^{" % int % "}}") frac
                         lsb1 = ":math:`" <> scal' <> " / " <> b <> "` " <> unit
                         d = (2::Int) ^ frac
-                        c = "{" <> tShow d <> "}"
+                        c = sformat ("{" % int % "}") d
                         lsb2 = ":math:`" <> scal' <> " / " <> c <> "` " <> unit
                         scl = numRational scal
                         approx :: Double
                         approx = fromIntegral (numerator scl) / (fromIntegral (denominator scl * fromIntegral d))
-                        lsb3 = ":math:`\\approx " <> tShow approx <> "` " <> unit
-                    in line $ "- LSB = " <> lsb1 <> " = " <> lsb2 <> " " <> lsb3
+                        lsb3 = sformat (":math:`\\approx " % string % "` " % stext) (show approx) unit
+                    in fmt stext ("- LSB = " <> lsb1 <> " = " <> lsb2 <> " " <> lsb3)
         ContentBds t -> case t of
             BdsWithAddress -> "- BDS register with address"
             BdsAt mAddr -> case mAddr of
                 Nothing -> "- BDS register (unknown)"
-                Just (BdsAddr addr) -> line $ "- BDS register " <> x
+                Just (BdsAddr addr) -> fmt ("- BDS register " % stext) x
                   where
                     x = T.reverse $ T.take 2 $ T.reverse ("0" <> T.pack (showHex addr ""))
 
-instance IsBlock Rule where
+instance MkBlock Rule where
     mkBlock p = \case
         ContextFree cont -> mkBlock p cont
-        Dependent otherItem rules -> mconcat
-            [ line $ "* Content of this item depends on the value of item ``" <> tPath otherItem <> "``."
-            , emptyLine
-            , indent $ blocksLn $ do
+        Dependent otherItem rules -> do
+            fmt ("* Content of this item depends on the value of item ``" % stext % "``.") (tPath otherItem)
+            emptyLine
+            indent $ blocksLn $ do
                 (a, b) <- rules
-                pure $ mconcat
-                    [ line $ "* In case of ``" <> tPath otherItem <> " == " <> tShow a <> "``:"
-                    , indent $ mkBlock p b
-                    ]
-            ]
+                pure $ do
+                    fmt ("* In case of ``" % stext % " == " % int % "``:") (tPath otherItem) a
+                    indent $ mkBlock p b
 
 bits :: Int -> Text
 bits n
     | n == 1 = "1 bit"
-    | otherwise = tShow n <> " bits"
+    | otherwise = sformat (int % " bits") n
 
 dots :: Int -> Text
 dots n
     | n <= 32 = T.replicate n "."
-    | otherwise = "... " <> tShow n <> " bits ..."
+    | otherwise = sformat ("... " % int % " bits ...") n
 
-instance IsBlock Variation where
+instance MkBlock Variation where
 
-    mkBlock p (Element n rule) = blocksLn
-        [ line $ "- " <> bits n <> " [``" <> dots n <> "``]"
-        , mkBlock p rule
-        ]
+    mkBlock p (Element n rule) = do
+        fmt stext ("- " <> bits n <> " [``" <> dots n <> "``]")
+        emptyLine
+        mkBlock p rule
 
     mkBlock p (Group lst) = blocksLn (mkBlock p <$> lst)
 
-    mkBlock p (Extended et n1 n2 lst) = mconcat
-        [ line $ "Extended item with first part ``"
-            <> tShow n1 <> " bits`` long and optional ``"
-            <> tShow n2 <> " bits`` extends."
-            <> case et of
+    mkBlock p (Extended et n1 n2 lst) = do
+        fmt ("Extended item with first part ``"
+            % int % " bits`` long and optional ``"
+            % int % " bits`` extends."
+            % stext) n1 n2 (case et of
                 ExtendedRegular -> ""
-                ExtendedNoTrailingFx -> " No trailing FX bit!"
-        , emptyLine
-        , blocksLn $ do
+                ExtendedNoTrailingFx -> " No trailing FX bit!")
+        emptyLine
+        blocksLn $ do
             grp <- init groups
             pure (blocksLn (fmap (mkBlock p) grp) <> emptyLine <> fx)
-        , emptyLine
-        , (blocksLn (fmap (mkBlock p) (last groups)) <> case et of
+        emptyLine
+        (blocksLn (fmap (mkBlock p) (last groups)) <> case et of
             ExtendedRegular -> emptyLine <> fx
             ExtendedNoTrailingFx -> mempty
             )
-        ]
       where
         groups = maybe (error "Failed to create extended groups") id
             (extendedItemGroups et n1 n2 lst)
 
-        fx = indent $ mconcat
-            [ "``(FX)``"
-            , emptyLine
-            , "- extension bit"
-            , emptyLine
-            , indent $ mconcat
+        fx = indent $ do
+            line $ "``(FX)``"
+            emptyLine
+            line $ "- extension bit"
+            emptyLine
+            indent $ mconcat
                 [ "| 0: End of data item"
                 , "| 1: Extension into next extent"
                 ]
-            ]
-    mkBlock p (Repetitive rep var) = mconcat
-        [ line $ "Repetitive item, repetition factor " <> tShow rep <> " bits."
-        , emptyLine
-        , indent $ mkBlock p var
-        ]
+
+    mkBlock p (Repetitive rep var) = do
+        fmt ("Repetitive item, repetition factor " % int % " bits.") rep
+        emptyLine
+        indent $ mkBlock p var
 
     mkBlock _parent Explicit = "Explicit item"
 
-    mkBlock p (Compound mn lst) = mconcat
-        [ fspec
-        , emptyLine
-        , blocksLn $ do
+    mkBlock p (Compound mn lst) = do
+        fspec
+        emptyLine
+        blocksLn $ do
             mItem <- lst
             pure $ case mItem of
                 Nothing -> "(empty subitem)"
                 Just item -> mkBlock p item
-        ]
       where
         fspec = case mn of
             Nothing -> "Compound item (FX)"
-            Just n -> line $ "Compound item (fspec=" <> tShow n <> " bits)"
+            Just n -> fmt ("Compound item (fspec=" % int % " bits)") n
 
-instance IsBlock Item where
+instance MkBlock Item where
     mkBlock p = \case
         Spare n ->
             let ref = p <> ["(spare)"]
-            in indent $ blocksLn
-                [ line $ "**" <> tPath ref <> "**"
-                , line $ "- " <> bits n <> " [``" <> dots n <> "``]"
-                ]
+            in indent $ do
+                fmt ("**" % stext % "**") (tPath ref)
+                emptyLine
+                fmt stext ("- " <> bits n <> " [``" <> dots n <> "``]")
         Item name title var doc ->
             let ref = p <> [name]
                 tit
                     | title == mempty = ""
                     | otherwise = " - *" <> title <> "*"
-            in indent $ blocksLn
-                [ line $ "**" <> tPath ref <> "**" <> tit
-                , maybe mempty remark $ docDescription doc
-                , mkBlock ref var
-                , case docRemark doc of
-                    Nothing -> mempty
-                    Just val -> indent ("remark" <> indent (remark val))
-                ]
+            in indent $ do
+                fmt stext ("**" <> tPath ref <> "**" <> tit)
+                case docDescription doc of
+                    Nothing -> pure ()
+                    Just val -> do
+                        emptyLine
+                        remark val
+                emptyLine
+                mkBlock ref var
+                case docRemark doc of
+                    Nothing -> pure ()
+                    Just val -> do
+                        emptyLine
+                        indent ("remark" <> indent (remark val))
           where
-            remark t = mconcat (fmap line $ T.lines t)
+            remark t = mapM_ (fmt stext) (T.lines t)
 
 newtype TopItem = TopItem Item
 
-instance IsBlock TopItem where
+instance MkBlock TopItem where
     mkBlock _p (TopItem (Spare _n)) = error "unexpected spare"
-    mkBlock p (TopItem (Item name title var doc)) = mconcat
-        [ underline '*' (tPath ref <> " - " <> title)
-        , emptyLine
-        , line $ "*Definition*: " <> maybe "" id (docDefinition doc)
-        , "*Structure*:"
-        , emptyLine
-        , mkBlock ref var
-        , emptyLine
-        , maybe mempty remark $ docRemark doc
-        ]
+    mkBlock p (TopItem (Item name title var doc)) = do
+        underline '*' $ bformat stext (tPath ref <> " - " <> title)
+        emptyLine
+        fmt stext ("*Definition*: " <> maybe "" id (docDefinition doc))
+        line "*Structure*:"
+        emptyLine
+        mkBlock ref var
+        case docRemark doc of
+            Nothing -> pure ()
+            Just val -> do
+                emptyLine
+                remark val
       where
         ref = p <> [name]
-        remark t = emptyLine <> mconcat (fmap line $ T.lines t)
+        remark t = mapM_ (fmt stext) (T.lines t)
 
 fmtDate :: Date -> Text
-fmtDate (Date y m d) =
-    "**date**: " <> tShow y <> "-" <> showN 2 m <> "-" <> showN 2 d
+fmtDate (Date y m d) = sformat (int % "-" % left 2 '0' % "-" % left 2 '0') y m d
 
-instance IsBlock Basic where
-    mkBlock _p val = mconcat
-        [ underline '=' $ "Asterix category " <> showN 3 cat <> " - " <> basTitle val
-        , blocksLn
-            [ line $ "**category**: " <> showN 3 cat
-            , line $ "**edition**: " <> tShow (editionMajor ed) <> "." <> tShow (editionMinor ed)
-            , line $ fmtDate $ basDate val
+instance MkBlock Basic where
+    mkBlock _p val = do
+        underline '=' $ bformat ("Asterix category " % left 3 '0' % " - " % stext) cat (basTitle val)
+        blocksLn
+            [ fmt ("**category**: " % left 3 '0') cat
+            , fmt ("**edition**: " % int % "." % int) (editionMajor ed) (editionMinor ed)
+            , fmt ("**date**: " % stext) (fmtDate $ basDate val)
             ]
-        , emptyLine
-        , underline '-' "Preamble"
-        , mconcat (fmap line preamble)
-        , emptyLine
-        , underline '-' "Description of standard data items"
-        , emptyLine
-        , blocksLn (mkBlock [ref] . TopItem <$> basCatalogue val)
-        , emptyLine
-        , underline '=' $ "User Application Profile for Category " <> showN 3 cat
-        , fmtUap (basUap val)
-        , emptyLine
-        ]
+        emptyLine
+        underline '-' "Preamble"
+        forM_ preamble $ \i -> do
+            fmt stext i
+        emptyLine
+        underline '-' "Description of standard data items"
+        emptyLine
+        blocksLn (mkBlock [ref] . TopItem <$> basCatalogue val)
+        emptyLine
+        underline '=' $ bformat ("User Application Profile for Category " % left 3 '0') cat
+        fmtUap (basUap val)
       where
         findTitle name lst = case head lst of
             Spare _ -> findTitle name $ tail lst
@@ -299,63 +299,60 @@ instance IsBlock Basic where
         cat = basCategory val
         ed = basEdition val
         preamble = maybe [] T.lines $ basPreamble val
-        ref = "I" <> showN 3 cat
+        ref = sformat ("I" % left 3 '0') cat
         fmtUap = \case
             Uap lst -> oneUap lst
-            Uaps lsts msel -> mconcat
-                [ "This category has multiple UAPs."
-                , emptyLine
-                , case msel of
-                    Nothing -> "UAP selection is not defined."
-                    Just sel -> mconcat
-                        [ line $ "UAP selection is based on the value of: ``" <> tPath (selItem sel) <> "``:"
-                        , emptyLine
-                        , indent $ mconcat $ do
-                            (a, b) <- selTable sel
-                            pure $ line $ "* ``" <> tShow a <> "``: " <> b
-                        ]
-                , emptyLine
-                , blocksLn $ do
+            Uaps lsts msel -> do
+                line $ "This category has multiple UAPs."
+                emptyLine
+                case msel of
+                    Nothing -> line $ "UAP selection is not defined."
+                    Just sel -> do
+                        fmt stext ("UAP selection is based on the value of: ``" <> tPath (selItem sel) <> "``:")
+                        emptyLine
+                        indent $ forM_ (selTable sel) $ \(a, b) -> do
+                            fmt ("* ``" % int % "``: " % stext) a b
+                emptyLine
+                blocksLn $ do
                     (name, lst) <- lsts
-                    pure $ mconcat
-                        [ underline '-' name
-                        , oneUap lst
-                        ]
-                ]
+                    pure $ do
+                        underline '-' $ bformat stext name
+                        oneUap lst
           where
-            fx = "- ``(FX)`` - Field extension indicator"
+            fx = line $ "- ``(FX)`` - Field extension indicator"
             groups = \case
                 [] -> []
                 lst -> take 7 lst : groups (drop 7 lst)
             oneItem (i, mItem) = case mItem of
-                Nothing -> line $ "- (" <> tShow i <> ") ``(spare)``"
-                Just name -> line $ "- (" <> tShow i <> ") ``I" <> showN 3 cat <> "/"
-                    <> name <> "`` - " <> findTitle name (basCatalogue val)
-            oneUap lst = mconcat $ do
+                Nothing -> fmt ("- (" % int % ") ``(spare)``") i
+                Just name -> fmt
+                    ("- (" % int % ") ``I" % left 3 '0' % "/" % stext % "`` - " % stext)
+                    i cat name (findTitle name (basCatalogue val))
+            oneUap lst = do
                 let r = mod (7 - mod (length lst) 7) 7
                     lst' = zip [(1::Int)..] (lst <> replicate r Nothing)
-                grp <- groups lst'
-                pure $ mconcat (fmap oneItem grp) <> fx
+                forM_ (groups lst') $ \grp -> do
+                    mapM_ oneItem grp
+                    fx
 
-instance IsBlock Expansion where
-    mkBlock _p val = mconcat
-        [ underline '=' $ "Asterix expansion " <> showN 3 cat <> " - " <> expTitle val
-        , blocksLn
-            [ line $ "**category**: " <> showN 3 cat
-            , line $ "**edition**: " <> tShow (editionMajor ed) <> "." <> tShow (editionMinor ed)
-            , line $ fmtDate $ expDate val
+instance MkBlock Expansion where
+    mkBlock _p val = do
+        underline '=' $ bformat ("Asterix expansion " % left 3 '0' % " - " % stext) cat (expTitle val)
+        blocksLn
+            [ fmt ("**category**: " % left 3 '0') cat
+            , fmt ("**edition**: " % int % "." % int) (editionMajor ed) (editionMinor ed)
+            , fmt ("**date**: " % stext) (fmtDate $ expDate val)
             ]
-        , emptyLine
-        , underline '-' "Description of asterix expansion"
-        , mkBlock [ref] $ expVariation val
-        , emptyLine
-        ]
+        emptyLine
+        underline '-' "Description of asterix expansion"
+        mkBlock [ref] $ expVariation val
+        emptyLine
       where
         cat = expCategory val
         ed = expEdition val
-        ref = "I" <> showN 3 cat
+        ref = sformat ("I" % left 3 '0') cat
 
-instance IsBlock Asterix where
+instance MkBlock Asterix where
     mkBlock p (AsterixBasic val) = mkBlock p val
     mkBlock p (AsterixExpansion val) = mkBlock p val
 
@@ -364,5 +361,5 @@ main = withUtf8 $ do
     opt <- execParser opts
     let path = optPath opt
     ast <- loadSpec path (BS.readFile path)
-    BS.putStr $ T.encodeUtf8 $ renderBlock 4 (mkBlock mempty ast)
+    BS.putStr $ T.encodeUtf8 $ TL.toStrict $ BL.toLazyText $ renderBlockM 4 (mkBlock mempty ast)
 

@@ -12,6 +12,9 @@ import           Formatting as F
 import           Data.Char (toLower)
 import           Data.Text (Text)
 import qualified Data.Text as T
+import           Data.Text.Lazy.Builder (Builder)
+import qualified Data.Text.Lazy.Builder as BL
+import qualified Data.Text.Lazy as TL
 import           Data.Text.Encoding (encodeUtf8, decodeUtf8)
 import           Text.Megaparsec hiding (State)
 import           Text.Megaparsec.Char as MC
@@ -23,160 +26,141 @@ import           Asterix.Indent
 
 -- | Dump to Text
 
-class IsBlock a where
-    mkBlock :: a -> Block Text
+class MkBlock a where
+    mkBlock :: a -> BlockM Builder ()
 
-instance IsBlock Content where
+-- | The same as 'line $ bformat (formating) arg1 arg2 ...'
+fmt :: Format (BlockM Builder ()) a -> a
+fmt m = runFormat m line
+
+instance MkBlock Content where
     mkBlock = \case
         ContentRaw -> "raw"
-        ContentTable lst -> mconcat
-            [ "table"
-            , indent $ mconcat $ do
-                (key, value) <- lst
-                pure $ line $ sformat (int % ": " % stext) key value
-            ]
+        ContentTable lst -> do
+            line "table"
+            indent $ forM_ lst $ \(key, value) -> do
+                fmt (int % ": " % stext) key value
         ContentString st -> line $ "string " <> case st of
             StringAscii -> "ascii"
             StringICAO -> "icao"
             StringOctal -> "octal"
-        ContentInteger signed constraints ->
+        ContentInteger signed constraints -> do
             let sig = toLower <$> show signed
                 cst = case constraints of
                     [] -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
-            in line $ sformat (F.string % " integer" % stext) sig cst
-        ContentQuantity signed scaling fract unit constraints ->
+            fmt (F.string % " integer" % stext) sig cst
+        ContentQuantity signed scaling fract unit constraints -> do
             let sig = toLower <$> show signed
                 cst = case constraints of
                     [] -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
-            in line $ sformat
+            fmt
                 (F.string % " quantity " % stext % " " % int % " " % "\"" % stext % "\"" % stext )
                 sig (showNumber scaling) fract unit cst
-        ContentBds bt -> line $ "bds" <> case bt of
-            BdsWithAddress -> ""
+        ContentBds bt -> case bt of
+            BdsWithAddress -> "bds"
             BdsAt mAddr -> case mAddr of
-                Nothing -> " ?"
-                Just (BdsAddr addr) -> sformat (" " % hex) addr
+                Nothing -> "bds ?"
+                Just (BdsAddr addr) -> fmt ("bds " % hex) addr
 
-instance IsBlock Variation where
+instance MkBlock Variation where
     mkBlock = \case
-        Element n rule -> mconcat
-            [ line $ sformat ("element " % int) n
-            , indent $ case rule of
+        Element n rule -> do
+            fmt ("element " % int) n
+            indent $ case rule of
                 ContextFree cont -> mkBlock cont
-                Dependent name lst -> mconcat
-                    [ line $ sformat ("case " % stext) (showPath name)
-                    , indent $ mconcat $ do
-                        (x,a) <- lst
-                        pure $ mconcat
-                            [ line $ sformat (int % ":") x
-                            , indent $ mkBlock a
-                            ]
-                    ]
-            ]
+                Dependent name lst -> do
+                    fmt ("case " % stext) (showPath name)
+                    indent $ forM_ lst $ \(x,a) -> do
+                        fmt (int % ":") x
+                        indent $ mkBlock a
 
-        Group lst -> mconcat
-            [ "group"
-            , indent $ mconcat $ fmap mkBlock lst
-            ]
+        Group lst -> do
+            line "group"
+            indent $ mapM_ mkBlock lst
 
-        Extended et n1 n2 lst -> mconcat
-            [ line $ sformat ("extended " % F.string % int % " " % int) fx n1 n2
-            , indent $ mconcat $ fmap mkBlock lst
-            ]
+        Extended et n1 n2 lst -> do
+            fmt ("extended " % F.string % int % " " % int) fx n1 n2
+            indent $ mapM_ mkBlock lst
           where
             fx = case et of
                 ExtendedRegular -> ""
                 ExtendedNoTrailingFx -> "no-trailing-fx "
 
-        Repetitive rep variation -> mconcat
-            [ line $ sformat ("repetitive " % int) rep
-            , indent $ mkBlock variation
-            ]
+        Repetitive rep variation -> do
+            fmt ("repetitive " % int) rep
+            indent $ mkBlock variation
 
         Explicit -> "explicit"
 
-        Compound mFspecSize lst -> mconcat
-            [ case mFspecSize of
+        Compound mFspecSize lst -> do
+            case mFspecSize of
                 Nothing -> "compound"
-                Just n -> line $ sformat ("compound " % int) n
-            , indent $ mconcat $ do
-                mItem <- lst
-                pure $ case mItem of
-                    Nothing -> "-"
-                    Just item -> mkBlock item
-            ]
+                Just n -> fmt ("compound " % int) n
+            indent $ forM_ lst $ \case
+                Nothing -> "-"
+                Just item -> mkBlock item
 
-instance IsBlock Item where
+instance MkBlock Item where
     mkBlock = \case
-        Spare n -> line $ sformat ("spare " % int) n
-        Item name title variation doc -> mconcat
-            [ line $ sformat (stext % " \"" % stext % "\"") name title
-            , indent $ dumpText "definition" (docDefinition doc)
-            , indent $ dumpText "description" (docDescription doc)
-            , indent $ mconcat
-                [ mkBlock variation
-                , dumpText "remark" (docRemark doc)
-                ]
-            ]
+        Spare n -> fmt ("spare " % int) n
+        Item name title variation doc -> do
+            fmt (stext % " \"" % stext % "\"") name title
+            indent $ dumpText "definition" (docDefinition doc)
+            indent $ dumpText "description" (docDescription doc)
+            indent $ do
+                mkBlock variation
+                dumpText "remark" (docRemark doc)
       where
         dumpText title = \case
             Nothing -> mempty
-            Just t -> mconcat
-                [ line title
-                , indent $ mconcat [line i | i <- T.lines t]
-                ]
+            Just t -> do
+                line title
+                indent $ forM_ (T.lines t) $ \i -> do
+                    fmt stext i
 
-instance IsBlock Uap where
+instance MkBlock Uap where
     mkBlock = \case
-        Uap lst -> mconcat
-            [ "uap"
-            , indent $ dumpList lst
-            ]
-        Uaps variations msel -> mconcat
-            [ "uaps"
-            , indent $ mconcat
-                [ "variations"
-                , mconcat $ do
-                    (name, lst) <- variations
-                    pure $ indent $ mconcat
-                        [ line $ name
-                        , indent $ dumpList lst
-                        ]
-                , case msel of
+        Uap lst -> do
+            line "uap"
+            indent $ dumpList lst
+        Uaps variations msel -> do
+            line $ "uaps"
+            indent $ do
+                line "variations"
+                forM_ variations $ \(name, lst) -> do
+                    indent $ do
+                        fmt stext name
+                        indent $ dumpList lst
+                case msel of
                     Nothing -> mempty
-                    Just sel -> mconcat
-                        [ line $ sformat ("case " % stext) (showPath $ selItem sel)
-                        , indent $ mconcat $ do
-                            (x,uapName) <- selTable sel
-                            pure $ line $ sformat (int % ": " % stext) x uapName
-                        ]
-                ]
-            ]
+                    Just sel -> do
+                        fmt ("case " % stext) (showPath $ selItem sel)
+                        indent $ forM_ (selTable sel) $ \(x, uapName) -> do
+                            fmt (int % ": " % stext) x uapName
       where
-        dumpList lst = mconcat $ do
-            item <- lst
-            pure $ line $ maybe "-" id item
+        dumpList lst = forM_ lst $ \case
+            Nothing -> line "-"
+            Just item -> fmt stext item
 
-instance IsBlock Basic where
-    mkBlock basic = mconcat
-        [ line $ sformat ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
-        , line $ sformat ("edition " % int % "." % int) ed1 ed2
-        , line $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-        , case basPreamble basic of
+instance MkBlock Basic where
+    mkBlock basic = do
+        fmt ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
+        fmt ("edition " % int % "." % int) ed1 ed2
+        fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+        case basPreamble basic of
             Nothing -> mempty
-            Just preamble -> mconcat
-                [ "preamble"
-                , indent $ mconcat [line i | i <- T.lines preamble]
-                ]
-        , emptyLine
-        , "items"
-        , emptyLine
-        , indent $ blocksLn (mkBlock <$> basCatalogue basic)
-        , emptyLine
-        , mkBlock $ basUap basic
-        ]
+            Just preamble -> do
+                line "preamble"
+                indent $ forM_ (T.lines preamble) $ \i -> do
+                    fmt stext i
+        emptyLine
+        line "items"
+        emptyLine
+        indent $ blocksLn (mkBlock <$> basCatalogue basic)
+        emptyLine
+        mkBlock $ basUap basic
       where
         cat = basCategory basic
         title = basTitle basic
@@ -185,14 +169,13 @@ instance IsBlock Basic where
         ed2 = editionMinor edition
         (Date year month day) = basDate basic
 
-instance IsBlock Expansion where
-    mkBlock x = mconcat
-        [ line $ sformat ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
-        , line $ sformat ("edition " % int % "." % int) ed1 ed2
-        , line $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-        , emptyLine
-        , mkBlock $ expVariation x
-        ]
+instance MkBlock Expansion where
+    mkBlock x = do
+        fmt ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
+        fmt ("edition " % int % "." % int) ed1 ed2
+        fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+        emptyLine
+        mkBlock $ expVariation x
       where
         cat = expCategory x
         title = expTitle x
@@ -201,7 +184,7 @@ instance IsBlock Expansion where
         ed2 = editionMinor edition
         (Date year month day) = expDate x
 
-instance IsBlock Asterix where
+instance MkBlock Asterix where
     mkBlock = \case
         AsterixBasic basic -> mkBlock basic
         AsterixExpansion expansion -> mkBlock expansion
@@ -573,7 +556,7 @@ syntax = Syntax
     , syntaxDecoder = Just decoder
     }
   where
-    encoder = encodeUtf8 . renderBlock 4 . mkBlock
+    encoder = encodeUtf8 . TL.toStrict . BL.toLazyText . renderBlockM 4 . mkBlock
     decoder filename s = first errorBundlePretty $
         parse (pAsterix <* eof) filename (decodeUtf8 s)
 
