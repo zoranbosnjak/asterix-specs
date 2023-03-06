@@ -1,12 +1,8 @@
-{-# LANGUAGE LambdaCase         #-}
-{-# LANGUAGE OverloadedStrings  #-}
-
 -- '.ast' syntax implementation
 
 module Asterix.Specs.Syntax.Ast (syntax) where
 
 import           Control.Monad
-import           Control.Monad.Trans.State
 import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
@@ -16,6 +12,9 @@ import           Formatting as F
 import           Data.Char (toLower)
 import           Data.Text (Text)
 import qualified Data.Text as T
+import           Data.Text.Lazy.Builder (Builder)
+import qualified Data.Text.Lazy.Builder as BL
+import qualified Data.Text.Lazy as TL
 import           Data.Text.Encoding (encodeUtf8, decodeUtf8)
 import           Text.Megaparsec hiding (State)
 import           Text.Megaparsec.Char as MC
@@ -23,159 +22,172 @@ import qualified Text.Megaparsec.Char.Lexer as L
 
 import           Asterix.Specs.Types
 import           Asterix.Specs.Common
-import           Asterix.Specs.Indent
+import           Asterix.Indent
 
 -- | Dump to Text
 
--- | Dump variation.
-dumpVariation :: Variation -> Accumulator ()
-dumpVariation = \case
-    Element n rule -> do
-        tell $ sformat ("element " % int) n
-        block $ do
-            let dumpContent = \case
-                    ContentRaw -> do
-                        tell "raw"
-                    ContentTable lst -> do
-                        tell "table"
-                        block $ forM_ lst $ \(key, value) -> do
-                            tell $ sformat (int % ": " % stext) key value
-                    ContentString st -> tell $ "string " <> case st of
-                        StringAscii -> "ascii"
-                        StringICAO -> "icao"
-                        StringOctal -> "octal"
-                    ContentInteger signed constraints -> do
-                        let sig = toLower <$> show signed
-                            cst = case constraints of
-                                [] -> ""
-                                lst -> " " <> T.intercalate " " (fmap showConstrain lst)
-                        tell $ sformat (F.string % " integer" % stext) sig cst
-                    ContentQuantity signed scaling fract unit constraints -> do
-                        let sig = toLower <$> show signed
-                            cst = case constraints of
-                                [] -> ""
-                                lst -> " " <> T.intercalate " " (fmap showConstrain lst)
-                        tell $ sformat
-                            (F.string % " quantity " % stext % " " % int % " " % "\"" % stext % "\"" % stext )
-                            sig (showNumber scaling) fract unit cst
-                    ContentBds bt -> tell $ "bds" <> case bt of
-                        BdsWithAddress -> ""
-                        BdsAt mAddr -> case mAddr of
-                            Nothing -> " ?"
-                            Just (BdsAddr addr) -> sformat (" " % hex) addr
-            case rule of
-                ContextFree cont -> dumpContent cont
+class MkBlock a where
+    mkBlock :: a -> BlockM Builder ()
+
+-- | The same as 'line $ bformat (formating) arg1 arg2 ...'
+fmt :: Format (BlockM Builder ()) a -> a
+fmt m = runFormat m line
+
+instance MkBlock Content where
+    mkBlock = \case
+        ContentRaw -> "raw"
+        ContentTable lst -> do
+            line "table"
+            indent $ forM_ lst $ \(key, value) -> do
+                fmt (int % ": " % stext) key value
+        ContentString st -> line $ "string " <> case st of
+            StringAscii -> "ascii"
+            StringICAO -> "icao"
+            StringOctal -> "octal"
+        ContentInteger signed constraints -> do
+            let sig = toLower <$> show signed
+                cst = case constraints of
+                    [] -> ""
+                    lst -> " " <> T.intercalate " " (fmap showConstrain lst)
+            fmt (F.string % " integer" % stext) sig cst
+        ContentQuantity signed scaling fract unit constraints -> do
+            let sig = toLower <$> show signed
+                cst = case constraints of
+                    [] -> ""
+                    lst -> " " <> T.intercalate " " (fmap showConstrain lst)
+            fmt
+                (F.string % " quantity " % stext % " " % int % " " % "\"" % stext % "\"" % stext )
+                sig (showNumber scaling) fract unit cst
+        ContentBds bt -> case bt of
+            BdsWithAddress -> "bds"
+            BdsAt mAddr -> case mAddr of
+                Nothing -> "bds ?"
+                Just (BdsAddr addr) -> fmt ("bds " % hex) addr
+
+instance MkBlock Variation where
+    mkBlock = \case
+        Element n rule -> do
+            fmt ("element " % int) n
+            indent $ case rule of
+                ContextFree cont -> mkBlock cont
                 Dependent name lst -> do
-                    tell $ sformat ("case " % stext) (showPath name)
-                    block $ forM_ lst $ \(x,a) -> do
-                        tell $ sformat (int % ":") x
-                        block $ dumpContent a
+                    fmt ("case " % stext) (showPath name)
+                    indent $ forM_ lst $ \(x,a) -> do
+                        fmt (int % ":") x
+                        indent $ mkBlock a
 
-    Group lst -> do
-        tell "group"
-        block $ mapM_ dumpItem lst
+        Group lst -> do
+            line "group"
+            indent $ mapM_ mkBlock lst
 
-    Extended n1 n2 lst -> do
-        tell $ sformat ("extended " % int % " " % int) n1 n2
-        block $ mapM_ dumpItem lst
+        Extended et n1 n2 lst -> do
+            fmt ("extended " % F.string % int % " " % int) fx n1 n2
+            indent $ mapM_ mkBlock lst
+          where
+            fx = case et of
+                ExtendedRegular -> ""
+                ExtendedNoTrailingFx -> "no-trailing-fx "
 
-    Repetitive rep variation -> do
-        tell $ sformat ("repetitive " % int) rep
-        block $ dumpVariation variation
+        Repetitive rep variation -> do
+            fmt ("repetitive " % int) rep
+            indent $ mkBlock variation
 
-    Explicit -> do
-        tell "explicit"
+        Explicit -> "explicit"
 
-    Compound mFspecSize lst -> do
-        case mFspecSize of
-            Nothing -> tell "compound"
-            Just n -> tell $ sformat ("compound " % int) n
-        block $ forM_ lst $ \case
-            Nothing -> tell "-"
-            Just item -> dumpItem item
+        Compound mFspecSize lst -> do
+            case mFspecSize of
+                Nothing -> "compound"
+                Just n -> fmt ("compound " % int) n
+            indent $ forM_ lst $ \case
+                Nothing -> "-"
+                Just item -> mkBlock item
 
-dumpItem :: Item -> Accumulator ()
-dumpItem = \case
-    Spare n -> tell $ sformat ("spare " % int) n
-    Item name title variation doc -> do
-        tell $ sformat (stext % " \"" % stext % "\"") name title
-        block $ dumpText "definition" (docDefinition doc)
-        block $ dumpText "description" (docDescription doc)
-        block $ do
-            dumpVariation variation
-            dumpText "remark" (docRemark doc)
-  where
-    dumpText title = \case
-        Nothing -> return ()
-        Just t -> do
-            tell title
-            block $ tell t
+instance MkBlock Item where
+    mkBlock = \case
+        Spare n -> fmt ("spare " % int) n
+        Item name title variation doc -> do
+            fmt (stext % " \"" % stext % "\"") name title
+            indent $ dumpText "definition" (docDefinition doc)
+            indent $ dumpText "description" (docDescription doc)
+            indent $ do
+                mkBlock variation
+                dumpText "remark" (docRemark doc)
+      where
+        dumpText title = \case
+            Nothing -> mempty
+            Just t -> do
+                line title
+                indent $ forM_ (T.lines t) $ \i -> do
+                    fmt stext i
 
--- | Encode Uap.
-dumpUap :: Uap -> Accumulator ()
-dumpUap = \case
-    Uap lst -> do
-        tell "uap"
-        dumpList lst
-    Uaps variations -> do
-        tell "uaps"
-        block $ forM_ variations $ \(name, lst) -> do
-            tell name
-            dumpList lst
-  where
-    dumpList lst = block $ forM_ lst $ \item -> do
-        tell $ maybe "-" id item
+instance MkBlock Uap where
+    mkBlock = \case
+        Uap lst -> do
+            line "uap"
+            indent $ dumpList lst
+        Uaps variations msel -> do
+            line $ "uaps"
+            indent $ do
+                line "variations"
+                forM_ variations $ \(name, lst) -> do
+                    indent $ do
+                        fmt stext name
+                        indent $ dumpList lst
+                case msel of
+                    Nothing -> mempty
+                    Just sel -> do
+                        fmt ("case " % stext) (showPath $ selItem sel)
+                        indent $ forM_ (selTable sel) $ \(x, uapName) -> do
+                            fmt (int % ": " % stext) x uapName
+      where
+        dumpList lst = forM_ lst $ \case
+            Nothing -> line "-"
+            Just item -> fmt stext item
 
--- | Encode asterix basic category description.
-dumpBasic :: Basic -> Accumulator ()
-dumpBasic basic = do
-    tell $ sformat ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
-    tell $ sformat ("edition " % int % "." % int) ed1 ed2
-    tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-    case basPreamble basic of
-        Nothing -> return ()
-        Just preamble -> do
-            tell "preamble"
-            block $ do
-                tell preamble
+instance MkBlock Basic where
+    mkBlock basic = do
+        fmt ("asterix " % left 3 '0' % " \"" % stext % "\"") cat title
+        fmt ("edition " % int % "." % int) ed1 ed2
+        fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+        case basPreamble basic of
+            Nothing -> mempty
+            Just preamble -> do
+                line "preamble"
+                indent $ forM_ (T.lines preamble) $ \i -> do
+                    fmt stext i
+        emptyLine
+        line "items"
+        emptyLine
+        indent $ blocksLn (mkBlock <$> basCatalogue basic)
+        emptyLine
+        mkBlock $ basUap basic
+      where
+        cat = basCategory basic
+        title = basTitle basic
+        edition = basEdition basic
+        ed1 = editionMajor edition
+        ed2 = editionMinor edition
+        (Date year month day) = basDate basic
 
-    tell ""
-    tell "items"
-    block $ forM_ (basCatalogue basic) $ \item -> do
-        tell ""
-        dumpItem item
+instance MkBlock Expansion where
+    mkBlock x = do
+        fmt ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
+        fmt ("edition " % int % "." % int) ed1 ed2
+        fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
+        emptyLine
+        mkBlock $ expVariation x
+      where
+        cat = expCategory x
+        title = expTitle x
+        edition = expEdition x
+        ed1 = editionMajor edition
+        ed2 = editionMinor edition
+        (Date year month day) = expDate x
 
-    tell ""
-    dumpUap $ basUap basic
-  where
-    cat = basCategory basic
-    title = basTitle basic
-    edition = basEdition basic
-    ed1 = editionMajor edition
-    ed2 = editionMinor edition
-    (Date year month day) = basDate basic
-
--- | Encode expansion
-dumpExpansion :: Expansion -> Accumulator ()
-dumpExpansion x = do
-    tell $ sformat ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
-    tell $ sformat ("edition " % int % "." % int) ed1 ed2
-    tell $ sformat ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-    tell ""
-    dumpVariation $ expVariation x
-  where
-    cat = expCategory x
-    title = expTitle x
-    edition = expEdition x
-    ed1 = editionMajor edition
-    ed2 = editionMinor edition
-    (Date year month day) = expDate x
-
--- | Encode asterix description.
-dumpAsterix :: Asterix -> Accumulator ()
-dumpAsterix = \case
-    AsterixBasic basic -> dumpBasic basic
-    AsterixExpansion expansion -> dumpExpansion expansion
+instance MkBlock Asterix where
+    mkBlock = \case
+        AsterixBasic basic -> mkBlock basic
+        AsterixExpansion expansion -> mkBlock expansion
 
 -- | Parse from Text
 
@@ -394,14 +406,17 @@ pGroup = Group . snd <$> parseList (MC.string "group") pItem
 -- | Parse 'extended' item.
 pExtended :: Parser Variation
 pExtended = do
-    ((n1,n2), lst) <- parseList parseHeader pItem
-    return $ Extended n1 n2 lst
+    ((et, n1,n2), lst) <- parseList parseHeader pItem
+    return $ Extended et n1 n2 lst
   where
     parseHeader = do
         MC.string "extended" >> sc
+        et <-
+            (try (MC.string "no-trailing-fx" <* sc) >> pure ExtendedNoTrailingFx)
+            <|> pure ExtendedRegular
         n1 <- L.decimal <* sc
         n2 <- L.decimal
-        return (n1, n2)
+        return (et, n1, n2)
 
 -- | Parse 'repetitive' item.
 pRepetitive :: Parser Variation
@@ -473,13 +488,39 @@ pItems = snd <$> parseList (MC.string "items") pItem
 pUap :: Parser Uap
 pUap = uaps <|> uap
   where
-    parseOne _sc'
-        = (MC.char '-' >> return Nothing)
-      <|> (fmap Just pName)
+    parseOne _sc' = do
+        result <- (MC.char '-' >> return Nothing)
+                <|> (fmap Just pName)
+        scn
+        pure result
+
     uap = Uap . snd <$> parseList (MC.string "uap") parseOne
+
+    pVariations = do
+        (_, lst) <- parseList (MC.string "variations") (\_ -> parseList pUapName parseOne)
+        pure lst
+
+    pSelector = do
+        (name, lst) <- parseList pHeader pCase
+        pure $ UapSelector name lst
+      where
+        pHeader = MC.string "case" >> sc >> pPaths
+        pCase _ = (,)
+            <$> (pInt <* (MC.char ':' >> sc))
+            <*> fmap T.pack pLine
+
     uaps = do
-        (_, lst) <- parseList (MC.string "uaps") (\_ -> parseList pUapName parseOne)
-        return $ Uaps lst
+        i0 <- L.indentLevel
+        MC.string "uaps" >> scn
+        vars <- do
+            i1 <- lookAhead L.indentLevel
+            guard $ i1 > i0
+            pVariations
+        cs <- optional $ try $ do
+            i1 <- lookAhead L.indentLevel
+            guard $ i1 > i0
+            pSelector
+        pure $ Uaps vars cs
 
 -- | Parse basic category description.
 pBasic :: Parser Basic
@@ -499,7 +540,7 @@ pExtension = Expansion
     <*> (scn >> (T.pack <$> stringLiteral))
     <*> (scn >> pEdition)
     <*> (scn >> pDate)
-    <*> (scn >> pCompound)
+    <*> (scn >> (pCompound <* scn))
 
 -- | Parse asterix.
 pAsterix :: Parser Asterix
@@ -515,7 +556,7 @@ syntax = Syntax
     , syntaxDecoder = Just decoder
     }
   where
-    encoder = encodeUtf8 . renderBuffer 4 . snd . flip execState (0,[]) . dumpAsterix
+    encoder = encodeUtf8 . TL.toStrict . BL.toLazyText . renderBlockM 4 . mkBlock
     decoder filename s = first errorBundlePretty $
-        parse pAsterix filename (decodeUtf8 s)
+        parse (pAsterix <* eof) filename (decodeUtf8 s)
 

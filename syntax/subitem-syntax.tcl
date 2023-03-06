@@ -5,7 +5,12 @@ set spec {
             { stack
                 { line { or
                     { line /group }
-                    { line /extended BITS-fst BITS-ext }
+                    { line /extended
+                        { or
+                            {}
+                            {/no-trailing-fx}
+                        }
+                        BITS-fst BITS-ext }
                     }
                 }
                 { line

@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
-
 -- Common asterix definitions.
 
 module Asterix.Specs.Common where

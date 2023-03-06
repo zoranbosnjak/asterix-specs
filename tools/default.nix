@@ -46,6 +46,8 @@ let
     ];
     shellHook = ''
       export LC_ALL=C.UTF-8
+      export GHC_BASE=$(which ghc | cut -d '/' -f-4)
+      export EXTENSIONS=$(cat .ghci | grep ":set -X" | awk '{print $2}' | xargs)
     '';
   };
 

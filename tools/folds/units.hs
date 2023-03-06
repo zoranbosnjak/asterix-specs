@@ -1,6 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
-
 -- Gather all units from 'Quantity' elements
 
 import           Options.Applicative as Opt

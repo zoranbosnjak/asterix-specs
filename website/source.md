@@ -34,9 +34,6 @@ definitions are:
 - [tools/](https://github.com/zoranbosnjak/asterix-specs/tree/master/tools):
   Implementation of [specs related tools](/tools.html).
 
-- [json-to-rst/](https://github.com/zoranbosnjak/asterix-specs/tree/master/json-to-rst):
-  Asterix specification converter from `.json` to `.rst` documentation format.
-
 - [rst-to-pdf/](https://github.com/zoranbosnjak/asterix-specs/tree/master/rst-to-pdf):
   PDF documentation generator, a simple wrapper
   around [pandoc](https://pandoc.org/) tool.

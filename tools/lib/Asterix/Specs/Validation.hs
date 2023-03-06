@@ -1,8 +1,3 @@
-{-# LANGUAGE LambdaCase        #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE FlexibleContexts  #-}
-
 -- Validators for asterix data types.
 
 module Asterix.Specs.Validation where
@@ -10,28 +5,12 @@ module Asterix.Specs.Validation where
 import           Control.Monad
 import qualified Data.Text as T
 import           Data.Maybe
-import           Data.List (inits, nub, (\\))
+import           Data.List (nub, (\\))
 import           Data.Ratio
 
 import           Asterix.Specs
 
 type ValidationError = T.Text
-
--- A priori known size.
-class Fixed a where
-    size :: a -> Maybe Int
-
-instance Fixed Variation where
-    size (Element n _content) = Just n
-    size (Group items) = sum <$> sequence (fmap size items)
-    size _ = Nothing
-
-instance Fixed Item where
-    size (Spare n) = Just n
-    size (Item _name _title variation _doc) = size variation
-
-isFixed :: Fixed a => a -> Bool
-isFixed = isJust . size
 
 isCapital :: T.Text -> Bool
 isCapital w
@@ -52,33 +31,22 @@ instance IsAligned RegisterSize where
 
 instance IsAligned Variation where
     isAligned (Element n _content) = isAligned n
-    isAligned (Group lst) = check notAlignedParts where
+    isAligned (Group lst) = check notAlignedParts
+      where
         notAlignedParts = filter (not . isAligned) lst
-        check items = case size (Group items) of
-            Nothing -> False
-            Just n -> isAligned n
-    isAligned (Extended n1 n2 lst) = and
+        check items = maybe False isAligned (bitSize $ Group items)
+    isAligned (Extended et n1 n2 lst) = and
         [ isAligned n1
         , isAligned n2
-        , loop 0 fxPositions lst
+        , isJust $ extendedItemGroups et n1 n2 lst
         ]
-      where
-        fxPositions = tail (sum <$> inits (n1:repeat n2))
-        loop n _fx [] = isAligned n
-        loop _n [] _items = False
-        loop n (fx:fxs) (item:items) = case size item of
-            Nothing -> False
-            Just n' -> case compare (n+n'+1) fx of
-                LT -> loop (n+n') (fx:fxs) items
-                EQ -> loop (n+n'+1) fxs items
-                GT -> False
     isAligned (Repetitive repSize variation) = eachAligned || sumAligned
       where
         eachAligned = and
             [ isAligned repSize
             , isAligned variation
             ]
-        sumAligned = case size variation of
+        sumAligned = case bitSize variation of
             Nothing -> False
             Just n -> isAligned (repSize + n)
     isAligned Explicit = True
@@ -232,11 +200,11 @@ instance Validate Variation where
         , reportWhen (length items <= 1) "group requires more items"
         , reportWhen (duplicatedNames items) "duplicated names"
         ]
-    validate warnings x@(Extended _n1 _n2 items) = join
+    validate warnings x@(Extended _et _n1 _n2 items) = join
         [ reportUnless (isAligned x) "bit alignment"
         , join $ do
             item <- items
-            return $ maybe ["item size not fixed"] (const []) (size item)
+            return $ maybe ["item size not fixed"] (const []) (bitSize item)
         , reportWhen (duplicatedNames items) "duplicated names"
         , validate warnings items
         ]
@@ -298,8 +266,14 @@ instance Validate Basic where
         , allItemsDefined
         , validateUap
         , join (validateDepItem <$> basCatalogue basic)
+        , join (topAlignment <$> basCatalogue basic)
         ]
       where
+        topAlignment :: Item -> [ValidationError]
+        topAlignment i = reportUnless (isAligned i) $ case i of
+            Spare _ -> error "unexpected spare"
+            Item name _title _var _doc -> "Top level item " <> name <> " alignment error."
+
         validateCat :: [ValidationError]
         validateCat = reportUnless (basCategory basic `elem` [0..255])
             "category number out of range"
@@ -310,7 +284,7 @@ instance Validate Basic where
             required :: [Name]
             required = catMaybes $ case basUap basic of
                 Uap lst -> lst
-                Uaps lst -> nub $ join $ fmap snd lst
+                Uaps lst _msel -> nub $ join $ fmap snd lst
 
             defined :: [Name]
             defined = basCatalogue basic >>= \case
@@ -338,7 +312,7 @@ instance Validate Basic where
         validateUap :: [ValidationError]
         validateUap = case basUap basic of
             Uap lst -> validateList lst
-            Uaps lst -> join
+            Uaps lst msel -> join
                 [ do
                     let dupNames = nub x /= x where x = fst <$> lst
                     reportWhen dupNames "duplicated UAP names"
@@ -347,12 +321,27 @@ instance Validate Basic where
                     do
                         x <- validateList lst'
                         return (uapName <> ":" <> x)
+                , case msel of
+                    Nothing -> []
+                    Just sel -> validateSelector lst sel
                 ]
           where
             validateList lst = join
                 [ let x = catMaybes lst
                   in reportWhen (nub x /= x) "duplicated items in UAP"
                 , reportWhen (isNothing $ last lst) "spare at the end of UAP is redundant"
+                ]
+            validateSelector lst (UapSelector name table) = join
+                [ case findItemByName basic name of
+                    Nothing -> [showPath name <> " not defined"]
+                    Just i -> case bitSize i of
+                        Nothing -> [showPath name <> " unknown size"]
+                        Just m ->
+                            let ln = compare (length table) (2 ^ m)
+                            in reportWhen (ln == GT) ("too many variations")
+                , do
+                    uap <- fmap snd table
+                    reportWhen (uap `notElem` (fmap fst lst)) ("unknown uap: " <> uap)
                 ]
 
         validateDepItem :: Item -> [ValidationError]
@@ -362,7 +351,7 @@ instance Validate Basic where
                 ContextFree _ -> []
                 Dependent someItemName rules -> case findItemByName basic someItemName of
                     Nothing -> [showPath someItemName <> " not defined"]
-                    Just someItem -> case size someItem of
+                    Just someItem -> case bitSize someItem of
                         Nothing -> [showPath someItemName <> " unknown size"]
                         Just m ->
                             let ln = compare (length rules) (2 ^ m)
@@ -382,7 +371,7 @@ instance Validate Basic where
                             <> ": name repetition, suggesting -> "
                             <> showPath [name, T.drop n subName]]
 
-            Extended _n1 _n2 items -> join $ fmap validateDepItem items
+            Extended _et _n1 _n2 items -> join $ fmap validateDepItem items
             Repetitive _n variation' -> validateDepItem (Item name title variation' doc)
             Explicit -> []
             Compound _mFspecSize lst -> join (fmap validateDepItem $ catMaybes lst)
@@ -390,6 +379,7 @@ instance Validate Basic where
 instance Validate Expansion where
     validate warnings x = join
         [ validate warnings $ expVariation x
+        , reportUnless (isAligned $ expVariation x) "Top level alignment error."
         ]
 
 instance Validate Asterix where

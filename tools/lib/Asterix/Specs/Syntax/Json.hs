@@ -1,6 +1,3 @@
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE OverloadedStrings #-}
-
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- '.json' syntax implementation
@@ -196,6 +193,17 @@ instance FromJSON Rule where
             <*> v .: "rules"
         _ -> typeMismatch "Rule" $ String "wrong type"
 
+instance ToJSON ExtendedType where
+    toJSON = \case
+        ExtendedRegular -> "regular"
+        ExtendedNoTrailingFx -> "no-trailing-fx"
+
+instance FromJSON ExtendedType where
+    parseJSON = withText "ExtendedType" $ \case
+        "regular" -> pure ExtendedRegular
+        "no-trailing-fx" -> pure ExtendedNoTrailingFx
+        val -> fail $ "unexpected value: " ++ show val
+
 instance ToJSON Variation where
     toJSON (Element n rule) = object
         [ "type"    .= ("Element" :: String)
@@ -206,8 +214,9 @@ instance ToJSON Variation where
         [ "type"    .= ("Group" :: String)
         , "items"   .= lst
         ]
-    toJSON (Extended n1 n2 lst) = object
+    toJSON (Extended et n1 n2 lst) = object
         [ "type"    .= ("Extended" :: String)
+        , "fx"      .= et
         , "first"   .= n1
         , "extents" .= n2
         , "items"   .= lst
@@ -226,7 +235,7 @@ instance ToJSON Variation where
         , "items"   .= lst
         ]
 
-instance FromJSON Variation  where
+instance FromJSON Variation where
     parseJSON = withObject "Variation" $ \v -> case KM.lookup "type" v of
         Just "Element" -> Element
             <$> v .: "size"
@@ -234,7 +243,8 @@ instance FromJSON Variation  where
         Just "Group" -> Group
             <$> v .: "items"
         Just "Extended" -> Extended
-            <$> v .: "first"
+            <$> v .: "fx"
+            <*> v .: "first"
             <*> v .: "extents"
             <*> v .: "items"
         Just "Repetitive" -> Repetitive
@@ -276,14 +286,26 @@ instance FromJSON Item  where
                 )
         _ -> typeMismatch "Item" $ String "spare field not present"
 
+instance ToJSON UapSelector where
+    toJSON (UapSelector item lst) = object
+        [ "name" .= item
+        , "rules" .= lst
+        ]
+
+instance FromJSON UapSelector where
+    parseJSON = withObject "UapSelector" $ \v -> UapSelector
+        <$> v .: "name"
+        <*> v .: "rules"
+
 instance ToJSON Uap where
     toJSON (Uap lst) = object
         [ "type" .= ("uap" :: String)
         , "items" .= lst
         ]
-    toJSON (Uaps variations) = object
+    toJSON (Uaps variations msel) = object
         [ "type" .= ("uaps" :: String)
         , "variations" .= fmap variation variations
+        , "selector" .= msel
         ]
       where
         variation (uapName, lst) = object
@@ -294,10 +316,10 @@ instance ToJSON Uap where
 instance FromJSON Uap  where
     parseJSON = withObject "Uap" $ \v -> case KM.lookup "type" v of
         Just "uap" -> Uap <$> v .: "items"
-        Just "uaps" -> Uaps <$> f (v .: "variations")
+        Just "uaps" -> Uaps <$> var (v .: "variations") <*> (v .: "selector")
           where
-            f :: Parser [Value] -> Parser [(UapName, [Maybe Name])]
-            f p = do
+            var :: Parser [Value] -> Parser [(UapName, [Maybe Name])]
+            var p = do
                 lst <- p
                 forM lst $ withObject "(,)" $ \v' -> (,)
                     <$> v' .: "name"

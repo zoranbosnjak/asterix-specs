@@ -35,7 +35,7 @@ aspecs validate -f $src --ast $warnings > /dev/null
 cp $src $dst/definition.ast
 aspecs convert -f $src --ast --ast > $dst/definition.txt
 aspecs convert -f $src --ast --json > $dst/definition.json
-json-to-rst $dst/definition.json > $dst/definition.rst
+ast-to-rst $dst/definition.ast > $dst/definition.rst
 pandoc --metadata title="asterix specification" -f rst -t html $dst/definition.rst -o $dst/definition.html --self-contained --css=../website/css/default.css --css=../website/css/syntax.css
 rst-to-pdf $dst/definition.rst $dst/definition.pdf
 

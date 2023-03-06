@@ -13,7 +13,8 @@ Features:
 * convert from one format to itself (prettify definition file)
 * dump file as a list of items
 * show asterix definition signature (like a fingerprint, but not
-  depending on a particular file format).
+  depending on a particular file format)
+* generate documentation format (`ast-to-rst`)
 
 Conversion process works in the following steps:
 
@@ -66,6 +67,7 @@ nix-env -i $$(readlink result)
 
 # verify installation
 aspecs --version
+ast-to-rst --version
 ```
 
 ## Usage
@@ -115,16 +117,19 @@ Use `nix-shell` environment
 ```bash
 nix-shell
 
+# select application
+app=Aspecs.hs
+app=Ast-to-rst.hs
+
 # monitor changes, auto rebuild on any source change
-ghcid "--command=ghci -Wall -iother -ilib -iapp app/Main.hs"
+ghcid "--command=ghci -Wall $$EXTENSIONS -iother -ilib -iapp app/$${app}"
 
 # run program without rebuild
-runhaskell -iother -ilib -iapp app/Main.hs --help
+runhaskell $$EXTENSIONS -iother -ilib -iapp app/$${app} --help
 
 # (re)build with 'cabal' and run program
 cabal build
 find . -type f -executable | grep -v "\.so"
-$$(find . -type f -executable | grep -v "\.so") --help
 
 exit
 ```
