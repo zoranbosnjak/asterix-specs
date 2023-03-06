@@ -151,8 +151,23 @@ data Expansion = Expansion
     , expVariation  :: Variation
     } deriving (Generic, Eq, Show)
 
-data Asterix
-    = AsterixBasic Basic
-    | AsterixExpansion Expansion
+-- BDS register
+data BdsRegister = BdsRegister
+    { regNumber :: Int
+    , regTitle  :: Text
+    , regVariation :: Variation
+    } deriving (Generic, Eq, Show)
+
+-- BDS register collection
+data BdsRegisters = BdsRegisters
+    { bdsDocument :: Text
+    , bdsDate     :: Text
+    , bdsRegisters :: [BdsRegister]
+    } deriving (Generic, Eq, Show)
+
+data Spec
+    = SpecBasic Basic
+    | SpecExpansion Expansion
+    | SpecBds BdsRegisters
     deriving (Generic, Eq, Show)
 
