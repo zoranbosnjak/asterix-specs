@@ -166,6 +166,10 @@ for i in root['catalogue']:
 
 # Related projects
 
+If you’re using asterix-specs definition files in your project (directly or
+indirectly) and the source code is available, your are welcome to
+[notify project maintainer](/source.html), to be added to the list.
+
 * [asterix-data](https://github.com/zoranbosnjak/asterix-data) is a set of
   machine-readable asterix definition files in *xml* format. The *xml* files
   are generated automatically out of asterix specifications from this
@@ -187,4 +191,17 @@ for i in root['catalogue']:
   automatically generated from *json* `asterix-specs` definitions. See
   [asterix parser generator](https://gitlab.com/wireshark/wireshark/-/tree/master/tools/asterix)
   (part of wireshark source code) for details.
+
+* [asterix-lib-generator](https://zoranbosnjak.github.io/asterix-lib-generator/)
+  is an asterix data processing library source code generator. It currently
+  supports
+  [python](https://zoranbosnjak.github.io/asterix-lib-generator/python.html).
+  The library source code is automatically generated out of the `*.ast`
+  specification files from this project.
+
+* [asterix-tool](https://github.com/zoranbosnjak/asterix-tool) is a versatile
+  asterix data related command line tool. Features include: random asterix
+  data generation, asterix decoding, UDP datagram tx, rx... The list of
+  supported asterix categories and editions are automatically updated from
+  this project.
 
