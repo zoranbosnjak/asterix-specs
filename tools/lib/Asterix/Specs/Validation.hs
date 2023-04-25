@@ -222,6 +222,8 @@ instance Validate Variation where
           in reportWhen (duplicatedNames items') "duplicated names"
         , reportWhen (isNothing $ last items) "last element in compound is empty"
         , reportWhen (any isSpare items) "unexpected spare item inside compound"
+        , reportWhen (warnings && (length items <= 1))
+            "compound item with just one element"
         ]
       where
         isSpare (Just (Spare _)) = True
