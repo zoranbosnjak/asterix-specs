@@ -199,9 +199,11 @@ indirectly) and the source code is available, your are welcome to
   The library source code is automatically generated out of the `*.ast`
   specification files from this project.
 
-* [asterix-tool](https://github.com/zoranbosnjak/asterix-tool) is a versatile
-  asterix data related command line tool. Features include: random asterix
-  data generation, asterix decoding, UDP datagram tx, rx... The list of
-  supported asterix categories and editions are automatically updated from
+* [asterix-tool](https://github.com/zoranbosnjak/asterix-tool#readme)
+  is a versatile asterix data related command line tool. Features include:
+  random asterix data generation, asterix decoding, UDP datagram sending and
+  receiving (including multicast), recording/replaying to/from a file, custom
+  asterix filtering...
+  Supported asterix categories and editions are automatically updated from
   this project.
 
