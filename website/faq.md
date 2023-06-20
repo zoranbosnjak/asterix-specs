@@ -168,3 +168,8 @@ you some time when implementing asterix encoder/decoder.
   to the normal *extended item* encoding rules. The first extension does
   not end with the `FX` bit.
 
+* Some extended items in the original definition contain only one subitem,
+  with the intention to extend it with the FX bit, for example `I002/050`.
+  In this project, such items are handled as a special case of *repetitive*
+  item, denoted as `repetitive fx`.
+

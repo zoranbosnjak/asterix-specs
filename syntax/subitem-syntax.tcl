@@ -35,7 +35,7 @@ set spec {
                     }
                 }
             }
-            { line /repetitive BITS subitem-def }
+            { line /repetitive { or /fx BITS} subitem-def }
             { line /explicit }
             { line /element BITS content-def }
             { line /spare BITS }

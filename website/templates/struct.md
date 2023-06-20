@@ -121,6 +121,8 @@ enforced by the [validator](/tools.html):
   (single element group shall be simplified to just 'Element').
 - Elements sizes within 'Extended' item shall be properly bit-aligned
   and "a-priory" known.
+- Extended items shall contain more than one subitem. In the case of
+  a single subitem (with FX bit), use 'repetitive fx'.
 - Repetitive item shall specify a "REP" factor size, which must
   be positive and 8-bit aligned.
 - Repetitive item content shall be 8-bit aligned.

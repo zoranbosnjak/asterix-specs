@@ -89,7 +89,9 @@ instance MkBlock Variation where
                 ExtendedNoTrailingFx -> "no-trailing-fx "
 
         Repetitive rep variation -> do
-            fmt ("repetitive " % int) rep
+            case rep of
+                RepetitiveRegular n -> fmt ("repetitive " % int) n
+                RepetitiveFx -> fmt "repetitive fx"
             indent $ mkBlock variation
 
         Explicit -> "explicit"
@@ -421,14 +423,17 @@ pExtended = do
 -- | Parse 'repetitive' item.
 pRepetitive :: Parser Variation
 pRepetitive = do
-    n <- MC.string "repetitive" >> sc >> L.decimal
+    rt <- try pRepFx <|> pRepRegular
     i <- lookAhead (scn >> L.indentLevel)
     let sc' = do
             scn
             j <- L.indentLevel
             end <- atEnd
             bool (fail "unexpected indent") (return ()) ((j > i) || end)
-    scn >> Repetitive <$> pure n <*> pVariation sc'
+    scn >> Repetitive <$> pure rt <*> pVariation sc'
+  where
+    pRepFx = (MC.string "repetitive" >> sc >> MC.string "fx" >> pure RepetitiveFx)
+    pRepRegular = fmap RepetitiveRegular (MC.string "repetitive" >> sc >> L.decimal)
 
 -- | Parse 'explicit' item.
 pExplicit :: Parser Variation

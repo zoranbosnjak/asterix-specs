@@ -100,11 +100,14 @@ definitions to the upstream repository.
 This example is using asterix category description in `json` format.
 
 ```python
-
+import sys
 import json
 
+# input json file
+infile=sys.argv[1]
+
 # load definition and decode json
-with open('definition.json') as f:
+with open(infile) as f:
     s = f.read()
 root = json.loads(s)
 
@@ -147,8 +150,14 @@ def dump_variation(variation, path):
         for i in variation['items']:
             dump_item(i, path)
     elif t == 'Repetitive':
-        n = variation['rep']
-        print('{} Repetitive ({})'.format(path, n))
+        rt = variation['rep']
+        if rt['type'] == 'Regular':
+            n = rt['size']
+            print('{} Repetitive ({})'.format(path, n))
+        elif rt['type'] == 'Fx':
+            print('{} Repetitive with FX bit'.format(path))
+        else:
+            raise Exception('unexpected repetitive type {}'.format(rt))
         dump_variation(variation['variation'], path)
     elif t == 'Explicit':
         print('{} Explicit'.format(path))

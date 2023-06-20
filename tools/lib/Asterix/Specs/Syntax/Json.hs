@@ -195,14 +195,31 @@ instance FromJSON Rule where
 
 instance ToJSON ExtendedType where
     toJSON = \case
-        ExtendedRegular -> "regular"
-        ExtendedNoTrailingFx -> "no-trailing-fx"
+        ExtendedRegular -> "Regular"
+        ExtendedNoTrailingFx -> "No-trailing-fx"
 
 instance FromJSON ExtendedType where
     parseJSON = withText "ExtendedType" $ \case
-        "regular" -> pure ExtendedRegular
-        "no-trailing-fx" -> pure ExtendedNoTrailingFx
+        "Regular" -> pure ExtendedRegular
+        "No-trailing-fx" -> pure ExtendedNoTrailingFx
         val -> fail $ "unexpected value: " ++ show val
+
+instance ToJSON RepetitiveType where
+    toJSON = \case
+        RepetitiveRegular n -> object
+            [ "type" .= ("Regular" :: String)
+            , "size" .= n
+            ]
+        RepetitiveFx -> object
+            [ "type" .= ("Fx" :: String)
+            ]
+
+instance FromJSON RepetitiveType where
+    parseJSON = withObject "RepetitiveType" $ \v -> case KM.lookup "type" v of
+        Just "Regular" -> RepetitiveRegular
+            <$> v .: "size"
+        Just "Fx" -> pure RepetitiveFx
+        _ -> typeMismatch "RepetitiveType" $ String "wrong type"
 
 instance ToJSON Variation where
     toJSON (Element n rule) = object
@@ -221,9 +238,9 @@ instance ToJSON Variation where
         , "extents" .= n2
         , "items"   .= lst
         ]
-    toJSON (Repetitive n el) = object
+    toJSON (Repetitive rt el) = object
         [ "type"    .= ("Repetitive" :: String)
-        , "rep"     .= n
+        , "rep"     .= rt
         , "variation" .= el
         ]
     toJSON Explicit = object
@@ -254,7 +271,7 @@ instance FromJSON Variation where
         Just "Compound" -> Compound
             <$> v .: "fspec"
             <*> v .: "items"
-        _ -> typeMismatch "Element" $ String "wrong type"
+        _ -> typeMismatch "Variation" $ String "wrong type"
 
 instance ToJSON Item where
     toJSON (Spare n) = object

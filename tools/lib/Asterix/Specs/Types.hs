@@ -98,6 +98,14 @@ data ExtendedType
     | ExtendedNoTrailingFx
     deriving (Generic, Eq, Ord, Show)
 
+data RepetitiveType
+    -- N bits reserved for REP lengt field
+    = RepetitiveRegular RepetitionSize
+
+    -- Number of repetitions are defined by FX bit value
+    | RepetitiveFx
+    deriving (Generic, Eq, Ord, Show)
+
 data Variation
     -- leaf of the structure
     = Element RegisterSize Rule
@@ -109,8 +117,8 @@ data Variation
     -- extended item with FX extension mechanism
     | Extended ExtendedType RegisterSize RegisterSize [Item]
 
-    -- N bits reserved for REP lengt field, followed by recursive variation
-    | Repetitive RepetitionSize Variation
+    -- repetitive item
+    | Repetitive RepetitiveType Variation
 
     -- item with explicit size
     | Explicit

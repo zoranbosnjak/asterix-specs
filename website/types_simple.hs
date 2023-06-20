@@ -77,6 +77,14 @@ data Rule
 data ExtendedType
     = ExtendedRegular
     | ExtendedNoTrailingFx
+    deriving (Generic, Eq, Ord, Show)
+
+data RepetitiveType
+    -- N bits reserved for REP lengt field
+    = RepetitiveRegular RepetitionSize
+
+    -- Number of repetitions are defined by FX bit value
+    | RepetitiveFx
 
 data Variation
     -- leaf of the structure
@@ -89,8 +97,8 @@ data Variation
     -- extended item with FX extension mechanism
     | Extended ExtendedType RegisterSize RegisterSize [Item]
 
-    -- N bits reserved for REP lengt field, followed by recursive variation
-    | Repetitive RepetitionSize Variation
+    -- repetitive item
+    | Repetitive RepetitiveType Variation
 
     -- item with explicit size
     | Explicit
@@ -104,10 +112,20 @@ data Item
     = Spare RegisterSize
     | Item Name Title Variation Documentation
 
+
+data UapSelector = UapSelector
+    { selItem :: [Name]             -- UAP depends on this item
+    , selTable :: [(Int, UapName)]  -- value lookup table
+    } 
+
 -- User applicaton profile type
 data Uap
-    = Uap [Maybe Name]                  -- single UAP
-    | Uaps [(UapName, [Maybe Name])]    -- multiple UAPs
+    -- single UAP
+    = Uap [Maybe Name]
+
+    -- multiple UAPs
+    | Uaps [(UapName, [Maybe Name])] (Maybe UapSelector)
+
 
 -- Basic category definition
 data Basic = Basic

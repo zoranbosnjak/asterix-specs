@@ -198,8 +198,10 @@ instance MkBlock Variation where
                 , "| 1: Extension into next extent"
                 ]
 
-    mkBlock p (Repetitive rep var) = do
-        fmt ("Repetitive item, repetition factor " % int % " bits.") rep
+    mkBlock p (Repetitive rt var) = do
+        case rt of
+            RepetitiveRegular rep -> fmt ("Repetitive item, repetition factor " % int % " bits.") rep
+            RepetitiveFx -> fmt "Repetitive item with FX extension"
         emptyLine
         indent $ mkBlock p var
 

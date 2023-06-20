@@ -40,13 +40,17 @@ instance IsAligned Variation where
         , isAligned n2
         , isJust $ extendedItemGroups et n1 n2 lst
         ]
-    isAligned (Repetitive repSize variation) = eachAligned || sumAligned
+    isAligned (Repetitive rt variation) = case rt of
+        RepetitiveRegular repSize -> eachAligned repSize || sumAligned repSize
+        RepetitiveFx -> case bitSize variation of
+            Nothing -> False
+            Just n -> isAligned (n + 1)
       where
-        eachAligned = and
+        eachAligned repSize = and
             [ isAligned repSize
             , isAligned variation
             ]
-        sumAligned = case bitSize variation of
+        sumAligned repSize = case bitSize variation of
             Nothing -> False
             Just n -> isAligned (repSize + n)
     isAligned Explicit = True
@@ -207,13 +211,16 @@ instance Validate Variation where
             return $ maybe ["item size not fixed"] (const []) (bitSize item)
         , reportWhen (duplicatedNames items) "duplicated names"
         , validate warnings items
+        , reportWhen (length items <= 1) "extended subitem list size"
         ]
-    validate warnings (Repetitive m variation) = join
-        [ reportUnless (m > 0) "REP size"
-        , reportUnless (isAligned m) "REP alignment"
-        , reportUnless (isAligned variation) "variation alignment"
-        , validate warnings variation
-        ]
+    validate warnings (Repetitive rt variation) = case rt of
+        RepetitiveRegular m -> join
+            [ reportUnless (m > 0) "REP size"
+            , reportUnless (isAligned m) "REP alignment"
+            , reportUnless (isAligned variation) "variation alignment"
+            , validate warnings variation
+            ]
+        RepetitiveFx -> validate warnings variation
     validate _warnings Explicit = []
     validate warnings x@(Compound _mFspecSize items) = join
         [ reportUnless (isAligned x) "alignment error"
@@ -374,7 +381,7 @@ instance Validate Basic where
                             <> showPath [name, T.drop n subName]]
 
             Extended _et _n1 _n2 items -> join $ fmap validateDepItem items
-            Repetitive _n variation' -> validateDepItem (Item name title variation' doc)
+            Repetitive _rt variation' -> validateDepItem (Item name title variation' doc)
             Explicit -> []
             Compound _mFspecSize lst -> join (fmap validateDepItem $ catMaybes lst)
 
