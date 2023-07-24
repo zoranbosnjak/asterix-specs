@@ -221,6 +221,17 @@ instance FromJSON RepetitiveType where
         Just "Fx" -> pure RepetitiveFx
         _ -> typeMismatch "RepetitiveType" $ String "wrong type"
 
+instance ToJSON ExplicitType where
+    toJSON = \case
+        ReservedExpansion -> "RE"
+        SpecialPurpose -> "SP"
+
+instance FromJSON ExplicitType where
+    parseJSON = withText "ExplicitType" $ \case
+        "RE" -> pure ReservedExpansion
+        "SP" -> pure SpecialPurpose
+        val -> fail $ "unexpected value: " ++ show val
+
 instance ToJSON Variation where
     toJSON (Element n rule) = object
         [ "type"    .= ("Element" :: String)
@@ -243,8 +254,12 @@ instance ToJSON Variation where
         , "rep"     .= rt
         , "variation" .= el
         ]
-    toJSON Explicit = object
+    toJSON (Explicit mt) = object
         [ "type"    .= ("Explicit" :: String)
+        , "expl"    .= mt
+        ]
+    toJSON RandomFieldSequencing = object
+        [ "type"    .= ("Rfs" :: String)
         ]
     toJSON (Compound mSize lst) = object
         [ "type"    .= ("Compound" :: String)
@@ -267,7 +282,9 @@ instance FromJSON Variation where
         Just "Repetitive" -> Repetitive
             <$> v .: "rep"
             <*> v .: "variation"
-        Just "Explicit" -> pure Explicit
+        Just "Explicit" -> Explicit
+            <$> v .: "expl"
+        Just "Rfs" -> pure RandomFieldSequencing
         Just "Compound" -> Compound
             <$> v .: "fspec"
             <*> v .: "items"

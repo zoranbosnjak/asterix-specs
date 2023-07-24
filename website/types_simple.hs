@@ -86,6 +86,10 @@ data RepetitiveType
     -- Number of repetitions are defined by FX bit value
     | RepetitiveFx
 
+data ExplicitType
+    = ReservedExpansion
+    | SpecialPurpose
+
 data Variation
     -- leaf of the structure
     = Element RegisterSize Rule
@@ -101,7 +105,10 @@ data Variation
     | Repetitive RepetitiveType Variation
 
     -- item with explicit size
-    | Explicit
+    | Explicit (Maybe ExplicitType)
+
+    -- random field sequencing
+    | RandomFieldSequencing
 
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective

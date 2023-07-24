@@ -53,7 +53,8 @@ instance IsAligned Variation where
         sumAligned repSize = case bitSize variation of
             Nothing -> False
             Just n -> isAligned (repSize + n)
-    isAligned Explicit = True
+    isAligned (Explicit _) = True
+    isAligned RandomFieldSequencing = True
     isAligned (Compound mFspecSize lst) = and
         [ maybe True isAligned mFspecSize
         , all check lst
@@ -221,7 +222,8 @@ instance Validate Variation where
             , validate warnings variation
             ]
         RepetitiveFx -> validate warnings variation
-    validate _warnings Explicit = []
+    validate _warnings (Explicit _) = []
+    validate _warnings RandomFieldSequencing = []
     validate warnings x@(Compound _mFspecSize items) = join
         [ reportUnless (isAligned x) "alignment error"
         , validate warnings items
@@ -382,7 +384,8 @@ instance Validate Basic where
 
             Extended _et _n1 _n2 items -> join $ fmap validateDepItem items
             Repetitive _rt variation' -> validateDepItem (Item name title variation' doc)
-            Explicit -> []
+            Explicit _ -> []
+            RandomFieldSequencing -> []
             Compound _mFspecSize lst -> join (fmap validateDepItem $ catMaybes lst)
 
 instance Validate Expansion where

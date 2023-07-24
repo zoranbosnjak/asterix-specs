@@ -94,7 +94,14 @@ instance MkBlock Variation where
                 RepetitiveFx -> fmt "repetitive fx"
             indent $ mkBlock variation
 
-        Explicit -> "explicit"
+        Explicit mt -> do
+            case mt of
+                Nothing -> "explicit"
+                Just val -> case val of
+                    ReservedExpansion -> "explicit re"
+                    SpecialPurpose    -> "explicit sp"
+
+        RandomFieldSequencing -> "rfs"
 
         Compound mFspecSize lst -> do
             case mFspecSize of
@@ -437,7 +444,17 @@ pRepetitive = do
 
 -- | Parse 'explicit' item.
 pExplicit :: Parser Variation
-pExplicit = MC.string "explicit" *> pure Explicit
+pExplicit = Explicit <$> go where
+    go = try (Just <$> (MC.string "explicit" >> sc >> pt))
+     <|> MC.string "explicit" *> pure Nothing
+    pt = tryOne
+        [ MC.string "re" >> pure ReservedExpansion
+        , MC.string "sp" >> pure SpecialPurpose
+        ]
+
+-- | Parse 'rfs' item.
+pRfs :: Parser Variation
+pRfs = MC.string "rfs" *> pure RandomFieldSequencing
 
 -- | Parse 'compound' item.
 pCompound :: Parser Variation
@@ -459,6 +476,7 @@ pVariation sc' = tryOne
     , pExtended
     , pRepetitive
     , pExplicit
+    , pRfs
     , pCompound
     ]
 

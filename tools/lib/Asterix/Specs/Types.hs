@@ -106,6 +106,11 @@ data RepetitiveType
     | RepetitiveFx
     deriving (Generic, Eq, Ord, Show)
 
+data ExplicitType
+    = ReservedExpansion
+    | SpecialPurpose
+    deriving (Generic, Eq, Ord, Show)
+
 data Variation
     -- leaf of the structure
     = Element RegisterSize Rule
@@ -121,7 +126,10 @@ data Variation
     | Repetitive RepetitiveType Variation
 
     -- item with explicit size
-    | Explicit
+    | Explicit (Maybe ExplicitType)
+
+    -- random field sequencing
+    | RandomFieldSequencing
 
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective

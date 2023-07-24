@@ -133,9 +133,12 @@ main = withUtf8 $ execParser opts >>= \case
                             Group lst -> ("Group", mapM_ (dumpItem path) lst)
                             Extended _ _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
                             Repetitive _ var -> ("Repetitive", snd $ next var)
-                            Explicit -> ("Explicit", return ())
-                            Compound Nothing lst -> ("Compound", mapM_ (dumpItem path) (catMaybes lst))
-                            Compound (Just _n) lst -> ("Compound(n)", mapM_ (dumpItem path) (catMaybes lst))
+                            Explicit _ -> ("Explicit", return ())
+                            RandomFieldSequencing -> ("Rfs", return ())
+                            Compound Nothing lst -> ("Compound", mapM_ (dumpItem path)
+                                (catMaybes lst))
+                            Compound (Just _n) lst -> ("Compound(n)", mapM_ (dumpItem path)
+                                (catMaybes lst))
                         (details, act) = next variation
                     Data.Text.IO.putStrLn (showPath path <> ": " <> details)
                     act

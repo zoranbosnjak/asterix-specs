@@ -200,12 +200,19 @@ instance MkBlock Variation where
 
     mkBlock p (Repetitive rt var) = do
         case rt of
-            RepetitiveRegular rep -> fmt ("Repetitive item, repetition factor " % int % " bits.") rep
+            RepetitiveRegular rep -> fmt
+                ("Repetitive item, repetition factor " % int % " bits.") rep
             RepetitiveFx -> fmt "Repetitive item with FX extension"
         emptyLine
         indent $ mkBlock p var
 
-    mkBlock _parent Explicit = "Explicit item"
+    mkBlock _parent (Explicit mt) = case mt of
+        Nothing -> "Explicit item"
+        Just t -> case t of
+            ReservedExpansion -> "Explicit item (RE)"
+            SpecialPurpose    -> "Explicit item (SP)"
+
+    mkBlock _parent RandomFieldSequencing = "Rfs"
 
     mkBlock p (Compound mn lst) = do
         fspec
