@@ -35,11 +35,15 @@ instance IsAligned Variation where
       where
         notAlignedParts = filter (not . isAligned) lst
         check items = maybe False isAligned (bitSize $ Group items)
-    isAligned (Extended et n1 n2 lst) = and
-        [ isAligned n1
-        , isAligned n2
-        , isJust $ extendedItemGroups et n1 n2 lst
-        ]
+    isAligned (Extended lst) =
+        isAligned (sum $ fmap count lst)
+        && all (== 7) (fxBitOffset (0::Int) lst)
+      where
+        count Nothing = 1 -- FX bit
+        count (Just i) = fromJust $ bitSize i -- fixed item
+        fxBitOffset _ [] = []
+        fxBitOffset ix (Nothing : xs) = (ix `mod` 8) : fxBitOffset (succ ix) xs
+        fxBitOffset ix (Just x : xs) = fxBitOffset (ix + fromJust (bitSize x)) xs
     isAligned (Repetitive rt variation) = case rt of
         RepetitiveRegular repSize -> eachAligned repSize || sumAligned repSize
         RepetitiveFx -> case bitSize variation of
@@ -205,7 +209,7 @@ instance Validate Variation where
         , reportWhen (length items <= 1) "group requires more items"
         , reportWhen (duplicatedNames items) "duplicated names"
         ]
-    validate warnings x@(Extended _et _n1 _n2 items) = join
+    validate warnings x@(Extended lst) = join
         [ reportUnless (isAligned x) "bit alignment"
         , join $ do
             item <- items
@@ -214,6 +218,8 @@ instance Validate Variation where
         , validate warnings items
         , reportWhen (length items <= 1) "extended subitem list size"
         ]
+      where
+        items = catMaybes lst
     validate warnings (Repetitive rt variation) = case rt of
         RepetitiveRegular m -> join
             [ reportUnless (m > 0) "REP size"
@@ -382,7 +388,7 @@ instance Validate Basic where
                             <> ": name repetition, suggesting -> "
                             <> showPath [name, T.drop n subName]]
 
-            Extended _et _n1 _n2 items -> join $ fmap validateDepItem items
+            Extended lst -> join $ fmap validateDepItem (catMaybes lst)
             Repetitive _rt variation' -> validateDepItem (Item name title variation' doc)
             Explicit _ -> []
             RandomFieldSequencing -> []

@@ -193,17 +193,6 @@ instance FromJSON Rule where
             <*> v .: "rules"
         _ -> typeMismatch "Rule" $ String "wrong type"
 
-instance ToJSON ExtendedType where
-    toJSON = \case
-        ExtendedRegular -> "Regular"
-        ExtendedNoTrailingFx -> "No-trailing-fx"
-
-instance FromJSON ExtendedType where
-    parseJSON = withText "ExtendedType" $ \case
-        "Regular" -> pure ExtendedRegular
-        "No-trailing-fx" -> pure ExtendedNoTrailingFx
-        val -> fail $ "unexpected value: " ++ show val
-
 instance ToJSON RepetitiveType where
     toJSON = \case
         RepetitiveRegular n -> object
@@ -242,11 +231,8 @@ instance ToJSON Variation where
         [ "type"    .= ("Group" :: String)
         , "items"   .= lst
         ]
-    toJSON (Extended et n1 n2 lst) = object
+    toJSON (Extended lst) = object
         [ "type"    .= ("Extended" :: String)
-        , "fx"      .= et
-        , "first"   .= n1
-        , "extents" .= n2
         , "items"   .= lst
         ]
     toJSON (Repetitive rt el) = object
@@ -275,10 +261,7 @@ instance FromJSON Variation where
         Just "Group" -> Group
             <$> v .: "items"
         Just "Extended" -> Extended
-            <$> v .: "fx"
-            <*> v .: "first"
-            <*> v .: "extents"
-            <*> v .: "items"
+            <$> v .: "items"
         Just "Repetitive" -> Repetitive
             <$> v .: "rep"
             <*> v .: "variation"

@@ -3,16 +3,7 @@ set spec {
     stack
         { or
             { stack
-                { line { or
-                    { line /group }
-                    { line /extended
-                        { or
-                            {}
-                            {/no-trailing-fx}
-                        }
-                        BITS-fst BITS-ext }
-                    }
-                }
+                { line /group }
                 { line
                     { loop { line
                         (indent) NAME {''} TITLE {''}
@@ -23,7 +14,11 @@ set spec {
                 }
             }
             { stack
-                { line /compound [n] }
+                { line { or
+                    { line /extended }
+                    { line /compound [n] }
+                    }
+                }
                 { line
                     { loop { line (indent)
                         { or -

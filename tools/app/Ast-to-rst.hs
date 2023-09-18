@@ -168,26 +168,15 @@ instance MkBlock Variation where
 
     mkBlock p (Group lst) = blocksLn (mkBlock p <$> lst)
 
-    mkBlock p (Extended et n1 n2 lst) = do
-        fmt ("Extended item with first part ``"
-            % int % " bits`` long and optional ``"
-            % int % " bits`` extends."
-            % stext) n1 n2 (case et of
-                ExtendedRegular -> ""
-                ExtendedNoTrailingFx -> " No trailing FX bit!")
+    mkBlock p (Extended lst) = do
+        line "Extended item."
         emptyLine
         blocksLn $ do
-            grp <- init groups
-            pure (blocksLn (fmap (mkBlock p) grp) <> emptyLine <> fx)
-        emptyLine
-        (blocksLn (fmap (mkBlock p) (last groups)) <> case et of
-            ExtendedRegular -> emptyLine <> fx
-            ExtendedNoTrailingFx -> mempty
-            )
+            mItem <- lst
+            pure $ case mItem of
+                Nothing -> fx
+                Just item -> mkBlock p item
       where
-        groups = maybe (error "Failed to create extended groups") id
-            (extendedItemGroups et n1 n2 lst)
-
         fx = indent $ do
             line $ "``(FX)``"
             emptyLine

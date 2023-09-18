@@ -93,11 +93,6 @@ data Rule
     | Dependent [Name] [(Int, Content)]
     deriving (Generic, Eq, Ord, Show)
 
-data ExtendedType
-    = ExtendedRegular
-    | ExtendedNoTrailingFx
-    deriving (Generic, Eq, Ord, Show)
-
 data RepetitiveType
     -- N bits reserved for REP lengt field
     = RepetitiveRegular RepetitionSize
@@ -120,7 +115,7 @@ data Variation
     | Group [Item]
 
     -- extended item with FX extension mechanism
-    | Extended ExtendedType RegisterSize RegisterSize [Item]
+    | Extended [Maybe Item]
 
     -- repetitive item
     | Repetitive RepetitiveType Variation

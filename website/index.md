@@ -144,11 +144,10 @@ def dump_variation(variation, path):
         for i in variation['items']:
             dump_item(i, path)
     elif t == 'Extended':
-        n1 = variation['first']
-        n2 = variation['extents']
-        print('{} Extended, first part {}, extents {}'.format(path, n1, n2))
+        print('{} Extended'.format(path))
         for i in variation['items']:
-            dump_item(i, path)
+            if i is not None:
+                dump_item(i, path)
     elif t == 'Repetitive':
         rt = variation['rep']
         if rt['type'] == 'Regular':

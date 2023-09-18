@@ -7,8 +7,6 @@ module Asterix.Specs
 , module Asterix.Specs.Syntax
 ) where
 
-import           Control.Monad (guard)
-import           Data.Function (fix)
 import           Data.List (find)
 import           Data.Maybe (catMaybes, isJust)
 
@@ -48,33 +46,11 @@ findItemByName basic (x:xs) = do
         Item _ _ variation _ -> do
             let candidates = case variation of
                     Group lst -> lst
-                    Extended _ _ _ lst -> lst
+                    Extended lst -> catMaybes lst
                     Compound _fspecSize lst -> catMaybes lst
                     _ -> []
                 byName (Spare _) = False
                 byName (Item n _ _ _) = n == y
             nextItem <- find byName candidates
             go nextItem ys
-
-extendedItemGroups :: ExtendedType -> RegisterSize -> RegisterSize -> [Item] -> Maybe [[Item]]
-extendedItemGroups et n1 n2 lst = go [] (n1:repeat n2) lst
-  where
-    split :: RegisterSize -> [Item] -> Int -> Maybe ([Item], [Item])
-    split fx items = fix $ \loop x -> do
-        guard $ x <= length items
-        let (a,b) = splitAt x items
-        n <- bitSize a
-        if
-            | succ n >= fx -> pure (a,b)
-            | otherwise -> loop (succ x)
-
-    go acc _fx [] = pure acc
-    go acc fx items = do
-        (a,b) <- split (head fx) items 1
-        n <- bitSize a
-        let m = if
-                | null b && et == ExtendedNoTrailingFx -> head fx
-                | otherwise -> pred (head fx)
-        guard $ n == m
-        go (acc ++ [a]) (tail fx) b
 

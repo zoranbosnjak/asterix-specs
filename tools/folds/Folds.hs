@@ -10,7 +10,6 @@ import qualified Data.ByteString as BS
 import           Control.Lens
 
 import           Asterix.Specs
-import           Asterix.Specs.Common
 
 -- | Load spec file from disk.
 loadSpec :: Monad m => String -> String -> m BS.ByteString -> m Asterix
@@ -35,9 +34,10 @@ focusVariationRule :: Fold Variation Rule
 focusVariationRule = folding $ \case
     Element _n rule -> [rule]
     Group lst -> lst ^.. folded . focusItemVariation . _Just . focusVariationRule
-    Extended _et _n1 _n2 lst -> lst ^.. folded . focusItemVariation . _Just . focusVariationRule
+    Extended lst -> lst ^.. folded . _Just . focusItemVariation . _Just . focusVariationRule
     Repetitive _n variation -> variation ^.. focusVariationRule
-    Explicit -> []
+    Explicit _ -> []
+    RandomFieldSequencing -> []
     Compound _mn lst -> lst ^.. folded . _Just . focusItemVariation . _Just . focusVariationRule
 
 focusRuleContent :: Fold Rule Content

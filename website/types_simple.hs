@@ -74,11 +74,6 @@ data Rule
     = ContextFree Content
     | Dependent [Name] [(Int, Content)]
 
-data ExtendedType
-    = ExtendedRegular
-    | ExtendedNoTrailingFx
-    deriving (Generic, Eq, Ord, Show)
-
 data RepetitiveType
     -- N bits reserved for REP lengt field
     = RepetitiveRegular RepetitionSize
@@ -99,7 +94,7 @@ data Variation
     | Group [Item]
 
     -- extended item with FX extension mechanism
-    | Extended ExtendedType RegisterSize RegisterSize [Item]
+    | Extended [Maybe Item]
 
     -- repetitive item
     | Repetitive RepetitiveType Variation
@@ -118,7 +113,6 @@ data Variation
 data Item
     = Spare RegisterSize
     | Item Name Title Variation Documentation
-
 
 data UapSelector = UapSelector
     { selItem :: [Name]             -- UAP depends on this item

@@ -73,7 +73,7 @@ items
     080 "Track Status"
         definition
             Status of a track.
-        extended 8 8
+        extended
             MON ""
                 element 1
                     table
@@ -105,6 +105,7 @@ items
                     table
                         0: Confirmed track
                         1: Tentative track
+            -
             SIM ""
                 element 1
                     table
@@ -140,6 +141,7 @@ items
                     table
                         0: Complementary service used
                         1: Background service used
+            -
             AMA ""
                 element 1
                     table
@@ -169,6 +171,7 @@ items
                         1: Friendly target
                         2: Unknown target
                         3: No reply
+            -
             CST ""
                 element 1
                     table
@@ -204,6 +207,7 @@ items
                     table
                         0: Default value
                         1: Assigned Mode A Code Conflict (same discrete Mode A Code assigned to another track)
+            -
             SDS ""
                 element 2
                     table
@@ -232,6 +236,7 @@ items
                     table
                         0: Default value
                         1: Track created / updated with FPL data
+            -
             DUPT ""
                 element 1
                     table
@@ -248,6 +253,7 @@ items
                         0: Default value
                         1: Duplicate Flight Plan due to manual correlation
             spare 4
+            -
         remark
             Notes:
 
@@ -613,16 +619,19 @@ items
     270 "Target Size and Orientation"
         definition
             Target size defined as length and width of the detected target, and orientation.
-        extended 8 8
+        extended
             LENGTH "Length"
                 element 7
                     unsigned quantity 1 0 "m"
+            -
             ORIENTATION "Orientation"
                 element 7
                     unsigned quantity 360 7 "°"
+            -
             WIDTH "Width"
                 element 7
                     unsigned quantity 1 0 "m"
+            -
         remark
             Notes:
 
@@ -1108,7 +1117,7 @@ items
                         element 13
                             signed quantity 25 0 "ft" >= -1300 <= 100000
             TIS "Trajectory Intent Status"
-                extended 8 8
+                extended
                     NAV "TID Available"
                         element 1
                             table
@@ -1120,6 +1129,7 @@ items
                                 0: Trajectory intent data is valid
                                 1: Trajectory intent data is not valid
                     spare 5
+                    -
             TID "Trajectory Intent Data"
                 repetitive 8
                     group
@@ -1726,19 +1736,21 @@ items
     510 "Composed Track Number"
         definition
             Identification of a system track.
-        extended 24 24
+        extended
             MIDENT "Master System Unit Identification"
                 element 8
                     raw
             MTRACK "Master System Track Number"
                 element 15
                     raw
+            -
             SIDENT "Slave System Unit Identification"
                 element 8
                     raw
             STRACK "Slave System Track Number"
                 element 15
                     raw
+            -
         remark
             Notes:
 

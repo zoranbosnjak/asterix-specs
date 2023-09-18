@@ -80,13 +80,11 @@ instance MkBlock Variation where
             line "group"
             indent $ mapM_ mkBlock lst
 
-        Extended et n1 n2 lst -> do
-            fmt ("extended " % F.string % int % " " % int) fx n1 n2
-            indent $ mapM_ mkBlock lst
-          where
-            fx = case et of
-                ExtendedRegular -> ""
-                ExtendedNoTrailingFx -> "no-trailing-fx "
+        Extended lst -> do
+            line "extended"
+            indent $ forM_ lst $ \case
+                Nothing -> "-"
+                Just item -> mkBlock item
 
         Repetitive rep variation -> do
             case rep of
@@ -415,17 +413,11 @@ pGroup = Group . snd <$> parseList (MC.string "group") pItem
 -- | Parse 'extended' item.
 pExtended :: Parser Variation
 pExtended = do
-    ((et, n1,n2), lst) <- parseList parseHeader pItem
-    return $ Extended et n1 n2 lst
+    (_a, b) <- parseList (MC.string "extended") pListElement
+    return $ Extended b
   where
-    parseHeader = do
-        MC.string "extended" >> sc
-        et <-
-            (try (MC.string "no-trailing-fx" <* sc) >> pure ExtendedNoTrailingFx)
-            <|> pure ExtendedRegular
-        n1 <- L.decimal <* sc
-        n2 <- L.decimal
-        return (et, n1, n2)
+    pListElement sc' = try pDash <|> (Just <$> pItem sc')
+    pDash = MC.char '-' >> pure Nothing
 
 -- | Parse 'repetitive' item.
 pRepetitive :: Parser Variation

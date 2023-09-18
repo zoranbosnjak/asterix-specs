@@ -131,7 +131,8 @@ main = withUtf8 $ execParser opts >>= \case
                         next = \case
                             Element size _ -> ("Element " <> T.pack (show size), return ())
                             Group lst -> ("Group", mapM_ (dumpItem path) lst)
-                            Extended _ _ _ lst -> ("Extended", mapM_ (dumpItem path) lst)
+                            Extended lst -> ("Extended", mapM_ (dumpItem path)
+                                (catMaybes lst))
                             Repetitive _ var -> ("Repetitive", snd $ next var)
                             Explicit _ -> ("Explicit", return ())
                             RandomFieldSequencing -> ("Rfs", return ())
