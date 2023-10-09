@@ -47,11 +47,10 @@ focusRuleContent = folding $ \case
 
 focusContentUnit :: Getter Content (Maybe Unit)
 focusContentUnit = to $ \case
-    ContentQuantity _signed _number _fractBits unit _constraints -> Just unit
+    ContentQuantity _signedness _number _fractBits unit _constraints -> Just unit
     _ -> Nothing
 
 focusContentScaling :: Getter Content (Maybe Number)
 focusContentScaling = to $ \case
-    ContentQuantity _signed scaling _fractBits _unit _constraints -> Just scaling
+    ContentQuantity _signedness scaling _fractBits _unit _constraints -> Just scaling
     _ -> Nothing
-

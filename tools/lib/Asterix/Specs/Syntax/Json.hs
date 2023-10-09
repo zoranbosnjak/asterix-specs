@@ -82,12 +82,12 @@ instance FromJSON Constrain where
         Just "<=" -> LessThanOrEqualTo <$> v .: "value"
         _ -> typeMismatch "Constrain" $ String "wrong type"
 
-instance ToJSON Signed where
+instance ToJSON Signedness where
     toJSON = \case
         Unsigned -> toJSON False
         Signed -> toJSON True
 
-instance FromJSON Signed  where
+instance FromJSON Signedness  where
     parseJSON s = bool Unsigned Signed <$> parseJSON s
 
 instance ToJSON StringType where
@@ -134,14 +134,14 @@ instance ToJSON Content where
             [ "type" .= ("String" :: String)
             , "variation" .= st
             ]
-        ContentInteger signed lst -> object
+        ContentInteger signedness lst -> object
             [ "type" .= ("Integer" :: String)
-            , "signed" .= signed
+            , "signed" .= signedness
             , "constraints" .= lst
             ]
-        ContentQuantity signed scaling fractional unit constraints -> object
+        ContentQuantity signedness scaling fractional unit constraints -> object
             [ "type" .= ("Quantity" :: String)
-            , "signed" .= signed
+            , "signed" .= signedness
             , "scaling" .= scaling
             , "fractionalBits" .= fractional
             , "unit"    .= unit
@@ -407,4 +407,3 @@ syntax = Syntax
     decoder filename s = case eitherDecodeStrict' s of
         Left e -> Left $ filename ++ ": " ++ e
         Right val -> Right val
-

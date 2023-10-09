@@ -44,14 +44,14 @@ instance MkBlock Content where
             StringAscii -> "ascii"
             StringICAO -> "icao"
             StringOctal -> "octal"
-        ContentInteger signed constraints -> do
-            let sig = toLower <$> show signed
+        ContentInteger signedness constraints -> do
+            let sig = toLower <$> show signedness
                 cst = case constraints of
                     [] -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
             fmt (F.string % " integer" % stext) sig cst
-        ContentQuantity signed scaling fract unit constraints -> do
-            let sig = toLower <$> show signed
+        ContentQuantity signedness scaling fract unit constraints -> do
+            let sig = toLower <$> show signedness
                 cst = case constraints of
                     [] -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
@@ -337,9 +337,9 @@ pPaths = do
     rest <- many (MC.char '/' >> pName)
     return $ x:rest
 
--- | Parse Signed.
-pSigned :: Parser Signed
-pSigned = tryOne
+-- | Parse Signedness.
+pSignedness :: Parser Signedness
+pSignedness = tryOne
     [ MC.string "unsigned" >> pure Unsigned
     , MC.string "signed" >> pure Signed
     ]
@@ -371,10 +371,10 @@ pContent = tryOne
             , MC.string "octal" >> pure StringOctal
             ]
     , ContentInteger
-        <$> pSigned <* (sc >> MC.string "integer")
+        <$> pSignedness <* (sc >> MC.string "integer")
         <*> (many (sc >> pConstrain))
     , ContentQuantity
-        <$> pSigned <* (sc >> MC.string "quantity" >> sc)
+        <$> pSignedness <* (sc >> MC.string "quantity" >> sc)
         <*> pNumber <* sc
         <*> L.decimal <* sc
         <*> (T.pack <$> stringLiteral)
@@ -574,4 +574,3 @@ syntax = Syntax
     encoder = encodeUtf8 . TL.toStrict . BL.toLazyText . renderBlockM 4 . mkBlock
     decoder filename s = first errorBundlePretty $
         parse (pAsterix <* eof) filename (decodeUtf8 s)
-

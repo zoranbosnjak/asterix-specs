@@ -107,7 +107,7 @@ isNegative = \case
     NumberQ val -> val < 0
     NumberR val -> val < 0
 
-checkNonNegative :: Signed -> [Constrain] -> [ValidationError]
+checkNonNegative :: Signedness -> [Constrain] -> [ValidationError]
 checkNonNegative Signed _ = []
 checkNonNegative Unsigned lst = join $ do
     constrain <- lst
@@ -404,4 +404,3 @@ instance Validate Asterix where
     validate warnings = \case
         AsterixBasic x -> validate warnings x
         AsterixExpansion x -> validate warnings x
-

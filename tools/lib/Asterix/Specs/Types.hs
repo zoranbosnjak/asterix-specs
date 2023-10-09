@@ -50,7 +50,7 @@ data Constrain
     | LessThanOrEqualTo Number
     deriving (Generic, Eq, Ord, Show)
 
-data Signed
+data Signedness
     = Signed
     | Unsigned
     deriving (Generic, Eq, Ord, Show)
@@ -76,10 +76,10 @@ data Content
     | ContentString
         StringType
     | ContentInteger
-        Signed
+        Signedness
         [Constrain]
     | ContentQuantity
-        Signed      -- unsigned/signed
+        Signedness  -- unsigned/signed
         Number      -- scaling factor
         FractBits   -- number for fractional bits
         Unit        -- unit
@@ -175,4 +175,3 @@ data Asterix
     = AsterixBasic Basic
     | AsterixExpansion Expansion
     deriving (Generic, Eq, Ord, Show)
-

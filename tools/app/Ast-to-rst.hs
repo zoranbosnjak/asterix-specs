@@ -79,7 +79,7 @@ numRational = \case
     NumberQ val -> val
     NumberR val -> val
 
-tSig :: Signed -> Text
+tSig :: Signedness -> Text
 tSig = \case
     Signed -> "signed"
     Unsigned -> "unsigned"
@@ -360,4 +360,3 @@ main = withUtf8 $ do
     let path = optPath opt
     ast <- loadSpec path (BS.readFile path)
     BS.putStr $ T.encodeUtf8 $ TL.toStrict $ BL.toLazyText $ renderBlockM 4 (mkBlock mempty ast)
-

@@ -37,7 +37,7 @@ data Constrain
     | LessThan Number
     | LessThanOrEqualTo Number
 
-data Signed
+data Signedness
     = Signed
     | Unsigned
 
@@ -59,10 +59,10 @@ data Content
     | ContentString
         StringType
     | ContentInteger
-        Signed
+        Signedness
         [Constrain]
     | ContentQuantity
-        Signed      -- unsigned/signed
+        Signedness  -- unsigned/signed
         Number      -- scaling factor
         FractBits   -- number for fractional bits
         Unit        -- unit
