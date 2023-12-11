@@ -33,8 +33,8 @@ in with packages; runCommand name
     # 'tools' and 'toolsStatic' produce the same result
     # (diff will report an error if not)
 
-    echo "validate, copy original"
-    ${tools}/bin/aspecs validate -f ${orig} --ast
+    echo "validate"
+    ${tools}/bin/aspecs validate -f ${orig} --ast --warnings
     cp ${orig} $out/definition.ast
 
     echo "create fingerprint"
@@ -48,6 +48,7 @@ in with packages; runCommand name
     ${toolsStatic}/bin/aspecs convert -f ${orig} --ast --ast > $out/definition.txt2
     diff $out/definition.txt $out/definition.txt2
     rm $out/definition.txt2
+    diff $out/definition.ast $out/definition.txt # expect exactly the same (prettified)
     ${tools}/bin/aspecs checksum -f $out/definition.txt --ast > $out/fingerprint2
     diff $out/fingerprint $out/fingerprint2
     rm $out/fingerprint2
@@ -67,4 +68,3 @@ in with packages; runCommand name
     echo "convert rst -> pdf"
     ${rst-to-pdf}/bin/rst-to-pdf $out/definition.rst $out/definition.pdf
   ''
-
