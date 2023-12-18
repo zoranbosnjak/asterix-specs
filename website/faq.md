@@ -76,26 +76,45 @@ During automatic conversion process, it is verified that all supported formats
 generate the same file signature, which is a very strong assurance that all formats
 contain the same definitions.
 
-## Why LSB is missing in definitions?
+## The LSB numeric expression
 
-It is not missing. It is defined using *scaling factor* and number of *fractional bits*.
-The LSB value is calculated using the following formula:
-
-```math
-LSB = scaling_factor / 2^fractional_bits
-```
-
-It is implemented in this way to avoid rounding error in specifications.
+The LSB (least significant bit) value is defined in the form of precise
+expression, instead of a decimal number. This is to avoid rounding error
+in specifications.
 
 For example, the extreme case is item `I062/105/LAT`.
-It is defined by using:
+It is defined as `180/2^25`.
 
-- scaling factor: `180`
-- fractional bits: `25`
+If specified as fixed digit decimal number, like `0.00000536442` or
+`5.364418029785156e-6` (more valid digits), some unexpected rounding
+error might occur. It is up to library implementation
+to decide the evaluation scenario and required precision. For example,
+the following recursive function can be used to convert from
+`Number` to `Double`:
 
-Both factors are precise, and the resulting LSB is calculated as `180/2^25`.
-If specified as decimal number, like `0.00000536442`,
-some unexpected rounding error might occur.
+```haskell
+-- in haskell
+realNum :: Number -> Double
+realNum = \case
+    NumInt i -> fromIntegral i
+    NumDiv a b -> realNum a / realNum b
+    NumPow a b -> fromIntegral (a ^ b)
+```
+
+```python
+# in python if reading from 'json' format
+def get_number(value):
+    t = value['type']
+    if t == 'Integer':
+        return float(value['value'])
+    if t == 'Div':
+        a = get_number(value['numerator'])
+        b = get_number(value['denominator'])
+        return a/b
+    if t == 'Pow':
+        return float(pow(value['base'], value['exponent']))
+    raise Exception('unexpected value type {}'.format(t))
+```
 
 ## Some unsorted remarks about asterix
 
@@ -172,4 +191,3 @@ you some time when implementing asterix encoder/decoder.
   with the intention to extend it with the FX bit, for example `I002/050`.
   In this project, such items are handled as a special case of *repetitive*
   item, denoted as `repetitive fx`.
-

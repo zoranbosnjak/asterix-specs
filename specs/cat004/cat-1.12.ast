@@ -237,7 +237,7 @@ items
             Absolute time stamping of the message in the form of elapsed time since
             last midnight
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
 
     030 "Track Number 1"
         definition
@@ -592,38 +592,38 @@ items
                 description
                     Time remaining to actual conflict situation
                 element 24
-                    unsigned quantity 1 7 "s"
+                    unsigned quantity 1/2^7 "s"
             TCA "Time to Closest Approach"
                 description
                     Time to closest proximity between entities in conflict
                 element 24
-                    unsigned quantity 1 7 "s"
+                    unsigned quantity 1/2^7 "s"
             CHS "Current Horizontal Separation"
                 description
                     Current horizontal separation
                 element 24
-                    unsigned quantity 1 1 "m"
+                    unsigned quantity 1/2 "m"
             MHS "Estimated Minimum Horizontal Separation"
                 description
                     Estimated minimum horizontal separation.
                 element 16
-                    unsigned quantity 1 1 "m"
+                    unsigned quantity 1/2 "m"
             CVS "Current Vertical Separation"
                 description
                     Current vertical separation
                 element 16
-                    unsigned quantity 25 0 "ft"
+                    unsigned quantity 25 "ft"
             MVS "Estimated Minimum Vertical Separation"
                 description
                     Estimated Minimum Vertical Separation
                 element 16
-                    unsigned quantity 25 0 "ft"
+                    unsigned quantity 25 "ft"
 
     074 "Longitudinal Deviation"
         definition
             Longitudinal deviation for Route Adherence Monitoring, in two’s complement.
         element 16
-            signed quantity 32 0 "m"
+            signed quantity 32 "m"
         remark
             Note:
                 - Longitudinal deviation will be positive if the aircraft is ahead of its
@@ -635,7 +635,7 @@ items
         definition
             Transversal distance deviation for Route Adherence Monitoring, in two’s complement.
         element 24
-            signed quantity 1 1 "m"
+            signed quantity 1/2 "m"
         remark
             Note:
                - Deviation to the right of the track will be coded as a positive value.
@@ -645,7 +645,7 @@ items
         definition
             Vertical Deviation from planned altitude, in two’s complement
         element 16
-            signed quantity 25 0 "ft"
+            signed quantity 25 "ft"
         remark
             Note:
                 - Positive value if aircraft is above planned altitude
@@ -872,12 +872,12 @@ items
                 description
                     Probability of the conflict
                 element 8
-                    unsigned quantity 1 1 "%"
+                    unsigned quantity 1/2 "%"
             CD "Conflict Duration"
                 description
                     The duration of the conflict is the elapsed time since the declaration of the conflict.
                 element 24
-                    unsigned quantity 1 7 "s"
+                    unsigned quantity 1/2^7 "s"
         remark
             Note:
                 If no Table Id is defined for a message type, only the value of the CS
@@ -912,30 +912,30 @@ items
                 group
                     LAT "In WGS-84 in Two’s Complement"
                         element 32
-                            signed quantity 180 25 "°" >= -90 <= 90
+                            signed quantity 180/2^25 "°" >= -90 <= 90
                     LON "In WGS-84 in Two’s Complement"
                         element 32
-                            signed quantity 180 25 "°" >= -180 < 180
+                            signed quantity 180/2^25 "°" >= -180 < 180
                     ALT "Altitude of Predicted Conflict"
                         element 16
-                            signed quantity 25 0 "ft" >= -1500 <= 150000
+                            signed quantity 25 "ft" >= -1500 <= 150000
             CPC "Predicted Conflict Position for the Aircraft 1 Involved in the Conflict"
                 group
                     X "Starting X-position of the Conflict"
                         element 24
-                            signed quantity 1 1 "m"
+                            signed quantity 1/2 "m"
                     Y "Starting Y-position of the Conflict"
                         element 24
-                            signed quantity 1 1 "m"
+                            signed quantity 1/2 "m"
                     Z "Starting Z-position of the Conflict"
                         element 16
-                            signed quantity 25 0 "ft" >= -1500 <= 150000
+                            signed quantity 25 "ft" >= -1500 <= 150000
             TT1 "Time to Runway Threshold for First Approaching Aircraft in a RIMCA"
                 element 24
-                    unsigned quantity 1 7 "s"
+                    unsigned quantity 1/2^7 "s"
             DT1 "Distance to Runway Threshold for Aircraft 1 Involved in a RIMCA"
                 element 16
-                    unsigned quantity 1 1 "m"
+                    unsigned quantity 1/2 "m"
             AC1 "Characteristics of Aircraft 1 Involved in the Conflict"
                 extended
                     GATOAT "Identification of Conflict Categories Definition Table"
@@ -992,10 +992,10 @@ items
                     spare 5
                     NBR ""
                         element 27
-                            unsigned quantity 1 0 "" >= 0 <= 99999999
+                            unsigned quantity 1 "" >= 0 <= 99999999
             CF1 "Cleared Flight Level for Aircraft 1 Involved in the Conflict"
                 element 16
-                    unsigned quantity 1 2 "FL"
+                    unsigned quantity 1/2^2 "FL"
         remark
             Notes:
 
@@ -1102,30 +1102,30 @@ items
                 group
                     LAT "In WGS-84 in Two’s Complement"
                         element 32
-                            signed quantity 180 25 "°" >= -90 <= 90
+                            signed quantity 180/2^25 "°" >= -90 <= 90
                     LON "In WGS-84 in Two’s Complement"
                         element 32
-                            signed quantity 180 25 "°" >= -180 < 180
+                            signed quantity 180/2^25 "°" >= -180 < 180
                     ALT "Altitude of Predicted Conflict"
                         element 16
-                            signed quantity 25 0 "ft" >= -1500 <= 150000
+                            signed quantity 25 "ft" >= -1500 <= 150000
             CPL "Predicted Conflict Position for the Aircraft 2 Involved in the Conflict"
                 group
                     X "Starting X-position of the Conflict"
                         element 24
-                            signed quantity 1 1 "m"
+                            signed quantity 1/2 "m"
                     Y "Starting Y-position of the Conflict"
                         element 24
-                            signed quantity 1 1 "m"
+                            signed quantity 1/2 "m"
                     Z "Starting Z-position of the Conflict"
                         element 16
-                            signed quantity 25 0 "ft" >= -1500 <= 150000
+                            signed quantity 25 "ft" >= -1500 <= 150000
             TT2 "Time to Runway Threshold for Second Approaching Aircraft in a RIMCA"
                 element 24
-                    unsigned quantity 1 7 "s"
+                    unsigned quantity 1/2^7 "s"
             DT2 "Distance to Runway Threshold for Aircraft 2 Involved in a RIMCA"
                 element 16
-                    unsigned quantity 1 1 "m"
+                    unsigned quantity 1/2 "m"
             AC2 "Characteristics of Aircraft 2 Involved in the Conflict"
                 extended
                     GATOAT "Identification of Conflict Categories Definition Table"
@@ -1182,10 +1182,10 @@ items
                     spare 5
                     NBR ""
                         element 27
-                            unsigned quantity 1 0 "" >= 0 <= 99999999
+                            unsigned quantity 1 "" >= 0 <= 99999999
             CF2 "Cleared Flight Level for Aircraft 2 Involved in the Conflict"
                 element 16
-                    unsigned quantity 1 2 "FL"
+                    unsigned quantity 1/2^2 "FL"
         remark
             Notes:
 

@@ -48,7 +48,7 @@ items
         definition
             UTC time of transmission of this ASTERIX message.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Note:
                 The TOD value is reset to zero at every midnight UTC. 
@@ -74,10 +74,10 @@ items
         group
             LAT "Latitude in WGS-84"
                 element 32
-                    signed quantity 180 25 "°" >= -90 <= 90
+                    signed quantity 180/2^25 "°" >= -90 <= 90
             LON "Longitude in WGS-84"
                 element 32
-                    signed quantity 180 25 "°" >= -180 < 180
+                    signed quantity 180/2^25 "°" >= -180 < 180
         remark
             Note:
                 The LSB provides a resolution at least better than 0.6 meters.
@@ -93,10 +93,10 @@ items
         group
             X "X-coordinate"
                 element 24
-                    signed quantity 1 1 "m" >= -4194300 <= 4194300
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
             Y "Y-coordinate"
                 element 24
-                    signed quantity 1 1 "m" >= -4194300 <= 4194300
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
         remark
             Note:
                 The Cartesian coordinates are relative to an agreed System Reference Point. The 
@@ -112,7 +112,7 @@ items
             Bearing of the detected radio transmission, starting at the position contained in 
             I205/050 and given relative to this position.
         element 16
-            unsigned quantity 0.01 0 "°" >= 0 <= 360
+            unsigned quantity 1/100 "°" >= 0 <= 360
         remark
             Note:
                 The angle is given in degrees, in clock-wise notation, 
@@ -124,7 +124,7 @@ items
             I205/060, projected to the Cartesian Coordinate System relative to the System 
             Reference Point (as used for I205/ 060).
         element 16
-            unsigned quantity 0.01 0 "°" >= 0 <= 360
+            unsigned quantity 1/100 "°" >= 0 <= 360
         remark
             Note:
                 The angle is given in degrees, in clock-wise notation, 
@@ -158,7 +158,7 @@ items
             Uncertainty estimation of the RDF System. The transmitter is expected to be 
             within the provided radius around the calculated position.
         element 8
-            unsigned quantity 100 0 "m" >= 0 <= 25500
+            unsigned quantity 100 "m" >= 0 <= 25500
 
     120 "Contributing Sensors"
         definition
@@ -180,10 +180,10 @@ items
         group
             LAT "Latitude in WGS-84"
                 element 32
-                    signed quantity 180 25 "°" >= -90 <= 90
+                    signed quantity 180/2^25 "°" >= -90 <= 90
             LON "Longitude in WGS-84"
                 element 32
-                    signed quantity 180 25 "°" >= -180 < 180
+                    signed quantity 180/2^25 "°" >= -180 < 180
         remark
             Note:
                 The LSB provides a resolution at least better than 0.6 meters.
@@ -196,10 +196,10 @@ items
         group
             X "X-coordinate"
                 element 24
-                    signed quantity 1 1 "m" >= -4194300 <= 4194300
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
             Y "Y-coordinate"
                 element 24
-                    signed quantity 1 1 "m" >= -4194300 <= 4194300
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
         remark
             Note:
                 The Cartesian coordinates are relative to an agreed System Reference Point. The 
@@ -213,7 +213,7 @@ items
             transmission. The transmitter is estimated to be within the provided radius around 
             the detected position.
         element 8
-            unsigned quantity 100 0 "m" >= 0 <= 25500
+            unsigned quantity 100 "m" >= 0 <= 25500
 
     160 "Track Number"
         definition
@@ -237,7 +237,7 @@ items
         definition
             The level of the signal received by an RDF sensor.
         element 16
-            signed quantity 0.01 0 "dBµV"
+            signed quantity 1/100 "dBµV"
 
     190 "Signal Quality"
         definition
@@ -253,7 +253,7 @@ items
         definition
             The elevation of the signal received by an RDF sensor.
         element 16
-            signed quantity 0.01 0 "°" >= -90 <= 90
+            signed quantity 1/100 "°" >= -90 <= 90
 
     SP "Special Purpose Field"
         definition

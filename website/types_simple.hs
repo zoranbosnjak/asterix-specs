@@ -25,9 +25,9 @@ data Date = Date
     }
 
 data Number
-    = NumberZ Integer
-    | NumberQ Rational
-    | NumberR Rational
+    = NumInt Integer
+    | NumDiv Number Number
+    | NumPow Integer Integer
 
 data Constrain
     = EqualTo Number
@@ -63,8 +63,7 @@ data Content
         [Constrain]
     | ContentQuantity
         Signedness  -- unsigned/signed
-        Number      -- scaling factor
-        FractBits   -- number for fractional bits
+        Number      -- lsb
         Unit        -- unit
         [Constrain]
     | ContentBds
@@ -117,7 +116,7 @@ data Item
 data UapSelector = UapSelector
     { selItem :: [Name]             -- UAP depends on this item
     , selTable :: [(Int, UapName)]  -- value lookup table
-    } 
+    }
 
 -- User applicaton profile type
 data Uap

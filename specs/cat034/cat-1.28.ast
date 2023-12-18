@@ -51,13 +51,13 @@ items
         definition
             Eight most significant bits of the antenna azimuth defining a particular azimuth sector.
         element 8
-            unsigned quantity 360 8 "°"
+            unsigned quantity 360/2^8 "°"
 
     030 "Time of Day"
         definition
             Absolute time stamping expressed as UTC time.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Notes:
 
@@ -68,7 +68,7 @@ items
             Antenna rotation period as measured between two consecutive North crossings
             or as averaged during a period of time.
         element 16
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Notes:
 
@@ -357,10 +357,10 @@ items
         group
             RNG "Range Error"
                 element 8
-                    signed quantity 1 7 "NM"
+                    signed quantity 1/2^7 "NM"
             AZM "Azimuth Error"
                 element 8
-                    signed quantity 360 14 "°"
+                    signed quantity 360/2^14 "°"
         remark
             Notes:
 
@@ -372,16 +372,16 @@ items
         group
             RHOST "Rho Start"
                 element 16
-                    unsigned quantity 1 8 "NM" <= 256
+                    unsigned quantity 1/2^8 "NM" <= 256
             RHOEND "Rho End"
                 element 16
-                    unsigned quantity 1 8 "NM" <= 256
+                    unsigned quantity 1/2^8 "NM" <= 256
             THETAST "Theta Start"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
             THETAEND "Theta End"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
 
     110 "Data Filter"
         definition
@@ -413,13 +413,13 @@ items
         group
             HGT "Height of Data Source"
                 element 16
-                    signed quantity 1 0 "m"
+                    signed quantity 1 "m"
             LAT "Latitude"
                 element 24
-                    signed quantity 180 23 "°" >= -90 <= 90
+                    signed quantity 180/2^23 "°" >= -90 <= 90
             LON "Longitude"
                 element 24
-                    signed quantity 180 23 "°" >= -180 <= 180
+                    signed quantity 180/2^23 "°" >= -180 <= 180
 
     RE "Reserved Expansion Field"
         definition

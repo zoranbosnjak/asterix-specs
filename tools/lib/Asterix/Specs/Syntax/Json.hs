@@ -44,24 +44,30 @@ instance FromJSON Date where
 
 instance ToJSON Number where
     toJSON = \case
-        NumberZ val -> object
+        NumInt val -> object
             [ "type" .= ("Integer" :: String)
             , "value" .= val
             ]
-        NumberQ val -> object
-            [ "type" .= ("Ratio" :: String)
-            , "value" .= val
+        NumDiv a b -> object
+            [ "type" .= ("Div" :: String)
+            , "numerator" .= a
+            , "denominator" .= b
             ]
-        NumberR val -> object
-            [ "type" .= ("Real" :: String)
-            , "value" .= (fromRational val :: Double)
+        NumPow a b -> object
+            [ "type" .= ("Pow" :: String)
+            , "base" .= a
+            , "exponent" .= b
             ]
 
 instance FromJSON Number where
     parseJSON = withObject "Number" $ \v -> case KM.lookup "type" v of
-        Just "Integer" -> NumberZ <$> v .: "value"
-        Just "Ratio" -> NumberQ <$> v .: "value"
-        Just "Real" -> NumberR <$> v .: "value"
+        Just "Integer" -> NumInt <$> v .: "value"
+        Just "Div" -> NumDiv
+            <$> v .: "numerator"
+            <*> v .: "denominator"
+        Just "Pow" -> NumPow
+            <$> v .: "base"
+            <*> v .: "exponent"
         _ -> typeMismatch "Number" $ String "wrong type"
 
 instance ToJSON Constrain where
@@ -139,11 +145,10 @@ instance ToJSON Content where
             , "signed" .= signedness
             , "constraints" .= lst
             ]
-        ContentQuantity signedness scaling fractional unit constraints -> object
+        ContentQuantity signedness lsb unit constraints -> object
             [ "type" .= ("Quantity" :: String)
             , "signed" .= signedness
-            , "scaling" .= scaling
-            , "fractionalBits" .= fractional
+            , "lsb" .= lsb
             , "unit"    .= unit
             , "constraints" .= constraints
             ]
@@ -164,8 +169,7 @@ instance FromJSON Content  where
             <*> v .: "constraints"
         Just "Quantity" -> ContentQuantity
             <$> v .: "signed"
-            <*> v .: "scaling"
-            <*> v .: "fractionalBits"
+            <*> v .: "lsb"
             <*> v .: "unit"
             <*> v .: "constraints"
         Just "Bds" -> ContentBds

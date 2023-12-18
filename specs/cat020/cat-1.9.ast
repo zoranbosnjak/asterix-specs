@@ -131,10 +131,10 @@ items
         group
             LAT "Latitude"
                 element 32
-                    signed quantity 180 25 "°" >= -90 <= 90
+                    signed quantity 180/2^25 "°" >= -90 <= 90
             LON "Longitude"
                 element 32
-                    signed quantity 180 25 "°" >= -180 < 180
+                    signed quantity 180/2^25 "°" >= -180 < 180
 
     042 "Position in Cartesian Coordinates"
         definition
@@ -143,10 +143,10 @@ items
         group
             X "X-coordinate"
                 element 24
-                    signed quantity 1 1 "m" >= -4194300 <= 4194300
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
             Y "Y-coordinate"
                 element 24
-                    signed quantity 1 1 "m" >= -4194300 <= 4194300
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
 
     050 "Mode-2 Code in Octal Representation"
         definition
@@ -242,7 +242,7 @@ items
                         1: Garbled code
             FL "Flight Level"
                 element 14
-                    signed quantity 1 2 "FL"
+                    signed quantity 1/2^2 "FL"
         remark
             Notes:
 
@@ -353,7 +353,7 @@ items
             Vertical distance between the target and the projection of its position
             on the earth’s ellipsoid, as defined by WGS84, in two’s complement form.
         element 16
-            signed quantity 25 2 "ft" >= -204800 <= 204800
+            signed quantity 25/2^2 "ft" >= -204800 <= 204800
 
     110 "Measured Height (Local Cartesian Coordinates)"
         definition
@@ -361,13 +361,13 @@ items
             Reference Point as defined in item I019/610, in two’s complement form,
             based on a direct measurement not related to barometric pressure.
         element 16
-            signed quantity 25 2 "ft" >= -204800 <= 204800
+            signed quantity 25/2^2 "ft" >= -204800 <= 204800
 
     140 "Time of Day"
         definition
             Absolute time stamping expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
 
     161 "Track Number"
         definition
@@ -436,10 +436,10 @@ items
         group
             VX ""
                 element 16
-                    signed quantity 1 2 "m/s" >= -8192 <= 8192
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
             VY ""
                 element 16
-                    signed quantity 1 2 "m/s" >= -8192 <= 8192
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
 
     210 "Calculated Acceleration"
         definition
@@ -447,10 +447,10 @@ items
         group
             AX ""
                 element 8
-                    signed quantity 1 2 "m/s2" >= -31 <= 31
+                    signed quantity 1/2^2 "m/s2" >= -31 <= 31
             AY ""
                 element 8
-                    signed quantity 1 2 "m/s2" >= -31 <= 31
+                    signed quantity 1/2^2 "m/s2" >= -31 <= 31
         remark
             Notes:
                 1. Maximum value means "maximum value or above"
@@ -669,27 +669,27 @@ items
                 group
                     X "DOP (X-Component)"
                         element 16
-                            unsigned quantity 1 2 ""
+                            unsigned quantity 1/2^2 ""
                     Y "DOP (Y-Component)"
                         element 16
-                            unsigned quantity 1 2 ""
+                            unsigned quantity 1/2^2 ""
                     XY "DOP (Correlation XY)"
                         element 16
-                            unsigned quantity 1 2 ""
+                            unsigned quantity 1/2^2 ""
             SDP "Standard Deviation of Position"
                 group
                     X "SDP (X-Component)"
                         element 16
-                            unsigned quantity 1 2 "m"
+                            unsigned quantity 1/2^2 "m"
                     Y "SDP (Y-Component)"
                         element 16
-                            unsigned quantity 1 2 "m"
+                            unsigned quantity 1/2^2 "m"
                     XY "SDP (Correlation XY)"
                         element 16
-                            unsigned quantity 1 2 ""
+                            unsigned quantity 1/2^2 ""
             SDH "Standard Deviation of Geometric Height (WGS 84)"
                 element 16
-                    unsigned quantity 1 1 "m"
+                    unsigned quantity 1/2 "m"
         remark
             Note:
 

@@ -49,10 +49,10 @@ items
         group
             LAT "Latitude in WGS-84 in Two's Complement"
                 element 32
-                    signed quantity 180 31 "°" >= -90 <= 90
+                    signed quantity 180/2^31 "°" >= -90 <= 90
             LON "Longitude in WGS-84 in Two's Complement"
                 element 32
-                    signed quantity 180 31 "°" >= -180 < 180
+                    signed quantity 180/2^31 "°" >= -180 < 180
 
     042 "Calculated Position in Cartesian Co-ordinates"
         definition
@@ -60,10 +60,10 @@ items
         group
             X "X-Component"
                 element 16
-                    signed quantity 1 0 "m" >= -32768 <= 32768
+                    signed quantity 1 "m" >= -32768 <= 32768
             Y "Y-Component"
                 element 16
-                    signed quantity 1 0 "m" >= -32768 <= 32768
+                    signed quantity 1 "m" >= -32768 <= 32768
 
     060 "Mode-3/A Code in Octal Representation"
         definition
@@ -78,7 +78,7 @@ items
         definition
             Last valid and credible flight level used to update the track, in two's complement representation.
         element 16
-            signed quantity 1 2 "FL" >= -12 <= 1500
+            signed quantity 1/2^2 "FL" >= -12 <= 1500
         remark
             Note:
                  The criteria to determine the credibility of the flight level are Tracker dependent.
@@ -88,7 +88,7 @@ items
         definition
             Calculated geometric vertical distance above mean sea level, not related to barometric pressure.
         element 16
-            signed quantity 25 2 "ft" >= -1500 <= 150000
+            signed quantity 25/2^2 "ft" >= -1500 <= 150000
         remark
             Note:
                  The source of altitude is identified in bits (SRC) of item I011/170 Track Status.
@@ -104,13 +104,13 @@ items
                         1: QNH correction applied
             CTBA "Calculated Track Barometric Altitude"
                 element 15
-                    signed quantity 1 2 "FL" >= -15 <= 1500
+                    signed quantity 1/2^2 "FL" >= -15 <= 1500
 
     140 "Time of Track Information"
         definition
             Absolute time stamping expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Note:
                 The time of day value is reset to zero each day at midnight.
@@ -227,10 +227,10 @@ items
         group
             VX "Vx"
                 element 16
-                    signed quantity 1 2 "m/s" >= -8192 <= 8192
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
             VY "Vy"
                 element 16
-                    signed quantity 1 2 "m/s" >= -8192 <= 8192
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
 
     210 "Calculated Acceleration"
         definition
@@ -238,16 +238,16 @@ items
         group
             AX "Ax"
                 element 8
-                    signed quantity 1 2 "m/s2" >= -31 <= 31
+                    signed quantity 1/2^2 "m/s2" >= -31 <= 31
             AY "Ay"
                 element 8
-                    signed quantity 1 2 "m/s2" >= -31 <= 31
+                    signed quantity 1/2^2 "m/s2" >= -31 <= 31
 
     215 "Calculated Rate Of Climb/Descent"
         definition
             Calculated rate of Climb/Descent of an aircraft, in two's complement form.
         element 16
-            signed quantity 25 2 "ft/min" >= -204800 <= 204800
+            signed quantity 25/2^2 "ft/min" >= -204800 <= 204800
 
     245 "Target Identification"
         definition
@@ -273,15 +273,15 @@ items
         extended
             LENGTH "Length"
                 element 7
-                    unsigned quantity 1 0 "m"
+                    unsigned quantity 1 "m"
             -
             ORIENTATION "Orientation"
                 element 7
-                    unsigned quantity 360 7 "°"
+                    unsigned quantity 360/2^7 "°"
             -
             WIDTH "Width"
                 element 7
-                    unsigned quantity 1 0 "m"
+                    unsigned quantity 1 "m"
             -
         remark
             Note:
@@ -293,40 +293,40 @@ items
         compound
             PSR "Age of The Last Primary Detection Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             SSR "Age of the Last Secondary Detection Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             MDA "Age of the Last Mode A Detection Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             MFL "Age of the Last Mode C Detection Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             MDS "Age of the Last Mode S Detection Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             ADS "Age of the Last ADS Report Used to Update the Track"
                 element 16
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             ADB "Age of the Last ADS-B Report Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             MD1 "Age of the Last Valid Mode 1 Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             MD2 "Age of the Last Mode 2 Used to Update the Track"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             LOP "Age of the Last Magentic Loop Detection"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             TRK "Actual Track Age Since First Occurrence"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
             MUL "Age of the Last Multilateration Detection"
                 element 8
-                    unsigned quantity 1 2 "s"
+                    unsigned quantity 1/2^2 "s"
         remark
             Note:
                 The ages are counted from Data Item I011/140, Time Of Track
@@ -584,7 +584,7 @@ items
                     string ascii
             CFL "Current Cleared Flight Level"
                 element 16
-                    unsigned quantity 1 2 "FL"
+                    unsigned quantity 1/2^2 "FL"
             CCP "Current Control Position"
                 group
                     CENTRE "8-bit Group Identification Code"
@@ -679,40 +679,40 @@ items
                 group
                     X "Estimated Accuracy of the Calculated Position of X Component"
                         element 8
-                            unsigned quantity 1 2 "m"
+                            unsigned quantity 1/2^2 "m"
                     Y "Estimated Accuracy of the Calculated Position of Y Component"
                         element 8
-                            unsigned quantity 1 2 "m"
+                            unsigned quantity 1/2^2 "m"
             APW "Estimated Accuracy Of Track Position (WGS84)"
                 group
                     LAT "APW Latitude Component Accuracy"
                         element 16
-                            signed quantity 180 31 "°"
+                            signed quantity 180/2^31 "°"
                     LON "APW Longitude Component Accuracy"
                         element 16
-                            signed quantity 180 31 "°"
+                            signed quantity 180/2^31 "°"
             ATH "Estimated Accuracy Of Track Height"
                 element 16
-                    signed quantity 1 1 "m"
+                    signed quantity 1/2 "m"
             AVC "Estimated Accuracy Of Track Velocity (Cartesian)"
                 group
                     X "Estimated Accuracy of the Calculated Velocity of X Component"
                         element 8
-                            unsigned quantity 0.1 0 "m/s"
+                            unsigned quantity 1/10 "m/s"
                     Y "Estimated Accuracy of the Calculated Velocity of Y Component"
                         element 8
-                            unsigned quantity 0.1 0 "m/s"
+                            unsigned quantity 1/10 "m/s"
             ARC "Estimated Accuracy Of Rate Of Climb / Descent"
                 element 16
-                    signed quantity 0.1 0 "m/s"
+                    signed quantity 1/10 "m/s"
             AAC "Estimated Accuracy Of Acceleration (Cartesian)"
                 group
                     X "Estimated Accuracy Of Acceleration of X Component"
                         element 8
-                            unsigned quantity 0.01 0 "m/s2"
+                            unsigned quantity 1/100 "m/s2"
                     Y "Estimated Accuracy Of Acceleration of Y Component"
                         element 8
-                            unsigned quantity 0.01 0 "m/s2"
+                            unsigned quantity 1/100 "m/s2"
 
     600 "Alert Messages"
         definition

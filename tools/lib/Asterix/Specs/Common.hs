@@ -5,8 +5,6 @@ module Asterix.Specs.Common where
 import           Data.ByteString (ByteString)
 import           Data.Text (Text)
 import qualified Data.Text as T
-import qualified Data.Ratio
-import           Numeric
 import           Formatting as F
 
 import           Asterix.Specs.Types
@@ -23,12 +21,15 @@ data Syntax = Syntax
 instance Show Syntax where
     show = syntaxDescription
 
+-- | Number pretty-printer. Try to avoid unnecessary parentheses.
 showNumber :: Number -> Text
-showNumber = \case
-    NumberZ i -> sformat (int) i
-    NumberQ q -> sformat (int % "/" % int)
-        (Data.Ratio.numerator q) (Data.Ratio.denominator q)
-    NumberR r -> sformat (F.string) (showFFloat Nothing (fromRational r :: Double) "")
+showNumber (NumInt i) = sformat (int) i
+showNumber (NumPow a b) = sformat (int % "^" % int) a b
+showNumber (NumDiv a b) = sformat (stext % "/" % stext) (f a) (f b)
+  where
+    f x = case x of
+        NumDiv _ _ -> "(" <> showNumber x <> ")"
+        _ -> showNumber x
 
 showConstrain :: Constrain -> Text
 showConstrain = \case
@@ -41,4 +42,3 @@ showConstrain = \case
 
 showPath :: [Name] -> Text
 showPath = T.intercalate "/"
-

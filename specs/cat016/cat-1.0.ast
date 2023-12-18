@@ -43,7 +43,7 @@ items
         definition
             Absolute time stamping expressed as UTC time.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             NOTE - The time of day value is reset to zero each day at midnight.
 
@@ -52,7 +52,7 @@ items
             Data item to indicate the reporting period of the system
             configuration messages.
         element 8
-            unsigned quantity 1 0 "s" > 1
+            unsigned quantity 1 "s" > 1
         remark
             NOTE - The item will be sent periodically (every SCRP) and each
             time a value change occurs.
@@ -85,10 +85,10 @@ items
         group
             LAT "Latitude"
                 element 32
-                    signed quantity 180 31 "°" >= -90 <= 90
+                    signed quantity 180/2^31 "°" >= -90 <= 90
             LON "Longitude"
                 element 32
-                    signed quantity 180 31 "°" >= -180 < 180
+                    signed quantity 180/2^31 "°" >= -180 < 180
         remark
             NOTE - Positive longitude indicates East. Positive latitude
             indicates North.
@@ -101,7 +101,7 @@ items
             Height of the system reference point in Two’s Complement form.
             The height shall use mean sea level as the zero reference level.
         element 16
-            signed quantity 1 2 "m" > -8192 < 8192
+            signed quantity 1/2^2 "m" > -8192 < 8192
         remark
             NOTE - I016/405 shall only be sent together with item I016/400
             “Position of the System Reference Point”.
@@ -116,20 +116,20 @@ items
                         raw
                 LAT "Latitude"
                     element 32
-                        signed quantity 180 31 "°" >= -90 <= 90
+                        signed quantity 180/2^31 "°" >= -90 <= 90
                 LON "Longitude"
                     element 32
-                        signed quantity 180 31 "°" >= -180 < 180
+                        signed quantity 180/2^31 "°" >= -180 < 180
                 ALT "Altitude"
                     element 16
-                        signed quantity 1 2 "m" > -8192 < 8192
+                        signed quantity 1/2^2 "m" > -8192 < 8192
                 TTO "Transmission Time Offset"
                     element 32
-                        signed quantity 2 0 "ns"
+                        signed quantity 2 "ns"
                 spare 4
                 ATO "Accuracy of Transmission Time Offset"
                     element 20
-                        unsigned quantity 1 0 "ns"
+                        unsigned quantity 1 "ns"
                 PCI "Parallel Transmitter Index"
                     element 16
                         unsigned integer
@@ -184,13 +184,13 @@ items
                         raw
                 LAT "Latitude"
                     element 32
-                        signed quantity 180 31 "°" >= -90 <= 90
+                        signed quantity 180/2^31 "°" >= -90 <= 90
                 LON "Longitude"
                     element 32
-                        signed quantity 180 31 "°" >= -180 < 180
+                        signed quantity 180/2^31 "°" >= -180 < 180
                 ALT "Altitude"
                     element 16
-                        signed quantity 1 2 "m" > -8192 < 8192
+                        signed quantity 1/2^2 "m" > -8192 < 8192
         remark
             NOTE - Regarding the Receiver Identification
                 a. The Rx ID shall be used in a unique way for a specific

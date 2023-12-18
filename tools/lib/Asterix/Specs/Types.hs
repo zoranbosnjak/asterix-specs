@@ -36,9 +36,9 @@ data Date = Date
     } deriving (Generic, Eq, Ord, Show)
 
 data Number
-    = NumberZ Integer
-    | NumberQ Rational
-    | NumberR Rational
+    = NumInt Integer
+    | NumDiv Number Number
+    | NumPow Integer Integer
     deriving (Generic, Eq, Ord, Show)
 
 data Constrain
@@ -80,8 +80,7 @@ data Content
         [Constrain]
     | ContentQuantity
         Signedness  -- unsigned/signed
-        Number      -- scaling factor
-        FractBits   -- number for fractional bits
+        Number      -- lsb
         Unit        -- unit
         [Constrain]
     | ContentBds

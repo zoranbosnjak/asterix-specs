@@ -151,10 +151,10 @@ items
         group
             RHO "RHO"
                 element 16
-                    unsigned quantity 1 0 "m" <= 65536
+                    unsigned quantity 1 "m" <= 65536
             TH "Theta"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
 
     041 "Position in WGS-84 Co-ordinates"
         definition
@@ -162,10 +162,10 @@ items
         group
             LAT "Latitude"
                 element 32
-                    signed quantity 180 31 "°" >= -90 <= 90
+                    signed quantity 180/2^31 "°" >= -90 <= 90
             LON "Longitude"
                 element 32
-                    signed quantity 180 31 "°" >= -180 < 180
+                    signed quantity 180/2^31 "°" >= -180 < 180
 
     042 "Position in Cartesian Co-ordinates"
         definition
@@ -173,10 +173,10 @@ items
         group
             X "X Coordinate"
                 element 16
-                    signed quantity 1 0 "m" >= -32768 <= 32768
+                    signed quantity 1 "m" >= -32768 <= 32768
             Y "Y Coordinate"
                 element 16
-                    signed quantity 1 0 "m" >= -32768 <= 32768
+                    signed quantity 1 "m" >= -32768 <= 32768
 
     060 "Mode-3/A Code in Octal Representation"
         definition
@@ -228,7 +228,7 @@ items
                         1: Garbled code
             FL "Flight Level"
                 element 14
-                    signed quantity 1 2 "FL"
+                    signed quantity 1/2^2 "FL"
         remark
             Notes:
 
@@ -241,7 +241,7 @@ items
             Height above local 2D co-ordinate reference system (two's complement)
             based on direct measurements not related to barometric pressure.
         element 16
-            signed quantity 25 2 "ft" >= -204800 <= 204800
+            signed quantity 25/2^2 "ft" >= -204800 <= 204800
 
     131 "Amplitude of Primary Plot"
         definition
@@ -258,7 +258,7 @@ items
         definition
             Absolute time stamping expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Notes:
 
@@ -358,10 +358,10 @@ items
         group
             GSP "Ground Speed"
                 element 16
-                    unsigned quantity 1 14 "NM/s" <= 2
+                    unsigned quantity 1/2^14 "NM/s" <= 2
             TRA "Track Angle"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
 
     202 "Calculated Track Velocity in Cartesian Co-ordinates"
         definition
@@ -370,10 +370,10 @@ items
         group
             VX "X Velocity"
                 element 16
-                    signed quantity 1 4 "m/s" >= -8192 <= 8192
+                    signed quantity 1/2^4 "m/s" >= -8192 <= 8192
             VY "Y Velocity"
                 element 16
-                    signed quantity 1 4 "m/s" >= -8192 <= 8192
+                    signed quantity 1/2^4 "m/s" >= -8192 <= 8192
 
     210 "Calculated Acceleration"
         definition
@@ -381,10 +381,10 @@ items
         group
             AX "X Acceleration"
                 element 8
-                    signed quantity 1 4 "m/s2" >= -31 <= 31
+                    signed quantity 1/2^4 "m/s2" >= -31 <= 31
             AY "Y Acceleration"
                 element 8
-                    signed quantity 1 4 "m/s2" >= -31 <= 31
+                    signed quantity 1/2^4 "m/s2" >= -31 <= 31
 
     220 "Target Address"
         definition
@@ -443,15 +443,15 @@ items
         extended
             LENGTH "Length"
                 element 7
-                    unsigned quantity 1 0 "m"
+                    unsigned quantity 1 "m"
             -
             ORIENTATION "Orientation"
                 element 7
-                    unsigned quantity 360 7 "°"
+                    unsigned quantity 360/2^7 "°"
             -
             WIDTH "Width"
                 element 7
-                    unsigned quantity 1 0 "m"
+                    unsigned quantity 1 "m"
             -
         remark
             Notes:
@@ -469,13 +469,13 @@ items
                         Difference between the radial distance of the plot centre
                         and that of the presence.
                     element 8
-                        signed quantity 1 0 "m" >= -127 <= 127
+                        signed quantity 1 "m" >= -127 <= 127
                 DTHETA ""
                     description
                         Difference between the azimuth of the plot centre and that
                         of the presence.
                     element 8
-                        signed quantity 0.15 0 "°" >= -19.05 <= 19.05
+                        signed quantity 3/20 "°" >= -381/20 <= 381/20
 
     300 "Vehicle Fleet Identification"
         definition
@@ -524,13 +524,13 @@ items
         group
             DEVX "Standard Deviation of X Component"
                 element 8
-                    unsigned quantity 1 2 "m"
+                    unsigned quantity 1/2^2 "m"
             DEVY "Standard Deviation of Y Component"
                 element 8
-                    unsigned quantity 1 2 "m"
+                    unsigned quantity 1/2^2 "m"
             COVXY "Covariance in Two’s Complement Form"
                 element 16
-                    signed quantity 1 2 "m"
+                    signed quantity 1/2^2 "m"
 
     550 "System Status"
         definition

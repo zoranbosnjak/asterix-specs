@@ -63,7 +63,7 @@ items
             in the track message, in the form of elapsed time since
             last mid night, expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Notes:
 
@@ -287,10 +287,10 @@ items
         group
             X "X Coordinate"
                 element 24
-                    signed quantity 1 1 "m"
+                    signed quantity 1/2 "m"
             Y "Y Coordinate"
                 element 24
-                    signed quantity 1 1 "m"
+                    signed quantity 1/2 "m"
 
     105 "Calculated Position In WGS-84 Co-ordinates"
         definition
@@ -299,10 +299,10 @@ items
         group
             LAT "Latitude"
                 element 32
-                    signed quantity 180 25 "°" >= -90 <= 90
+                    signed quantity 180/2^25 "°" >= -90 <= 90
             LON "Longitude"
                 element 32
-                    signed quantity 180 25 "°" >= -180 < 180
+                    signed quantity 180/2^25 "°" >= -180 < 180
         remark
             Notes:
 
@@ -372,10 +372,10 @@ items
                 group
                     LAT "Latitude"
                         element 24
-                            signed quantity 180 23 "°" >= -90 <= 90
+                            signed quantity 180/2^23 "°" >= -90 <= 90
                     LON "Longitude"
                         element 24
-                            signed quantity 180 23 "°" >= -180 < 180
+                            signed quantity 180/2^23 "°" >= -180 < 180
             GA "Mode 5 GNSS-derived Altitude"
                 group
                     spare 1
@@ -386,7 +386,7 @@ items
                                 1: GA reported in 25 ft increments
                     GA "GNSS-derived Altitude of Target, Expressed as Height Above WGS 84 Ellipsoid"
                         element 14
-                            signed quantity 25 0 "ft" >= -1000
+                            signed quantity 25 "ft" >= -1000
             EM1 "Extended Mode 1 Code in Octal Representation"
                 group
                     spare 4
@@ -400,7 +400,7 @@ items
                     and Mode 5 GNSS-derived Altitude (Subfield #4) are valid is given
                     by Time of Day (I048/140) plus Time Offset.
                 element 8
-                    signed quantity 1 7 "s"
+                    signed quantity 1/2^7 "s"
             XP "X Pulse Presence"
                 group
                     spare 3
@@ -467,7 +467,7 @@ items
             Vertical distance between the target and the projection of its position
             on the earth's ellipsoid, as defined by WGS84, in two's complement form.
         element 16
-            signed quantity 25 2 "ft" >= -1500 <= 150000
+            signed quantity 25/2^2 "ft" >= -1500 <= 150000
         remark
             Notes:
 
@@ -486,7 +486,7 @@ items
                         1: QNH correction applied
             CTB "Calculated Track Barometric Altitude"
                 element 15
-                    signed quantity 1 2 "FL" >= -15 <= 1500
+                    signed quantity 1/2^2 "FL" >= -15 <= 1500
         remark
             Notes:
 
@@ -497,7 +497,7 @@ items
             Last valid and credible flight level used to update the track, in two's
             complement form.
         element 16
-            signed quantity 1 2 "FL" >= -15 <= 1500
+            signed quantity 1/2^2 "FL" >= -15 <= 1500
         remark
             Notes:
 
@@ -515,10 +515,10 @@ items
         group
             VX "Velocity (X-component)"
                 element 16
-                    signed quantity 1 2 "m/s" >= -8192 <= 8191.75
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
             VY "Velocity (Y-component)"
                 element 16
-                    signed quantity 1 2 "m/s" >= -8192 <= 8191.75
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
         remark
             Notes:
 
@@ -570,10 +570,10 @@ items
         group
             AX ""
                 element 8
-                    signed quantity 1 2 "m/s2"
+                    signed quantity 1/2^2 "m/s2"
             AY ""
                 element 8
-                    signed quantity 1 2 "m/s2"
+                    signed quantity 1/2^2 "m/s2"
         remark
             Notes:
 
@@ -584,7 +584,7 @@ items
         definition
             Calculated rate of climb/descent of an aircraft in two's complement form.
         element 16
-            signed quantity 25 2 "ft/min"
+            signed quantity 25/2^2 "ft/min"
         remark
             Notes:
 
@@ -622,15 +622,15 @@ items
         extended
             LENGTH "Length"
                 element 7
-                    unsigned quantity 1 0 "m"
+                    unsigned quantity 1 "m"
             -
             ORIENTATION "Orientation"
                 element 7
-                    unsigned quantity 360 7 "°"
+                    unsigned quantity 360/2^7 "°"
             -
             WIDTH "Width"
                 element 7
-                    unsigned quantity 1 0 "m"
+                    unsigned quantity 1 "m"
             -
         remark
             Notes:
@@ -647,52 +647,52 @@ items
                 description
                     Actual track age since occurence
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             PSR "PSR Age"
                 description
                     Age of the last primary detection used to update the track
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             SSR "SSR Age"
                 description
                     Age of the last secondary detection used to update the track
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MDS "Mode S Age"
                 description
                     Age of the last Mode S detection used to update the track
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             ADS "ADS-C Age"
                 description
                     Age of the last ADS-C report used to update the track
                 element 16
-                    unsigned quantity 1 2 "s" <= 16383.75
+                    unsigned quantity 1/2^2 "s" <= 65535/4
             ES "ADS-B Extended Squitter Age"
                 description
                     Age of the last 1090 Extended Squitter ADS-B report used to update the track
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             VDL "ADS-B VDL Mode 4 Age"
                 description
                     Age of the last VDL Mode 4 ADS-B report used to update the track
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             UAT "ADS-B UAT Age"
                 description
                     Age of the last UAT ADS-B report used to update the track
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             LOP "Loop Age"
                 description
                     Age of the last magnetic loop detection
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MLT "Multilateration Age"
                 description
                     Age of the last MLT detection
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
         remark
             Notes:
 
@@ -714,73 +714,73 @@ items
                     Age of the last valid and credible Mode C code or barometric altitude
                     from ADS-B used to update the track (I062/136).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MD1 "Mode 1 Age"
                 description
                     Age of the last valid and credible Mode 1 code used to update the
                     track (I062/110).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MD2 "Mode 2 Age"
                 description
                     Age of the last valid and credible Mode 2 code used to update the
                     track (I062/120).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MDA "Mode 3/A Age"
                 description
                     Age of the last valid and credible Mode 3/A code used to update the
                     track (I062/060).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MD4 "Mode 4 Age"
                 description
                     Age of the last valid and credible Mode 4 code used to update the
                     track.
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MD5 "Mode 5 Age"
                 description
                     Age of the last valid and credible Mode 5 code used to update the
                     track (I062/110).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MHG "Magnetic Heading Age"
                 description
                     Age of the DAP "Magnetic Heading"
                     in item 062/380 (Subfield #3).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             IAS "Indicated Airspeed / Mach Nb Age"
                 description
                     Age of the DAP "Indicated Airspeed/Mach Number"
                     in item 062/380 (Subfield #4).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             TAS "True Airspeed Age"
                 description
                     Age of the DAP "True Airspeed"
                     in item 062/380 (Subfield #5).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             SAL "Selected Altitude Age"
                 description
                     Age of the DAP "Selected Altitude"
                     in item 062/380 (Subfield #6).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             FSS "Final State Selected Altitude Age"
                 description
                     Age of the DAP "Final State Selected Altitude Age"
                     in item 062/380 (Subfield #7).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             TID "Trajectory Intent Age"
                 description
                     Age of the DAP "Trajectory Intent"
                     in item 062/380 (Subfield #8).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             COM "Communication/ACAS Capability and Flight Status Age"
                 description
                     Age of the DAP
@@ -788,119 +788,119 @@ items
                     Capability and Flight Status"
                     in item 062/380 (Subfield #10).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             SAB "Status Reported by ADS-B Age"
                 description
                     Age of the DAP "Status Reported
                     by ADS-B"
                     in item 062/380 (Subfield #11).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             ACS "ACAS Resolution Advisory Report Age"
                 description
                     Age of the DAP "ACAS Resolution
                     Advisory Report"
                     in item 062/380 (Subfield #12).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             BVR "Barometric Vertical Rate Age"
                 description
                     Age of the DAP "Barometric
                     Vertical Rate"
                     in item 062/380 (Subfield #13).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             GVR "Geometrical Vertical Rate Age"
                 description
                     Age of the DAP "Geometrical
                     Vertical Rate"
                     in item 062/380 (Subfield #14).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             RAN "Roll Angle Age"
                 description
                     Age of the DAP "Roll Angle"
                     in item 062/380 (Subfield #15).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             TAR "Track Angle Rate Age"
                 description
                     Age of the DAP "Track Angle
                     Rate" in item 062/380 (Subfield #16).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             TAN "Track Angle Age"
                 description
                     Age of the DAP "Track Angle"
                     in item 062/380 (Subfield #17).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             GSP "Ground Speed Age"
                 description
                     Age of the DAP "Ground Speed" in item 062/380 (Subfield #18).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             VUN "Velocity Uncertainty Age"
                 description
                     Age of the DAP "Velocity
                     Uncertainty" in item 062/380 (Subfield #19).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MET "Meteorological Data Age"
                 description
                     Age of the DAP "Meteorological
                     Data" in item 062/380 (Subfield #20).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             EMC "Emitter Category Age"
                 description
                     Age of the DAP "Emitter Category"
                     in item 062/380 (Subfield #21).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             POS "Position Age"
                 description
                     Age of the DAP "Position"
                     in item 062/380 (Subfield #23).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             GAL "Geometric Altitude Age"
                 description
                     Age of the DAP "Geometric
                     Altitude" in item 062/380 (Subfield #24).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             PUN "Position Uncertainty Age"
                 description
                     Age of the DAP "Position
                     Uncertainty" in item 062/380 (Subfield #25).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MB "Mode S MB Data Age"
                 description
                     Age of the DAP "Mode S MB
                     Data" in item 062/380 (Subfield #22).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             IAR "Indicated Airspeed Data Age"
                 description
                     Age of the DAP "Indicated
                     Airspeed" in item 062/380 (Subfield #26).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             MAC "Mach Number Data Age"
                 description
                     Age of the DAP "Mach Number"
                     in item 062/380 (Subfield #27).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
             BPS "Barometric Pressure Setting Data Age"
                 description
                     Age of the DAP "Barometric
                     Pressure Setting" in item 062/380
                     (Subfield #28).
                 element 8
-                    unsigned quantity 1 2 "s" <= 63.75
+                    unsigned quantity 1/2^2 "s" <= 255/4
         remark
             Notes:
 
@@ -952,13 +952,13 @@ items
                 group
                     RHO "Measured Distance"
                         element 16
-                            unsigned quantity 1 8 "NM" <= 256
+                            unsigned quantity 1/2^8 "NM" <= 256
                     THETA "Measured Azimuth"
                         element 16
-                            unsigned quantity 360 16 "°"
+                            unsigned quantity 360/2^16 "°"
             HEIGHT "Measured 3-D Height"
                 element 16
-                    unsigned quantity 25 0 "ft"
+                    unsigned quantity 25 "ft"
             MDC ""
                 group
                     V "Validated"
@@ -975,7 +975,7 @@ items
                         description
                             Last Measured Mode C Code, in two's complement form
                         element 14
-                            signed quantity 1 2 "FL" >= -12 <= 1270
+                            signed quantity 1/2^2 "FL" >= -12 <= 1270
             MDA ""
                 group
                     V "Validated"
@@ -1055,7 +1055,7 @@ items
                     string icao
             MHG "Magnetic Heading"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
             IAS "Indicated Airspeed/Mach No"
                 group
                     IM ""
@@ -1067,12 +1067,12 @@ items
                         element 15
                             case 380/IAS/IM
                                 0:
-                                    unsigned quantity 1 14 "NM/s"
+                                    unsigned quantity 1/2^14 "NM/s"
                                 1:
-                                    unsigned quantity 0.001 0 "Mach"
+                                    unsigned quantity 1/1000 "Mach"
             TAS "True Airspeed"
                 element 16
-                    unsigned quantity 1 0 "kt" >= 0 <= 2046
+                    unsigned quantity 1 "kt" >= 0 <= 2046
             SAL "Selected Altitude"
                 group
                     SAS ""
@@ -1089,7 +1089,7 @@ items
                                 3: FMS selected altitude
                     ALT "Altitude in Two's Complement Form"
                         element 13
-                            signed quantity 25 0 "ft" >= -1300 <= 100000
+                            signed quantity 25 "ft" >= -1300 <= 100000
             FSS "Final State Selected Altitude"
                 group
                     MV "Manage Vertical Mode"
@@ -1115,7 +1115,7 @@ items
                                 1: Active
                     ALT "Altitude in Two's Complement Form"
                         element 13
-                            signed quantity 25 0 "ft" >= -1300 <= 100000
+                            signed quantity 25 "ft" >= -1300 <= 100000
             TIS "Trajectory Intent Status"
                 extended
                     NAV "TID Available"
@@ -1150,13 +1150,13 @@ items
                                 raw
                         ALT "Altitude in Two's Complement Form"
                             element 16
-                                signed quantity 10 0 "ft" >= -1500 <= 150000
+                                signed quantity 10 "ft" >= -1500 <= 150000
                         LAT "Latitude in WGS.84 in Two's Complement"
                             element 24
-                                signed quantity 180 23 "°" >= -90 <= 90
+                                signed quantity 180/2^23 "°" >= -90 <= 90
                         LON "Longitude in WGS.84 in Two's Complement"
                             element 24
-                                signed quantity 180 23 "°" >= -180 < 180
+                                signed quantity 180/2^23 "°" >= -180 < 180
                         PT "Point Type"
                             element 4
                                 table
@@ -1193,10 +1193,10 @@ items
                                     1: TOV not available
                         TOV "Time Over Point"
                             element 24
-                                unsigned quantity 1 0 "s"
+                                unsigned quantity 1 "s"
                         TTR "TCP Turn Radius"
                             element 16
-                                unsigned quantity 0.01 0 "NM" >= 0 <= 655.35
+                                unsigned quantity 1/100 "NM" >= 0 <= 13107/20
             COM "Communications/ACAS Capability and Flight Status"
                 group
                     COM "Communications Capability of the Transponder"
@@ -1294,17 +1294,17 @@ items
                 description
                     Barometric Vertical Rate in two's complement form
                 element 16
-                    signed quantity 25 2 "ft/min"
+                    signed quantity 25/2^2 "ft/min"
             GVR "Geometric Vertical Rate"
                 description
                     Geometric Vertical Rate in two's complement form
                 element 16
-                    signed quantity 25 2 "ft/min"
+                    signed quantity 25/2^2 "ft/min"
             RAN "Roll Angle"
                 description
                     Roll Angle in two's complement form
                 element 16
-                    signed quantity 0.01 0 "°" >= -180 <= 180
+                    signed quantity 1/100 "°" >= -180 <= 180
             TAR "Track Angle Rate"
                 group
                     TI "Turn Indicator"
@@ -1317,16 +1317,16 @@ items
                     spare 6
                     ROT "Rate of Turn in Two's Complement Form"
                         element 7
-                            signed quantity 1 2 "°/s" >= -15 <= 15
+                            signed quantity 1/2^2 "°/s" >= -15 <= 15
                     spare 1
             TAN "Track Angle"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
             GS "Ground Speed"
                 description
                     Ground Speed in Two's Complement Form Referenced to WGS84
                 element 16
-                    signed quantity 1 14 "NM/s" >= -2 < 2
+                    signed quantity 1/2^14 "NM/s" >= -2 < 2
             VUN "Velocity Uncertainty"
                 element 8
                     raw
@@ -1355,13 +1355,13 @@ items
                     spare 4
                     WSD "Wind Speed"
                         element 16
-                            unsigned quantity 1 0 "kt" >= 0 <= 300
+                            unsigned quantity 1 "kt" >= 0 <= 300
                     WDD "Wind Direction"
                         element 16
-                            unsigned quantity 1 0 "°" >= 1 <= 360
+                            unsigned quantity 1 "°" >= 1 <= 360
                     TMPD "Temperature in Degrees Celsius"
                         element 16
-                            signed quantity 1 2 "°C" >= -100 <= 100
+                            signed quantity 1/2^2 "°C" >= -100 <= 100
                     TRBD "Turbulence"
                         element 8
                             unsigned integer >= 0 <= 15
@@ -1396,15 +1396,15 @@ items
                 group
                     LAT "Latitude in WGS.84 in Two's Complement Form"
                         element 24
-                            signed quantity 180 23 "°" >= -90 <= 90
+                            signed quantity 180/2^23 "°" >= -90 <= 90
                     LON "Longitude in WGS.84 in Two's Complement Form"
                         element 24
-                            signed quantity 180 23 "°" >= -180 < 180
+                            signed quantity 180/2^23 "°" >= -180 < 180
                 remark
                     This corresponds to a resolution of at least 2.4 meters.
             GAL "Geometric Altitude"
                 element 16
-                    signed quantity 25 2 "ft" >= -1500 <= 150000
+                    signed quantity 25/2^2 "ft" >= -1500 <= 150000
             PUN "Position Uncertainty"
                 group
                     spare 4
@@ -1417,16 +1417,16 @@ items
                         bds
             IAR "Indicated Airspeed"
                 element 16
-                    unsigned quantity 1 0 "kt" >= 0 <= 1100
+                    unsigned quantity 1 "kt" >= 0 <= 1100
             MAC "Mach Number"
                 element 16
-                    unsigned quantity 0.008 0 "Mach" >= 0 <= 4.096
+                    unsigned quantity 1/125 "Mach" >= 0 <= 512/125
             BPS "Barometric Pressure Setting (derived from Mode S BDS 4,0)"
                 group
                     spare 4
                     BPS ""
                         element 12
-                            unsigned quantity 0.1 0 "mb" >= 0 <= 409.5
+                            unsigned quantity 1/10 "mb" >= 0 <= 819/2
         remark
             Notes:
 
@@ -1531,7 +1531,7 @@ items
                             string ascii
             CFL "Current Cleared Flight Level"
                 element 16
-                    unsigned quantity 1 2 "FL"
+                    unsigned quantity 1/2^2 "FL"
             CTL "Current Control Position"
                 group
                     CENTRE "8-bit Group Identification Code"
@@ -1680,46 +1680,46 @@ items
                 group
                     X "APC (X-Component)"
                         element 16
-                            unsigned quantity 1 1 "m"
+                            unsigned quantity 1/2 "m"
                     Y "APC (Y-Component)"
                         element 16
-                            unsigned quantity 1 1 "m"
+                            unsigned quantity 1/2 "m"
             COV "XY Covariance Component"
                 element 16
-                    signed quantity 1 1 "m"
+                    signed quantity 1/2 "m"
             APW "Estimated Accuracy Of Track Position (WGS-84)"
                 group
                     LAT "APW (Latitude Component)"
                         element 16
-                            unsigned quantity 180 25 "°"
+                            unsigned quantity 180/2^25 "°"
                     LON "APW (Longitude Component)"
                         element 16
-                            unsigned quantity 180 25 "°"
+                            unsigned quantity 180/2^25 "°"
             AGA "Estimated Accuracy Of Calculated Track Geometric Altitude"
                 element 8
-                    unsigned quantity 25 2 "ft"
+                    unsigned quantity 25/2^2 "ft"
             ABA "Estimated Accuracy Of Calculated Track Barometric Altitude"
                 element 8
-                    unsigned quantity 1 2 "FL"
+                    unsigned quantity 1/2^2 "FL"
             ATV "Estimated Accuracy Of Track Velocity (Cartesian)"
                 group
                     X "ATV (X-Component)"
                         element 8
-                            unsigned quantity 1 2 "m/s"
+                            unsigned quantity 1/2^2 "m/s"
                     Y "ATV (Y-Component)"
                         element 8
-                            unsigned quantity 1 2 "m/s"
+                            unsigned quantity 1/2^2 "m/s"
             AA "Estimated Accuracy Of Acceleration (Cartesian)"
                 group
                     X "AA (X-Component)"
                         element 8
-                            unsigned quantity 1 2 "m/s2"
+                            unsigned quantity 1/2^2 "m/s2"
                     Y "AA (Y-Component)"
                         element 8
-                            unsigned quantity 1 2 "m/s2"
+                            unsigned quantity 1/2^2 "m/s2"
             ARC "Estimated Accuracy Of Rate Of Climb/Descent"
                 element 8
-                    unsigned quantity 25 2 "ft/min"
+                    unsigned quantity 25/2^2 "ft/min"
         remark
             Notes:
 

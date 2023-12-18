@@ -6,7 +6,6 @@ import           Control.Monad
 import qualified Data.Text as T
 import           Data.Maybe
 import           Data.List (nub, (\\))
-import           Data.Ratio
 
 import           Asterix.Specs
 
@@ -103,9 +102,9 @@ getConstrainNumber = \case
 
 isNegative :: Number -> Bool
 isNegative = \case
-    NumberZ val -> val < 0
-    NumberQ val -> val < 0
-    NumberR val -> val < 0
+    NumInt val -> val < 0
+    NumDiv a b -> isNegative a /= isNegative b
+    NumPow a _ -> a < 0
 
 checkNonNegative :: Signedness -> [Constrain] -> [ValidationError]
 checkNonNegative Signed _ = []
@@ -152,21 +151,8 @@ instance Validate (RegisterSize, Content) where
             StringAscii -> 8
             StringICAO  -> 6
             StringOctal -> 3
-    validate _warnings (_, ContentQuantity sign k _fr _unit cst) = do
-        let reportProblem k' = do
-                let b = denominator k'
-                    problems = [2^x | x <- [1..10::Int]]
-                reportWhen (b `elem` problems) $
-                    "scaling factor problem "
-                    <> T.pack (show k')
-                    <> ", increase fractional bits"
-        join
-            [ case k of
-                NumberZ _ -> []
-                NumberQ k' -> reportProblem k'
-                NumberR k' -> reportProblem k'
-            , checkNonNegative sign cst
-            ]
+    validate _warnings (_, ContentQuantity sign _k _unit cst) = do
+        checkNonNegative sign cst
     validate _warnings (_, ContentInteger sign cst) =
         checkNonNegative sign cst
     validate _warnings (n, ContentBds bt) = do

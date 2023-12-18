@@ -57,7 +57,7 @@ items
         definition
             Time of applicability (measurement) of the reported position, in the form of elapsed time since last midnight, expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             The time of the day value is reset to zero at every midnight.
 
@@ -65,7 +65,7 @@ items
         definition
             The maximum difference between the actual time of applicability of the reported position and the time reported in the Time of Day item (I021/030).
         element 8
-            unsigned quantity 1 8 "s"
+            unsigned quantity 1/2^8 "s"
 
     040 "Target Report Descriptor"
         definition
@@ -191,7 +191,7 @@ items
             spare 6
             PA "Position Accuracy"
                 element 4
-                    signed quantity 1 0 ""
+                    signed quantity 1 ""
         remark
             Note:
                 bits-4/1 (PA) code the “Navigational Uncertainty Categories –
@@ -245,13 +245,13 @@ items
                                 raw
                         ALT "Altitude in Two's Complement Form"
                             element 16
-                                signed quantity 10 0 "ft" >= -1500 <= 150000
+                                signed quantity 10 "ft" >= -1500 <= 150000
                         LAT "In WGS.84 in Two's Complement"
                             element 24
-                                signed quantity 180 23 "°" >= -90 <= 90
+                                signed quantity 180/2^23 "°" >= -90 <= 90
                         LON "In WGS.84 in Two's Complement"
                             element 24
-                                signed quantity 180 23 "°" >= -180 < 180
+                                signed quantity 180/2^23 "°" >= -180 < 180
                         PT "Point Type"
                             element 4
                                 table
@@ -288,10 +288,10 @@ items
                                     1: TOV not available
                         TOV "Time Over Point"
                             element 24
-                                unsigned quantity 1 0 "s"
+                                unsigned quantity 1 "s"
                         TTR "TCP Turn Radius"
                             element 16
-                                unsigned quantity 0.01 0 "NM" >= 0 <= 655.35
+                                unsigned quantity 1/100 "NM" >= 0 <= 13107/20
         remark
             Notes:
 
@@ -310,10 +310,10 @@ items
         group
             LAT "Latitude"
                 element 32
-                    signed quantity 180 25 "°" >= -90 <= 90
+                    signed quantity 180/2^25 "°" >= -90 <= 90
             LON "Longitude"
                 element 32
-                    signed quantity 180 25 "°" >= -180 < 180
+                    signed quantity 180/2^25 "°" >= -180 < 180
         remark
             Notes:
 
@@ -335,7 +335,7 @@ items
             Vertical distance between the target and the projection of its position
             on the earth’s ellipsoid, as defined by WGS84, in two’s complement form.
         element 16
-            signed quantity 25 2 "ft" >= -1500 < 150000
+            signed quantity 25/2^2 "ft" >= -1500 < 150000
         remark
             Note:
                 1. LSB is required to be less than 10 ft by ICAO.
@@ -345,7 +345,7 @@ items
             Flight Level from barometric measurements,not QNH corrected, in two’s
             complement form.
         element 16
-            signed quantity 1 2 "FL" >= -15 < 1500
+            signed quantity 1/2^2 "FL" >= -15 < 1500
 
     146 "Intermediate State Selected Altitude"
         definition
@@ -367,7 +367,7 @@ items
                         3: FMS Selected Altitude
             ALT "Altitude"
                 element 13
-                    signed quantity 25 0 "ft" >= -1300 < 100000
+                    signed quantity 25 "ft" >= -1300 < 100000
 
     148 "Final State Selected Altitude"
         definition
@@ -391,7 +391,7 @@ items
                         1: Active
             ALT "Altitude"
                 element 13
-                    signed quantity 25 0 "ft" >= -1300 < 100000
+                    signed quantity 25 "ft" >= -1300 < 100000
 
     150 "Air Speed"
         definition
@@ -406,33 +406,33 @@ items
                 element 15
                     case 150/IM
                         0:
-                            unsigned quantity 1 14 "NM/s"
+                            unsigned quantity 1/2^14 "NM/s"
                         1:
-                            unsigned quantity 0.001 0 "Mach"
+                            unsigned quantity 1/1000 "Mach"
 
     151 "True Airspeed"
         definition
             True Air Speed.
         element 16
-            unsigned quantity 1 0 "kt"
+            unsigned quantity 1 "kt"
 
     152 "Magnetic Heading"
         definition
             Magnetic Heading (Element of Air Vector).
         element 16
-            unsigned quantity 360 16 "°"
+            unsigned quantity 360/2^16 "°"
 
     155 "Barometric Vertical Rate"
         definition
             Barometric Vertical Rate, in two’s complement form.
         element 16
-            signed quantity 25 2 "ft/min"
+            signed quantity 25/2^2 "ft/min"
 
     157 "Geometric Vertical Rate"
         definition
             Geometric Vertical Rate, in two’s complement form, with reference to WGS-84.
         element 16
-            signed quantity 25 2 "ft/min"
+            signed quantity 25/2^2 "ft/min"
 
     160 "Ground Vector"
         definition
@@ -440,10 +440,10 @@ items
         group
             GS "Ground Speed in Two's Complement Form Referenced to WGS84"
                 element 16
-                    signed quantity 1 14 "NM/s" >= 0 < 2
+                    signed quantity 1/2^14 "NM/s" >= 0 < 2
             TA "Track Angle"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
 
     165 "Rate Of Turn"
         definition
@@ -460,7 +460,7 @@ items
             -
             ROT "Rate of Turn"
                 element 7
-                    signed quantity 1 2 "°/s" <= 15
+                    signed quantity 1/2^2 "°/s" <= 15
             -
         remark
             Notes:
@@ -525,13 +525,13 @@ items
         compound
             WS "Wind Speed"
                 element 16
-                    unsigned quantity 1 0 "kt" >= 0 <= 300
+                    unsigned quantity 1 "kt" >= 0 <= 300
             WD "Wind Direction"
                 element 16
-                    unsigned quantity 1 0 "°" >= 1 <= 360
+                    unsigned quantity 1 "°" >= 1 <= 360
             TMP "Temperature"
                 element 16
-                    signed quantity 1 2 "°C" >= -100 <= 100
+                    signed quantity 1/2^2 "°C" >= -100 <= 100
             TRB "Turbulence"
                 element 8
                     unsigned integer >= 0 <= 15
@@ -540,7 +540,7 @@ items
         definition
             The roll angle, in two’s complement form, of an aircraft executing a turn.
         element 16
-            signed quantity 0.01 0 "°" >= -180 <= 180
+            signed quantity 1/100 "°" >= -180 <= 180
         remark
             Notes:
                 1. Negative Value indicates “Left Wing Down”.

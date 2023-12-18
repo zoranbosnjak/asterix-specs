@@ -85,7 +85,7 @@ items
         definition
             Identification of services offered by a ground station (identified by a SIC code).
         element 8
-            unsigned quantity 1 1 "s"
+            unsigned quantity 1/2 "s"
         remark
             Notes:
 
@@ -266,7 +266,7 @@ items
             Time of applicability of the reported position, in the form of elapsed
             time since last midnight, expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Notes:
 
@@ -279,7 +279,7 @@ items
             Time of applicability (measurement) of the reported velocity, in the
             form of elapsed time since last midnight, expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Notes:
 
@@ -293,7 +293,7 @@ items
             Time of reception of the latest position squitter in the Ground Station,
             in the form of elapsed time since last midnight, expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Note:
                 - The time of message reception value is reset to zero at every midnight.
@@ -312,14 +312,14 @@ items
                         0: TOMRp whole seconds = (I021/073) Whole seconds
             TOMRP "Fractional Part of the Time of Message Reception for Position in the Ground Station"
                 element 30
-                    unsigned quantity 1 30 "s"
+                    unsigned quantity 1/2^30 "s"
 
     075 "Time of Message Reception for Velocity"
         definition
             Time of reception of the latest velocity squitter in the Ground Station,
             in the form of elapsed time since last midnight, expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Note:
                 - The time of message reception value is reset to zero at every midnight.
@@ -338,14 +338,14 @@ items
                         0: TOMRp whole seconds = (I021/075) Whole seconds
             TOMRP "Fractional Part of the Time of Message Reception for Position in the Ground Station"
                 element 30
-                    unsigned quantity 1 30 "s"
+                    unsigned quantity 1/2^30 "s"
 
     077 "Time of ASTERIX Report Transmission"
         definition
             Time of the transmission of the ASTERIX category 021 report in the
             form of elapsed time since last midnight, expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Note:
                 - The time of ASTERIX report transmission value is reset to zero at
@@ -470,13 +470,13 @@ items
                                 raw
                         ALT "Altitude in Two's Complement Form"
                             element 16
-                                signed quantity 10 0 "ft" >= -1500 <= 150000
+                                signed quantity 10 "ft" >= -1500 <= 150000
                         LAT "In WGS.84 in Two's Complement"
                             element 24
-                                signed quantity 180 23 "°" >= -90 <= 90
+                                signed quantity 180/2^23 "°" >= -90 <= 90
                         LON "In WGS.84 in Two's Complement"
                             element 24
-                                signed quantity 180 23 "°" >= -180 < 180
+                                signed quantity 180/2^23 "°" >= -180 < 180
                         PT "Point Type"
                             element 4
                                 table
@@ -513,10 +513,10 @@ items
                                     1: TOV not available
                         TOV "Time Over Point"
                             element 24
-                                unsigned quantity 1 0 "s"
+                                unsigned quantity 1 "s"
                         TTR "TCP Turn Radius"
                             element 16
-                                unsigned quantity 0.01 0 "NM" >= 0 <= 655.35
+                                unsigned quantity 1/100 "NM" >= 0 <= 13107/20
         remark
             Notes:
 
@@ -535,10 +535,10 @@ items
         group
             LAT "Latitude"
                 element 24
-                    signed quantity 180 23 "°" >= -90 <= 90
+                    signed quantity 180/2^23 "°" >= -90 <= 90
             LON "Longitude"
                 element 24
-                    signed quantity 180 23 "°" >= -180 < 180
+                    signed quantity 180/2^23 "°" >= -180 < 180
         remark
             Notes:
 
@@ -550,10 +550,10 @@ items
         group
             LAT "Latitude"
                 element 32
-                    signed quantity 180 30 "°" >= -90 <= 90
+                    signed quantity 180/2^30 "°" >= -90 <= 90
             LON "Longitude"
                 element 32
-                    signed quantity 180 30 "°" >= -180 < 180
+                    signed quantity 180/2^30 "°" >= -180 < 180
         remark
             Notes:
 
@@ -564,7 +564,7 @@ items
             Amplitude, in dBm, of ADS-B messages received by the ground station,
             coded in two’s complement.
         element 8
-            signed quantity 1 0 "dBm"
+            signed quantity 1 "dBm"
         remark
             Note:
                 - The value gives the amplitude of the latest received squitter.
@@ -574,7 +574,7 @@ items
             Minimum height from a plane tangent to the earth’s ellipsoid, defined
             by WGS-84, in two’s complement form.
         element 16
-            signed quantity 25 2 "ft" >= -1500 < 150000
+            signed quantity 25/2^2 "ft" >= -1500 < 150000
         remark
             Note:
                 1. LSB is required to be less than 10 ft by ICAO.
@@ -586,7 +586,7 @@ items
             Flight Level from barometric measurements,not QNH corrected, in two’s
             complement form.
         element 16
-            signed quantity 1 2 "FL" >= -15 < 1500
+            signed quantity 1/2^2 "FL" >= -15 < 1500
 
     146 "Selected Altitude"
         definition
@@ -608,7 +608,7 @@ items
                         3: FMS Selected Altitude
             ALT "Altitude"
                 element 13
-                    signed quantity 25 0 "ft" >= -1300 < 100000
+                    signed quantity 25 "ft" >= -1300 < 100000
         remark
             Notes:
 
@@ -644,7 +644,7 @@ items
                         1: Active
             ALT "Altitude"
                 element 13
-                    signed quantity 25 0 "ft" >= -1300 < 100000
+                    signed quantity 25 "ft" >= -1300 < 100000
         remark
             Notes:
 
@@ -668,9 +668,9 @@ items
                 element 15
                     case 150/IM
                         0:
-                            unsigned quantity 1 14 "NM/s"
+                            unsigned quantity 1/2^14 "NM/s"
                         1:
-                            unsigned quantity 0.001 0 "Mach"
+                            unsigned quantity 1/1000 "Mach"
 
     151 "True Airspeed"
         definition
@@ -683,7 +683,7 @@ items
                         1: Value exceeds defined range
             TAS "True Air Speed"
                 element 15
-                    unsigned quantity 1 0 "kt"
+                    unsigned quantity 1 "kt"
         remark
             Notes:
 
@@ -698,7 +698,7 @@ items
         definition
             Magnetic Heading (Element of Air Vector).
         element 16
-            unsigned quantity 360 16 "°"
+            unsigned quantity 360/2^16 "°"
         remark
             Notes:
 
@@ -716,7 +716,7 @@ items
                         1: Value exceeds defined range
             BVR "Barometric Vertical Rate"
                 element 15
-                    signed quantity 25 2 "ft/min"
+                    signed quantity 25/2^2 "ft/min"
         remark
             Notes:
 
@@ -738,7 +738,7 @@ items
                         1: Value exceeds defined range
             GVR "Geometric Vertical Rate"
                 element 15
-                    signed quantity 25 2 "ft/min"
+                    signed quantity 25/2^2 "ft/min"
         remark
             Notes:
 
@@ -760,10 +760,10 @@ items
                         1: Value exceeds defined range
             GS "Ground Speed Referenced to WGS-84"
                 element 15
-                    unsigned quantity 1 14 "NM/s" >= 0 < 2
+                    unsigned quantity 1/2^14 "NM/s" >= 0 < 2
             TA "Track Angle Clockwise Reference to True North"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
         remark
             Notes:
 
@@ -793,7 +793,7 @@ items
             spare 6
             TAR "Track Angle Rate"
                 element 10
-                    signed quantity 1 5 "°/s" >= -16 <= 16
+                    signed quantity 1/2^5 "°/s" >= -16 <= 16
         remark
             Notes:
 
@@ -900,13 +900,13 @@ items
         compound
             WS "Wind Speed"
                 element 16
-                    unsigned quantity 1 0 "kt" >= 0 <= 300
+                    unsigned quantity 1 "kt" >= 0 <= 300
             WD "Wind Direction"
                 element 16
-                    unsigned quantity 1 0 "°" >= 1 <= 360
+                    unsigned quantity 1 "°" >= 1 <= 360
             TMP "Temperature"
                 element 16
-                    signed quantity 1 2 "°C" >= -100 <= 100
+                    signed quantity 1/2^2 "°C" >= -100 <= 100
             TRB "Turbulence"
                 element 8
                     unsigned integer >= 0 <= 15
@@ -915,7 +915,7 @@ items
         definition
             The roll angle, in two’s complement form, of an aircraft executing a turn.
         element 16
-            signed quantity 0.01 0 "°" >= -180 <= 180
+            signed quantity 1/100 "°" >= -180 <= 180
         remark
             Notes:
 
@@ -1028,119 +1028,119 @@ items
                 description
                     Age of the information transmitted in item I021/008.
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             TRD "Target Report Descriptor Age"
                 description
                     Age of the Target Report Descriptor, item I021/040
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             M3A "Mode 3/A Age"
                 description
                     Age of the Mode 3/A Code, item I021/070
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             QI "Quality Indicators Age"
                 description
                     Age of the Quality Indicators, item I021/090
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             TI1 "Trajectory Intent Age"
                 description
                     Age of the Trajectory Intent information, item I021/110
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             MAM "Message Amplitude Age"
                 description
                     Age of the message amplitude, item I021/132
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             GH "Geometric Height Age"
                 description
                     Age of the Geometric Height, item 021/140
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             FL "Flight Level Age"
                 description
                     Age of the Flight Level, item I021/145
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             ISA "Intermediate State Selected Altitude Age"
                 description
                     Age of the Intermediate State Selected Altitude, item I021/146
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             FSA "Final State Selected Altitude Age"
                 description
                     Age of the Final State Selected Altitude, item I021/148
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             AS "Air Speed Age"
                 description
                     Age of the Air Speed, item I021/150
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             TAS "True Air Speed Age"
                 description
                     Age of the True Air Speed, item I021/151
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             MH "Magnetic Heading Age"
                 description
                     Age of the Magnetic Heading, item I021/152
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             BVR "Barometric Vertical Rate Age"
                 description
                     Age of the Barometric Vertical Rate, item I021/155
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             GVR "Geometric Vertical Rate Age"
                 description
                     Age of the Geometric Vertical Rate, item I021/157
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             GV "Ground Vector Age"
                 description
                     Age of the Ground Vector, item I021/160
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             TAR "Track Angle Rate Age"
                 description
                     Age of the Track Angle Rate, item I021/165
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             TI2 "Target Identification Age"
                 description
                     Age of the Target Identification, item I021/170
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             TS "Target Status Age"
                 description
                     Age of the Target Status, item I021/200
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             MET "Met Information Age"
                 description
                     Age of the Meteorological Information, item I021/220
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             ROA "Roll Angle Age"
                 description
                     Age of the Roll Angle, item I021/230
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             ARA "ACAS Resolution Advisory Age"
                 description
                     Age of the latest update of an active ACAS Resolution Advisory,
                     item I021/260
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
             SCC "Surface Capabilities and Characteristics Age"
                 description
                     Age of the information on the surface capabilities and
                     characteristics of the respective target, item I021/271
                 element 8
-                    unsigned quantity 0.1 0 "s" <= 25.5
+                    unsigned quantity 1/10 "s" <= 51/2
         remark
             Notes:
 

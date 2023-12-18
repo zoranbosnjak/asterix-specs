@@ -161,3 +161,43 @@ $typesSimple$
 See [source code](https://github.com/zoranbosnjak/asterix-specs)
 for exact definition.
 
+## Non-backward compatible changes
+
+### 2023-12-18 - precise numeric expression
+
+Parent git release: #a7c135f
+
+The `Number` type is simplified and generalized, to allow precise
+numeric expression, without rounding error. Ast syntax becomes more
+readable, for example:
+
+- `0.1 0` -> `1/10`
+- `180 31` -> `180/2^31`
+
+See [FAQ](/faq.html) for expression evaluation details.
+
+### 2023-09-18 - extended item modification, fx bit is explicit
+
+Parent git release: #53a30f4
+
+Extended item structure is simplified to list of items with possible
+spare slots ('fx' bits).
+
+### 2023-07-24 - explicit item modification, rfs item added
+
+Parent git release: #5c263cb
+
+Explicit item has optional (RE/SP) type added,
+such that RE items can be automatically processed.
+
+Rfs item type is introduced.
+
+### 2023-06-20 - extended/repetitve item modification
+
+Parent git release: #3d75e32
+
+Extended items with a single subitem are not allowed.
+In those cases, the items are more similar to 'repetitive',
+but with the 'fx' extension mechanism.
+
+New 'RepetitiveType' data type is introduced to handle the case.

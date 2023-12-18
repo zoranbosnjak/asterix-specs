@@ -10,9 +10,9 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
-import           Data.Ratio hiding ((%))
 import           Control.Monad
 import           Formatting as F
+import           Data.Scientific
 
 import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as BL
@@ -73,11 +73,11 @@ underline ch t = do
 tPath :: Path -> Text
 tPath = mconcat . intersperse "/"
 
-numRational :: Number -> Rational
-numRational = \case
-    NumberZ val -> toRational val
-    NumberQ val -> val
-    NumberR val -> val
+approx :: Number -> Double
+approx = \case
+    NumInt i -> fromIntegral i
+    NumDiv a b -> approx a / approx b
+    NumPow a b -> fromIntegral a ^ (fromIntegral b :: Int)
 
 tSig :: Signedness -> Text
 tSig = \case
@@ -100,35 +100,26 @@ instance MkBlock Content where
             fmt ("- " % stext % " integer") (tSig sig)
             forM_ constr $ \co -> do
                 fmt ("- value :math:`" % stext % "`") (showConstrain co)
-        ContentQuantity sig scal frac unit constr -> do
+        ContentQuantity sig lsb unit constr -> do
             fmt ("- " % stext % " quantity") (tSig sig)
-            fmt ("- scaling factor: " % stext) scal'
-            fmt ("- fractional bits: " % int) frac
             unit'
-            lsb
+            lsb'
             forM_ constr $ \co -> do
                 fmt ("- value :math:`" % stext % "` " % stext) (showConstrain co) unit
           where
-            scal' = showNumber scal
             unit' = case unit of
                 "" -> mempty
                 _ -> fmt ("- unit: \"" % stext % "\"") unit
             unit'' = case unit of
                 "" -> mempty
                 _ -> " " <> unit
-            lsb = case frac of
-                0 -> fmt ("- LSB = :math:`" % stext % "`" % stext) scal' unit''
+            lsb' = case lsb of
+                NumInt i -> fmt ("- LSB = :math:`" % int % "`" % stext) i unit''
                 _ ->
-                    let b = sformat ("{2^{" % int % "}}") frac
-                        lsb1 = ":math:`" <> scal' <> " / " <> b <> "` " <> unit
-                        d = (2::Int) ^ frac
-                        c = sformat ("{" % int % "}") d
-                        lsb2 = ":math:`" <> scal' <> " / " <> c <> "` " <> unit
-                        scl = numRational scal
-                        approx :: Double
-                        approx = fromIntegral (numerator scl) / (fromIntegral (denominator scl * fromIntegral d))
-                        lsb3 = sformat (":math:`\\approx " % string % "` " % stext) (show approx) unit
-                    in fmt stext ("- LSB = " <> lsb1 <> " = " <> lsb2 <> " " <> lsb3)
+                    let lsb1 = ":math:`" <> showNumber lsb <> "` " <> unit
+                        lsb2 = sformat (":math:`\\approx " % scifmt Generic (Just 2) % "` " % stext)
+                            (fromFloatDigits $ approx lsb) unit
+                    in fmt stext ("- LSB = " <> lsb1 <> " " <> lsb2)
         ContentBds t -> case t of
             BdsWithAddress -> "- BDS register with address"
             BdsAt mAddr -> case mAddr of

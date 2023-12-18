@@ -159,7 +159,7 @@ items
             spare 2
             UPD "Update Period"
                 element 14
-                    unsigned quantity 1 7 "s" <= 128
+                    unsigned quantity 1/2^7 "s" <= 128
         remark
             Note 1: It is not necessary that all targets detected by the INCS
             sensor have target reports generated at the same update period.
@@ -173,7 +173,7 @@ items
             Absolute time stamping for applicability of the measured
             information expressed as UTC.
         element 24
-            unsigned quantity 1 7 "s" < 86400
+            unsigned quantity 1/2^7 "s" < 86400
         remark
             Note 1: The Time of Applicability refers to the information
             contained in data item I015/600, I015/601, I015/625, I015/626,
@@ -275,25 +275,25 @@ items
                     The target length is the longest dimension in the targets
                     direction of motion
                 element 16
-                    unsigned quantity 0.01 0 "m" <= 655.35
+                    unsigned quantity 1/100 "m" <= 13107/20
             WDT "Target Width"
                 description
                     The target width is the longest dimension orthogonal to
                     the targets direction of motion
                 element 16
-                    unsigned quantity 0.01 0 "m" <= 655.35
+                    unsigned quantity 1/100 "m" <= 13107/20
             HGT "Target Height"
                 description
                     The target height is the longest dimension in the vertical
                     direction.
                 element 16
-                    unsigned quantity 0.01 0 "m" <= 655.35
+                    unsigned quantity 1/100 "m" <= 13107/20
             ORT "Target Orientation"
                 description
                     The orientation gives the direction, which the target nose
                     is pointing, relative to the Geographical North.
                 element 16
-                    unsigned quantity 360 16 "°" <= 360
+                    unsigned quantity 360/2^16 "°" <= 360
                 remark
                     Note: The orientation shall increment in a clockwise manner
                     relative to Geographic North.
@@ -390,12 +390,12 @@ items
                         description
                             Latitude in WGS-84, in Two’s complement.
                         element 32
-                            signed quantity 180 31 "°" >= -90 < 90
+                            signed quantity 180/2^31 "°" >= -90 < 90
                     LONGITUDE ""
                         description
                             Longitude in WGS-84, in Two’s complement.
                         element 32
-                            signed quantity 180 31 "°" >= -180 < 180
+                            signed quantity 180/2^31 "°" >= -180 < 180
                 remark
                     Note: The LSB provides a resolution of 1cm. Positive
                     longitude indicates East. Positive latitude indicates North.
@@ -409,19 +409,19 @@ items
                             Horizontal position resolution of the target in
                             target centric Cartesian coordinates (X-component)
                         element 16
-                            unsigned quantity 1 1 "m" <= 32767
+                            unsigned quantity 1/2 "m" <= 32767
                     RSHPY ""
                         description
                             Horizontal position resolution of the target in
                             target centric Cartesian coordinates (Y-component)
                         element 16
-                            unsigned quantity 1 1 "m" <= 32767
+                            unsigned quantity 1/2 "m" <= 32767
                     CORSHPXY ""
                         description
                             Correlation of horizontal position resolution
                             of X and Y components, in Two’s complement.
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             HPP "Horizontal Position Precision"
                 description
                     The distribution of horizontal position random errors.
@@ -432,20 +432,20 @@ items
                             target in target centric Cartesian coordinates
                             (X-component)
                         element 16
-                            unsigned quantity 1 2 "m" <= 16383.75
+                            unsigned quantity 1/2^2 "m" <= 65535/4
                     SDHPY ""
                         description
                             Standard Deviation of horizontal position of the
                             target in target centric Cartesian coordinates
                             (Y-component)
                         element 16
-                            unsigned quantity 1 2 "m" <= 16383.75
+                            unsigned quantity 1/2^2 "m" <= 65535/4
                     COSDHPXY ""
                         description
                             Correlation of standard deviation of horizontal
                             position of X and Y components, in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
 
     601 "Geometric Height Information"
         definition
@@ -458,19 +458,19 @@ items
                     of its position on the earth’s ellipsoid, as defined by
                     WGS-84, in Two’s complement form.
                 element 24
-                    signed quantity 0.01 0 "m" >= -83286 <= 83286
+                    signed quantity 1/100 "m" >= -83286 <= 83286
             RSGH "Geometric Height Resolution"
                 description
                     Vertical distance within which the sensor is unable to
                     resolve two separate targets.
                 element 24
-                    unsigned quantity 0.01 0 "m" <= 167772.15
+                    unsigned quantity 1/100 "m" <= 3355443/20
             SDGH "Geometric Height Precision"
                 description
                     The distribution of random Geometric Height errors (see
                     also the definition of Precision in the appendix).
                 element 24
-                    unsigned quantity 0.01 0 "m" <= 167772.15
+                    unsigned quantity 1/100 "m" <= 3355443/20
             CI6 "Confidence Interval for Geometric Height (67%)"
                 description
                     A measure of the uncertainty within which 67% of geometric
@@ -480,12 +480,12 @@ items
                         description
                             Upper confidence interval for Geometric Height (67%)
                         element 12
-                            unsigned quantity 16 0 "m" <= 65520
+                            unsigned quantity 16 "m" <= 65520
                     LCI6 ""
                         description
                             Lower confidence interval for Geometric Height (67%)
                         element 12
-                            unsigned quantity 16 0 "m" <= 65520
+                            unsigned quantity 16 "m" <= 65520
             CI9 "Confidence Interval for Geometric Height (95%)"
                 description
                     A measure of the certainty within which 95% of geometric
@@ -495,12 +495,12 @@ items
                         description
                             Upper confidence interval for Geometric Height (95%)
                         element 12
-                            unsigned quantity 16 0 "m" <= 65520
+                            unsigned quantity 16 "m" <= 65520
                     LCI9 ""
                         description
                             Lower confidence interval for Geometric Height (95%)
                         element 12
-                            unsigned quantity 16 0 "m" <= 65520
+                            unsigned quantity 16 "m" <= 65520
             COGHHP "Correlation of Geometric Height and Horizontal Position"
                 description
                     Correlation of Geometric Height converted into metres and
@@ -512,14 +512,14 @@ items
                             metres and Horizontal Position of (X-component),
                             in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Geometric Height converted into
                             metres and Horizontal Position of (Y-component),
                             in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COGHHV "Correlation of Geometric Height and Horizontal Velocity"
                 description
                     Correlation of Geometric Height converted into metres and
@@ -531,14 +531,14 @@ items
                             metres and Horizontal Velocity of (X-component),
                             in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Geometric Height converted into
                             metres and Horizontal Velocity of (Y-component),
                             in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COGHHA "Correlation of Geometric Height and Horizontal Acceleration"
                 description
                     Correlation of Geometric Height converted into metres and
@@ -550,14 +550,14 @@ items
                             metres and Horizontal Acceleration of
                             (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Geometric Height converted into
                             metres and Horizontal Acceleration of
                             (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
 
     602 "Horizontal Velocity Information"
         definition
@@ -573,13 +573,13 @@ items
                             Horizontal Velocity (X-component), in Two’s
                             complement
                         element 20
-                            signed quantity 0.01 0 "m/s" >= -5242.87 <= 5242.87
+                            signed quantity 1/100 "m/s" >= -524287/100 <= 524287/100
                     Y ""
                         description
                             Horizontal Velocity in (Y-component), in Two’s
                             complement
                         element 20
-                            signed quantity 0.01 0 "m/s" >= -5242.87 <= 5242.87
+                            signed quantity 1/100 "m/s" >= -524287/100 <= 524287/100
             RSHV "Horizontal Velocity Resolution"
                 description
                     Minimum difference in Horizontal Velocity at which a sensor
@@ -592,19 +592,19 @@ items
                             Horizontal velocity resolution of the target in
                             target centric Cartesian coordinates (X-component)
                         element 16
-                            unsigned quantity 0.01 0 "m/s" <= 655.35
+                            unsigned quantity 1/100 "m/s" <= 13107/20
                     Y ""
                         description
                             Horizontal velocity resolution of the target in
                             target centric Cartesian coordinates (Y-component)
                         element 16
-                            unsigned quantity 0.01 0 "m/s" <= 655.35
+                            unsigned quantity 1/100 "m/s" <= 13107/20
                     CORSHVXY ""
                         description
                             Correlation of horizontal position resolution of
                             X and Y components, in Two’s complement.
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                 remark
                     Note: The velocity resolution describes the capability
                     of a sensor to be able to separate two closely located
@@ -628,19 +628,19 @@ items
                             Standard Deviation of horizontal velocity
                             (X-component)
                         element 16
-                            unsigned quantity 0.01 0 "m/s" <= 655.35
+                            unsigned quantity 1/100 "m/s" <= 13107/20
                     Y ""
                         description
                             Standard Deviation of horizontal velocity
                             (Y-component)
                         element 16
-                            unsigned quantity 0.01 0 "m/s" <= 655.35
+                            unsigned quantity 1/100 "m/s" <= 13107/20
                     COHVXY ""
                         description
                             Correlation of standard deviation of horizontal
                             velocity of X and Y components, in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COHVHP "Correlation of Horizontal Velocity and Horizontal Position"
                 description
                     Correlation of the errors associated with the estimates
@@ -653,28 +653,28 @@ items
                             and Horizontal Position (X-component), in Two’s
                             complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHVXHPY ""
                         description
                             Correlation of Horizontal Velocity (X-component)
                             and Horizontal Position (Y-component), in Two’s
                             complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHVYHPX ""
                         description
                             Correlation of Horizontal Velocity (Y-component)
                             and Horizontal Position (X-component), in Two’s
                             complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHVYHPY ""
                         description
                             Correlation of Horizontal Velocity (Y-component)
                             and Horizontal Position (Y-component), in Two’s
                             complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
 
     603 "Horizontal Acceleration Information"
         definition
@@ -691,13 +691,13 @@ items
                             Horizontal Acceleration (X-component), in Two’s
                             complement
                         element 12
-                            signed quantity 1 4 "m/s2" >= -128 <= 128
+                            signed quantity 1/2^4 "m/s2" >= -128 <= 128
                     Y ""
                         description
                             Horizontal Acceleration (Y-component), in Two’s
                             complement
                         element 12
-                            signed quantity 1 4 "m/s2" >= -128 <= 128
+                            signed quantity 1/2^4 "m/s2" >= -128 <= 128
             SDHA "Horizontal Acceleration Precision"
                 description
                     Root-mean-square (rms) error of the Horizontal Acceleration
@@ -708,20 +708,20 @@ items
                             Standard Deviation of Horizontal Acceleration
                             (X-component)
                         element 12
-                            unsigned quantity 1 4 "m/s2" <= 255.9375
+                            unsigned quantity 1/2^4 "m/s2" <= 4095/16
                     Y ""
                         description
                             Standard Deviation of Horizontal Acceleration
                             (Y-component)
                         element 12
-                            unsigned quantity 1 4 "m/s2" <= 255.9375
+                            unsigned quantity 1/2^4 "m/s2" <= 4095/16
                     COHAXY ""
                         description
                             Correlation of standard deviation of Horizontal
                             Acceleration of X and Y components, in Two’s
                             complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COHAHP "Correlation of Horizontal Acceleration and Horizontal Position"
                 description
                     Correlation of the errors associated with the estimates
@@ -734,28 +734,28 @@ items
                             (X-component) and Horizontal Position
                             (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHAXHPY ""
                         description
                             Correlation of Horizontal Acceleration
                             (X-component) and Horizontal Position
                             (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHAYHPX ""
                         description
                             Correlation of Horizontal Acceleration
                             (Y-component) and Horizontal Position
                             (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COAYHPY ""
                         description
                             Correlation of Horizontal Acceleration
                             (Y-component) and Horizontal Position
                             (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COHAHV "Correlation of Horizontal Acceleration and Horizontal Velocity"
                 description
                     Correlation of the errors associated with the estimates
@@ -768,28 +768,28 @@ items
                             (X-component) and Horizontal Velocity
                             (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHAXHVY ""
                         description
                             Correlation of Horizontal Acceleration
                             (X-component) and Horizontal Velocity
                             (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHAYHVX ""
                         description
                             Correlation of Horizontal Acceleration
                             (Y-component) and Horizontal Velocity
                             (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COHAYHVY ""
                         description
                             Correlation of Horizontal Acceleration
                             (Y-component) and Horizontal Velocity
                             (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
 
     604 "Vertical Velocity Information"
         definition
@@ -801,7 +801,7 @@ items
                     Vertical velocity as given by the rate of change of the
                     Geometric Height expressed in Two’s Complement.
                 element 24
-                    signed quantity 0.01 0 "m/s" >= -83886.07 <= 83886.07
+                    signed quantity 1/100 "m/s" >= -8388607/100 <= 8388607/100
                 remark
                     Note: Positive values indicates climbing target and
                     negative values indicates descending target.
@@ -812,7 +812,7 @@ items
                     identical parameters in range and angular domain (under
                     ideal measurement).
                 element 16
-                    unsigned quantity 0.01 0 "m/s" <= 655.35
+                    unsigned quantity 1/100 "m/s" <= 13107/20
             SDVV "Vertical Velocity Precision"
                 description
                     Root-mean-square (rms) error of the Vertical Velocity
@@ -822,13 +822,13 @@ items
                         description
                             Standard Deviation of Vertical Velocity
                         element 16
-                            unsigned quantity 0.01 0 "m/s" <= 655.35
+                            unsigned quantity 1/100 "m/s" <= 13107/20
                     COVVGH ""
                         description
                             Correlation of Vertical Velocity and Geometric
                             Height, in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COVVHP "Correlation of Vertical Velocity and Horizontal Position"
                 description
                     Correlation of the errors associated with the estimates
@@ -840,13 +840,13 @@ items
                             Correlation of Vertical Velocity and Horizontal
                             Position (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Vertical Velocity and Horizontal
                             Position (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COVVHV "Correlation of Vertical Velocity and Horizontal Velocity"
                 description
                     Correlation of the errors associated with the estimates
@@ -858,13 +858,13 @@ items
                             Correlation of Vertical Velocity and Horizontal
                             Velocity (X-component)), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Vertical Velocity and Horizontal
                             Velocity (Y-component)), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COVVHA "Correlation of Vertical Velocity and Horizontal Acceleration"
                 description
                     Correlation of the errors associated with the estimates
@@ -876,13 +876,13 @@ items
                             Correlation of Vertical and Horizontal Acceleration
                             (X-component)), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Vertical Velocity and Horizontal
                             Acceleration (Y-component)), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
 
     605 "Vertical Velocity Information"
         definition
@@ -894,7 +894,7 @@ items
                     Vertical acceleration information expressed in Two’s
                     complement.
                 element 16
-                    signed quantity 0.01 0 "m/s2" >= -327.67 <= 327.67
+                    signed quantity 1/100 "m/s2" >= -32767/100 <= 32767/100
                 remark
                     Note: Positive values indicates accelerating during climb
                     or descent and negative values indicates deceleration
@@ -908,19 +908,19 @@ items
                         description
                             Standard Deviation of Vertical Acceleration
                         element 16
-                            unsigned quantity 0.01 0 "m/s2" <= 167772.15
+                            unsigned quantity 1/100 "m/s2" <= 3355443/20
                     COVAGH ""
                         description
                             Correlation of Vertical Acceleration and Geometric
                             Height, in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     COVAVV ""
                         description
                             Correlation of Vertical Acceleration and Vertical
                             Velocity, in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COVAHP "Correlation of Vertical Acceleration and Horizontal Position"
                 description
                     Correlation of the errors associated with the estimates
@@ -932,13 +932,13 @@ items
                             Correlation of Vertical Acceleration and Horizontal
                             Position (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Vertical Acceleration and Horizontal
                             Position (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COVAHV "Correlation of Vertical Acceleration and Horizontal Velocity"
                 description
                     Correlation of the errors associated with the estimates
@@ -950,13 +950,13 @@ items
                             Correlation of Vertical Acceleration and Horizontal
                             Velocity (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Vertical Acceleration and Horizontal
                             Velocity (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             COVAHA "Correlation of Vertical Acceleration and Horizontal Acceleration"
                 description
                     Correlation of the errors associated with the estimates
@@ -968,13 +968,13 @@ items
                             Correlation of Vertical Acceleration and Horizontal
                             Acceleration (X-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     Y ""
                         description
                             Correlation of Vertical Acceleration and Horizontal
                             Acceleration (Y-component), in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
 
     625 "Range Information"
         definition
@@ -993,7 +993,7 @@ items
                     the phase centres of the transmitter and receiver antenna
                     aperture).
                 element 24
-                    signed quantity 0.1 0 "m" >= -838860.7 <= 838860.7
+                    signed quantity 1/10 "m" >= -8388607/10 <= 8388607/10
             RSR "Range Resolution"
                 description
                     Minimum difference in Range at which a sensor system is
@@ -1001,7 +1001,7 @@ items
                     parameters in velocity and angular domain (under ideal
                     measurement).
                 element 24
-                    unsigned quantity 0.1 0 "m" <= 1677721.5
+                    unsigned quantity 1/10 "m" <= 3355443/2
                 remark
                     Note: This may differ from the cell size applied within
                     the Sensor.
@@ -1010,12 +1010,12 @@ items
                     Root-mean-square (rms) error of the Range estimate provided
                     by a sensor system.
                 element 24
-                    unsigned quantity 0.1 0 "m" <= 1677721.5
+                    unsigned quantity 1/10 "m" <= 3355443/2
             RR "Range Rate"
                 description
                     The range rate is derived from different range measurements.
                 element 24
-                    signed quantity 0.1 0 "m/s" >= -838860.7 <= 838860.7
+                    signed quantity 1/10 "m/s" >= -8388607/10 <= 8388607/10
                 remark
                     Note: The range rate is the first derivative computed from
                     the range. In contrast, the Doppler velocity in I015/626
@@ -1027,7 +1027,7 @@ items
                     parameters in position and angular domain (under ideal
                     measurement).
                 element 24
-                    unsigned quantity 0.1 0 "m/s" <= 1677721.5
+                    unsigned quantity 1/10 "m/s" <= 3355443/2
             SDRR "Range Rate Precision"
                 description
                     Root-mean-square (rms) error of the Range Rate estimate
@@ -1037,19 +1037,19 @@ items
                         description
                             Standard Deviation of Range Rate
                         element 24
-                            unsigned quantity 0.1 0 "m/s" <= 1677721.5
+                            unsigned quantity 1/10 "m/s" <= 3355443/2
                     CORRR ""
                         description
                             Correlation of Range Rate and Range, in Two’s
                             complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             RA "Range Acceleration"
                 description
                     The range acceleration is derived from different range
                     rates.
                 element 16
-                    signed quantity 1 6 "m/s2" >= -512 <= 512
+                    signed quantity 1/2^6 "m/s2" >= -512 <= 512
             SDRA "Range Acceleration Precision"
                 description
                     Root-mean-square (rms) error of the Range Acceleration
@@ -1059,19 +1059,19 @@ items
                         description
                             Standard Deviation of Range Acceleration
                         element 16
-                            unsigned quantity 1 7 "m/s2" <= 512
+                            unsigned quantity 1/2^7 "m/s2" <= 512
                     CORAR ""
                         description
                             Correlation of Range Acceleration and Range,
                             in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
                     CORARR ""
                         description
                             Correlation of Range Acceleration and Range Rate,
                             in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
         remark
             Note 1: Depending upon its design the manner in which the
             positional data is declared by an INCS sensor may be expressed
@@ -1134,7 +1134,7 @@ items
                     measured by a sensor system via a corresponding Doppler
                     frequency shift.
                 element 24
-                    signed quantity 0.01 0 "m/s" >= -83886.07 <= 83886.07
+                    signed quantity 1/100 "m/s" >= -8388607/100 <= 8388607/100
                 remark
                     Note: The radial velocity is the magnitude of the
                     3-dimensional velocity vector (i.e., the time derivative
@@ -1150,7 +1150,7 @@ items
                     Root-mean-square (rms) error of the Doppler Velocity
                     measured by the sensor system.
                 element 16
-                    unsigned quantity 1 6 "m/s" <= 1024
+                    unsigned quantity 1/2^6 "m/s" <= 1024
             DA "Doppler Acceleration"
                 description
                     Radial acceleration or bistatic acceleration of a target
@@ -1158,7 +1158,7 @@ items
                     Doppler frequency shift and a subsequent difference
                     operation.
                 element 16
-                    signed quantity 1 6 "m/s2" >= -512 <= 512
+                    signed quantity 1/2^6 "m/s2" >= -512 <= 512
                 remark
                     Note: The radial acceleration is the magnitude of the
                     3-dimensional acceleration vector (i.e., the time
@@ -1178,46 +1178,46 @@ items
                         description
                             Standard Deviation of Doppler Acceleration
                         element 16
-                            unsigned quantity 1 6 "m/s2" <= 1024
+                            unsigned quantity 1/2^6 "m/s2" <= 1024
                     CODADV ""
                         description
                             Correlation of Doppler Acceleration and Doppler
                             Velocity, in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             CODVR "Correlation of Doppler Velocity and Range"
                 description
                     Correlation of Doppler Velocity and Range (e.g. bistatic
                     range).
                 element 8
-                    signed quantity 1 7 ""
+                    signed quantity 1/2^7 ""
             CODVRR "Correlation of Doppler Velocity and Range Rate"
                 description
                     Correlation of Doppler Velocity and Range Rate.
                 element 8
-                    signed quantity 1 7 ""
+                    signed quantity 1/2^7 ""
             CODVRA "Correlation of Doppler Velocity and Range Acceleration"
                 description
                     Correlation of Doppler Velocity and Range (e.g. bistatic
                     range).
                 element 8
-                    signed quantity 1 7 ""
+                    signed quantity 1/2^7 ""
             CODAR "Correlation of Doppler Acceleration and Range"
                 description
                     Correlation of Doppler Acceleration and Range (e.g.
                     bistatic range).
                 element 8
-                    signed quantity 1 7 ""
+                    signed quantity 1/2^7 ""
             CODARR "Correlation of Doppler Acceleration and Range Rate"
                 description
                     Correlation of Doppler Acceleration and Range Rate.
                 element 8
-                    signed quantity 1 7 ""
+                    signed quantity 1/2^7 ""
             CODARA "Correlation of Doppler Acceleration and Range Acceleration"
                 description
                     Correlation of Doppler Acceleration and Range Acceleration.
                 element 8
-                    signed quantity 1 7 ""
+                    signed quantity 1/2^7 ""
 
     627 "Azimuth Information"
         definition
@@ -1229,7 +1229,7 @@ items
                     Target angle relative to geographic North in the local
                     reference system centred on the sensor.
                 element 16
-                    unsigned quantity 360 16 "°" >= 360
+                    unsigned quantity 360/2^16 "°" >= 360
                 remark
                     Note: The azimuth shall increment in a clockwise manner
                     relative to geographic North.
@@ -1238,17 +1238,17 @@ items
                     Minimum angle in order to separate targets by the sensor
                     in the azimuth dimension.
                 element 16
-                    unsigned quantity 45 16 "°" <= 45
+                    unsigned quantity 45/2^16 "°" <= 45
             SDASZ "Standard Deviation of Azimuth"
                 description
                     Estimated standard deviation of the azimuth angle.
                 element 16
-                    unsigned quantity 45 16 "°" <= 45
+                    unsigned quantity 45/2^16 "°" <= 45
             AZR "Azimuth Rate"
                 description
                     Rate of change of the azimuth angle.
                 element 16
-                    signed quantity 180 16 "°" >= -90 <= 90
+                    signed quantity 180/2^16 "°" >= -90 <= 90
             SDAZR "Standard Deviation of Azimuth Rate"
                 description
                     Estimated standard deviation of the azimuth angle rate.
@@ -1257,12 +1257,12 @@ items
                         description
                             Standard Deviation of Azimuth Rate
                         element 16
-                            unsigned quantity 45 16 "°" <= 45
+                            unsigned quantity 45/2^16 "°" <= 45
                     COAZRAZ ""
                         description
                             Correlation of Azimuth Rate and Azimuth, in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             AZEX "Azimuth Extent"
                 description
                     Target size in the azimuth angle dimension. The target
@@ -1273,12 +1273,12 @@ items
                         description
                             Azimuth Extent Start
                         element 16
-                            unsigned quantity 360 16 "°" <= 360
+                            unsigned quantity 360/2^16 "°" <= 360
                     E ""
                         description
                             Azimuth Extent End
                         element 16
-                            unsigned quantity 360 16 "°" <= 360
+                            unsigned quantity 360/2^16 "°" <= 360
         remark
             Note: The Sensor Reference Point is detailed in ASTERIX Category
             016 – where there is also provision for including the reference
@@ -1296,7 +1296,7 @@ items
                     The elevation shall be given with respect to the horizontal
                     plane of the sensor expressed in Two’s Complement.
                 element 16
-                    signed quantity 180 16 "°" >= -90 <= 90
+                    signed quantity 180/2^16 "°" >= -90 <= 90
                 remark
                     Note: The elevation shall be given with respect to the
                     local WGS-84 tangential plane of the receiver dedicated
@@ -1308,17 +1308,17 @@ items
                     Minimum angle in order to separate targets by the sensor
                     in the elevation dimension.
                 element 16
-                    unsigned quantity 45 16 "°" <= 45
+                    unsigned quantity 45/2^16 "°" <= 45
             SDEL "Standard Deviation of Elevation"
                 description
                     Estimated standard deviation of the elevation angle.
                 element 16
-                    unsigned quantity 45 16 "°" <= 45
+                    unsigned quantity 45/2^16 "°" <= 45
             ER "Elevation Rate"
                 description
                     Rate of change of the elevation angle.
                 element 16
-                    signed quantity 180 16 "°/s" >= -90 <= 90
+                    signed quantity 180/2^16 "°/s" >= -90 <= 90
             SDER "Standard Deviation of Elevation Rate"
                 description
                     Estimated standard deviation of the elevation angle rate.
@@ -1327,13 +1327,13 @@ items
                         description
                             Standard Deviation of Elevation Rate
                         element 16
-                            unsigned quantity 45 16 "°/s"
+                            unsigned quantity 45/2^16 "°/s"
                     COELREL ""
                         description
                             Correlation of Elevation Rate and Elevation,
                             in Two’s complement
                         element 8
-                            signed quantity 1 7 ""
+                            signed quantity 1/2^7 ""
             ELEX "Elevation Extent"
                 description
                     Target size in the elevation angle dimension. The target
@@ -1343,12 +1343,12 @@ items
                         description
                             Elevation Extent Start, in Two’s complement
                         element 16
-                            signed quantity 180 16 "°" >= -90 <= 90
+                            signed quantity 180/2^16 "°" >= -90 <= 90
                     E ""
                         description
                             Elevation Extent End, in Two’s complement
                         element 16
-                            signed quantity 180 16 "°" >= -90 <= 90
+                            signed quantity 180/2^16 "°" >= -90 <= 90
 
     630 "Path Quality"
         definition
@@ -1360,13 +1360,13 @@ items
                     Signal power measured for the direct signal received
                     from a specific transmitter station.
                 element 8
-                    signed quantity 1 0 "dB" >= -128 <= 127
+                    signed quantity 1 "dB" >= -128 <= 127
             DPS "Direct Path - Signal to Noise Ratio (SNR)"
                 description
                     Signal to noise ratio measured for the direct signal
                     received from a specific transmitter station.
                 element 8
-                    signed quantity 1 0 "dB" >= -128 <= 127
+                    signed quantity 1 "dB" >= -128 <= 127
             RPP "Reflected Path - Power"
                 description
                     Signal power measured for a specific target echo signal
@@ -1378,14 +1378,14 @@ items
                         description
                             Power of reflected path, in Two’s complement"
                         element 9
-                            signed quantity 1 0 "dB" >= -256 <= 255
+                            signed quantity 1 "dB" >= -256 <= 255
             RPS "Reflected Path - Signal to Noise Ratio (SNR)"
                 description
                     Signal to noise ratio measured for a specific target echo
                     signal found within range-Doppler matrix (associated with
                     a specific transmitter station).
                 element 8
-                    signed quantity 1 0 "dB" >= -128 <= 127
+                    signed quantity 1 "dB" >= -128 <= 127
         remark
             Notes: Some INCS sensors may be capable of outputting an indication
             of the signal quality based upon the received echo signal strength
@@ -1404,22 +1404,22 @@ items
                     description
                         Azimuth Contour
                     element 16
-                        unsigned quantity 360 16 "°" >= 360
+                        unsigned quantity 360/2^16 "°" >= 360
                 ELCON ""
                     description
                         Elevation Contour, in Two’s complement
                     element 16
-                        signed quantity 180 16 "°" <= -90 >= 90
+                        signed quantity 180/2^16 "°" <= -90 >= 90
                 RGCONSTOP ""
                     description
                         Range Contour Stop
                     element 16
-                        unsigned quantity 10000 16 "m"
+                        unsigned quantity 10000/2^16 "m"
                 RGCONSTART ""
                     description
                         Range Contour Start
                     element 16
-                        unsigned quantity 10000 16 "m"
+                        unsigned quantity 10000/2^16 "m"
         remark
             Note 1: The azimuth shall increment in a clockwise manner relative
             to geographic North centred at the System Reference Point.

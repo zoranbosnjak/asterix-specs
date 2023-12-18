@@ -85,10 +85,10 @@ compound 8
                 group
                     LAT "Latitude in WGS 84"
                         element 24
-                            signed quantity 180 23 "°" >= -90.0 <= 90.0
+                            signed quantity 180/2^23 "°" >= -90/1 <= 90/1
                     LON "Longitude in WGS 84"
                         element 24
-                            signed quantity 180 23 "°" >= -180.0 <= 180.0
+                            signed quantity 180/2^23 "°" >= -180/1 <= 180/1
                 remark
                     Notes:
                         Latitude in WGS 84 is expressed as a 24-bit two’s complement number.
@@ -116,7 +116,7 @@ compound 8
                         description
                             "GNSS-derived Altitude of target, expressed as height above WGS 84 ellipsoid"
                         element 14
-                            signed quantity 25 0 "ft" >= -1000
+                            signed quantity 25 "ft" >= -1000
             EM1 "Extended Mode 1 Code in Octal Representation"
                 group
                     V ""
@@ -149,7 +149,7 @@ compound 8
                            the values of the corresponding bits in data item I048/055.
             TOS "Time Offset for POS and GA"
                 element 8
-                    unsigned quantity 1 7 "s"
+                    unsigned quantity 1/2^7 "s"
                 remark
                     Note:
                         TOS shall be assumed to be zero if Subitem #6 is not present.
@@ -285,10 +285,10 @@ compound 8
                 group
                     LAT "Latitude in WGS 84"
                         element 24
-                            signed quantity 180 23 "°" >= -90.0 <= 90.0
+                            signed quantity 180/2^23 "°" >= -90/1 <= 90/1
                     LON "Longitude in WGS 84"
                         element 24
-                            signed quantity 180 23 "°" >= -180.0 <= 180.0
+                            signed quantity 180/2^23 "°" >= -180/1 <= 180/1
                 remark
                     Notes:
                         Latitude in WGS 84 is expressed as a 24-bit two’s complement number.
@@ -316,7 +316,7 @@ compound 8
                         description
                             GNSS-derived Altitude of target, expressed as height above WGS 84 ellipsoid
                         element 14
-                            signed quantity 25 0 "ft" >= -1000
+                            signed quantity 25 "ft" >= -1000
             EM1 "Extended Mode 1 Code in Octal Representation"
                 group
                     V ""
@@ -349,7 +349,7 @@ compound 8
                            the values of the corresponding bits in data item I048/055.
             TOS "Time Offset for POS and GA"
                 element 8
-                    unsigned quantity 1 7 "s"
+                    unsigned quantity 1/2^7 "s"
                 remark
                     Note:
                         TOS shall be assumed to be zero if Subitem #6 is not present.
@@ -442,25 +442,25 @@ compound 8
                     The Signal / Clutter Ratio describes the difference in signal strength between the
                     signal constituting the raw plot and the signal of the clutter.
                 element 16
-                    unsigned quantity 0.1 0 "dB" >= 0.1 <= 2550
+                    unsigned quantity 1/10 "dB" >= 1/10 <= 2550
             RW "Range Width"
                 description
                     The Range Width defines the difference in range between the closest proximity to the
                     radar of the raw response and the point farthest away from the radar.
                 element 16
-                    unsigned quantity 1 8 "NM" <= 256.0
+                    unsigned quantity 1/2^8 "NM" <= 256/1
             AR "Ambiguous Range"
                 description
                     The Ambiguous Range describes the Pulse Repetition Interval of the radar in range.
                 element 16
-                    unsigned quantity 1 8 "NM" <= 256.0
+                    unsigned quantity 1/2^8 "NM" <= 256/1
     ERR "Extended Range Report"
         definition
             Adaptation of data item I048/040 to extended range radars for
             provision of the measured range of an aircraft in local polar
             coordinates when the range is equal to or greater than 256NM
         element 24
-            unsigned quantity 1 8 "NM" <= 65535
+            unsigned quantity 1/2^8 "NM" <= 65535
         remark
             Notes:
                 1. For radars with an operational range beyond 256 NM data item I048/040 is
@@ -535,7 +535,7 @@ compound 8
                 description
                     Turn State with probability with regards to track evolution hypothesis (Circular model).
                 element 8
-                    unsigned quantity 1 0 "%" <= 100
+                    unsigned quantity 1 "%" <= 100
             NPP "Next Predicted Position"
                 description
                     Next predicted position for a track update at the next expected antenna rotation in
@@ -543,37 +543,37 @@ compound 8
                 group
                     PREDRHO "Predicted Range"
                         element 16
-                            unsigned quantity 1 7 "NM"
+                            unsigned quantity 1/2^7 "NM"
                     PREDTHETA "Predicted Azimuth"
                         element 16
-                            unsigned quantity 360 16 "°"
+                            unsigned quantity 360/2^16 "°"
                     EVOLRHOSTART "Predicted Closest Range"
                         element 16
-                            unsigned quantity 1 7 "NM"
+                            unsigned quantity 1/2^7 "NM"
                     EVOLRHOEND "Predicted Largest Range"
                         element 16
-                            unsigned quantity 1 7 "NM"
+                            unsigned quantity 1/2^7 "NM"
                     EVOLTHETASTART "Predicted Smallest Azimuth"
                         element 16
-                            unsigned quantity 360 16 "°"
+                            unsigned quantity 360/2^16 "°"
                     EVOLTHETAEND "Predicted Largest Azimuth"
                         element 16
-                            unsigned quantity 360 16 "°"
+                            unsigned quantity 360/2^16 "°"
                     NOISERHOSTART "Predicted Closest Range"
                         element 16
-                            unsigned quantity 1 7 "NM"
+                            unsigned quantity 1/2^7 "NM"
                     NOISERHOEND "Predicted Largest Range"
                         element 16
-                            unsigned quantity 1 7 "NM"
+                            unsigned quantity 1/2^7 "NM"
                     NOISETHETASTART "Predicted Smallest Azimuth"
                         element 16
-                            unsigned quantity 360 16 "°"
+                            unsigned quantity 360/2^16 "°"
                     NOISETHETAEND "Predicted Largest Azimuth"
                         element 16
-                            unsigned quantity 360 16 "°"
+                            unsigned quantity 360/2^16 "°"
                     PREDTIME "Predicted Detection Time"
                         element 16
-                            unsigned quantity 1 7 "s"
+                            unsigned quantity 1/2^7 "s"
                 remark
                     Notes:
                         1. When the area crosses North, THETASTART is larger than THETAEND.
@@ -633,7 +633,7 @@ compound 8
                                 1: Target locked out by this radar
                     LOCTIM "Lockout Time"
                         element 15
-                            unsigned quantity 1 0 "ms"
+                            unsigned quantity 1 "ms"
             TC "Transition Code"
                 description
                     Indication and Counter of Transition Codes for Modes 1, 2, and 3
@@ -699,7 +699,7 @@ compound 8
                         description
                             Time since last Track Update
                         element 16
-                            unsigned quantity 1 0 "ms"
+                            unsigned quantity 1 "ms"
                 remark
                     Notes:
                         1. When Subitem #8 is included, each element shall be properly populated.
@@ -721,7 +721,7 @@ compound 8
                                 raw
                         TIMEOFDAYSCN "Absolute Timestamp in UTC Provided by the SCN"
                             element 16
-                                unsigned quantity 1 7 "s"
+                                unsigned quantity 1/2^7 "s"
                         DATAUSE "Use of Adjacent Sensor Data"
                             element 7
                                 table
@@ -760,7 +760,7 @@ compound 8
                                 1: Identity requested
                     M3A "Age of Mode 3/A Code (I048/070)"
                         element 7
-                            unsigned quantity 1 0 "s"
+                            unsigned quantity 1 "s"
     CPC "Common and Plot Characteristics"
         definition
             Plot Characteristics and Common Characteristics for Plots and Tracks

@@ -36,7 +36,7 @@ cp $src $dst/definition.ast
 aspecs convert -f $src --ast --ast > $dst/definition.txt
 aspecs convert -f $src --ast --json > $dst/definition.json
 ast-to-rst $dst/definition.ast > $dst/definition.rst
-pandoc --metadata title="asterix specification" -f rst -t html $dst/definition.rst -o $dst/definition.html --self-contained --css=../website/css/default.css --css=../website/css/syntax.css
+pandoc --metadata title="asterix specification" -f rst -t html $dst/definition.rst -o $dst/definition.html --embed-resources --standalone --css=../website/css/default.css --css=../website/css/syntax.css
 rst-to-pdf $dst/definition.rst $dst/definition.pdf
 
 echo "done... result is in $dst" directory

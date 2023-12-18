@@ -6,8 +6,6 @@ import           Control.Monad
 import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
-import qualified Data.Ratio
-import           Numeric
 import           Formatting as F
 import           Data.Char (toLower)
 import           Data.Text (Text)
@@ -19,6 +17,7 @@ import           Data.Text.Encoding (encodeUtf8, decodeUtf8)
 import           Text.Megaparsec hiding (State)
 import           Text.Megaparsec.Char as MC
 import qualified Text.Megaparsec.Char.Lexer as L
+import           Control.Monad.Combinators.Expr
 
 import           Asterix.Specs.Types
 import           Asterix.Specs.Common
@@ -50,14 +49,14 @@ instance MkBlock Content where
                     [] -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
             fmt (F.string % " integer" % stext) sig cst
-        ContentQuantity signedness scaling fract unit constraints -> do
+        ContentQuantity signedness lsb unit constraints -> do
             let sig = toLower <$> show signedness
                 cst = case constraints of
                     [] -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
             fmt
-                (F.string % " quantity " % stext % " " % int % " " % "\"" % stext % "\"" % stext )
-                sig (showNumber scaling) fract unit cst
+                (F.string % " quantity " % stext % " " % "\"" % stext % "\"" % stext )
+                sig (showNumber lsb) unit cst
         ContentBds bt -> case bt of
             BdsWithAddress -> "bds"
             BdsAt mAddr -> case mAddr of
@@ -309,22 +308,34 @@ parseList parseHeader parseChunk = do
     return (hdr, values)
 
 pNumber :: Parser Number
-pNumber = tryOne
-    [ NumberQ <$> L.signed space pRatio
-    , NumberR <$> L.signed space pReal
-    , NumberZ <$> L.signed space L.decimal
-    ]
+pNumber = makeExprParser pTerm operatorTable
   where
-    pRatio = do
-        a <- L.decimal
-        void $ MC.string "/"
-        b <- L.decimal
-        return $ (a Data.Ratio.% b)
-    pReal = do
-        a <- some digitChar
-        void $ MC.string "."
-        b <- some digitChar
-        return $ fst . head $ readFloat $ a <> "." <> b
+    symbol :: Text -> Parser Text
+    symbol = L.symbol sc
+
+    parens :: Parser a -> Parser a
+    parens = between (symbol "(") (symbol ")")
+
+    pNumInt = NumInt <$> L.signed space L.decimal
+
+    pNumPow = do
+        a <- L.signed space L.decimal
+        void $ MC.string "^"
+        b <- L.signed space L.decimal
+        pure $ NumPow a b
+
+    pTerm = tryOne
+        [ parens pNumber
+        , pNumPow
+        , pNumInt
+        ]
+
+    binary name f = InfixL (f <$ symbol name)
+
+    operatorTable =
+        [ [ binary "/" NumDiv
+          ]
+        ]
 
 -- | Parser valid name.
 pName :: Parser Name
@@ -376,7 +387,6 @@ pContent = tryOne
     , ContentQuantity
         <$> pSignedness <* (sc >> MC.string "quantity" >> sc)
         <*> pNumber <* sc
-        <*> L.decimal <* sc
         <*> (T.pack <$> stringLiteral)
         <*> (many (sc >> pConstrain))
     , ContentBds <$> tryOne

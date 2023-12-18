@@ -18,7 +18,7 @@ set spec {
             { stack
                 { line
                     { or /signed /unsigned }
-                    { line /quantity SCALE FRACT \"UNIT\" }
+                    { line /quantity LSB \"UNIT\" }
                     { loop {} CONSTRAIN }
                 }
             }
@@ -32,4 +32,3 @@ set spec {
             }
         }
 }
-

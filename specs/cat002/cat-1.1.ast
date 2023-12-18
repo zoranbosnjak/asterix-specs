@@ -47,7 +47,7 @@ items
             Eight most significant bits of the antenna azimuth defining a
             particular azimuth sector.
         element 8
-            unsigned quantity 360 8 "°"
+            unsigned quantity 360/2^8 "°"
         remark
             The use of the antenna azimuth as sector number has the
             advantage of being independent of the number of sectors
@@ -57,7 +57,7 @@ items
         definition
             Absolute time stamping expressed as UTC time.
         element 24
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
         remark
             Notes:
 
@@ -75,7 +75,7 @@ items
             consecutive North crossings or as averaged during a period
             of time.
         element 16
-            unsigned quantity 1 7 "s"
+            unsigned quantity 1/2^7 "s"
 
     050 "Station Configuration Status"
         definition
@@ -148,10 +148,10 @@ items
         group
             RE "Range Error"
                 element 8
-                    signed quantity 1 7 "NM"
+                    signed quantity 1/2^7 "NM"
             AE "Azimuth Error"
                 element 8
-                    signed quantity 360 14 "°"
+                    signed quantity 360/2^14 "°"
         remark
             NOTES
                 1. LSB of RE is calculated as :math:`2^{16-f}`.
@@ -166,16 +166,16 @@ items
         group
             RS "Rho Start"
                 element 16
-                    unsigned quantity 1 7 "NM" < 512
+                    unsigned quantity 1/2^7 "NM" < 512
             RE "Rho End"
                 element 16
-                    unsigned quantity 1 7 "NM" < 512
+                    unsigned quantity 1/2^7 "NM" < 512
             TS "Theta Start"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
             TE "Theta End"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
         remark
             The logical meaning of the polar window is defined by its context,
             given by the Message Type (Data Item I002/000) in the record

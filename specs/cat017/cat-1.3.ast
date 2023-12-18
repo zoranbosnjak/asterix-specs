@@ -64,10 +64,10 @@ items
         group
             LAT "Latitude"
                 element 24
-                    signed quantity 180 25 "°" >= -90 <= 90
+                    signed quantity 180/2^25 "°" >= -90 <= 90
             LON "Longitude"
                 element 24
-                    signed quantity 180 25 "°" >= -180 < 180
+                    signed quantity 180/2^25 "°" >= -180 < 180
         remark
             NOTE:
                 - See Annex A for calculation details
@@ -88,7 +88,7 @@ items
                         1: Garbled code / Error correction applied
             ALT "Altitude"
                 element 14
-                    unsigned quantity 1 2 "FL"
+                    unsigned quantity 1/2^2 "FL"
         remark
             NOTES:
                 1. The value shall be within the range described by ICAO Annex
@@ -137,7 +137,7 @@ items
             Absolute time stamping expressed as Coordinated Universal Time
             (UTC) time.
         element 24
-            unsigned quantity 1 7 "s" < 86400
+            unsigned quantity 1/2^7 "s" < 86400
         remark
             NOTE:
                 - The time of day is reset to zero each day at midnight
@@ -150,10 +150,10 @@ items
         group
             GSP "Calculated Groundspeed"
                 element 16
-                    unsigned quantity 1 14 "NM/s"
+                    unsigned quantity 1/2^14 "NM/s"
             HDG "Calculated Heading"
                 element 16
-                    unsigned quantity 360 16 "°"
+                    unsigned quantity 360/2^16 "°"
 
     210 "Mode S Address List"
         definition
