@@ -7,7 +7,6 @@ import           Data.Text
 
 type RegisterSize = Int
 type RepetitionSize = Int
-type FractBits = Int
 
 type Name = Text
 type Title = Text

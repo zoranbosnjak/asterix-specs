@@ -6,6 +6,8 @@ module Folds
 
 import           Options.Applicative as Opt
 import qualified Data.ByteString as BS
+import           Data.Maybe
+import           Data.Either
 
 import           Control.Lens
 
@@ -15,9 +17,9 @@ import           Asterix.Specs
 loadSpec :: Monad m => String -> String -> m BS.ByteString -> m Asterix
 loadSpec fmt path getS = do
     s <- getS
-    let Just syntax = lookup fmt syntaxes
-        Just decoder = syntaxDecoder syntax
-        Right ast = decoder path s
+    let syntax = fromJust $ lookup fmt syntaxes
+        decoder = fromJust $ syntaxDecoder syntax
+        ast = fromRight (error "unexpected") $ decoder path s
     return ast
 
 focusItemVariation :: Getter Item (Maybe Variation)
@@ -47,10 +49,10 @@ focusRuleContent = folding $ \case
 
 focusContentUnit :: Getter Content (Maybe Unit)
 focusContentUnit = to $ \case
-    ContentQuantity _signedness _number _fractBits unit _constraints -> Just unit
+    ContentQuantity _signedness _lsb unit _constraints -> Just unit
     _ -> Nothing
 
-focusContentScaling :: Getter Content (Maybe Number)
-focusContentScaling = to $ \case
-    ContentQuantity _signedness scaling _fractBits _unit _constraints -> Just scaling
+focusContentLsb :: Getter Content (Maybe Number)
+focusContentLsb = to $ \case
+    ContentQuantity _signedness lsb _unit _constraints -> Just lsb
     _ -> Nothing
