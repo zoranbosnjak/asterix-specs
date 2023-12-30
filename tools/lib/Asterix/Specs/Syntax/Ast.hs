@@ -9,6 +9,7 @@ import           Data.Bifunctor (first)
 import           Formatting as F
 import           Data.Char (toLower)
 import           Data.Text (Text)
+import           Data.List (intersperse)
 import qualified Data.Text as T
 import           Data.Text.Lazy.Builder (Builder)
 import qualified Data.Text.Lazy.Builder as BL
@@ -161,13 +162,14 @@ instance MkBlock Basic where
                 line "preamble"
                 indent $ forM_ (T.lines preamble) $ \i -> do
                     fmt stext i
-        emptyLine
+        ""
         line "items"
-        emptyLine
+        ""
         indent $ blocksLn (mkBlock <$> basCatalogue basic)
-        emptyLine
+        ""
         mkBlock $ basUap basic
       where
+        blocksLn lst = mconcat $ intersperse "" lst
         cat = basCategory basic
         title = basTitle basic
         edition = basEdition basic
@@ -180,7 +182,7 @@ instance MkBlock Expansion where
         fmt ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
         fmt ("edition " % int % "." % int) ed1 ed2
         fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
-        emptyLine
+        ""
         mkBlock $ expVariation x
       where
         cat = expCategory x
@@ -581,6 +583,6 @@ syntax = Syntax
     , syntaxDecoder = Just decoder
     }
   where
-    encoder = encodeUtf8 . TL.toStrict . BL.toLazyText . renderBlockM 4 . mkBlock
+    encoder = encodeUtf8 . TL.toStrict . BL.toLazyText . render "    " "\n" . mkBlock
     decoder filename s = first errorBundlePretty $
         parse (pAsterix <* eof) filename (decodeUtf8 s)

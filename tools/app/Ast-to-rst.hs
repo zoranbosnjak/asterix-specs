@@ -60,6 +60,9 @@ type Path = [Text]
 class MkBlock a where
     mkBlock :: Path -> a -> BlockM Builder ()
 
+blocksLn :: [BlockM Builder ()] -> BlockM Builder ()
+blocksLn = mconcat . intersperse ""
+
 -- | The same as 'line $ bformat (formating) arg1 arg2 ...'
 fmt :: Format (BlockM Builder ()) a -> a
 fmt m = runFormat m line
@@ -89,7 +92,7 @@ instance MkBlock Content where
         ContentRaw -> "- raw value"
         ContentTable lst -> do
             line "- values:"
-            emptyLine
+            ""
             indent $ forM_ lst $ \(k,v) -> do
                 fmt ("| " % int % ": " % stext) k v
         ContentString st -> case st of
@@ -133,7 +136,7 @@ instance MkBlock Rule where
         ContextFree cont -> mkBlock p cont
         Dependent otherItem rules -> do
             fmt ("* Content of this item depends on the value of item ``" % stext % "``.") (tPath otherItem)
-            emptyLine
+            ""
             indent $ blocksLn $ do
                 (a, b) <- rules
                 pure $ do
@@ -154,14 +157,14 @@ instance MkBlock Variation where
 
     mkBlock p (Element n rule) = do
         fmt stext ("- " <> bits n <> " [``" <> dots n <> "``]")
-        emptyLine
+        ""
         mkBlock p rule
 
     mkBlock p (Group lst) = blocksLn (mkBlock p <$> lst)
 
     mkBlock p (Extended lst) = do
         line "Extended item."
-        emptyLine
+        ""
         blocksLn $ do
             mItem <- lst
             pure $ case mItem of
@@ -170,9 +173,9 @@ instance MkBlock Variation where
       where
         fx = indent $ do
             line $ "``(FX)``"
-            emptyLine
+            ""
             line $ "- extension bit"
-            emptyLine
+            ""
             indent $ mconcat
                 [ "| 0: End of data item"
                 , "| 1: Extension into next extent"
@@ -183,7 +186,7 @@ instance MkBlock Variation where
             RepetitiveRegular rep -> fmt
                 ("Repetitive item, repetition factor " % int % " bits.") rep
             RepetitiveFx -> fmt "Repetitive item with FX extension"
-        emptyLine
+        ""
         indent $ mkBlock p var
 
     mkBlock _parent (Explicit mt) = case mt of
@@ -196,7 +199,7 @@ instance MkBlock Variation where
 
     mkBlock p (Compound mn lst) = do
         fspec
-        emptyLine
+        ""
         blocksLn $ do
             mItem <- lst
             pure $ case mItem of
@@ -213,7 +216,7 @@ instance MkBlock Item where
             let ref = p <> ["(spare)"]
             in indent $ do
                 fmt ("**" % stext % "**") (tPath ref)
-                emptyLine
+                ""
                 fmt stext ("- " <> bits n <> " [``" <> dots n <> "``]")
         Item name title var doc ->
             let ref = p <> [name]
@@ -225,14 +228,14 @@ instance MkBlock Item where
                 case docDescription doc of
                     Nothing -> pure ()
                     Just val -> do
-                        emptyLine
+                        ""
                         remark val
-                emptyLine
+                ""
                 mkBlock ref var
                 case docRemark doc of
                     Nothing -> pure ()
                     Just val -> do
-                        emptyLine
+                        ""
                         indent ("remark" <> indent (remark val))
           where
             remark t = mapM_ (fmt stext) (T.lines t)
@@ -243,15 +246,15 @@ instance MkBlock TopItem where
     mkBlock _p (TopItem (Spare _n)) = error "unexpected spare"
     mkBlock p (TopItem (Item name title var doc)) = do
         underline '*' $ bformat stext (tPath ref <> " - " <> title)
-        emptyLine
+        ""
         fmt stext ("*Definition*: " <> maybe "" id (docDefinition doc))
         line "*Structure*:"
-        emptyLine
+        ""
         mkBlock ref var
         case docRemark doc of
             Nothing -> pure ()
             Just val -> do
-                emptyLine
+                ""
                 remark val
       where
         ref = p <> [name]
@@ -268,15 +271,15 @@ instance MkBlock Basic where
             , fmt ("**edition**: " % int % "." % int) (editionMajor ed) (editionMinor ed)
             , fmt ("**date**: " % stext) (fmtDate $ basDate val)
             ]
-        emptyLine
+        ""
         underline '-' "Preamble"
         forM_ preamble $ \i -> do
             fmt stext i
-        emptyLine
+        ""
         underline '-' "Description of standard data items"
-        emptyLine
+        ""
         blocksLn (mkBlock [ref] . TopItem <$> basCatalogue val)
-        emptyLine
+        ""
         underline '=' $ bformat ("User Application Profile for Category " % left 3 '0') cat
         fmtUap (basUap val)
       where
@@ -293,15 +296,15 @@ instance MkBlock Basic where
             Uap lst -> oneUap lst
             Uaps lsts msel -> do
                 line $ "This category has multiple UAPs."
-                emptyLine
+                ""
                 case msel of
                     Nothing -> line $ "UAP selection is not defined."
                     Just sel -> do
                         fmt stext ("UAP selection is based on the value of: ``" <> tPath (selItem sel) <> "``:")
-                        emptyLine
+                        ""
                         indent $ forM_ (selTable sel) $ \(a, b) -> do
                             fmt ("* ``" % int % "``: " % stext) a b
-                emptyLine
+                ""
                 blocksLn $ do
                     (name, lst) <- lsts
                     pure $ do
@@ -332,10 +335,10 @@ instance MkBlock Expansion where
             , fmt ("**edition**: " % int % "." % int) (editionMajor ed) (editionMinor ed)
             , fmt ("**date**: " % stext) (fmtDate $ expDate val)
             ]
-        emptyLine
+        ""
         underline '-' "Description of asterix expansion"
         mkBlock [ref] $ expVariation val
-        emptyLine
+        ""
       where
         cat = expCategory val
         ed = expEdition val
@@ -350,4 +353,5 @@ main = withUtf8 $ do
     opt <- execParser opts
     let path = optPath opt
     ast <- loadSpec path (BS.readFile path)
-    BS.putStr $ T.encodeUtf8 $ TL.toStrict $ BL.toLazyText $ renderBlockM 4 (mkBlock mempty ast)
+    BS.putStr $ T.encodeUtf8 $ TL.toStrict $ BL.toLazyText $
+        render "    " "\n" (mkBlock mempty ast)

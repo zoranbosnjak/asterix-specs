@@ -12,3 +12,7 @@
 * JSON format, change "regular", "no-trailing-fx" to
   "Regular", "No-trailing-fx" respectively.
 
+## 1.7.0
+
+* `tools/lib/Asterix/Indent.hs` module cleanup.
+

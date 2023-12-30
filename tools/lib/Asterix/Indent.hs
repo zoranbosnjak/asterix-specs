@@ -1,11 +1,61 @@
--- | Block is a list/tree-like structure with support for indented sub-block(s).
+--------
+-- |
+-- Module : Asterix.Indent
+--
+-- This module provides primitives to support source code generation.
+-- A basic structure is "Block" - a list/tree-like structure,
+-- with support for indented sub-block(s). It's parametrized over
+-- string type, like ["String", "Text", "Text.Builder",...]
 -- Eventually, it is rendered to output with required indentation (spaces).
+--
+-- Monoidal and Monadic interfaces are provided for convenience.
+--
+-- == Example code builder
+--
+-- === Monoidal "Block" builder
+--
+-- > prog1 :: Block String
+-- > prog1 = mconcat
+-- >     [ "test1"
+-- >     , line ("test" <> show (2::Int))
+-- >     , indent $ mconcat
+-- >         [ "test3"
+-- >        , "test4"
+-- >        ]
+-- >    , "test5"
+-- >    ]
+--
+-- === Monadic "BlockM" builder
+--
+-- > prog2 :: BlockM String ()
+-- > prog2 = do
+-- >     "test1"
+-- >     line ("test" <> show (2::Int))
+-- >     indent $ do
+-- >         "test3"
+-- >         "test4"
+-- >     "test5"
+--
+-- === Rendering
+--
+-- Both versions produce the same result.
+--
+-- > test :: IO ()
+-- > test = do
+-- >     print (prog1 == toBlock prog2)
+-- >     putStrLn $ render "    " "\n" prog1
+-- >     putStrLn $ render "    " "\n" prog2
+--
+-- > test1
+-- > test2
+-- >     test3
+-- >     test4
+-- > test5
 
 module Asterix.Indent where
 
-import           Data.List (intersperse)
-import           Data.String (IsString, fromString)
-import           Control.Monad.Trans.Writer
+import Data.String (IsString, fromString)
+import Control.Monad.Trans.Writer
 
 -- | Building block
 data Block a
@@ -31,15 +81,30 @@ instance Monoid (Block a) where
 instance IsString a => IsString (Block a) where
     fromString s = Block (Left $ fromString s) Nil
 
-lineB :: t -> Block t
-lineB t = Block (Left t) Nil
+lineBlock :: t -> Block t
+lineBlock s = Block (Left s) Nil
 
-indentB :: Block t -> Block t
-indentB body = Block (Right body) Nil
+indentBlock :: Block t -> Block t
+indentBlock body = Block (Right body) Nil
 
--- | Monadic block construction helper type
+renderBlock :: (Eq t, Monoid t) => t -> t -> Block t -> t
+renderBlock tab newline = go mempty 0
+  where
+    prepend (n :: Int)
+        | n <= 0 = mempty
+        | otherwise = tab <> prepend (pred n)
+    go acc _level Nil = acc
+    go acc level (Block val cont) = case val of
+        Left s ->
+            let t = case s == mempty of
+                    True -> mempty
+                    False -> prepend level <> s
+            in go (acc <> t <> newline) level cont
+        Right blk -> go (go acc (succ level) blk) level cont
+
+-- | Monadic block (Writer wrapper)
 newtype BlockM t a = BlockM { unBlockM :: Writer (Block t) a }
-    deriving (Eq, Show, Functor, Applicative, Monad)
+    deriving (Functor, Applicative, Monad)
 
 instance Semigroup a => Semigroup (BlockM t a) where
     act1 <> act2 = (<>) <$> act1 <*> act2
@@ -47,43 +112,38 @@ instance Semigroup a => Semigroup (BlockM t a) where
 instance Monoid a => Monoid (BlockM t a) where
     mempty = pure mempty
 
-instance (IsString t, Monoid a) => IsString (BlockM t a) where
-    fromString s = BlockM (tell (fromString s) >> pure mempty)
+instance (IsString t, a ~ ()) => IsString (BlockM t a) where
+    fromString s = BlockM $ do
+        tell $ fromString s
 
-line :: t -> BlockM t ()
-line t = BlockM (tell $ lineB t)
+lineBlockM :: t -> BlockM t ()
+lineBlockM t = BlockM $ do
+    tell $ lineBlock t
 
-indent :: BlockM t () -> BlockM t ()
-indent (BlockM act) = BlockM (tell (indentB (execWriter act)))
+indentBlockM :: BlockM t () -> BlockM t ()
+indentBlockM (BlockM act) = BlockM $ do
+    tell $ indentBlock (execWriter act)
 
--- | Empty line
-emptyLine :: Monoid a => BlockM a ()
-emptyLine = line mempty
+class HasIndent t where
+    indent :: t -> t
 
--- | Put empty line between sub-blocks
-blocksLn :: (Monoid a, Eq a) => [BlockM a ()] -> BlockM a ()
-blocksLn lst = mconcat $ intersperse emptyLine $ filter (/= mempty) lst
+class HasIndent t => IsBlock t a where
+    line :: a -> t
+    toBlock :: t -> Block a
 
--- | Enclose indented body between 'header' and 'footer'.
-enclose :: BlockM t () -> BlockM t () -> BlockM t () -> BlockM t ()
-enclose hdr ft body = mconcat [hdr, indent body, ft]
+render :: (Eq c, Monoid c, IsBlock a c) => c -> c -> a -> c
+render tab newline = renderBlock tab newline . toBlock
 
--- | Convert block to output string (Block)
-renderBlock :: (Eq t, Monoid t, IsString t) => Int -> Block t -> t
-renderBlock tab = go mempty 0
-  where
-    prepend 0 _s = mempty
-    prepend n s = s <> prepend (pred n) s
-    go acc _level Nil = acc
-    go acc level (Block val cont) = case val of
-        Left s ->
-            let t = case s == mempty of
-                    True -> mempty
-                    False -> prepend (tab*level) " " <> s
-            in go (acc <> t <> "\n") level cont
-        Right blk -> go (go acc (succ level) blk) level cont
+instance HasIndent (Block a) where
+    indent = indentBlock
 
--- | Convert block to output string (BlockM)
-renderBlockM :: (Eq t, Monoid t, IsString t) => Int -> BlockM t a -> t
-renderBlockM tab (BlockM act) = renderBlock tab $ execWriter act
+instance (a ~ b) => IsBlock (Block a) b where
+    line = lineBlock
+    toBlock = id
 
+instance HasIndent (BlockM t ()) where
+    indent = indentBlockM
+
+instance (a ~ b, t ~ ()) => IsBlock (BlockM a t) b where
+    line = lineBlockM
+    toBlock = execWriter . unBlockM
