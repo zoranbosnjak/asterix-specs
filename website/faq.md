@@ -90,26 +90,26 @@ If specified as fixed digit decimal number, like `0.00000536442` or
 error might occur. It is up to library implementation
 to decide the evaluation scenario and required precision. For example,
 the following recursive function can be used to convert from
-`Number` to `Double`:
+`Number` to a real value:
 
 ```haskell
 -- in haskell
-realNum :: Number -> Double
-realNum = \case
+evalNumber :: Fractional a => A.Number -> a
+evalNumber = \case
     NumInt i -> fromIntegral i
-    NumDiv a b -> realNum a / realNum b
+    NumDiv a b -> evalNumber a / evalNumber b
     NumPow a b -> fromIntegral (a ^ b)
 ```
 
 ```python
 # in python if reading from 'json' format
-def get_number(value):
+def eval_number(value):
     t = value['type']
     if t == 'Integer':
         return float(value['value'])
     if t == 'Div':
-        a = get_number(value['numerator'])
-        b = get_number(value['denominator'])
+        a = eval_number(value['numerator'])
+        b = eval_number(value['denominator'])
         return a/b
     if t == 'Pow':
         return float(pow(value['base'], value['exponent']))
