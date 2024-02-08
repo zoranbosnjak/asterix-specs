@@ -4,6 +4,8 @@
 }:
 
 let
+  tools = import ../tools/default.nix { inherit packages; inShell = false; };
+
   cats =
     let
       toCatNumber = s:
@@ -106,9 +108,14 @@ let
         set -- $i
         ln -s $2 $out/specs/cat$1
       done
+
+      # test specs validation
+      for i in $(find ../specs/test/*ast); do
+          echo "validating test spec: $i"
+          ${tools}/bin/aspecs validate -f $i --ast --warnings
+      done
     '';
   };
 
 in
   drv
-
