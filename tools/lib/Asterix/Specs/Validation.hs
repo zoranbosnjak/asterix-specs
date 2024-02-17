@@ -216,7 +216,7 @@ instance Validate Variation where
         RepetitiveFx -> validate warnings variation
     validate _warnings (Explicit _) = []
     validate _warnings RandomFieldSequencing = []
-    validate warnings x@(Compound _mFspecSize items) = join
+    validate warnings x@(Compound mFspecSize items) = join
         [ reportUnless (isAligned x) "alignment error"
         , validate warnings items
         , let items' = catMaybes items
@@ -225,6 +225,12 @@ instance Validate Variation where
         , reportWhen (any isSpare items) "unexpected spare item inside compound"
         , reportWhen (warnings && (length items <= 1))
             "compound item with just one element"
+        , case mFspecSize of
+            Nothing -> []
+            Just n -> mconcat
+                [ reportWhen (mod n 8 /= 0) "fspec not aligned"
+                , reportWhen (n < length items) "insufficient fspec length"
+                ]
         ]
       where
         isSpare (Just (Spare _)) = True
