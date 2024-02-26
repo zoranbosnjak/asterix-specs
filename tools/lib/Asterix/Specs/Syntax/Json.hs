@@ -2,7 +2,7 @@
 
 -- '.json' syntax implementation
 
-module Asterix.Specs.Syntax.Json (syntax) where
+module Asterix.Specs.Syntax.Json where
 
 import           Control.Monad
 import           Data.Aeson hiding (Encoding)
@@ -176,25 +176,27 @@ instance FromJSON Content  where
             <$> v .: "variation"
         _ -> typeMismatch "Content" $ String "wrong type"
 
-instance ToJSON Rule
+instance ToJSON a => ToJSON (Rule a)
   where
-    toJSON (ContextFree content) = object
+    toJSON (ContextFree value) = object
         [ "type"    .= ("ContextFree" :: String)
-        , "content" .= content
+        , "value"   .= value
         ]
-    toJSON (Dependent name rules) = object
-        [ "type" .= ("Dependent" :: String)
-        , "name" .= name
-        , "rules" .= rules
+    toJSON (Dependent items dv cases) = object
+        [ "type"    .= ("Dependent" :: String)
+        , "items"   .= items
+        , "default" .= dv
+        , "cases"   .= cases
         ]
 
-instance FromJSON Rule where
+instance FromJSON a => FromJSON (Rule a) where
     parseJSON = withObject "Rule" $ \v -> case KM.lookup "type" v of
         Just "ContextFree" -> ContextFree
-            <$> v .: "content"
+            <$> v .: "value"
         Just "Dependent" -> Dependent
-            <$> v .: "name"
-            <*> v .: "rules"
+            <$> v .: "items"
+            <*> v .: "default"
+            <*> v .: "cases"
         _ -> typeMismatch "Rule" $ String "wrong type"
 
 instance ToJSON RepetitiveType where
@@ -282,13 +284,13 @@ instance ToJSON Item where
         [ "spare"       .= True
         , "length"      .= n
         ]
-    toJSON (Item name title variation doc) = object
+    toJSON (Item name title rule doc) = object
         [ "spare"       .= False
         , "name"        .= name
         , "title"       .= title
         , "definition"  .= docDefinition doc
         , "description" .= docDescription doc
-        , "variation"   .= variation
+        , "rule"        .= rule
         , "remark"      .= docRemark doc
         ]
 
@@ -299,7 +301,7 @@ instance FromJSON Item  where
         Just (Bool False) -> Item
             <$> v .: "name"
             <*> v .: "title"
-            <*> v .: "variation"
+            <*> v .: "rule"
             <*> (Documentation
                 <$> v .: "definition"
                 <*> v .: "description"

@@ -20,14 +20,19 @@ class Fixed a where
 instance Fixed a => Fixed [a] where
     bitSize lst = sum <$> sequence (fmap bitSize lst)
 
+instance Fixed a => Fixed (Rule a) where
+    bitSize = \case
+        ContextFree value -> bitSize value
+        Dependent _item dv _lst -> bitSize dv
+
 instance Fixed Variation where
-    bitSize (Element n _content) = Just n
+    bitSize (Element n _rule) = Just n
     bitSize (Group items) = bitSize items
     bitSize _ = Nothing
 
 instance Fixed Item where
     bitSize (Spare n) = Just n
-    bitSize (Item _name _title variation _doc) = bitSize variation
+    bitSize (Item _name _title rule _doc) = bitSize rule
 
 isFixed :: Fixed a => a -> Bool
 isFixed = isJust . bitSize
@@ -43,14 +48,15 @@ findItemByName basic (x:xs) = do
     go item [] = Just item
     go item (y:ys) = case item of
         Spare _ -> Nothing
-        Item _ _ variation _ -> do
-            let candidates = case variation of
-                    Group lst -> lst
-                    Extended lst -> catMaybes lst
-                    Compound _fspecSize lst -> catMaybes lst
-                    _ -> []
-                byName (Spare _) = False
-                byName (Item n _ _ _) = n == y
-            nextItem <- find byName candidates
-            go nextItem ys
-
+        Item _ _ rule _ -> case rule of
+            ContextFree variation -> do
+                let candidates = case variation of
+                        Group lst -> lst
+                        Extended lst -> catMaybes lst
+                        Compound _fspecSize lst -> catMaybes lst
+                        _ -> []
+                    byName (Spare _) = False
+                    byName (Item n _ _ _) = n == y
+                nextItem <- find byName candidates
+                go nextItem ys
+            Dependent _ _ _ -> Nothing

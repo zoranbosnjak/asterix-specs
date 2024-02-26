@@ -39,7 +39,7 @@ set spec {
                 }
             }
             { line /rfs }
-            { line /element BITS content-def }
+            { line /element BITS case-def(content-def) }
             { line /spare BITS }
         }
 }

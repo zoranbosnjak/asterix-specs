@@ -89,8 +89,8 @@ aspecs prettify --remove-comments {file_name} --ast
 # build selected file
 ./build_spec.sh {file_name}
 
-# check the result
-firefox output/
+# check the result with some web browser
+netsurf output/
 
 # cleanup generated files when done
 git clean -xdf output/
@@ -109,7 +109,7 @@ done
 cd asterix-specs/
 nix-build
 
-# show locally generated web site
-firefox ./result/index.html
+# check locally generated web site with some web browser
+netsurf ./result/index.html
 ```
 

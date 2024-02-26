@@ -173,8 +173,7 @@ you some time when implementing asterix encoder/decoder.
   handled with a special `case` syntax.
   In *json*, there is `variation/rule/type = "Dependent"` indication.
 
-* I004/120, subitem 2 has an even more complicated content definition,
-  with nested depentent rules.
+* I004/120, subitem 2 has an even more complicated content definition.
 
 * Some encoding rules are complex. This project does not include any
   encoding rules, such as: "This item is optional/mandatory...".

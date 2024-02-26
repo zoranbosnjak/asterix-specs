@@ -6,6 +6,7 @@ import           Control.Monad
 import qualified Data.Text as T
 import           Data.Maybe
 import           Data.List (nub, (\\))
+import           Data.Foldable (toList)
 
 import           Asterix.Specs
 
@@ -25,11 +26,22 @@ isCapital w
 class IsAligned a where
     isAligned :: a -> Bool
 
+-- Validations
+class Validate a where
+    validate :: Bool -> a -> [ValidationError]
+
 instance IsAligned RegisterSize where
     isAligned n = (n `mod` 8) == 0
 
+instance IsAligned a => IsAligned (Rule a) where
+    isAligned = \case
+        ContextFree x -> isAligned x
+        Dependent _item dv lst ->
+            (isAligned dv)
+            && (all (isAligned . snd) lst)
+
 instance IsAligned Variation where
-    isAligned (Element n _content) = isAligned n
+    isAligned (Element n _rule) = isAligned n
     isAligned (Group lst) = check notAlignedParts
       where
         notAlignedParts = filter (not . isAligned) lst
@@ -68,11 +80,7 @@ instance IsAligned Variation where
 
 instance IsAligned Item where
     isAligned (Spare n) = isAligned n
-    isAligned (Item _name _title variation _doc) = isAligned variation
-
--- Validations
-class Validate a where
-    validate :: Bool -> a -> [ValidationError]
+    isAligned (Item _name _title rule _doc) = isAligned rule
 
 isValid :: Validate a => Bool -> a -> Bool
 isValid warnings = null . validate warnings
@@ -167,16 +175,30 @@ instance Validate (RegisterSize, Content) where
                 _ -> []
             ]
 
-instance Validate (RegisterSize, Rule) where
+instance Validate (RegisterSize, Rule Content) where
     validate warnings (n, ContextFree a) = validate warnings (n,a)
-    validate warnings (n, Dependent _someItem rules) = join
+    validate warnings (n, Dependent _someItem dv lst) = join
         [ reportWhen (keys /= nub keys) "duplicated keys"
+        , validate warnings (n, dv)
         , join $ do
-            rule <- fmap snd rules
+            rule <- fmap snd lst
             return $ validate warnings (n, rule)
         ]
       where
-        keys = fst <$> rules
+        keys = fst <$> lst
+
+instance Validate (Rule Variation) where
+    validate warnings = \case
+        ContextFree x -> validate warnings x
+        Dependent _item dv lst -> join
+            [ reportWhen (keys /= nub keys) "duplicated keys"
+            , validate warnings dv
+            , join $ do
+                x <- fmap snd lst
+                return $ validate warnings x
+            ]
+          where
+            keys = fst <$> lst
 
 duplicatedNames :: [Item] -> Bool
 duplicatedNames items = names /= nub names
@@ -186,9 +208,9 @@ duplicatedNames items = names /= nub names
         Item name _title _variation _doc -> [name]
 
 instance Validate Variation where
-    validate warnings (Element n content) = join
+    validate warnings (Element n rule) = join
         [ reportUnless (n > 0) "element size"
-        , validate warnings (n, content)
+        , validate warnings (n, rule)
         ]
     validate warnings (Group items) = join
         [ validate warnings items
@@ -238,7 +260,7 @@ instance Validate Variation where
 
 instance Validate Item where
     validate _warnings (Spare n) = reportUnless (n > 0) "size error"
-    validate warnings (Item name title variation _doc) = join
+    validate warnings (Item name title rule _doc) = join
         -- check item name length
         [ reportWhen (T.length name > 15) (name <> ":Item name too long")
         -- item name valid characters
@@ -260,13 +282,11 @@ instance Validate Item where
             name <> ":Title contain leading or trailing whitespaces -> " <> title
         , reportWhen (warnings && elem '"' (T.unpack title)) $
             name <> ":Title contain quotes -> " <> title
-        -- check variation
-        , validateVariation
-        ]
-      where
-        validateVariation = do
-            err <- validate warnings variation
+        -- check rule
+        , do
+            err <- validate warnings rule
             return (name <> ":" <> err)
+        ]
 
 instance Validate Basic where
     validate warnings basic = join
@@ -355,36 +375,49 @@ instance Validate Basic where
 
         validateDepItem :: Item -> [ValidationError]
         validateDepItem (Spare _n) = []
-        validateDepItem (Item name title variation doc) = case variation of
-            Element _n rule -> case rule of
-                ContextFree _ -> []
-                Dependent someItemName rules -> case findItemByName basic someItemName of
-                    Nothing -> [showPath someItemName <> " not defined"]
-                    Just someItem -> case bitSize someItem of
-                        Nothing -> [showPath someItemName <> " unknown size"]
-                        Just m ->
-                            let ln = compare (length rules) (2 ^ m)
-                            in reportWhen (ln == GT) (showPath [name] <> " too many variations")
-            Group items ->
-                (join $ fmap validateDepItem items)
-                ++ (join $ fmap validateNestedName items)
-              where
-                validateNestedName = \case
-                    Spare _ -> []
-                    Item subName _title _var _doc -> do
-                        let n = T.length name
-                            subName' = T.take n subName
-                        guard $ subName /= name
-                        guard $ subName' == name
-                        [showPath [name, subName]
-                            <> ": name repetition, suggesting -> "
-                            <> showPath [name, T.drop n subName]]
+        validateDepItem (Item name title rule doc) = do
+            let checkVar :: Variation -> [ValidationError]
+                checkVar = \case
+                    Element _n rule' -> case rule' of
+                        ContextFree _ -> []
+                        Dependent items _dv lst -> join
+                            [ reportWhen (length lst <= 0) "empty case list"
+                            , do
+                                xs <- fmap fst lst -- for each case
+                                case length items == length xs of
+                                    False -> ["Case vector size mismatch"]
+                                    True -> do
+                                        (someItemName, x) <- zip items xs -- and for each component
+                                        case findItemByName basic someItemName of
+                                            Nothing -> [showPath someItemName <> " not defined"]
+                                            Just someItem -> case bitSize someItem of
+                                                Nothing -> [showPath someItemName <> " unknown size"]
+                                                Just m -> do
+                                                    reportWhen (x > (2^m))
+                                                        (showPath [name] <> " too many cases")
+                            ]
+                    Group items ->
+                        (join $ fmap validateDepItem items)
+                        ++ (join $ fmap validateNestedName items)
+                      where
+                        validateNestedName = \case
+                            Spare _ -> []
+                            Item subName _title _var _doc -> do
+                                let n = T.length name
+                                    subName' = T.take n subName
+                                guard $ subName /= name
+                                guard $ subName' == name
+                                [showPath [name, subName]
+                                    <> ": name repetition, suggesting -> "
+                                    <> showPath [name, T.drop n subName]]
 
-            Extended lst -> join $ fmap validateDepItem (catMaybes lst)
-            Repetitive _rt variation' -> validateDepItem (Item name title variation' doc)
-            Explicit _ -> []
-            RandomFieldSequencing -> []
-            Compound _mFspecSize lst -> join (fmap validateDepItem $ catMaybes lst)
+                    Extended lst -> join $ fmap validateDepItem (catMaybes lst)
+                    Repetitive _rt variation' -> validateDepItem
+                        (Item name title (ContextFree variation') doc)
+                    Explicit _ -> []
+                    RandomFieldSequencing -> []
+                    Compound _mFspecSize lst -> join (fmap validateDepItem $ catMaybes lst)
+            join $ fmap checkVar (toList rule)
 
 instance Validate Expansion where
     validate warnings x = join

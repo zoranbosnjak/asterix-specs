@@ -1,12 +1,13 @@
 -- '.ast' syntax implementation
 
-module Asterix.Specs.Syntax.Ast (syntax) where
+module Asterix.Specs.Syntax.Ast where
 
 import           Control.Monad
 import           Data.Void
 import           Data.Bool
 import           Data.Bifunctor (first)
 import           Formatting as F
+import           Data.Either
 import           Data.Char (toLower)
 import           Data.Text (Text)
 import           Data.List (intersperse)
@@ -64,17 +65,28 @@ instance MkBlock Content where
                 Nothing -> "bds ?"
                 Just (BdsAddr addr) -> fmt ("bds " % hex) addr
 
+instance MkBlock a => MkBlock (Rule a) where
+    mkBlock = \case
+        ContextFree value -> mkBlock value
+        Dependent items dv lst -> do
+            fmt ("case " % stext) $ case items of
+                [item] -> showPath item
+                _ -> "(" <> mconcat (intersperse ", " $ fmap showPath items) <> ")"
+            indent $ forM_ lst $ \(values, a) -> do
+                fmt (stext % ":") $ case values of
+                    [value] -> sformat int value
+                    _ -> sformat ("(" % stext % ")") $ mconcat
+                        (intersperse ", " $ fmap (sformat int) values)
+                indent $ mkBlock a
+            indent $ do
+                "default:"
+                indent $ mkBlock dv
+
 instance MkBlock Variation where
     mkBlock = \case
         Element n rule -> do
             fmt ("element " % int) n
-            indent $ case rule of
-                ContextFree cont -> mkBlock cont
-                Dependent name lst -> do
-                    fmt ("case " % stext) (showPath name)
-                    indent $ forM_ lst $ \(x,a) -> do
-                        fmt (int % ":") x
-                        indent $ mkBlock a
+            indent $ mkBlock rule
 
         Group lst -> do
             line "group"
@@ -112,12 +124,12 @@ instance MkBlock Variation where
 instance MkBlock Item where
     mkBlock = \case
         Spare n -> fmt ("spare " % int) n
-        Item name title variation doc -> do
+        Item name title rule doc -> do
             fmt (stext % " \"" % stext % "\"") name title
             indent $ dumpText "definition" (docDefinition doc)
             indent $ dumpText "description" (docDescription doc)
             indent $ do
-                mkBlock variation
+                mkBlock rule
                 dumpText "remark" (docRemark doc)
       where
         dumpText title = \case
@@ -220,13 +232,50 @@ stringLiteral :: Parser String
 stringLiteral = MC.char '"' >> manyTill L.charLiteral (MC.char '"')
 
 pInt :: Parser Int
-pInt = L.decimal -- TODO: add support for [INT, CHR, HEX, OCT]
+pInt = L.decimal
 
 -- | Parse with first successfull parser.
 tryOne :: [Parser a] -> Parser a
 tryOne [] = fail "empty list"
 tryOne [x] = x
 tryOne (x:xs) = try x <|> tryOne xs
+
+pRule :: forall a. Parser () -> Parser a -> Parser (Rule a)
+pRule sc' pX = sc' >> tryOne
+    [ pDependent
+    , ContextFree <$> pX
+    ]
+  where
+    pHeader :: Parser [ItemPath]
+    pHeader = do
+        MC.string "case" >> sc
+        result <- tryOne
+            [ fmap pure pPaths
+            , pPathsMulti
+            ]
+        pure result
+
+    pCase :: Parser () -> Parser (Either a ([Int], a))
+    pCase _sc' = do
+        p <- tryOne
+            [ MC.string "default" >> pure Nothing
+            , Just <$> pTuple "(" pInt ")"
+            , Just . pure <$> pInt
+            ]
+        MC.char ':' >> (try scn <|> sc)
+        x <- pX
+        case p of
+            Nothing -> pure (Left x)
+            Just n -> pure (Right (n, x))
+
+    pDependent :: Parser (Rule a)
+    pDependent = do
+        (items, eLst) <- parseList pHeader pCase
+        dv <- case lefts eLst of
+            [] -> fail "default value is expected"
+            [x] -> pure x
+            _ -> fail "only one default value is expected"
+        pure $ Dependent items dv (rights eLst)
 
 -- | Parse 'asterix category'.
 pCat :: Text -> Parser Int
@@ -345,10 +394,19 @@ pName = T.pack <$> some (alphaNumChar <|> MC.char '_')
 
 -- | Parse name in the form "a/b/c...".
 pPaths :: Parser [Name]
-pPaths = do
-    x <- pName
-    rest <- many (MC.char '/' >> pName)
-    return $ x:rest
+pPaths = (:) <$> pName <*> many (MC.char '/' >> pName)
+
+pTuple :: Text -> Parser a -> Text -> Parser [a]
+pTuple tOpen p tClose = do
+    MC.string tOpen >> try sc
+    result <- (:)
+        <$> p
+        <*> many (MC.char ',' >> try sc >> p)
+    try sc >> MC.string tClose
+    pure result
+
+pPathsMulti :: Parser [ItemPath]
+pPathsMulti = pTuple "(" pPaths ")"
 
 -- | Parse Signedness.
 pSignedness :: Parser Signedness
@@ -405,18 +463,8 @@ pElement :: Parser () -> Parser Variation
 pElement sc' = do
     MC.string "element" >> sc'
     n <- L.decimal
-    rule <- sc' >> tryOne
-        [ ContextFree <$> pContent
-        , pDependent
-        ]
+    rule <- pRule sc' pContent
     return $ Element n rule
-  where
-    pDependent = do
-        (h,lst) <- parseList pHeader pCase
-        return $ Dependent h lst
-      where
-        pHeader = MC.string "case" >> sc >> pPaths
-        pCase _ = (,) <$> (pInt <* (MC.char ':' >> (try scn <|> sc))) <*> pContent
 
 -- | Parse group of nested items.
 pGroup :: Parser Variation
@@ -502,10 +550,10 @@ pItem sc' = try pSpare <|> pRegular
         description <- optional . try $ do
             sc'
             (T.pack <$> blockAfter "description")
-        variation <- sc' >> pVariation sc'
+        rule <- pRule sc' (pVariation sc')
         remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
         let doc = Documentation definition description remark
-        return $ Item name title variation doc
+        return $ Item name title rule doc
 
 -- | Parse toplevel items.
 pItems :: Parser [Item]

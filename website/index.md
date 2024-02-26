@@ -122,6 +122,15 @@ for i in root['catalogue']:
 for i in root['uap']['items']:
     print(i)
 
+def get_rule(rule):
+    t = rule['type']
+    if t == 'ContextFree':
+        return rule['value']
+    elif t == 'Dependent':
+        return rule['default']
+    else:
+        raise Exception('unexpected type: {}'.format(t))
+
 # recursivly walk over the structure and show all items
 
 def dump_item(item, parent=''):
@@ -132,12 +141,13 @@ def dump_item(item, parent=''):
         print('{}, bits: {}'.format(path, n))
         return
     path = path + '/' + item['name']
-    dump_variation(item['variation'], path)
+    dump_variation(get_rule(item['rule']), path)
 
 def dump_variation(variation, path):
     t = variation['type']
     if t == 'Element':
         n = variation['size']
+        cont = get_rule(variation['rule']) # exemine content
         print('{} Element, bits: {}'.format(path, n))
     elif t == 'Group':
         print('{} Gorup'.format(path))

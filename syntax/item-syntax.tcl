@@ -3,7 +3,7 @@ set spec {
     stack
         {line NAME {''} TITLE {''}}
         {line /definition TEXT }
-        {line subitem-def}
+        {line case-def(subitem-def)}
         {opt /remark TEXT }
 }
 

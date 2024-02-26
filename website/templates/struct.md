@@ -163,9 +163,22 @@ for exact definition.
 
 ## Non-backward compatible changes
 
+### 2024-02-26 - generalized 'Rule'
+
+Parent git release: `#941f5ce`
+
+The `Rule` type is extended, to support `I004/120/CC` content cases.
+
+`.ast` syntax is extended to include 'default' value, `.json` syntax requires
+minor update (change in field types and names). See changes in:
+
+- `tools/lib/Asterix/Specs/Types.hs`
+- `tools/lib/Asterix/Specs/Syntax/Ast.hs`
+- `tools/lib/Asterix/Specs/Syntax/Json.hs`
+
 ### 2023-12-18 - precise numeric expression
 
-Parent git release: #a7c135f
+Parent git release: `#a7c135f`
 
 The `Number` type is simplified and generalized, to allow precise
 numeric expression, without rounding error. Ast syntax becomes more
@@ -178,14 +191,14 @@ See [FAQ](/faq.html) for expression evaluation details.
 
 ### 2023-09-18 - extended item modification, fx bit is explicit
 
-Parent git release: #53a30f4
+Parent git release: `#53a30f4`
 
 Extended item structure is simplified to list of items with possible
 spare slots ('fx' bits).
 
 ### 2023-07-24 - explicit item modification, rfs item added
 
-Parent git release: #5c263cb
+Parent git release: `#5c263cb`
 
 Explicit item has optional (RE/SP) type added,
 such that RE items can be automatically processed.
@@ -194,7 +207,7 @@ Rfs item type is introduced.
 
 ### 2023-06-20 - extended/repetitve item modification
 
-Parent git release: #3d75e32
+Parent git release: `#3d75e32`
 
 Extended items with a single subitem are not allowed.
 In those cases, the items are more similar to 'repetitive',

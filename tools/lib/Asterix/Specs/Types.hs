@@ -12,6 +12,7 @@ type Name = Text
 type Title = Text
 type UapName = Text
 type Unit = Text
+type ItemPath = [Name]
 
 data Documentation = Documentation
     { docDefinition     :: Maybe Text
@@ -86,10 +87,13 @@ data Content
         BdsType
     deriving (Generic, Eq, Ord, Show)
 
-data Rule
-    = ContextFree Content
-    | Dependent [Name] [(Int, Content)]
-    deriving (Generic, Eq, Ord, Show)
+data Rule a
+    = ContextFree a
+    | Dependent
+        [ItemPath]   -- items that this rule depends on
+        a            -- default value
+        [([Int], a)] -- cases
+    deriving (Generic, Eq, Ord, Show, Functor, Foldable)
 
 data RepetitiveType
     -- N bits reserved for REP lengt field
@@ -106,7 +110,7 @@ data ExplicitType
 
 data Variation
     -- leaf of the structure
-    = Element RegisterSize Rule
+    = Element RegisterSize (Rule Content)
 
     -- concatinated subitems, example:
     -- item 010 is concatinated list of subitems SAC and SIC
@@ -132,11 +136,11 @@ data Variation
 
 data Item
     = Spare RegisterSize
-    | Item Name Title Variation Documentation
+    | Item Name Title (Rule Variation) Documentation
     deriving (Generic, Eq, Ord, Show)
 
 data UapSelector = UapSelector
-    { selItem :: [Name]             -- UAP depends on this item
+    { selItem :: ItemPath           -- UAP depends on this item
     , selTable :: [(Int, UapName)]  -- value lookup table
     } deriving (Generic, Eq, Ord, Show)
 

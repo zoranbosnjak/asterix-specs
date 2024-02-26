@@ -131,17 +131,30 @@ instance MkBlock Content where
                   where
                     x = T.reverse $ T.take 2 $ T.reverse ("0" <> T.pack (showHex addr ""))
 
-instance MkBlock Rule where
+instance MkBlock a => MkBlock (Rule a) where
     mkBlock p = \case
-        ContextFree cont -> mkBlock p cont
-        Dependent otherItem rules -> do
-            fmt ("* Content of this item depends on the value of item ``" % stext % "``.") (tPath otherItem)
-            ""
-            indent $ blocksLn $ do
-                (a, b) <- rules
-                pure $ do
-                    fmt ("* In case of ``" % stext % " == " % int % "``:") (tPath otherItem) a
-                    indent $ mkBlock p b
+        ContextFree x -> mkBlock p x
+        Dependent items dv lst -> do
+            let sItems = case items of
+                    [item] -> (tPath item)
+                    _ -> "(" <> mconcat (intersperse ", " $ fmap showPath items) <> ")"
+                sValues = \case
+                    [a] -> sformat int a
+                    xs -> "(" <> mconcat (intersperse ", " $ fmap (sformat int) xs) <> ")"
+
+            fmt ("* Depends on the value of ``" % stext % "``.") sItems
+
+            blocksLn $ join
+                [ do
+                    (a, b) <- lst
+                    pure $ do
+                        fmt ("* In case of ``" % stext % " == " % stext % "``:")
+                            sItems (sValues a)
+                        indent $ mkBlock p b
+                , pure $ do
+                    "* Default:"
+                    indent $ mkBlock p dv
+                ]
 
 bits :: Int -> Text
 bits n

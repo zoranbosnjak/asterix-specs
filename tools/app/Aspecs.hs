@@ -126,7 +126,7 @@ main = withUtf8 $ execParser opts >>= \case
     List input decoder -> do
         let dumpItem parent = \case
                 Spare _ -> return ()
-                Item name _title variation _doc -> do
+                Item name _title rule _doc -> do
                     let path = parent ++ [name]
                         next = \case
                             Element size _ -> ("Element " <> T.pack (show size), return ())
@@ -140,7 +140,9 @@ main = withUtf8 $ execParser opts >>= \case
                                 (catMaybes lst))
                             Compound (Just _n) lst -> ("Compound(n)", mapM_ (dumpItem path)
                                 (catMaybes lst))
-                        (details, act) = next variation
+                        (details, act) = case rule of
+                            ContextFree variation -> next variation
+                            Dependent _ _ _ -> return (return ())
                     Data.Text.IO.putStrLn (showPath path <> ": " <> details)
                     act
 
@@ -156,4 +158,3 @@ main = withUtf8 $ execParser opts >>= \case
         let sha1 :: BS.ByteString -> Digest SHA1
             sha1 = hash
         print $ sha1 $ BS8.pack $ show asterix
-

@@ -16,3 +16,8 @@
 
 * `tools/lib/Asterix/Indent.hs` module cleanup.
 
+## 1.8.0
+
+* Backward incompatible change:
+  `Rule` is generalized, to support `I004/120/CC` content cases.
+
