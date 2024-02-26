@@ -93,7 +93,7 @@ data Rule a
         [ItemPath]   -- items that this rule depends on
         a            -- default value
         [([Int], a)] -- cases
-    deriving (Generic, Eq, Ord, Show, Functor, Foldable)
+    deriving (Generic, Eq, Ord, Show, Functor, Foldable, Traversable)
 
 data RepetitiveType
     -- N bits reserved for REP lengt field
