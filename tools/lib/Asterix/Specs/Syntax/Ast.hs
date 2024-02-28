@@ -111,12 +111,8 @@ instance MkBlock Variation where
                     ReservedExpansion -> "explicit re"
                     SpecialPurpose    -> "explicit sp"
 
-        RandomFieldSequencing -> "rfs"
-
-        Compound mFspecSize lst -> do
-            case mFspecSize of
-                Nothing -> "compound"
-                Just n -> fmt ("compound " % int) n
+        Compound lst -> do
+            "compound"
             indent $ forM_ lst $ \case
                 Nothing -> "-"
                 Just item -> mkBlock item
@@ -143,7 +139,7 @@ instance MkBlock Uap where
     mkBlock = \case
         Uap lst -> do
             line "uap"
-            indent $ dumpList lst
+            indent $ mapM_ dumpUapItem lst
         Uaps variations msel -> do
             line $ "uaps"
             indent $ do
@@ -151,7 +147,7 @@ instance MkBlock Uap where
                 forM_ variations $ \(name, lst) -> do
                     indent $ do
                         fmt stext name
-                        indent $ dumpList lst
+                        indent $ mapM_ dumpUapItem lst
                 case msel of
                     Nothing -> mempty
                     Just sel -> do
@@ -159,9 +155,10 @@ instance MkBlock Uap where
                         indent $ forM_ (selTable sel) $ \(x, uapName) -> do
                             fmt (int % ": " % stext) x uapName
       where
-        dumpList lst = forM_ lst $ \case
-            Nothing -> line "-"
-            Just item -> fmt stext item
+        dumpUapItem = \case
+            UapItem item -> fmt stext item
+            UapItemSpare -> "-"
+            UapItemRFS -> "rfs"
 
 instance MkBlock Basic where
     mkBlock basic = do
@@ -190,19 +187,18 @@ instance MkBlock Basic where
         (Date year month day) = basDate basic
 
 instance MkBlock Expansion where
-    mkBlock x = do
+    mkBlock (Expansion cat title edition date fspecBytes items) = do
         fmt ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
         fmt ("edition " % int % "." % int) ed1 ed2
         fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
         ""
-        mkBlock $ expVariation x
+        fmt ("compound " % int) fspecBytes
+        indent $ forM_ items $ \case
+            Nothing -> "-"
+            Just item -> mkBlock item
       where
-        cat = expCategory x
-        title = expTitle x
-        edition = expEdition x
-        ed1 = editionMajor edition
-        ed2 = editionMinor edition
-        (Date year month day) = expDate x
+        Edition ed1 ed2 = edition
+        Date year month day = date
 
 instance MkBlock Asterix where
     mkBlock = \case
@@ -476,8 +472,10 @@ pExtended = do
     (_a, b) <- parseList (MC.string "extended") pListElement
     return $ Extended b
   where
-    pListElement sc' = try pDash <|> (Just <$> pItem sc')
-    pDash = MC.char '-' >> pure Nothing
+    pListElement sc' = tryOne
+        [ MC.char '-' >> pure Nothing
+        , Just <$> pItem sc'
+        ]
 
 -- | Parse 'repetitive' item.
 pRepetitive :: Parser Variation
@@ -504,21 +502,23 @@ pExplicit = Explicit <$> go where
         , MC.string "sp" >> pure SpecialPurpose
         ]
 
--- | Parse 'rfs' item.
-pRfs :: Parser Variation
-pRfs = MC.string "rfs" *> pure RandomFieldSequencing
-
 -- | Parse 'compound' item.
 pCompound :: Parser Variation
 pCompound = do
-    (a,b) <- parseList pHeader pListElement
-    return $ Compound a b
+    lst <- snd <$> parseList pHeader pListElement
+    return $ Compound lst
   where
+    pHeader = MC.string "compound" >> sc
     pListElement sc' = try pDash <|> (Just <$> pItem sc')
     pDash = MC.char '-' >> pure Nothing
-    pHeader =
-        try (Just <$> (MC.string "compound" >> sc >> L.decimal))
-        <|> (MC.string "compound" >> pure Nothing)
+
+-- | Parse 'compound' item for expansion
+pCompoundExp :: Parser (Int, [Maybe Item])
+pCompoundExp = parseList pHeader pListElement
+  where
+    pHeader = MC.string "compound" >> sc >> L.decimal
+    pListElement sc' = try pDash <|> (Just <$> pItem sc')
+    pDash = MC.char '-' >> pure Nothing
 
 -- | Parse 'element'.
 pVariation :: Parser () -> Parser Variation
@@ -528,7 +528,6 @@ pVariation sc' = tryOne
     , pExtended
     , pRepetitive
     , pExplicit
-    , pRfs
     , pCompound
     ]
 
@@ -564,15 +563,20 @@ pUap :: Parser Uap
 pUap = uaps <|> uap
   where
     parseOne _sc' = do
-        result <- (MC.char '-' >> return Nothing)
-                <|> (fmap Just pName)
+        result <- tryOne
+            [ MC.char '-' >> return UapItemSpare
+            , MC.string "rfs" >> return UapItemRFS
+            , fmap UapItem pName
+            ]
         scn
         pure result
 
     uap = Uap . snd <$> parseList (MC.string "uap") parseOne
 
     pVariations = do
-        (_, lst) <- parseList (MC.string "variations") (\_ -> parseList pUapName parseOne)
+        (_, lst) <- parseList
+            (MC.string "variations")
+            (\_ -> parseList pUapName parseOne)
         pure lst
 
     pSelector = do
@@ -610,12 +614,14 @@ pBasic = Basic
 
 -- | Parse extension
 pExtension :: Parser Expansion
-pExtension = Expansion
-    <$> pCat "ref"
-    <*> (scn >> (T.pack <$> stringLiteral))
-    <*> (scn >> pEdition)
-    <*> (scn >> pDate)
-    <*> (scn >> (pCompound <* scn))
+pExtension = do
+    cat <- pCat "ref"
+    title <- scn >> (T.pack <$> stringLiteral)
+    edition <- scn >> pEdition
+    date <- scn >> pDate
+    (fspecSize, items) <- scn >> pCompoundExp
+    scn
+    return $ Expansion cat title edition date fspecSize items
 
 -- | Parse asterix.
 pAsterix :: Parser Asterix

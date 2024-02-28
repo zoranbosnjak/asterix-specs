@@ -69,11 +69,7 @@ instance IsAligned Variation where
             Nothing -> False
             Just n -> isAligned (repSize + n)
     isAligned (Explicit _) = True
-    isAligned RandomFieldSequencing = True
-    isAligned (Compound mFspecSize lst) = and
-        [ maybe True isAligned mFspecSize
-        , all check lst
-        ]
+    isAligned (Compound lst) = all check lst
       where
         check Nothing = True
         check (Just item) = isAligned item
@@ -237,8 +233,7 @@ instance Validate Variation where
             ]
         RepetitiveFx -> validate warnings variation
     validate _warnings (Explicit _) = []
-    validate _warnings RandomFieldSequencing = []
-    validate warnings x@(Compound mFspecSize items) = join
+    validate warnings x@(Compound items) = join
         [ reportUnless (isAligned x) "alignment error"
         , validate warnings items
         , let items' = catMaybes items
@@ -247,12 +242,6 @@ instance Validate Variation where
         , reportWhen (any isSpare items) "unexpected spare item inside compound"
         , reportWhen (warnings && (length items <= 1))
             "compound item with just one element"
-        , case mFspecSize of
-            Nothing -> []
-            Just n -> mconcat
-                [ reportWhen (mod n 8 /= 0) "fspec not aligned"
-                , reportWhen (n < length items) "insufficient fspec length"
-                ]
         ]
       where
         isSpare (Just (Spare _)) = True
@@ -307,11 +296,17 @@ instance Validate Basic where
         validateCat = reportUnless (basCategory basic `elem` [0..255])
             "category number out of range"
 
+        catUapItems :: [UapItem] -> [Name]
+        catUapItems = \case
+            [] -> []
+            (UapItem name : xs) -> name : catUapItems xs
+            (_ : xs) -> catUapItems xs
+
         allItemsDefined :: [ValidationError]
         allItemsDefined = join [requiredNotDefined, definedNotRequired, noDups]
           where
             required :: [Name]
-            required = catMaybes $ case basUap basic of
+            required = catUapItems $ case basUap basic of
                 Uap lst -> lst
                 Uaps lst _msel -> nub $ join $ fmap snd lst
 
@@ -355,10 +350,14 @@ instance Validate Basic where
                     Just sel -> validateSelector lst sel
                 ]
           where
+            isUapSpare = \case
+                UapItemSpare -> True
+                _ -> False
             validateList lst = join
-                [ let x = catMaybes lst
+                [ let x = catUapItems lst
                   in reportWhen (nub x /= x) "duplicated items in UAP"
-                , reportWhen (isNothing $ last lst) "spare at the end of UAP is redundant"
+                , reportWhen (isUapSpare $ last lst)
+                    "spare at the end of UAP is redundant"
                 ]
             validateSelector lst (UapSelector name table) = join
                 [ case findItemByName basic name of
@@ -415,15 +414,21 @@ instance Validate Basic where
                     Repetitive _rt variation' -> validateDepItem
                         (Item name title (ContextFree variation') doc)
                     Explicit _ -> []
-                    RandomFieldSequencing -> []
-                    Compound _mFspecSize lst -> join (fmap validateDepItem $ catMaybes lst)
+                    Compound lst -> join (fmap validateDepItem $ catMaybes lst)
             join $ fmap checkVar (toList rule)
 
 instance Validate Expansion where
     validate warnings x = join
-        [ validate warnings $ expVariation x
-        , reportUnless (isAligned $ expVariation x) "Top level alignment error."
+        [ reportUnless (isAligned n) "Fspec alignment error"
+        , reportUnless (all isAligned (catMaybes items))
+            "Top level alignment error."
+        , reportWhen (expFspecSize x < length items)
+            "insufficient fspec length"
+        , validate warnings items
         ]
+      where
+        n = expFspecSize x
+        items = expItems x
 
 instance Validate Asterix where
     validate warnings = \case

@@ -208,20 +208,14 @@ instance MkBlock Variation where
             ReservedExpansion -> "Explicit item (RE)"
             SpecialPurpose    -> "Explicit item (SP)"
 
-    mkBlock _parent RandomFieldSequencing = "Rfs"
-
-    mkBlock p (Compound mn lst) = do
-        fspec
+    mkBlock p (Compound lst) = do
+        "Compound item"
         ""
         blocksLn $ do
             mItem <- lst
             pure $ case mItem of
                 Nothing -> "(empty subitem)"
                 Just item -> mkBlock p item
-      where
-        fspec = case mn of
-            Nothing -> "Compound item (FX)"
-            Just n -> fmt ("Compound item (fspec=" % int % " bits)") n
 
 instance MkBlock Item where
     mkBlock p = \case
@@ -278,10 +272,12 @@ fmtDate (Date y m d) = sformat (int % "-" % left 2 '0' % "-" % left 2 '0') y m d
 
 instance MkBlock Basic where
     mkBlock _p val = do
-        underline '=' $ bformat ("Asterix category " % left 3 '0' % " - " % stext) cat (basTitle val)
+        underline '=' $ bformat ("Asterix category " % left 3 '0' % " - " % stext)
+            cat (basTitle val)
         blocksLn
             [ fmt ("**category**: " % left 3 '0') cat
-            , fmt ("**edition**: " % int % "." % int) (editionMajor ed) (editionMinor ed)
+            , fmt ("**edition**: " % int % "." % int)
+                (editionMajor ed) (editionMinor ed)
             , fmt ("**date**: " % stext) (fmtDate $ basDate val)
             ]
         ""
@@ -293,7 +289,8 @@ instance MkBlock Basic where
         ""
         blocksLn (mkBlock [ref] . TopItem <$> basCatalogue val)
         ""
-        underline '=' $ bformat ("User Application Profile for Category " % left 3 '0') cat
+        underline '=' $ bformat
+            ("User Application Profile for Category " % left 3 '0') cat
         fmtUap (basUap val)
       where
         findTitle name lst = case head lst of
@@ -328,14 +325,16 @@ instance MkBlock Basic where
             groups = \case
                 [] -> []
                 lst -> take 7 lst : groups (drop 7 lst)
-            oneItem (i, mItem) = case mItem of
-                Nothing -> fmt ("- (" % int % ") ``(spare)``") i
-                Just name -> fmt
+            oneItem (i, uItem) = case uItem of
+                UapItemSpare -> fmt ("- (" % int % ") ``(spare)``") i
+                UapItemRFS -> fmt
+                    ("- (" % int % ") ``(RFS)`` - Random Field Sequencing") i
+                UapItem name -> fmt
                     ("- (" % int % ") ``I" % left 3 '0' % "/" % stext % "`` - " % stext)
                     i cat name (findTitle name (basCatalogue val))
             oneUap lst = do
                 let r = mod (7 - mod (length lst) 7) 7
-                    lst' = zip [(1::Int)..] (lst <> replicate r Nothing)
+                    lst' = zip [(1::Int)..] (lst <> replicate r UapItemSpare)
                 forM_ (groups lst') $ \grp -> do
                     mapM_ oneItem grp
                     fx
@@ -345,12 +344,18 @@ instance MkBlock Expansion where
         underline '=' $ bformat ("Asterix expansion " % left 3 '0' % " - " % stext) cat (expTitle val)
         blocksLn
             [ fmt ("**category**: " % left 3 '0') cat
-            , fmt ("**edition**: " % int % "." % int) (editionMajor ed) (editionMinor ed)
+            , fmt ("**edition**: " % int % "." % int)
+                (editionMajor ed) (editionMinor ed)
             , fmt ("**date**: " % stext) (fmtDate $ expDate val)
             ]
         ""
         underline '-' "Description of asterix expansion"
-        mkBlock [ref] $ expVariation val
+        fmt ("Items (fspec=" % int % " bits)")
+            (expFspecSize val)
+        ""
+        forM_ (expItems val) $ \case
+            Nothing -> "(empty subitem)"
+            Just item -> mkBlock [ref] item
         ""
       where
         cat = expCategory val

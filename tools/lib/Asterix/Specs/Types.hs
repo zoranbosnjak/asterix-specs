@@ -125,18 +125,21 @@ data Variation
     -- item with explicit size
     | Explicit (Maybe ExplicitType)
 
-    -- random field sequencing
-    | RandomFieldSequencing
-
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective
     -- presence bit in the first part is always zero
-    | Compound (Maybe RegisterSize) [Maybe Item]
+    | Compound [Maybe Item]
     deriving (Generic, Eq, Ord, Show)
 
 data Item
     = Spare RegisterSize
     | Item Name Title (Rule Variation) Documentation
+    deriving (Generic, Eq, Ord, Show)
+
+data UapItem
+    = UapItem Name
+    | UapItemSpare
+    | UapItemRFS
     deriving (Generic, Eq, Ord, Show)
 
 data UapSelector = UapSelector
@@ -147,10 +150,10 @@ data UapSelector = UapSelector
 -- User applicaton profile type
 data Uap
     -- single UAP
-    = Uap [Maybe Name]
+    = Uap [UapItem]
 
     -- multiple UAPs
-    | Uaps [(UapName, [Maybe Name])] (Maybe UapSelector)
+    | Uaps [(UapName, [UapItem])] (Maybe UapSelector)
     deriving (Generic, Eq, Ord, Show)
 
 -- Basic category definition
@@ -170,7 +173,8 @@ data Expansion = Expansion
     , expTitle      :: Text
     , expEdition    :: Edition
     , expDate       :: Date
-    , expVariation  :: Variation
+    , expFspecSize  :: Int
+    , expItems      :: [Maybe Item]
     } deriving (Generic, Eq, Ord, Show)
 
 data Asterix

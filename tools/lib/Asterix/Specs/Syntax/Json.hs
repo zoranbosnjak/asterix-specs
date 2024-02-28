@@ -7,7 +7,7 @@ module Asterix.Specs.Syntax.Json where
 import           Control.Monad
 import           Data.Aeson hiding (Encoding)
 import           Data.Bool
-import           Data.Aeson.Types (typeMismatch, Parser)
+import           Data.Aeson.Types (typeMismatch)
 import qualified Data.Aeson.KeyMap as KM
 import qualified Data.Aeson.Encode.Pretty as JsonP
 import           Data.ByteString.Lazy (toStrict)
@@ -250,12 +250,8 @@ instance ToJSON Variation where
         [ "type"    .= ("Explicit" :: String)
         , "expl"    .= mt
         ]
-    toJSON RandomFieldSequencing = object
-        [ "type"    .= ("Rfs" :: String)
-        ]
-    toJSON (Compound mSize lst) = object
+    toJSON (Compound lst) = object
         [ "type"    .= ("Compound" :: String)
-        , "fspec"   .= mSize
         , "items"   .= lst
         ]
 
@@ -273,10 +269,8 @@ instance FromJSON Variation where
             <*> v .: "variation"
         Just "Explicit" -> Explicit
             <$> v .: "expl"
-        Just "Rfs" -> pure RandomFieldSequencing
         Just "Compound" -> Compound
-            <$> v .: "fspec"
-            <*> v .: "items"
+            <$> v .: "items"
         _ -> typeMismatch "Variation" $ String "wrong type"
 
 instance ToJSON Item where
@@ -308,6 +302,26 @@ instance FromJSON Item  where
                 <*> v .: "remark"
                 )
         _ -> typeMismatch "Item" $ String "spare field not present"
+
+instance ToJSON UapItem where
+    toJSON (UapItem item) = object
+        [ "type" .= ("UapItem" :: String)
+        , "item" .= item
+        ]
+    toJSON UapItemSpare = object
+        [ "type" .= ("UapItemSpare" :: String)
+        ]
+    toJSON UapItemRFS = object
+        [ "type" .= ("UapItemRFS" :: String)
+        ]
+
+instance FromJSON UapItem where
+    parseJSON = withObject "UapItem" $ \v -> case KM.lookup "type" v of
+        Just "UapItem" -> UapItem
+            <$> v .: "item"
+        Just "UapItemSpare" -> pure UapItemSpare
+        Just "UapItemRFS" -> pure UapItemRFS
+        _ -> typeMismatch "UapItem" $ String "wrong type"
 
 instance ToJSON UapSelector where
     toJSON (UapSelector item lst) = object
@@ -341,7 +355,6 @@ instance FromJSON Uap  where
         Just "uap" -> Uap <$> v .: "items"
         Just "uaps" -> Uaps <$> var (v .: "variations") <*> (v .: "selector")
           where
-            var :: Parser [Value] -> Parser [(UapName, [Maybe Name])]
             var p = do
                 lst <- p
                 forM lst $ withObject "(,)" $ \v' -> (,)
@@ -378,7 +391,8 @@ instance ToJSON Expansion where
         , "title"       .= expTitle c
         , "edition"     .= expEdition c
         , "date"        .= expDate c
-        , "variation"   .= expVariation c
+        , "fspecSize"   .= expFspecSize c
+        , "items"       .= expItems c
         ]
 
 instance FromJSON Expansion where
@@ -387,7 +401,8 @@ instance FromJSON Expansion where
         <*> v .: "title"
         <*> v .: "edition"
         <*> v .: "date"
-        <*> v .: "variation"
+        <*> v .: "fspecSize"
+        <*> v .: "items"
 
 instance ToJSON Asterix where
     toJSON = \case

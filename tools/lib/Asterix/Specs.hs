@@ -53,7 +53,7 @@ findItemByName basic (x:xs) = do
                 let candidates = case variation of
                         Group lst -> lst
                         Extended lst -> catMaybes lst
-                        Compound _fspecSize lst -> catMaybes lst
+                        Compound lst -> catMaybes lst
                         _ -> []
                     byName (Spare _) = False
                     byName (Item n _ _ _) = n == y

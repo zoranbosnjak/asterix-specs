@@ -135,10 +135,7 @@ main = withUtf8 $ execParser opts >>= \case
                                 (catMaybes lst))
                             Repetitive _ var -> ("Repetitive", snd $ next var)
                             Explicit _ -> ("Explicit", return ())
-                            RandomFieldSequencing -> ("Rfs", return ())
-                            Compound Nothing lst -> ("Compound", mapM_ (dumpItem path)
-                                (catMaybes lst))
-                            Compound (Just _n) lst -> ("Compound(n)", mapM_ (dumpItem path)
+                            Compound lst -> ("Compound", mapM_ (dumpItem path)
                                 (catMaybes lst))
                         (details, act) = case rule of
                             ContextFree variation -> next variation
@@ -149,9 +146,8 @@ main = withUtf8 $ execParser opts >>= \case
         asterix <- decodeInput input decoder
         case asterix of
             AsterixBasic basic -> mapM_ (dumpItem []) (basCatalogue basic)
-            AsterixExpansion expansion -> case expVariation expansion of
-                Compound _ lst -> mapM_ (dumpItem []) (catMaybes lst)
-                _ -> fail "unexpected expansion variation"
+            AsterixExpansion expansion -> mapM_ (dumpItem [])
+                (catMaybes $ expItems expansion)
 
     Checksum input decoder -> do
         asterix <- decodeInput input decoder
