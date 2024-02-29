@@ -4,7 +4,9 @@ module Asterix.Specs.Types where
 
 import           GHC.Generics (Generic)
 import           Data.Text
-import           Data.Word
+
+newtype CatNum = CatNum Int
+    deriving (Generic, Eq, Ord, Show)
 
 newtype BitSize = BitSize Int
     deriving (Generic, Eq, Ord, Show)
@@ -171,7 +173,7 @@ data Uap
 
 -- Basic category definition
 data Basic = Basic
-    { basCategory   :: Word8
+    { basCategory   :: CatNum
     , basTitle      :: Title
     , basEdition    :: Edition
     , basDate       :: Date
@@ -182,7 +184,7 @@ data Basic = Basic
 
 -- Expansion category definition
 data Expansion = Expansion
-    { expCategory   :: Word8
+    { expCategory   :: CatNum
     , expTitle      :: Title
     , expEdition    :: Edition
     , expDate       :: Date

@@ -11,7 +11,6 @@ module Asterix.Specs.Syntax.Ast where
 import           Control.Monad
 import           Data.Void
 import           Data.Bool
-import           Data.Word
 import           Data.Bifunctor (first)
 import           Formatting as F
 import           Data.Either
@@ -36,6 +35,12 @@ import           Indent
 
 type Parser = Parsec Void Text
 
+-- | Parse with first successfull parser.
+tryOne :: [Parser a] -> Parser a
+tryOne [] = fail "empty list"
+tryOne [x] = x
+tryOne (x:xs) = try x <|> tryOne xs
+
 -- | Space consumer helper function.
 smartSkip :: Parser () -> Parser ()
 smartSkip skipSpace = L.space
@@ -56,71 +61,6 @@ stringLiteral = MC.char '"' >> manyTill L.charLiteral (MC.char '"')
 
 pInt :: Parser Int
 pInt = L.decimal
-
--- | Parse with first successfull parser.
-tryOne :: [Parser a] -> Parser a
-tryOne [] = fail "empty list"
-tryOne [x] = x
-tryOne (x:xs) = try x <|> tryOne xs
-
--- | Parser valid name.
-pName :: Parser Text
-pName = T.pack <$> some (alphaNumChar <|> MC.char '_')
-
-{-
--- | Parse name in the form "a/b/c...".
-pPaths :: Parser a -> Parser [a]
-pPaths pX = (:) <$> pX <*> many (MC.char '/' >> pX)
-
-pTuple :: Text -> Parser a -> Text -> Parser [a]
-pTuple tOpen p tClose = do
-    MC.string tOpen >> try sc
-    result <- (:)
-        <$> p
-        <*> many (MC.char ',' >> try sc >> p)
-    _ <- try sc >> MC.string tClose
-    pure result
-
-pPathsMulti :: Parser [ItemPath]
--- pPathsMulti = pTuple "(" (pPaths pName) ")"
-pPathsMulti = pTuple "(" undefined ")"
-
-pRule :: forall a. Parser () -> Parser a -> Parser (Rule a)
-pRule sc' pX = sc' >> tryOne
-    [ pDependent
-    , ContextFree <$> pX
-    ]
-  where
-    pHeader :: Parser [ItemPath]
-    pHeader = do
-        MC.string "case" >> sc
-        result <- tryOne
-            [ fmap pure pPaths
-            , pPathsMulti
-            ]
-        pure result
-
-    pCase :: Parser () -> Parser (Either a ([Int], a))
-    pCase _sc' = do
-        p <- tryOne
-            [ MC.string "default" >> pure Nothing
-            , Just <$> pTuple "(" pInt ")"
-            , Just . pure <$> pInt
-            ]
-        MC.char ':' >> (try scn <|> sc)
-        x <- pX
-        case p of
-            Nothing -> pure (Left x)
-            Just n -> pure (Right (n, x))
-
-    pDependent :: Parser (Rule a)
-    pDependent = do
-        (items, eLst) <- parseList pHeader pCase
-        dv <- case lefts eLst of
-            [] -> fail "default value is expected"
-            [x] -> pure x
-            _ -> fail "only one default value is expected"
-        pure $ Dependent items dv (rights eLst)
 
 -- | Parse to the end of line.
 pLine :: Parser String
@@ -178,6 +118,67 @@ parseList parseHeader parseChunk = do
             bool (fail "unexpected indent") (pure ()) ((j > i1) || end)
     values <- some (try (L.indentGuard scn EQ i1) >> parseChunk sc')
     pure (hdr, values)
+
+-- | Parser valid name.
+pName :: Parser Text
+pName = T.pack <$> some (alphaNumChar <|> MC.char '_')
+
+pItemName :: Parser ItemName
+pItemName = fmap ItemName pName
+
+-- | Parse name in the form "a/b/c...".
+pPaths :: Parser ItemPath
+pPaths = fmap ItemPath lst where
+    lst = (:) <$> pItemName <*> many (MC.char '/' >> pItemName)
+
+pTuple :: Text -> Parser a -> Text -> Parser [a]
+pTuple tOpen p tClose = do
+    MC.string tOpen >> try sc
+    result <- (:)
+        <$> p
+        <*> many (MC.char ',' >> try sc >> p)
+    _ <- try sc >> MC.string tClose
+    pure result
+
+pPathsMulti :: Parser [ItemPath]
+pPathsMulti = pTuple "(" pPaths ")"
+
+pRule :: forall a. Parser () -> Parser a -> Parser (Rule a)
+pRule sc' pX = sc' >> tryOne
+    [ pDependent
+    , ContextFree <$> pX
+    ]
+  where
+    pHeader :: Parser [ItemPath]
+    pHeader = do
+        MC.string "case" >> sc
+        result <- tryOne
+            [ fmap pure pPaths
+            , pPathsMulti
+            ]
+        pure result
+
+    pCase :: Parser () -> Parser (Either a ([Int], a))
+    pCase _sc' = do
+        p <- tryOne
+            [ MC.string "default" >> pure Nothing
+            , Just <$> pTuple "(" pInt ")"
+            , Just . pure <$> pInt
+            ]
+        MC.char ':' >> (try scn <|> sc)
+        x <- pX
+        case p of
+            Nothing -> pure (Left x)
+            Just n -> pure (Right (n, x))
+
+    pDependent :: Parser (Rule a)
+    pDependent = do
+        (items, eLst) <- parseList pHeader pCase
+        dv <- case lefts eLst of
+            [] -> fail "default value is expected"
+            [x] -> pure x
+            _ -> fail "only one default value is expected"
+        pure $ Dependent items dv (rights eLst)
 
 pNumber :: Parser Number
 pNumber = makeExprParser pTerm operatorTable
@@ -248,7 +249,7 @@ pContent = tryOne
     , ContentQuantity
         <$> pSignedness <* (sc >> MC.string "quantity" >> sc)
         <*> pNumber <* sc
-        <*> (T.pack <$> stringLiteral)
+        <*> (Unit . T.pack <$> stringLiteral)
         <*> (many (sc >> pConstrain))
     , ContentBds <$> tryOne
         [ MC.string "bds" >> sc >> MC.string "?" >> pure (BdsAt Nothing)
@@ -260,19 +261,18 @@ pContent = tryOne
     ]
 
 -- | Parse (fixed) type.
-pElement :: Parser () -> Parser Variation
-pElement sc' = do
-    MC.string "element" >> sc'
-    n <- L.decimal
-    rule <- pRule sc' pContent
-    pure $ Element n rule
+pElement :: Parser () -> Parser (Variation ())
+pElement sc' = Element
+    <$> (MC.string "element" >> sc' >> pure ())
+    <*> fmap BitSize L.decimal
+    <*> pRule sc' pContent
 
 -- | Parse group of nested items.
-pGroup :: Parser Variation
+pGroup :: Parser (Variation ())
 pGroup = Group . snd <$> parseList (MC.string "group") pItem
 
 -- | Parse 'extended' item.
-pExtended :: Parser Variation
+pExtended :: Parser (Variation ())
 pExtended = do
     (_a, b) <- parseList (MC.string "extended") pListElement
     pure $ Extended b
@@ -283,9 +283,12 @@ pExtended = do
         ]
 
 -- | Parse 'repetitive' item.
-pRepetitive :: Parser Variation
+pRepetitive :: Parser (Variation ())
 pRepetitive = do
-    rt <- try pRepFx <|> pRepRegular
+    rt <- tryOne
+        [ pRepFx
+        , pRepRegular
+        ]
     i <- lookAhead (scn >> L.indentLevel)
     let sc' = do
             scn
@@ -294,21 +297,26 @@ pRepetitive = do
             bool (fail "unexpected indent") (pure ()) ((j > i) || end)
     scn >> Repetitive <$> pure rt <*> pVariation sc'
   where
-    pRepFx = (MC.string "repetitive" >> sc >> MC.string "fx" >> pure RepetitiveFx)
-    pRepRegular = fmap RepetitiveRegular (MC.string "repetitive" >> sc >> L.decimal)
+    pRepFx = do
+        void $ MC.string "repetitive" >> sc >> MC.string "fx"
+        pure RepetitiveFx
+    pRepRegular = RepetitiveRegular
+        <$> (MC.string "repetitive" >> sc >> fmap ByteSize L.decimal)
 
 -- | Parse 'explicit' item.
-pExplicit :: Parser Variation
+pExplicit :: Parser (Variation ())
 pExplicit = Explicit <$> go where
-    go = try (Just <$> (MC.string "explicit" >> sc >> pt))
-     <|> MC.string "explicit" *> pure Nothing
+    go = tryOne
+        [ Just <$> (MC.string "explicit" >> sc >> pt)
+        , MC.string "explicit" *> pure Nothing
+        ]
     pt = tryOne
         [ MC.string "re" >> pure ReservedExpansion
         , MC.string "sp" >> pure SpecialPurpose
         ]
 
 -- | Parse 'compound' item.
-pCompound :: Parser Variation
+pCompound :: Parser (Variation ())
 pCompound = do
     lst <- snd <$> parseList pHeader pListElement
     pure $ Compound lst
@@ -317,16 +325,8 @@ pCompound = do
     pListElement sc' = try pDash <|> (Just <$> pItem sc')
     pDash = MC.char '-' >> pure Nothing
 
--- | Parse 'compound' item for expansion
-pCompoundExp :: Parser (Int, [Maybe Item])
-pCompoundExp = parseList pHeader pListElement
-  where
-    pHeader = MC.string "compound" >> sc >> L.decimal
-    pListElement sc' = try pDash <|> (Just <$> pItem sc')
-    pDash = MC.char '-' >> pure Nothing
-
 -- | Parse 'element'.
-pVariation :: Parser () -> Parser Variation
+pVariation :: Parser () -> Parser (Variation ())
 pVariation sc' = tryOne
     [ pElement sc'
     , pGroup
@@ -336,18 +336,19 @@ pVariation sc' = tryOne
     , pCompound
     ]
 
--- | Parser valid uap name.
-pUapName :: Parser Name
-pUapName = T.pack <$> some (alphaNumChar <|> MC.char '-')
-
 -- | Parse spare or regular item.
-pItem :: Parser () -> Parser Item
-pItem sc' = try pSpare <|> pRegular
+pItem :: Parser () -> Parser (Item ())
+pItem sc' = tryOne
+    [ pSpare
+    , pRegular
+    ]
   where
-    pSpare = MC.string "spare" >> sc' >> fmap Spare L.decimal
+    pSpare = Spare
+        <$> (MC.string "spare" >> sc' >> pure ())
+        <*> fmap BitSize L.decimal
     pRegular = do
-        name <- pName <* sc'
-        title <- (T.pack <$> stringLiteral)
+        name <- pItemName <* sc'
+        title <- Title . T.pack <$> stringLiteral
         definition <- optional . try $ do
             sc'
             (T.pack <$> blockAfter "definition")
@@ -360,17 +361,24 @@ pItem sc' = try pSpare <|> pRegular
         pure $ Item name title rule doc
 
 -- | Parse toplevel items.
-pItems :: Parser [Item]
+pItems :: Parser [Item ()]
 pItems = snd <$> parseList (MC.string "items") pItem
+
+-- | Parser valid uap name.
+pUapName :: Parser UapName
+pUapName = UapName . T.pack <$> some (alphaNumChar <|> MC.char '-')
 
 -- | Parse 'UAP'.
 pUap :: Parser Uap
-pUap = uaps <|> uap
+pUap = tryOne
+    [ uaps
+    , uap
+    ]
   where
     parseOne _sc' = tryOne
         [ MC.char '-' >> pure UapItemSpare
         , MC.string "rfs" >> pure UapItemRFS
-        , fmap UapItem pName
+        , fmap UapItem pItemName
         ]
 
     uap = Uap . snd <$> parseList (MC.string "uap") parseOne
@@ -388,7 +396,7 @@ pUap = uaps <|> uap
         pHeader = MC.string "case" >> sc >> pPaths
         pCase _ = (,)
             <$> (pInt <* (MC.char ':' >> sc))
-            <*> fmap T.pack pLine
+            <*> fmap (UapName . T.pack) pLine
 
     uaps = do
         i0 <- L.indentLevel
@@ -402,17 +410,13 @@ pUap = uaps <|> uap
             guard $ i1 > i0
             pSelector
         pure $ Uaps vars cs
--}
 
 -- | Parse 'asterix category'.
-pCat :: Text -> Parser Word8
+pCat :: Text -> Parser CatNum
 pCat prefix = do
     MC.string prefix >> sc
     (a,b,c) <- (,,) <$> digitChar <*> digitChar <*> digitChar
-    let n :: Int
-        n = read [a,b,c]
-    guard $ n <= 255
-    pure $ fromIntegral n
+    pure $ CatNum $ read [a,b,c]
 
 -- | Parse 'edition'.
 pEdition :: Parser Edition
@@ -427,11 +431,9 @@ pDate = do
     MC.string "date" >> sc
     Date <$> L.decimal <*> (MC.char '-' *> L.decimal ) <*> (MC.char '-' *> L.decimal )
 
-{-
 -- | Parse 'preamble'.
 pPreamble :: Parser Text
 pPreamble = T.pack <$> blockAfter "preamble"
--}
 
 -- | Parse basic category description.
 pBasic :: Parser Basic
@@ -440,23 +442,28 @@ pBasic = Basic
     <*> (scn >> (Title . T.pack <$> stringLiteral))
     <*> (scn >> pEdition)
     <*> (scn >> pDate)
-    <*> pure Nothing -- optional (try (scn >> pPreamble))
-    <*> pure [] -- (scn >> pItems)
-    <*> pure (Uap []) -- (scn >> (pUap <* scn))
+    <*> optional (try (scn >> pPreamble))
+    <*> (scn >> pItems)
+    <*> (scn >> (pUap <* scn))
+
+-- | Parse 'compound' item for expansion
+pCompoundExp :: Parser (ByteSize, [Maybe (Item ())])
+pCompoundExp = parseList pHeader pListElement
+  where
+    pHeader = MC.string "compound" >> sc >> fmap ByteSize L.decimal
+    pListElement sc' = try pDash <|> (Just <$> pItem sc')
+    pDash = MC.char '-' >> pure Nothing
 
 -- | Parse expansion
 pExpansion :: Parser Expansion
-pExpansion = undefined
-{-
-pExtension = do
+pExpansion = do
     cat <- pCat "ref"
-    title <- scn >> (T.pack <$> stringLiteral)
+    title <- scn >> (Title . T.pack <$> stringLiteral)
     edition <- scn >> pEdition
     date <- scn >> pDate
     (fspecSize, items) <- scn >> pCompoundExp
     scn
     pure $ Expansion cat title edition date fspecSize items
--}
 
 -- | Parse asterix.
 pAsterix :: Parser Asterix

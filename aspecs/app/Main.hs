@@ -37,11 +37,11 @@ data Input
 
 data Command
     = Dump Input Decoder
-    {-
-    | Validate Input Decoder
-    | Checksum Input Decoder
     | Convert Input Decoder Encoder
+    {-
     | Prettify FilePath (Decoder, Encoder)
+    | Checksum Input Decoder
+    | Validate Input Decoder
     | Pandoc Input -- generate (pandoc) documentation
     -}
 
@@ -73,11 +73,12 @@ pEncoder = foldr (<|>) empty $ do
 pCommand :: Parser Command
 pCommand = hsubparser
     ( command "dump" (info pDump (progDesc "Dump specification for test purposes"))
-   -- <> command "checksum" (info pChecksum (progDesc "Print checksum"))
+   <> command "convert" (info pConvert (progDesc "Syntax format conversion"))
    -- ...
     )
   where
     pDump = Dump <$> pInput <*> pDecoder
+    pConvert = Convert <$> pInput <*> pDecoder <*> pEncoder
 
 pOpts :: ParserInfo Command
 pOpts = info (helper <*> versionOption <*> pCommand)
@@ -99,3 +100,6 @@ main = withUtf8 $ execParser pOpts >>= \case
     Dump input decoder -> do
         asterix <- decodeInput input decoder
         print asterix
+    Convert input decoder encoder -> do
+        asterix <- decodeInput input decoder
+        undefined $ encoder asterix
