@@ -43,6 +43,7 @@ let
     buildInputs = drv1.env.nativeBuildInputs ++ [
       pkgs.cabal2nix
       pkgs.ghcid
+      haskellPackages.haskell-language-server
     ];
     shellHook = ''
       export LC_ALL=C.UTF-8

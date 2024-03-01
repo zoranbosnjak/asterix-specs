@@ -54,8 +54,8 @@
 
 module Indent where
 
-import Data.String (IsString, fromString)
-import Control.Monad.Trans.Writer
+import           Control.Monad.Trans.Writer
+import           Data.String                (IsString, fromString)
 
 -- | Building block
 data Block a
@@ -66,13 +66,13 @@ data Block a
     deriving (Eq, Show)
 
 instance Functor Block where
-    fmap _ Nil = Nil
-    fmap f (Block (Left a) cont) = Block (Left $ f a) (fmap f cont)
+    fmap _ Nil                      = Nil
+    fmap f (Block (Left a) cont)    = Block (Left $ f a) (fmap f cont)
     fmap f (Block (Right sub) cont) = Block (Right $ fmap f sub) (fmap f cont)
 
 instance Semigroup (Block a) where
-    Nil <> val = val
-    val <> Nil = val
+    Nil <> val         = val
+    val <> Nil         = val
     Block a1 a2 <> val = Block a1 (a2 <> val)
 
 instance Monoid (Block a) where
@@ -97,7 +97,7 @@ renderBlock tab newline = go mempty 0
     go acc level (Block val cont) = case val of
         Left s ->
             let t = case s == mempty of
-                    True -> mempty
+                    True  -> mempty
                     False -> prepend level <> s
             in go (acc <> t <> newline) level cont
         Right blk -> go (go acc (succ level) blk) level cont

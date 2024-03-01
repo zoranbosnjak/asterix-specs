@@ -1,34 +1,28 @@
 -- | '.ast' syntax implementation
 
+{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
-
--- TODO: remove this
-{-# OPTIONS_GHC -Wno-unused-imports #-}
 
 module Asterix.Specs.Syntax.Ast where
 
 import           Control.Monad
-import           Data.Void
-import           Data.Bool
-import           Data.Bifunctor (first)
-import           Formatting as F
-import           Data.Either
-import           Data.Char (toLower)
-import           Data.Text (Text)
-import           Data.List (intersperse)
-import qualified Data.Text as T
-import           Data.Text.Lazy.Builder (Builder)
-import qualified Data.Text.Lazy.Builder as BL
-import qualified Data.Text.Lazy as TL
-import           Data.Text.Encoding (encodeUtf8, decodeUtf8)
-import           Text.Megaparsec hiding (State)
-import           Text.Megaparsec.Char as MC
-import qualified Text.Megaparsec.Char.Lexer as L
 import           Control.Monad.Combinators.Expr
+import           Data.Bifunctor                 (first)
+import           Data.Bool
+import           Data.Char                      (toLower)
+import           Data.Either
+import           Data.List                      (intersperse)
+import           Data.Text                      (Text)
+import qualified Data.Text                      as T
+import           Data.Text.Lazy.Builder         (Builder)
+import           Data.Void
+import           Formatting                     as F
+import           Text.Megaparsec                hiding (State)
+import           Text.Megaparsec.Char           as MC
+import qualified Text.Megaparsec.Char.Lexer     as L
 
-import           Asterix.Specs.Types
 import           Asterix.Specs.Syntax
+import           Asterix.Specs.Types
 import           Indent
 
 -- | Parse from Text
@@ -37,8 +31,8 @@ type Parser = Parsec Void Text
 
 -- | Parse with first successfull parser.
 tryOne :: [Parser a] -> Parser a
-tryOne [] = fail "empty list"
-tryOne [x] = x
+tryOne []     = fail "empty list"
+tryOne [x]    = x
 tryOne (x:xs) = try x <|> tryOne xs
 
 -- | Space consumer helper function.
@@ -70,7 +64,7 @@ skipEmptyLines :: Parser ()
 skipEmptyLines = do
     peek <- lookAhead pLine
     case null peek of
-        True -> pLine >> skipEmptyLines
+        True  -> pLine >> skipEmptyLines
         False -> pure ()
 
 -- | Parse text block after a header 'hdr'.
@@ -91,7 +85,7 @@ blockAfter hdr = do
             peek <- lookAhead pLine
             case null peek || getIndent peek > i of
                 False -> pure []
-                True -> (:) <$> pLine <*> consumeUntilIndent i
+                True  -> (:) <$> pLine <*> consumeUntilIndent i
 
     -- drop empty lines at the end of a list
     dropEmpty :: [String] -> [String]
@@ -102,7 +96,7 @@ blockAfter hdr = do
 
     leftIndent lst = fmap (drop n) lst where
         n = pred $ unPos i
-        i = minimum $ fmap getIndent $ filter (not . null) lst
+        i = minimum (getIndent <$> filter (not . null) lst)
 
 -- | Parse a list of chunks (all chunks have the same initial indent level).
 parseList :: Parser h -> (Parser () -> Parser a) -> Parser (h, [a])
@@ -152,11 +146,10 @@ pRule sc' pX = sc' >> tryOne
     pHeader :: Parser [ItemPath]
     pHeader = do
         MC.string "case" >> sc
-        result <- tryOne
+        tryOne
             [ fmap pure pPaths
             , pPathsMulti
             ]
-        pure result
 
     pCase :: Parser () -> Parser (Either a ([Int], a))
     pCase _sc' = do
@@ -169,15 +162,15 @@ pRule sc' pX = sc' >> tryOne
         x <- pX
         case p of
             Nothing -> pure (Left x)
-            Just n -> pure (Right (n, x))
+            Just n  -> pure (Right (n, x))
 
     pDependent :: Parser (Rule a)
     pDependent = do
         (items, eLst) <- parseList pHeader pCase
         dv <- case lefts eLst of
-            [] -> fail "default value is expected"
+            []  -> fail "default value is expected"
             [x] -> pure x
-            _ -> fail "only one default value is expected"
+            _   -> fail "only one default value is expected"
         pure $ Dependent items dv (rights eLst)
 
 pNumber :: Parser Number
@@ -235,7 +228,7 @@ pConstrain = tryOne
 pContent :: Parser Content
 pContent = tryOne
     [ MC.string "raw" >> pure ContentRaw
-    , (ContentTable . snd <$> parseList (MC.string "table") parseRow)
+    , ContentTable . snd <$> parseList (MC.string "table") parseRow
     , do
         MC.string "string" >> sc
         ContentString <$> tryOne
@@ -245,17 +238,17 @@ pContent = tryOne
             ]
     , ContentInteger
         <$> pSignedness <* (sc >> MC.string "integer")
-        <*> (many (sc >> pConstrain))
+        <*> many (sc >> pConstrain)
     , ContentQuantity
         <$> pSignedness <* (sc >> MC.string "quantity" >> sc)
         <*> pNumber <* sc
         <*> (Unit . T.pack <$> stringLiteral)
-        <*> (many (sc >> pConstrain))
+        <*> many (sc >> pConstrain)
     , ContentBds <$> tryOne
         [ MC.string "bds" >> sc >> MC.string "?" >> pure (BdsAt Nothing)
         , MC.string "bds" >> sc >> BdsAt <$> do
             (a,b) <- (,) <$> hexDigitChar <*> hexDigitChar
-            pure $ Just $ BdsAddr $ read $ "0x" ++ a:b:[]
+            pure $ Just $ BdsAddr $ read $ "0x" ++ [a, b]
         , MC.string "bds" >> pure BdsWithAddress
         ]
     ]
@@ -295,7 +288,7 @@ pRepetitive = do
             j <- L.indentLevel
             end <- atEnd
             bool (fail "unexpected indent") (pure ()) ((j > i) || end)
-    scn >> Repetitive <$> pure rt <*> pVariation sc'
+    scn >> (Repetitive rt <$> pVariation sc')
   where
     pRepFx = do
         void $ MC.string "repetitive" >> sc >> MC.string "fx"
@@ -308,7 +301,7 @@ pExplicit :: Parser (Variation ())
 pExplicit = Explicit <$> go where
     go = tryOne
         [ Just <$> (MC.string "explicit" >> sc >> pt)
-        , MC.string "explicit" *> pure Nothing
+        , MC.string "explicit" >> pure Nothing
         ]
     pt = tryOne
         [ MC.string "re" >> pure ReservedExpansion
@@ -351,10 +344,10 @@ pItem sc' = tryOne
         title <- Title . T.pack <$> stringLiteral
         definition <- optional . try $ do
             sc'
-            (T.pack <$> blockAfter "definition")
+            T.pack <$> blockAfter "definition"
         description <- optional . try $ do
             sc'
-            (T.pack <$> blockAfter "description")
+            T.pack <$> blockAfter "description"
         rule <- pRule sc' (pVariation sc')
         remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
         let doc = Documentation definition description remark
@@ -375,11 +368,14 @@ pUap = tryOne
     , uap
     ]
   where
-    parseOne _sc' = tryOne
-        [ MC.char '-' >> pure UapItemSpare
-        , MC.string "rfs" >> pure UapItemRFS
-        , fmap UapItem pItemName
-        ]
+    parseOne _sc' = do
+        result <- tryOne
+            [ MC.char '-' >> pure UapItemSpare
+            , MC.string "rfs" >> pure UapItemRFS
+            , fmap UapItem pItemName
+            ]
+        scn
+        pure result
 
     uap = Uap . snd <$> parseList (MC.string "uap") parseOne
 
@@ -477,7 +473,6 @@ pAsterix = tryOne
 class MkBlock a where
     mkBlock :: a -> BlockM Builder ()
 
-{-
 -- | The same as 'line $ bformat (formating) arg1 arg2 ...'
 fmt :: Format (BlockM Builder ()) a -> a
 fmt m = runFormat m line
@@ -491,18 +486,18 @@ instance MkBlock Content where
                 fmt (int % ": " % stext) key value
         ContentString st -> line $ "string " <> case st of
             StringAscii -> "ascii"
-            StringICAO -> "icao"
+            StringICAO  -> "icao"
             StringOctal -> "octal"
         ContentInteger signedness constraints -> do
             let sig = toLower <$> show signedness
                 cst = case constraints of
-                    [] -> ""
+                    []  -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
             fmt (F.string % " integer" % stext) sig cst
-        ContentQuantity signedness lsb unit constraints -> do
+        ContentQuantity signedness lsb (Unit unit) constraints -> do
             let sig = toLower <$> show signedness
                 cst = case constraints of
-                    [] -> ""
+                    []  -> ""
                     lst -> " " <> T.intercalate " " (fmap showConstrain lst)
             fmt
                 (F.string % " quantity " % stext % " " % "\"" % stext % "\"" % stext )
@@ -510,7 +505,7 @@ instance MkBlock Content where
         ContentBds bt -> case bt of
             BdsWithAddress -> "bds"
             BdsAt mAddr -> case mAddr of
-                Nothing -> "bds ?"
+                Nothing             -> "bds ?"
                 Just (BdsAddr addr) -> fmt ("bds " % hex) addr
 
 instance MkBlock a => MkBlock (Rule a) where
@@ -530,9 +525,9 @@ instance MkBlock a => MkBlock (Rule a) where
                 "default:"
                 indent $ mkBlock dv
 
-instance MkBlock Variation where
+instance MkBlock (Variation ()) where
     mkBlock = \case
-        Element n rule -> do
+        Element () (BitSize n) rule -> do
             fmt ("element " % int) n
             indent $ mkBlock rule
 
@@ -548,8 +543,8 @@ instance MkBlock Variation where
 
         Repetitive rep variation -> do
             case rep of
-                RepetitiveRegular n -> fmt ("repetitive " % int) n
-                RepetitiveFx -> fmt "repetitive fx"
+                RepetitiveRegular (ByteSize n) -> fmt ("repetitive " % int) n
+                RepetitiveFx                   -> fmt "repetitive fx"
             indent $ mkBlock variation
 
         Explicit mt -> do
@@ -565,10 +560,10 @@ instance MkBlock Variation where
                 Nothing -> "-"
                 Just item -> mkBlock item
 
-instance MkBlock Item where
+instance MkBlock (Item ()) where
     mkBlock = \case
-        Spare n -> fmt ("spare " % int) n
-        Item name title rule doc -> do
+        Spare () (BitSize n) -> fmt ("spare " % int) n
+        Item (ItemName name) (Title title) rule doc -> do
             fmt (stext % " \"" % stext % "\"") name title
             indent $ dumpText "definition" (docDefinition doc)
             indent $ dumpText "description" (docDescription doc)
@@ -589,10 +584,10 @@ instance MkBlock Uap where
             line "uap"
             indent $ mapM_ dumpUapItem lst
         Uaps variations msel -> do
-            line $ "uaps"
+            line "uaps"
             indent $ do
                 line "variations"
-                forM_ variations $ \(name, lst) -> do
+                forM_ variations $ \(UapName name, lst) -> do
                     indent $ do
                         fmt stext name
                         indent $ mapM_ dumpUapItem lst
@@ -600,11 +595,11 @@ instance MkBlock Uap where
                     Nothing -> mempty
                     Just sel -> do
                         fmt ("case " % stext) (showPath $ selItem sel)
-                        indent $ forM_ (selTable sel) $ \(x, uapName) -> do
+                        indent $ forM_ (selTable sel) $ \(x, UapName uapName) -> do
                             fmt (int % ": " % stext) x uapName
       where
         dumpUapItem = \case
-            UapItem item -> fmt stext item
+            UapItem (ItemName item) -> fmt stext item
             UapItemSpare -> "-"
             UapItemRFS -> "rfs"
 
@@ -627,15 +622,15 @@ instance MkBlock Basic where
         mkBlock $ basUap basic
       where
         blocksLn lst = mconcat $ intersperse "" lst
-        cat = basCategory basic
-        title = basTitle basic
+        CatNum cat = basCategory basic
+        Title title = basTitle basic
         edition = basEdition basic
         ed1 = editionMajor edition
         ed2 = editionMinor edition
         (Date year month day) = basDate basic
 
 instance MkBlock Expansion where
-    mkBlock (Expansion cat title edition date fspecBytes items) = do
+    mkBlock (Expansion (CatNum cat) (Title title) edition date (ByteSize fspecBytes) items) = do
         fmt ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
         fmt ("edition " % int % "." % int) ed1 ed2
         fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
@@ -647,18 +642,18 @@ instance MkBlock Expansion where
       where
         Edition ed1 ed2 = edition
         Date year month day = date
--}
 
 instance MkBlock Asterix where
-    mkBlock _ = undefined
-    {-
     mkBlock = \case
         AsterixBasic basic -> mkBlock basic
         AsterixExpansion expansion -> mkBlock expansion
-    -}
 
-decoder :: Decoder
-decoder filename s = first errorBundlePretty $ parse (pAsterix <* eof) filename s
-
-encoder :: Encoder
-encoder = render "    " "\n" . mkBlock
+coder :: Coder
+coder = Coder
+    { cDescription = "Compact asterix syntax"
+    , cDecoder = Just decoder
+    , cEncoder = Just encoder
+    }
+  where
+    decoder filename s = first errorBundlePretty $ parse (pAsterix <* eof) filename s
+    encoder = render "    " "\n" . mkBlock

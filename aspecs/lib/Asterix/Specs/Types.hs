@@ -2,8 +2,8 @@
 
 module Asterix.Specs.Types where
 
-import           GHC.Generics (Generic)
 import           Data.Text
+import           GHC.Generics (Generic)
 
 newtype CatNum = CatNum Int
     deriving (Generic, Eq, Ord, Show)
@@ -30,9 +30,9 @@ newtype ItemPath = ItemPath [ItemName]
     deriving (Generic, Eq, Ord, Show)
 
 data Documentation = Documentation
-    { docDefinition     :: Maybe Text
-    , docDescription    :: Maybe Text
-    , docRemark         :: Maybe Text
+    { docDefinition  :: Maybe Text
+    , docDescription :: Maybe Text
+    , docRemark      :: Maybe Text
     } deriving (Generic, Eq, Ord, Show)
 
 data Edition = Edition
@@ -158,7 +158,7 @@ data UapItem a
     deriving (Generic, Eq, Ord, Show)
 
 data UapSelector = UapSelector
-    { selItem :: ItemPath           -- UAP depends on this item
+    { selItem  :: ItemPath           -- UAP depends on this item
     , selTable :: [(Int, UapName)]  -- value lookup table
     } deriving (Generic, Eq, Ord, Show)
 
@@ -173,23 +173,23 @@ data Uap
 
 -- Basic category definition
 data Basic = Basic
-    { basCategory   :: CatNum
-    , basTitle      :: Title
-    , basEdition    :: Edition
-    , basDate       :: Date
-    , basPreamble   :: Maybe Text
-    , basCatalogue  :: [Item ()]
-    , basUap        :: Uap
+    { basCategory  :: CatNum
+    , basTitle     :: Title
+    , basEdition   :: Edition
+    , basDate      :: Date
+    , basPreamble  :: Maybe Text
+    , basCatalogue :: [Item ()]
+    , basUap       :: Uap
     } deriving (Generic, Eq, Ord, Show)
 
 -- Expansion category definition
 data Expansion = Expansion
-    { expCategory   :: CatNum
-    , expTitle      :: Title
-    , expEdition    :: Edition
-    , expDate       :: Date
-    , expFspecSize  :: ByteSize
-    , expItems      :: [Maybe (Item ())]
+    { expCategory  :: CatNum
+    , expTitle     :: Title
+    , expEdition   :: Edition
+    , expDate      :: Date
+    , expFspecSize :: ByteSize
+    , expItems     :: [Maybe (Item ())]
     } deriving (Generic, Eq, Ord, Show)
 
 data Asterix

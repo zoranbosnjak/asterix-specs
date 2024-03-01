@@ -1,48 +1,61 @@
+{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE LambdaCase #-}
-
--- TODO: remove this
-{-# OPTIONS_GHC -Wno-unused-imports #-}
 
 module Main where
 
-import           Main.Utf8                (withUtf8)
-import           Options.Applicative as Opt
 import           Control.Monad
-import           Data.Maybe
-import           Data.Text (Text)
-import qualified Data.Text as T
-import qualified Data.Text.IO as T
-import           System.IO as IO
-import           System.Exit (die)
--- import           Crypto.Hash
+import           Crypto.Hash
+import qualified Data.ByteString          as BS
+import qualified Data.ByteString.Char8    as BS8
+import           Data.IORef
+import qualified Data.Text                as T
+import qualified Data.Text.IO             as T
+import qualified Data.Text.Lazy.Builder   as T
+import qualified Data.Text.Lazy.IO        as TL
+import           Main.Utf8                (withUtf8)
+import           Options.Applicative      as Opt
+import           System.Exit              (die)
+import           System.IO                as IO
 
-import           Data.Version (showVersion)
-import           Paths_aspecs (version)
+import           Data.Version             (showVersion)
+import           Paths_aspecs             (version)
 
-import           Asterix.Specs.Types
 import           Asterix.Specs.Syntax
--- import           Asterix.Specs.Validation (validate)
 import qualified Asterix.Specs.Syntax.Ast as Sast
+import           Asterix.Specs.Types
+import           Asterix.Specs.Validation
 
-syntaxes :: [(String, String, Maybe Decoder, Maybe Encoder)]
+syntaxes :: [(String, Coder)]
 syntaxes =
-    [ ("ast", "Compact asterix syntax", Just Sast.decoder, Just Sast.encoder)
-    -- , ("json", "JSON asterix syntax", Just undefined, Just undefined)
+    [ ("dump", dump)
+    , ("ast", Sast.coder)
     ]
+  where
+    dump = Coder
+        { cDescription = "Internal coder"
+        , cDecoder = Nothing
+        , cEncoder = Just (T.fromText . T.pack . show)
+        }
 
 data Input
     = FileInput FilePath
     | StdInput
 
+hashing :: [(String, BS.ByteString -> String)]
+hashing =
+    [ ("md5", show . (hash :: BS.ByteString -> Digest MD5))
+    , ("sha1", show . (hash :: BS.ByteString -> Digest SHA1))
+    , ("sha256", show . (hash :: BS.ByteString -> Digest SHA256))
+    , ("sha512", show . (hash :: BS.ByteString -> Digest SHA512))
+    ]
+
 data Command
-    = Dump Input Decoder
-    | Convert Input Decoder Encoder
+    = Convert Input Decoder Encoder
+    | Prettify (Decoder, Encoder) [FilePath]
+    | Checksum Input Decoder (BS.ByteString -> String)
+    | Validate Decoder [FilePath]
     {-
-    | Prettify FilePath (Decoder, Encoder)
-    | Checksum Input Decoder
-    | Validate Input Decoder
-    | Pandoc Input -- generate (pandoc) documentation
+    | Pandoc Input Decoder -- generate pandoc native format for documentation
     -}
 
 pInput :: Parser Input
@@ -55,30 +68,46 @@ pInput = fileInput <|> stdInput where
         )
 
 pDecoder :: Parser Decoder
-pDecoder = foldr (<|>) empty $ do
-    (name, description, mDecoder, _mEncoder) <- syntaxes
-    case mDecoder of
+pDecoder = asum $ do
+    (name, coder) <- syntaxes
+    case cDecoder coder of
         Nothing -> empty
         Just f -> pure $ flag' f
-            (long name <> help description)
+            (long name <> help (cDescription coder <> " (decoding)"))
 
 pEncoder :: Parser Encoder
-pEncoder = foldr (<|>) empty $ do
-    (name, description, _mDecoder_, mEncoder) <- syntaxes
-    case mEncoder of
+pEncoder = asum $ do
+    (name, coder) <- syntaxes
+    case cEncoder coder of
         Nothing -> empty
         Just f -> pure $ flag' f
-            (long name <> help description)
+            (long name <> help (cDescription coder <> " (encoding)"))
+
+pCoder :: Parser (Decoder, Encoder)
+pCoder = asum $ do
+    (name, coder) <- syntaxes
+    case (cDecoder coder, cEncoder coder) of
+        (Just f1, Just f2) -> pure $ flag' (f1, f2)
+            (long name <> help (cDescription coder))
+        _ -> empty
+
+pHashing :: Parser (BS8.ByteString -> String)
+pHashing = asum $ do
+    (name, f) <- hashing
+    pure $ flag' f (long name)
 
 pCommand :: Parser Command
 pCommand = hsubparser
-    ( command "dump" (info pDump (progDesc "Dump specification for test purposes"))
-   <> command "convert" (info pConvert (progDesc "Syntax format conversion"))
-   -- ...
+    ( command "convert" (info pConvert (progDesc "Syntax format conversion"))
+   <> command "prettify" (info pPrettify (progDesc "Reformat file to a normal form"))
+   <> command "checksum" (info pChecksum (progDesc "Print file checksum"))
+   <> command "validate" (info pValidate (progDesc "Validate input"))
     )
   where
-    pDump = Dump <$> pInput <*> pDecoder
     pConvert = Convert <$> pInput <*> pDecoder <*> pEncoder
+    pPrettify = Prettify <$> pCoder <*> some (strArgument (metavar "PATH"))
+    pChecksum = Checksum <$> pInput <*> pDecoder <*> pHashing
+    pValidate = Validate <$> pDecoder <*> some (strArgument (metavar "PATH"))
 
 pOpts :: ParserInfo Command
 pOpts = info (helper <*> versionOption <*> pCommand)
@@ -92,14 +121,27 @@ decodeInput :: Input -> Decoder -> IO Asterix
 decodeInput input decoder = do
     (s, filename) <- case input of
         FileInput f -> (,) <$> T.readFile f <*> pure f
-        StdInput -> (,) <$> T.hGetContents IO.stdin <*> pure "<stdin>"
+        StdInput    -> (,) <$> T.hGetContents IO.stdin <*> pure "<stdin>"
     either die pure (decoder filename s)
 
 main :: IO ()
 main = withUtf8 $ execParser pOpts >>= \case
-    Dump input decoder -> do
-        asterix <- decodeInput input decoder
-        print asterix
     Convert input decoder encoder -> do
         asterix <- decodeInput input decoder
-        undefined $ encoder asterix
+        TL.putStr $ T.toLazyText $ encoder asterix
+    Prettify (decoder, encoder) paths -> forM_ paths $ \path -> do
+        asterix <- decodeInput (FileInput path) decoder
+        TL.writeFile path $ T.toLazyText $ encoder asterix
+    Checksum input decoder hsh -> do
+        asterix <- decodeInput input decoder
+        putStrLn $ hsh $ BS8.pack $ show asterix
+    Validate decoder paths -> do
+        ok <- newIORef True
+        forM_ paths $ \path -> do
+            asterix <- decodeInput (FileInput path) decoder
+            forM_ (runErrM $ validate asterix) $ \err -> do
+                writeIORef ok False
+                T.hPutStrLn stderr (T.pack path <> ": " <> err)
+        readIORef ok >>= \case
+            True -> pure ()
+            False -> die "Validation error(s) present!"

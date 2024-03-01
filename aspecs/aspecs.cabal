@@ -29,17 +29,23 @@ common base
         base ^>=4.17.2.1
         , with-utf8
         , text
+        , bytestring
         , transformers
         , optparse-applicative
         , megaparsec
         , parser-combinators
         , formatting
+        , cryptonite
 
 library
     import:           base
     exposed-modules:
         Indent
+        Asterix.Specs
         Asterix.Specs.Types
+        Asterix.Specs.Validation
+        Asterix.Specs.Syntax
+        Asterix.Specs.Syntax.Ast
     -- other-modules:
     -- other-extensions:
     hs-source-dirs:   lib
@@ -49,10 +55,10 @@ executable aspecs
     ghc-options:
         -O2 -rtsopts -funbox-strict-fields -with-rtsopts=-T -threaded
     main-is:          Main.hs
-    -- other-modules:
+    other-modules:
+        Paths_aspecs
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.1,
         aspecs
     hs-source-dirs:   app
-
