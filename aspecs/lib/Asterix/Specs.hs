@@ -29,7 +29,7 @@ bitOffset n = BitOffset (n `mod` 8)
 
 sameValue :: Eq a => [a] -> a
 sameValue [] = error "empty list"
-sameValue (x:[]) = x
+sameValue [x] = x
 sameValue (x:y:xs)
     | x == y = sameValue (y:xs)
     | otherwise = error "value is not the same"
@@ -82,7 +82,7 @@ instance IsAligned (Variation a) where
 
     bitSize = \case
         Element _ n _rule -> bitSize n
-        Group lst -> sum <$> sequence (fmap bitSize lst)
+        Group lst -> sum <$> mapM bitSize lst
         _ -> Nothing
 
 instance IsAligned (Item a) where
@@ -114,4 +114,4 @@ findItemByName catalogue (ItemPath (x : xs)) = do
                     byName (Item n _ _ _) = n == y
                 nextItem <- find byName candidates
                 go nextItem ys
-            Dependent _ _ _ -> Nothing
+            Dependent {} -> Nothing

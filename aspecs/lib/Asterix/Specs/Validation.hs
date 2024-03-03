@@ -47,8 +47,8 @@ withPreffix name act = forM_ (runErrM act) $ \err -> do
 
 isCapital :: T.Text -> Bool
 isCapital w
-    | elem w exceptions = True
-    | otherwise = not $ elem (T.head w) ['a'..'z']
+    | w `elem` exceptions = True
+    | otherwise = T.head w `notElem` ['a'..'z']
   where
     exceptions =
         [ "of", "in", "by", "to", "from", "the", "for", "and", "or"
@@ -74,7 +74,7 @@ instance Validate (BitSize, Content) where
                     throw $ "Expecting capitalized word -> " <> val <> " -> " <> w
             when (val /= "" && T.last val == '.') $ do
                 throw $ "Unexpected dot at the end of table entry -> " <> val
-            when (elem '"' (T.unpack val)) $ do
+            when ('"' `elem` T.unpack val) $ do
                 throw $ "Value contain quotes -> " <> val
       where
         keys = fst <$> lst
@@ -172,7 +172,7 @@ instance Validate (Item a) where
     validate (Item (ItemName name) (Title title) rule _doc) = withPreffix name $ do
         when (T.length name > 15) "Item name too long"
         forM_ (T.unpack name) $ \c -> do
-            unless (elem c (['A'..'Z'] <> ['0'..'9'])) $ do
+            unless (c `elem` (['A'..'Z'] <> ['0'..'9'])) $ do
                 throw ("Invalid character " <> T.pack (show c))
         forM_ (T.words title) $ \w -> do
             unless (isCapital w) $ do
@@ -181,7 +181,7 @@ instance Validate (Item a) where
             throw $ "Unexpected dot at the end of title -> " <> title
         when (T.strip title /= title) $ do
             throw $ "Title contain leading or trailing whitespaces -> " <> title
-        when (elem '"' (T.unpack title)) $ do
+        when ('"' `elem` T.unpack title) $ do
             throw $ "Title contain quotes -> " <> title
         mapM_ validate rule
 
@@ -225,7 +225,7 @@ instance Validate ([Item ()], Uap) where
                                 let ln = compare (length table) (2 ^ m)
                                 when (ln == GT) "too many variations"
                     forM_ (fmap snd table) $ \uapName -> do
-                        when (uapName `notElem` (fmap fst lst1)) $ do
+                        unless (uapName `elem` fmap fst lst1) $ do
                             let UapName x = uapName
                             throw $ "unknown uap: " <> x
       where
@@ -249,13 +249,13 @@ instance Validate Basic where
             validate item
             validateDepItem item
         forM_ required $ \name -> do
-            when (notElem name defined) $ do
+            unless (name `elem` defined) $ do
                 throw $ T.pack (show name) <> " required, but not defined."
         forM_ defined $ \name -> do
-            when (notElem name required) $ do
+            unless (name `elem` required) $ do
                 throw $ T.pack (show name) <> " defined, but not required."
         do
-            let dups = defined \\ (nub defined)
+            let dups = defined \\ nub defined
             unless (null dups) $ do
                 throw $ "duplicate names: " <> T.pack (show dups)
         validate (catalogue, uap)
@@ -263,7 +263,7 @@ instance Validate Basic where
         required :: [ItemName]
         required = catUapItems $ case uap of
             Uap lst        -> lst
-            Uaps lst _msel -> nub $ join $ fmap snd lst
+            Uaps lst _msel -> nub (snd =<< lst)
 
         defined :: [ItemName]
         defined = catalogue >>= \case
@@ -276,7 +276,7 @@ instance Validate Basic where
             Element _ _n rule' -> case rule' of
                 ContextFree _ -> pure ()
                 Dependent items _dv lst -> do
-                    when (length lst <= 0) "empty case list"
+                    when (null lst) "empty case list"
                     forM_ (fmap fst lst) $ \xs -> do
                         case length items == length xs of
                             False -> "Case vector size mismatch"
