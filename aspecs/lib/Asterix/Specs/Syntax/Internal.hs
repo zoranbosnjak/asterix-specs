@@ -15,6 +15,10 @@ import           Asterix.Specs.Syntax
 coder :: Coder
 coder = Coder
     { cDescription = "Internal format"
-    , cDecoder = Just (\_path -> readEither . T.unpack)
+    , cDecoder = Just decoder
     , cEncoder = Just (T.fromText . T.pack . ppShow)
     }
+  where
+    decoder filename s = case readEither (T.unpack s) of
+        Left e -> Left $ filename ++ ": " ++ e
+        Right val -> Right val
