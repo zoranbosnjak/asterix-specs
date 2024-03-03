@@ -6,39 +6,39 @@ import           Data.Text
 import           GHC.Generics (Generic)
 
 newtype CatNum = CatNum Int
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 newtype BitSize = BitSize Int
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 newtype ByteSize = ByteSize Int
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 newtype ItemName = ItemName Text
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 newtype Title = Title Text
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 newtype UapName = UapName Text
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 newtype Unit = Unit Text
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 newtype ItemPath = ItemPath [ItemName]
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data Documentation = Documentation
     { docDefinition  :: Maybe Text
     , docDescription :: Maybe Text
     , docRemark      :: Maybe Text
-    } deriving (Generic, Eq, Ord, Show)
+    } deriving (Generic, Eq, Ord, Show, Read)
 
 data Edition = Edition
     { editionMajor :: Int
     , editionMinor :: Int
-    } deriving (Generic, Eq, Show)
+    } deriving (Generic, Eq, Show, Read)
 
 instance Ord Edition where
     compare (Edition a1 b1) (Edition a2 b2) =
@@ -48,13 +48,13 @@ data Date = Date
     { dateYear  :: Integer
     , dateMonth :: Int
     , dateDay   :: Int
-    } deriving (Generic, Eq, Ord, Show)
+    } deriving (Generic, Eq, Ord, Show, Read)
 
 data Number
     = NumInt Integer
     | NumDiv Number Number
     | NumPow Integer Integer
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data Constrain
     = EqualTo Number
@@ -63,12 +63,12 @@ data Constrain
     | GreaterThanOrEqualTo Number
     | LessThan Number
     | LessThanOrEqualTo Number
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data Signedness
     = Signed
     | Unsigned
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data StringType
     = StringAscii
@@ -100,7 +100,7 @@ data Content
         [Constrain]
     | ContentBds
         BdsType
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data Rule a
     = ContextFree a
@@ -108,7 +108,7 @@ data Rule a
         [ItemPath]   -- items that this rule depends on
         a            -- default value
         [([Int], a)] -- cases
-    deriving (Generic, Eq, Ord, Show, Functor, Foldable, Traversable)
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data RepetitiveType
     -- N bytes reserved for REP lengt field
@@ -116,12 +116,12 @@ data RepetitiveType
 
     -- Number of repetitions are defined by FX bit value
     | RepetitiveFx
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data ExplicitType
     = ReservedExpansion
     | SpecialPurpose
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data Variation offset
     -- leaf of the structure
@@ -144,23 +144,23 @@ data Variation offset
     -- Some subitems may not be defined in which case the respective
     -- presence bit in the first part is always zero
     | Compound [Maybe (Item offset)]
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data Item offset
     = Spare offset BitSize
     | Item ItemName Title (Rule (Variation offset)) Documentation
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data UapItem a
     = UapItem a
     | UapItemSpare
     | UapItemRFS
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 data UapSelector = UapSelector
     { selItem  :: ItemPath           -- UAP depends on this item
     , selTable :: [(Int, UapName)]  -- value lookup table
-    } deriving (Generic, Eq, Ord, Show)
+    } deriving (Generic, Eq, Ord, Show, Read)
 
 -- User applicaton profile type
 data Uap
@@ -169,7 +169,7 @@ data Uap
 
     -- multiple UAPs
     | Uaps [(UapName, [UapItem ItemName])] (Maybe UapSelector)
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)
 
 -- Basic category definition
 data Basic = Basic
@@ -180,7 +180,7 @@ data Basic = Basic
     , basPreamble  :: Maybe Text
     , basCatalogue :: [Item ()]
     , basUap       :: Uap
-    } deriving (Generic, Eq, Ord, Show)
+    } deriving (Generic, Eq, Ord, Show, Read)
 
 -- Expansion category definition
 data Expansion = Expansion
@@ -190,9 +190,9 @@ data Expansion = Expansion
     , expDate      :: Date
     , expFspecSize :: ByteSize
     , expItems     :: [Maybe (Item ())]
-    } deriving (Generic, Eq, Ord, Show)
+    } deriving (Generic, Eq, Ord, Show, Read)
 
 data Asterix
     = AsterixBasic Basic
     | AsterixExpansion Expansion
-    deriving (Generic, Eq, Ord, Show)
+    deriving (Generic, Eq, Ord, Show, Read)

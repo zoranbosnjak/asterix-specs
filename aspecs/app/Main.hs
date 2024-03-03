@@ -22,24 +22,15 @@ import           Paths_aspecs             (version)
 
 import           Asterix.Specs.Syntax
 import qualified Asterix.Specs.Syntax.Ast as Sast
+import qualified Asterix.Specs.Syntax.Internal as Sint
 import           Asterix.Specs.Types
 import           Asterix.Specs.Validation
 
 syntaxes :: [(String, Coder)]
 syntaxes =
-    [ ("dump", dump)
-    , ("ast", Sast.coder)
+    [ ("ast", Sast.coder)
+    , ("internal", Sint.coder)
     ]
-  where
-    dump = Coder
-        { cDescription = "Internal coder"
-        , cDecoder = Nothing
-        , cEncoder = Just (T.fromText . T.pack . show)
-        }
-
-data Input
-    = FileInput FilePath
-    | StdInput
 
 hashing :: [(String, BS.ByteString -> String)]
 hashing =
@@ -50,22 +41,13 @@ hashing =
     ]
 
 data Command
-    = Convert Input Decoder Encoder
+    = Convert Decoder Encoder (Maybe FilePath)
     | Prettify (Decoder, Encoder) [FilePath]
-    | Checksum Input Decoder (BS.ByteString -> String)
+    | Checksum Decoder (BS.ByteString -> String) (Maybe FilePath)
     | Validate Decoder [FilePath]
     {-
     | Pandoc Input Decoder -- generate pandoc native format for documentation
     -}
-
-pInput :: Parser Input
-pInput = fileInput <|> stdInput where
-    fileInput = FileInput <$> strOption
-        ( long "file" <> short 'f' <> metavar "FILENAME"
-       <> help "Input file")
-    stdInput = flag' StdInput
-        ( long "stdin" <> help "Read from stdin"
-        )
 
 pDecoder :: Parser Decoder
 pDecoder = asum $ do
@@ -73,7 +55,7 @@ pDecoder = asum $ do
     case cDecoder coder of
         Nothing -> empty
         Just f -> pure $ flag' f
-            (long name <> help (cDescription coder <> " (decoding)"))
+            (long ("input-" <> name) <> help (cDescription coder))
 
 pEncoder :: Parser Encoder
 pEncoder = asum $ do
@@ -81,7 +63,7 @@ pEncoder = asum $ do
     case cEncoder coder of
         Nothing -> empty
         Just f -> pure $ flag' f
-            (long name <> help (cDescription coder <> " (encoding)"))
+            (long ("output-" <> name) <> help (cDescription coder))
 
 pCoder :: Parser (Decoder, Encoder)
 pCoder = asum $ do
@@ -104,10 +86,14 @@ pCommand = hsubparser
    <> command "validate" (info pValidate (progDesc "Validate input"))
     )
   where
-    pConvert = Convert <$> pInput <*> pDecoder <*> pEncoder
-    pPrettify = Prettify <$> pCoder <*> some (strArgument (metavar "PATH"))
-    pChecksum = Checksum <$> pInput <*> pDecoder <*> pHashing
-    pValidate = Validate <$> pDecoder <*> some (strArgument (metavar "PATH"))
+    pConvert = Convert <$> pDecoder <*> pEncoder
+        <*> optional (strArgument (metavar "PATH"))
+    pPrettify = Prettify <$> pCoder
+        <*> some (strArgument (metavar "PATH"))
+    pChecksum = Checksum <$> pDecoder <*> pHashing
+        <*> optional (strArgument (metavar "PATH"))
+    pValidate = Validate <$> pDecoder
+        <*> some (strArgument (metavar "PATH"))
 
 pOpts :: ParserInfo Command
 pOpts = info (helper <*> versionOption <*> pCommand)
@@ -117,28 +103,28 @@ pOpts = info (helper <*> versionOption <*> pCommand)
         (showVersion version)
         (Opt.long "version" <> Opt.help "Show version")
 
-decodeInput :: Input -> Decoder -> IO Asterix
+decodeInput :: Maybe FilePath -> Decoder -> IO Asterix
 decodeInput input decoder = do
     (s, filename) <- case input of
-        FileInput f -> (,) <$> T.readFile f <*> pure f
-        StdInput    -> (,) <$> T.hGetContents IO.stdin <*> pure "<stdin>"
+        Just f -> (,) <$> T.readFile f <*> pure f
+        Nothing -> (,) <$> T.hGetContents IO.stdin <*> pure "<stdin>"
     either die pure (decoder filename s)
 
 main :: IO ()
 main = withUtf8 $ execParser pOpts >>= \case
-    Convert input decoder encoder -> do
+    Convert decoder encoder input -> do
         asterix <- decodeInput input decoder
         TL.putStr $ T.toLazyText $ encoder asterix
     Prettify (decoder, encoder) paths -> forM_ paths $ \path -> do
-        asterix <- decodeInput (FileInput path) decoder
+        asterix <- decodeInput (Just path) decoder
         TL.writeFile path $ T.toLazyText $ encoder asterix
-    Checksum input decoder hsh -> do
+    Checksum decoder hsh input -> do
         asterix <- decodeInput input decoder
         putStrLn $ hsh $ BS8.pack $ show asterix
     Validate decoder paths -> do
         ok <- newIORef True
         forM_ paths $ \path -> do
-            asterix <- decodeInput (FileInput path) decoder
+            asterix <- decodeInput (Just path) decoder
             forM_ (runErrM $ validate asterix) $ \err -> do
                 writeIORef ok False
                 T.hPutStrLn stderr (T.pack path <> ": " <> err)
