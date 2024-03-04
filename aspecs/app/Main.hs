@@ -5,25 +5,25 @@ module Main where
 
 import           Control.Monad
 import           Crypto.Hash
-import qualified Data.ByteString          as BS
-import qualified Data.ByteString.Char8    as BS8
+import qualified Data.ByteString               as BS
+import qualified Data.ByteString.Char8         as BS8
 import           Data.IORef
-import qualified Data.Text                as T
-import qualified Data.Text.IO             as T
-import qualified Data.Text.Lazy.Builder   as T
-import qualified Data.Text.Lazy.IO        as TL
-import           Main.Utf8                (withUtf8)
-import           Options.Applicative      as Opt
-import           System.Exit              (die)
-import           System.IO                as IO
+import qualified Data.Text                     as T
+import qualified Data.Text.IO                  as T
+import qualified Data.Text.Lazy.Builder        as T
+import qualified Data.Text.Lazy.IO             as TL
+import           Main.Utf8                     (withUtf8)
+import           Options.Applicative           as Opt
+import           System.Exit                   (die)
+import           System.IO                     as IO
 
-import           Data.Version             (showVersion)
-import           Paths_aspecs             (version)
+import           Data.Version                  (showVersion)
+import           Paths_aspecs                  (version)
 
 import           Asterix.Specs.Syntax
+import qualified Asterix.Specs.Syntax.Ast      as Sast
 import qualified Asterix.Specs.Syntax.Internal as Sint
-import qualified Asterix.Specs.Syntax.Ast as Sast
-import qualified Asterix.Specs.Syntax.Json as Sjson
+import qualified Asterix.Specs.Syntax.Json     as Sjson
 import           Asterix.Specs.Types
 import           Asterix.Specs.Validation
 
@@ -108,7 +108,7 @@ pOpts = info (helper <*> versionOption <*> pCommand)
 decodeInput :: Maybe FilePath -> Decoder -> IO Asterix
 decodeInput input decoder = do
     (s, filename) <- case input of
-        Just f -> (,) <$> T.readFile f <*> pure f
+        Just f  -> (,) <$> T.readFile f <*> pure f
         Nothing -> (,) <$> T.hGetContents IO.stdin <*> pure "<stdin>"
     either die pure (decoder filename s)
 

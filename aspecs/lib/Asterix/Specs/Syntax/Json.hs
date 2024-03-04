@@ -4,9 +4,9 @@
 
 module Asterix.Specs.Syntax.Json where
 
-import           Data.Text.Encoding as T
-import           Data.Aeson hiding (Encoding)
+import           Data.Aeson               hiding (Encoding)
 import qualified Data.Aeson.Encode.Pretty as JsonP
+import           Data.Text.Encoding       as T
 
 import           Asterix.Specs.Syntax
 import           Asterix.Specs.Types
@@ -106,7 +106,7 @@ coder = Coder
     }
   where
     decoder filename s = case eitherDecodeStrict' (T.encodeUtf8 s) of
-        Left e -> Left $ filename ++ ": " ++ e
+        Left e    -> Left $ filename ++ ": " ++ e
         Right val -> Right val
 
     encoder = JsonP.encodePrettyToTextBuilder' JsonP.defConfig

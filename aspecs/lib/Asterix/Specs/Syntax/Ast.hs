@@ -650,7 +650,7 @@ instance MkBlock Asterix where
 
 coder :: Coder
 coder = Coder
-    { cDescription = "Human readable asterix format"
+    { cDescription = "Human readable format"
     , cDecoder = Just decoder
     , cEncoder = Just encoder
     }

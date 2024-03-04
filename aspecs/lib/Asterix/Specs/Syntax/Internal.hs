@@ -1,14 +1,13 @@
 -- | Internal syntax implementation
 
-{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Asterix.Specs.Syntax.Internal where
 
-import qualified Data.Text                as T
-import qualified Data.Text.Lazy.Builder   as T
-import           Text.Read (readEither)
-import           Text.Show.Pretty (ppShow)
+import qualified Data.Text              as T
+import qualified Data.Text.Lazy.Builder as T
+import           Text.Read              (readEither)
+import           Text.Show.Pretty       (ppShow)
 
 import           Asterix.Specs.Syntax
 
@@ -20,5 +19,5 @@ coder = Coder
     }
   where
     decoder filename s = case readEither (T.unpack s) of
-        Left e -> Left $ filename ++ ": " ++ e
+        Left e    -> Left $ filename ++ ": " ++ e
         Right val -> Right val
