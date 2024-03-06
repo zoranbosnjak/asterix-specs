@@ -9,7 +9,6 @@ module Asterix.Specs.Syntaxes
 import           Asterix.Specs.Syntax
 import qualified Asterix.Specs.Syntax.Ast      as Sast
 import qualified Asterix.Specs.Syntax.Internal as Sint
-import           Asterix.Specs.Types
 
 syntaxes :: [(String, Coder)]
 syntaxes =
