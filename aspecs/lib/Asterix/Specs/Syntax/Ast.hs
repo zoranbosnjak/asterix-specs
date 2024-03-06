@@ -21,9 +21,9 @@ import           Text.Megaparsec                hiding (State)
 import           Text.Megaparsec.Char           as MC
 import qualified Text.Megaparsec.Char.Lexer     as L
 
+import           Asterix.Indent
 import           Asterix.Specs.Syntax
 import           Asterix.Specs.Types
-import           Indent
 
 -- | Parse from Text
 

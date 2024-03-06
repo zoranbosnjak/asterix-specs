@@ -1,6 +1,6 @@
 --------
 -- |
--- Module : Indent
+-- Module : Asterix.Indent
 --
 -- This module provides primitives to support source code generation.
 -- A basic structure is "Block" - a list/tree-like structure,
@@ -52,7 +52,7 @@
 -- >     test4
 -- > test5
 
-module Indent where
+module Asterix.Indent where
 
 import           Control.Monad.Trans.Writer
 import           Data.String                (IsString, fromString)
