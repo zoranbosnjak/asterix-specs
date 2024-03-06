@@ -23,8 +23,6 @@ import           Paths_aspecs                  (version)
 import           Asterix.Specs.Syntax
 import qualified Asterix.Specs.Syntax.Ast      as Sast
 import qualified Asterix.Specs.Syntax.Internal as Sint
-import qualified Asterix.Specs.Syntax.Json     as Sjson
-import qualified Asterix.Specs.Syntax.Xml      as Sxml
 import           Asterix.Specs.Types
 import           Asterix.Specs.Validation
 
@@ -32,8 +30,6 @@ syntaxes :: [(String, Coder)]
 syntaxes =
     [ ("internal", Sint.coder)
     , ("ast", Sast.coder)
-    , ("json", Sjson.coder)
-    , ("xml", Sxml.coder)
     ]
 
 hashing :: [(String, BS.ByteString -> String)]
