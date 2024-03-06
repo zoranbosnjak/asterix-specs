@@ -11,8 +11,14 @@ newtype CatNum = CatNum Int
 newtype BitSize = BitSize Int
     deriving (Generic, Eq, Ord, Show, Read)
 
+instance Semigroup BitSize where BitSize a <> BitSize b = BitSize (a+b)
+instance Monoid BitSize where mempty = BitSize 0
+
 newtype ByteSize = ByteSize Int
     deriving (Generic, Eq, Ord, Show, Read)
+
+instance Semigroup ByteSize where ByteSize a <> ByteSize b = ByteSize (a+b)
+instance Monoid ByteSize where mempty = ByteSize 0
 
 newtype ItemName = ItemName Text
     deriving (Generic, Eq, Ord, Show, Read)
