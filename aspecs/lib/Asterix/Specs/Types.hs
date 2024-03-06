@@ -144,18 +144,18 @@ data Variation offset
     -- Some subitems may not be defined in which case the respective
     -- presence bit in the first part is always zero
     | Compound [Maybe (Item offset)]
-    deriving (Generic, Eq, Ord, Show, Read)
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Item offset
     = Spare offset BitSize
     | Item ItemName Title (Rule (Variation offset)) Documentation
-    deriving (Generic, Eq, Ord, Show, Read)
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data UapItem a
     = UapItem a
     | UapItemSpare
     | UapItemRFS
-    deriving (Generic, Eq, Ord, Show, Read)
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data UapSelector = UapSelector
     { selItem  :: ItemPath           -- UAP depends on this item
@@ -163,13 +163,13 @@ data UapSelector = UapSelector
     } deriving (Generic, Eq, Ord, Show, Read)
 
 -- User applicaton profile type
-data Uap
+data Uap r
     -- single UAP
-    = Uap [UapItem ItemName]
+    = Uap r
 
     -- multiple UAPs
-    | Uaps [(UapName, [UapItem ItemName])] (Maybe UapSelector)
-    deriving (Generic, Eq, Ord, Show, Read)
+    | Uaps [(UapName, r)] (Maybe UapSelector)
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 -- Basic category definition
 data Basic = Basic
@@ -179,7 +179,7 @@ data Basic = Basic
     , basDate      :: Date
     , basPreamble  :: Maybe Text
     , basCatalogue :: [Item ()]
-    , basUap       :: Uap
+    , basUap       :: Uap [UapItem ItemName]
     } deriving (Generic, Eq, Ord, Show, Read)
 
 -- Expansion category definition

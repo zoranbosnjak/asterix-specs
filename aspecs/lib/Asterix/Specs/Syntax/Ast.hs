@@ -362,7 +362,7 @@ pUapName :: Parser UapName
 pUapName = UapName . T.pack <$> some (alphaNumChar <|> MC.char '-')
 
 -- | Parse 'UAP'.
-pUap :: Parser Uap
+pUap :: Parser (Uap [UapItem ItemName])
 pUap = tryOne
     [ uaps
     , uap
@@ -578,7 +578,7 @@ instance MkBlock (Item ()) where
                 indent $ forM_ (T.lines t) $ \i -> do
                     fmt stext i
 
-instance MkBlock Uap where
+instance MkBlock (Uap [UapItem ItemName]) where
     mkBlock = \case
         Uap lst -> do
             line "uap"

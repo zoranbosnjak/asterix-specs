@@ -204,7 +204,7 @@ catUapItems = mapMaybe f where
         UapItem name -> Just name
         _ -> Nothing
 
-instance Validate ([Item ()], Uap) where
+instance Validate ([Item ()], (Uap [UapItem ItemName])) where
     validate (catalogue, uap) = case uap of
         Uap lst -> validateList lst
         Uaps lst1 msel -> do
