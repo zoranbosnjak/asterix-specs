@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-016---independent-non-cooperative-surveillance-system-configuration-reports">Asterix category 016 - Independent Non-Cooperative Surveillance System Configuration Reports</h1>
+<p><strong>category</strong>: 016</p>
+<p><strong>edition</strong>: 1.0</p>
+<p><strong>date</strong>: 2019-07-15</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i016000---message-type">I016/000 - Message Type</h3>
+<p><em>Definition</em>: This data item conveys the message type.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: System Configuration<br />
+2: Transmitter / Receiver Configuration</div>
+</blockquote></li>
+</ul>
+<h3 id="i016010---data-source-identifier">I016/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the Ground System from which the data is received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I016/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I016/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>NOTE - The up-to-date list of SACs is published on the EUROCONTROL
+Web Site (<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</p>
+<p>NOTE - The SICs are allocated by the national authority responsible
+for the surveillance infrastructure.</p>
+<h3 id="i016015---service-identification">I016/015 - Service Identification</h3>
+<p><em>Definition</em>: Identifies the service being reported.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p>NOTE - The service identification is allocated by the system.</p>
+<h3 id="i016140---time-of-day">I016/140 - Time of Day</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as UTC time.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> s</li>
+</ul>
+<p>NOTE - The time of day value is reset to zero each day at midnight.</p>
+<h3 id="i016200---system-configuration-reporting-period">I016/200 - System Configuration Reporting Period</h3>
+<p><em>Definition</em>: Data item to indicate the reporting period of the system
+configuration messages.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1</span> s</li>
+<li>value <span class="math inline"> &gt; 1</span> s</li>
+</ul>
+<p>NOTE - The item will be sent periodically (every SCRP) and each
+time a value change occurs.</p>
+<h3 id="i016300---pair-identification">I016/300 - Pair Identification</h3>
+<p><em>Definition</em>: The use of a pair identifier in this data item, that is common
+with its counterpart in ASTERIX Category I015/400, enables direct
+mapping from the INCS Target Report to the Transmitter/Receiver
+Pair that contributed to the target report.
+This is an identifier pointing to a measurement that was created
+from a specific contributing pair where the Pair Identifier refers
+to the index that details both the transmitter characteristics
+(DVB-T, DAB, FM, dedicated etc) and the receiver characteristics.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I016/300/PID</strong> - <em>Pair Identification</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I016/300/TID</strong> - <em>Transmitter Identification</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I016/300/RID</strong> - <em>Receiver Identification</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i016400---position-of-the-system-reference-point">I016/400 - Position of the System Reference Point</h3>
+<p><em>Definition</em>: Position of the system reference point in WGS-84 coordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I016/400/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+<p><strong>I016/400/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> °</li>
+<li>value <span class="math inline"> &lt; 180</span> °</li>
+</ul>
+</blockquote>
+<p>NOTE - Positive longitude indicates East. Positive latitude
+indicates North.</p>
+<p>NOTE - I016/400 shall only be sent together with item I016/405
+“Height of the System Reference Point”.</p>
+<h3 id="i016405---height-of-system-reference-point">I016/405 - Height of System Reference Point</h3>
+<p><em>Definition</em>: Height of the system reference point in Two’s Complement form.
+The height shall use mean sea level as the zero reference level.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+<li>value <span class="math inline"> &gt;  − 8192</span> m</li>
+<li>value <span class="math inline"> &lt; 8192</span> m</li>
+</ul>
+<p>NOTE - I016/405 shall only be sent together with item I016/400
+“Position of the System Reference Point”.</p>
+<h3 id="i016410---transmitter-properties">I016/410 - Transmitter Properties</h3>
+<p><em>Definition</em>: This item provides properties of a transmitter component.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I016/410/TID</strong> - <em>Transmitter ID</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I016/410/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+<p><strong>I016/410/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> °</li>
+<li>value <span class="math inline"> &lt; 180</span> °</li>
+</ul>
+<p><strong>I016/410/ALT</strong> - <em>Altitude</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+<li>value <span class="math inline"> &gt;  − 8192</span> m</li>
+<li>value <span class="math inline"> &lt; 8192</span> m</li>
+</ul>
+<p><strong>I016/410/TTO</strong> - <em>Transmission Time Offset</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “ns”</li>
+<li>LSB = <span class="math inline">2</span> ns</li>
+</ul>
+<p><strong>I016/410/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I016/410/ATO</strong> - <em>Accuracy of Transmission Time Offset</em></p>
+<ul>
+<li>20 bits [<code>....................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “ns”</li>
+<li>LSB = <span class="math inline">1</span> ns</li>
+</ul>
+<p><strong>I016/410/PCI</strong> - <em>Parallel Transmitter Index</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE - Regarding Transmitter Identification:</dt>
+<dd>
+<p>a. Individual channels of a transmitter are considered as
+separate collocated transmitters.</p>
+<p>b. A Transmitter ID may be assigned to individual channels
+of a compound transmitter. i.e. a single multi-channel
+transmitter may be assigned several Tx ID.</p>
+<p>c. The Tx ID shall be used in a unique way for a specific
+SAC/SIC.</p>
+</dd>
+<dt>NOTE - Regarding Transmitter Latitude and Longitude and Altitude:</dt>
+<dd>
+<p>a. The Tx Location and Altitude is the position of the
+component in WGS-84 coordinates. The vertical distance between
+the component and the projection of its position on the earth’s
+ellipsoid, as defined by WGS-84, in two’s complement form.</p>
+</dd>
+<dt>NOTE - Regarding Transmission Time Offset</dt>
+<dd>
+<p>a. Time offset of transmitter compared to the reference
+transmitter within the single frequency network (SFN).</p>
+</dd>
+<dt>NOTE - Regarding Accuracy of Transmission Time Offset</dt>
+<dd>
+<p>a. The Accuracy of the Transmission Time Offset is the Standard
+Deviation of the measurement of the transmission time offset
+between the transmitter channel compared to the reference
+transmitter within the single frequency network (SFN).</p>
+</dd>
+<dt>NOTE - Regarding Parallel Transmitter Index</dt>
+<dd>
+<p>a. The Parallel Transmitter Index is the identification of the
+transmitter via index, which is sent in parallel.</p>
+<p>b. For referring to a one-octet index bits-16/9 shall be set
+to zero.</p>
+<p>c. This index shall be used in a unique way for a specific
+SAC/SIC.</p>
+<p>d. In a Single Frequency Network the parallel transmitter
+index is the index of the reference transmitter.</p>
+</dd>
+</dl>
+<h3 id="i016420---receiver-properties">I016/420 - Receiver Properties</h3>
+<p><em>Definition</em>: This item provides properties of the receiver component.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I016/420/RID</strong> - <em>Receiver Component ID</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I016/420/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+<p><strong>I016/420/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> °</li>
+<li>value <span class="math inline"> &lt; 180</span> °</li>
+</ul>
+<p><strong>I016/420/ALT</strong> - <em>Altitude</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+<li>value <span class="math inline"> &gt;  − 8192</span> m</li>
+<li>value <span class="math inline"> &lt; 8192</span> m</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE - Regarding the Receiver Identification</dt>
+<dd>
+<p>a. The Rx ID shall be used in a unique way for a specific
+SAC/SIC.</p>
+</dd>
+<dt>NOTE - Regarding the Receiver Location and Altitude (WGS-84)</dt>
+<dd>
+<p>a. The Rx Location and Altitude is the of the component
+in WGS-84 coordinates. The vertical distance between the
+component and the projection of its position on the earth’s
+ellipsoid, as defined by WGS-84, in two’s complement form.</p>
+</dd>
+</dl>
+<h3 id="i016sp---special-purpose-field">I016/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item (SP)</p>
+<h1 id="user-application-profile-for-category-016">User Application Profile for Category 016</h1>
+<ul>
+<li><ol type="1">
+<li><code>I016/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I016/015</code> - Service Identification</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I016/000</code> - Message Type</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I016/140</code> - Time of Day</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I016/200</code> - System Configuration Reporting Period</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I016/300</code> - Pair Identification</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I016/400</code> - Position of the System Reference Point</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I016/405</code> - Height of System Reference Point</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I016/410</code> - Transmitter Properties</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I016/420</code> - Receiver Properties</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I016/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

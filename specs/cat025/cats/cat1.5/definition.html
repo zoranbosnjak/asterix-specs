@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-025---cnsatm-ground-system-status-reports">Asterix category 025 - CNS/ATM Ground System Status Reports</h1>
+<p><strong>category</strong>: 025</p>
+<p><strong>edition</strong>: 1.5</p>
+<p><strong>date</strong>: 2021-07-01</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i025000---report-type">I025/000 - Report Type</h3>
+<p><em>Definition</em>: This Data Item allows for a more convenient handling of the reports at the
+receiver side by further defining the type of transaction.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I025/000/RTYP</strong> - <em>Report Type</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I025/000/RG</strong> - <em>Report Generation</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Periodic Report<br />
+1: Event Driven Report</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li><p>In applications where transactions of various types are exchanged,
+the Report Type Data Item facilitates the proper report handling at
+the receiver side.</p></li>
+<li><p>All Report Type values are reserved for common standard use.</p></li>
+<li><dl>
+<dt>The following set of Report Types are standardised for Category 025 records:</dt>
+<dd>
+<ul>
+<li>001 Service and System Status report (see 4.5.1.1. above)</li>
+<li>002 Component Status report (see 4.5.1.2. above)</li>
+<li>003 Service Statistics report (see 4.5.1.3. above)</li>
+</ul>
+</dd>
+</dl></li>
+<li><p>The list of items present for the three report types is defined in the
+following table.
+M stands for mandatory, O for optional, X for never present. :</p>
+<pre><code>Item        001                 002             003
+I025/000    M                   M               M
+I025/010    M                   M               M
+I025/015    M                   X               M
+I025/020    O                   X               O
+I025/070    M                   M               M
+I025/100    O                   X               X
+I025/105    O                   X               X
+I025/120    O                   M               X
+I025/140    X                   X               M
+I025/200    O                   O               O
+I025/600    O (See Note)        O               X
+I025/610    O (See Note)        O               X</code></pre></li>
+<li><p>With Edition 1.3 of this specification the Encoding Rules for Data
+Item I025/600 and I025/610 in Message Type 001 have been changed
+from “Mandatory” to “Optional”. Before changing the data source such
+that the encoding of these Data Items is changed from “included” to
+“not included” it needs to be ensured that downstream systems do not
+apply “Mandatory Item Checks”. Otherwise this may lead to suppression
+of the Category 025 Record by the receiving system.</p></li>
+</ol>
+</blockquote>
+<h3 id="i025010---data-source-identifier">I025/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the Ground System from which the data is received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I025/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I025/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site
+(<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+<li>The SICs are allocated by the national authority responsible for the
+surveillance infrastructure.</li>
+</ol>
+</blockquote>
+<h3 id="i025015---service-identification">I025/015 - Service Identification</h3>
+<p><em>Definition</em>: Identifies the service being reported.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The service identification is allocated by the system.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i025020---service-designator">I025/020 - Service Designator</h3>
+<p><em>Definition</em>: Designator of the service being reported.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>48 bits [<code>... 48 bits ...</code>]</li>
+<li>ICAO string (6-bits per character)</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li><p>bits-48/1 Service Designator. Characters 1-8 (coded on 6 Bits each)
+defining the text readable designator for each Service.
+Each character of the service designator is encoded as defined below
+(see ICAO Annex 10, Volume IV, page 3-77, table 3-9): :</p>
+<pre><code>.   .   .   .   b6  0   0   1   1
+.   .   .   .   b5  0   1   0   1
+b4  b3  b2  b1
+0   0   0   0           P   SP  0
+0   0   0   1       A   Q       1
+0   0   1   0       B   R       2
+0   0   1   1       C   S       3
+0   1   0   0       D   T       4
+0   1   0   1       E   U       5
+0   1   1   0       F   V       6
+0   1   1   1       G   W       7
+1   0   0   0       H   X       8
+1   0   0   1       I   Y       9
+1   0   1   0       J   Z
+1   0   1   1       K
+1   1   0   0       L
+1   1   0   1       M
+1   1   1   0       N
+1   1   1   1       O</code></pre></li>
+</ol>
+<p>SP 1 = SPACE code
+For each character the following bit numbering convention shall be observed:</p>
+<blockquote>
+<p>b6 b5 b4 b3 b2 b1</p>
+</blockquote>
+<ol start="2" type="1">
+<li>Assignments of Service designators to specific services/systems and
+interpretation of these fields are implementation dependent.</li>
+<li>Examples of Service Designators are “1090ADSB”, “WAM”, “1090TISB”, etc.</li>
+<li>Multiple Service Type Designators may be used to describe a single
+service where applicable</li>
+</ol>
+</blockquote>
+<h3 id="i025070---time-of-day">I025/070 - Time of Day</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as UTC time.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> s</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The time of day value is reset to zero each day at midnight.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i025100---system-and-service-status">I025/100 - System and Service Status</h3>
+<p><em>Definition</em>: Information concerning the status of the Service Volume.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I025/100/NOGO</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Data is released for operational use<br />
+1: Data must not be used operationally</div>
+</blockquote></li>
+</ul>
+<p><strong>I025/100/OPS</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Operational<br />
+1: Operational but in Standby<br />
+2: Maintenance<br />
+3: Reserved for future use</div>
+</blockquote></li>
+</ul>
+<p><strong>I025/100/SSTAT</strong></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Running<br />
+1: Failed<br />
+2: Degraded<br />
+3: Undefined<br />
+4: Reserved for future use<br />
+5: Reserved for future use<br />
+6: Reserved for future use<br />
+7: Reserved for future use<br />
+8: Reserved for future use<br />
+9: Reserved for future use<br />
+10: Reserved for future use<br />
+11: Reserved for future use<br />
+12: Reserved for future use<br />
+13: Reserved for future use<br />
+14: Reserved for future use<br />
+15: Reserved for future use</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I025/100/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I025/100/SYSTAT</strong></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Running / OK<br />
+1: Failed<br />
+2: Degraded<br />
+3: Undefined<br />
+4: Reserved for future use<br />
+5: Reserved for future use<br />
+6: Reserved for future use<br />
+7: Reserved for future use</div>
+</blockquote></li>
+</ul>
+<p><strong>I025/100/SESTAT</strong></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: OK<br />
+1: Failed<br />
+2: Degraded<br />
+3: Undefined<br />
+4: Reserved for future use<br />
+5: Reserved for future use<br />
+6: Reserved for future use<br />
+7: Reserved for future use</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li><p>Bit 8 (NOGO), when set to “1” indicates that the data transmitted
+by the system/service is not released for operational use. This
+indication is independent from the status of the system itself or
+that of the service. It just indicates that the system or service
+volume output must not be used for operational services but may be
+used for, e.g. test and validation purposes. The indication GO/NO-GO
+indicates a mode of the system rather than a status. Usually this bit
+will be set by operator input.</p></li>
+<li><p>Bit 7/6 (OPS), when set to “1” indicates that the service is running
+but not operationally used (e.g. for a standby system in a redundant configuration).</p></li>
+<li><p>Bits 5/2 (SSTAT): This information informs about the state of the
+overall service volume status. The actual implementation of this
+field is service dependent and should be described in the system/service
+specification. However, it is expected that – as far as this information
+is available – a mapping is performed between the states of individual
+components as reported in data item I025/120. As an example, if one
+component fails but the system is still operational (at least partially),
+the service status should change to “Degraded”.</p></li>
+<li><p>To bit 7 (ERR): This bit set to “1” indicates that the range of the
+target is beyond the maximum range in data item I048/040.In this
+case – and this case only - the ERR Data Item in the Reserved
+Expansion Field shall provide the range value of the Measured
+Position in Polar Coordinates.</p></li>
+<li><p>This octet allows to separate reporting of the system and the service
+status as in particular in distributed systems it is possible that
+the degraded system state may not have an impact on the service state.
+For reasons of backwards compatibility (for systems that are not yet
+capable to decode the first extension), the system and service status
+shall be propagated to the field SSTAT in the primary part of I025/100,
+bits 5/2 according to the following table: :</p>
+<pre><code>SeSTAT  SySTAT  SSTAT
+
+0       0       0
+0       1       1
+0       2       2
+0       3       1
+1       0       1
+1       1       1
+1       2       1
+1       3       1
+2       0       2
+2       1       1
+2       2       2
+2       3       1
+3       0       1
+3       1       1
+3       2       1
+3       3       1</code></pre>
+<p>The value of 3 ‘Undefined’ is assumed to represent that the status
+cannot be determined. This inherently indicates a failure in system
+monitoring. Therefore, a value of 3 ‘Undefined’ is equivalent to 1
+‘Failed’, leading to rejection of data and prompting maintenance/operator
+investigation to occur.</p>
+<p>The population of SSTAT is determined to be the worst-case combination
+of SeSTAT and SySTAT, taking into account Note 1, where the hierarchy
+of best to worst case is as follows: Running, Degraded, Failed.</p></li>
+</ol>
+</blockquote>
+<h3 id="i025105---system-and-service-error-codes">I025/105 - System and Service Error Codes</h3>
+<p><em>Definition</em>: Error Status of the System and the Service.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No error detected (shall not be sent)<br />
+1: Error Code Undefined<br />
+2: Time Source Invalid<br />
+3: Time Source Coasting<br />
+4: Track ID numbering has restarted<br />
+5: Data Processor Overload<br />
+6: Ground Interface Data Communications Overload<br />
+7: System stopped by operator<br />
+8: CBIT failed<br />
+9: Test Target Failure<br />
+10: Reserved for allocation by the AMG<br />
+11: Reserved for allocation by the AMG<br />
+12: Reserved for allocation by the AMG<br />
+13: Reserved for allocation by the AMG<br />
+14: Reserved for allocation by the AMG<br />
+15: Reserved for allocation by the AMG<br />
+16: Reserved for allocation by the AMG<br />
+17: Reserved for allocation by the AMG<br />
+18: Reserved for allocation by the AMG<br />
+19: Reserved for allocation by the AMG<br />
+20: Reserved for allocation by the AMG<br />
+21: Reserved for allocation by the AMG<br />
+22: Reserved for allocation by the AMG<br />
+23: Reserved for allocation by the AMG<br />
+24: Reserved for allocation by the AMG<br />
+25: Reserved for allocation by the AMG<br />
+26: Reserved for allocation by the AMG<br />
+27: Reserved for allocation by the AMG<br />
+28: Reserved for allocation by the AMG<br />
+29: Reserved for allocation by the AMG<br />
+30: Reserved for allocation by the AMG<br />
+31: Reserved for allocation by the AMG<br />
+32: Reserved for allocation by system manufacturers<br />
+33: Reserved for allocation by system manufacturers<br />
+34: Reserved for allocation by system manufacturers<br />
+35: Reserved for allocation by system manufacturers<br />
+36: Reserved for allocation by system manufacturers<br />
+37: Reserved for allocation by system manufacturers<br />
+38: Reserved for allocation by system manufacturers<br />
+39: Reserved for allocation by system manufacturers<br />
+40: Reserved for allocation by system manufacturers<br />
+41: Reserved for allocation by system manufacturers<br />
+42: Reserved for allocation by system manufacturers<br />
+43: Reserved for allocation by system manufacturers<br />
+44: Reserved for allocation by system manufacturers<br />
+45: Reserved for allocation by system manufacturers<br />
+46: Reserved for allocation by system manufacturers<br />
+47: Reserved for allocation by system manufacturers<br />
+48: Reserved for allocation by system manufacturers<br />
+49: Reserved for allocation by system manufacturers<br />
+50: Reserved for allocation by system manufacturers<br />
+51: Reserved for allocation by system manufacturers<br />
+52: Reserved for allocation by system manufacturers<br />
+53: Reserved for allocation by system manufacturers<br />
+54: Reserved for allocation by system manufacturers<br />
+55: Reserved for allocation by system manufacturers<br />
+56: Reserved for allocation by system manufacturers<br />
+57: Reserved for allocation by system manufacturers<br />
+58: Reserved for allocation by system manufacturers<br />
+59: Reserved for allocation by system manufacturers<br />
+60: Reserved for allocation by system manufacturers<br />
+61: Reserved for allocation by system manufacturers<br />
+62: Reserved for allocation by system manufacturers<br />
+63: Reserved for allocation by system manufacturers<br />
+64: Reserved for allocation by system manufacturers<br />
+65: Reserved for allocation by system manufacturers<br />
+66: Reserved for allocation by system manufacturers<br />
+67: Reserved for allocation by system manufacturers<br />
+68: Reserved for allocation by system manufacturers<br />
+69: Reserved for allocation by system manufacturers<br />
+70: Reserved for allocation by system manufacturers<br />
+71: Reserved for allocation by system manufacturers<br />
+72: Reserved for allocation by system manufacturers<br />
+73: Reserved for allocation by system manufacturers<br />
+74: Reserved for allocation by system manufacturers<br />
+75: Reserved for allocation by system manufacturers<br />
+76: Reserved for allocation by system manufacturers<br />
+77: Reserved for allocation by system manufacturers<br />
+78: Reserved for allocation by system manufacturers<br />
+79: Reserved for allocation by system manufacturers<br />
+80: Reserved for allocation by system manufacturers<br />
+81: Reserved for allocation by system manufacturers<br />
+82: Reserved for allocation by system manufacturers<br />
+83: Reserved for allocation by system manufacturers<br />
+84: Reserved for allocation by system manufacturers<br />
+85: Reserved for allocation by system manufacturers<br />
+86: Reserved for allocation by system manufacturers<br />
+87: Reserved for allocation by system manufacturers<br />
+88: Reserved for allocation by system manufacturers<br />
+89: Reserved for allocation by system manufacturers<br />
+90: Reserved for allocation by system manufacturers<br />
+91: Reserved for allocation by system manufacturers<br />
+92: Reserved for allocation by system manufacturers<br />
+93: Reserved for allocation by system manufacturers<br />
+94: Reserved for allocation by system manufacturers<br />
+95: Reserved for allocation by system manufacturers<br />
+96: Reserved for allocation by system manufacturers<br />
+97: Reserved for allocation by system manufacturers<br />
+98: Reserved for allocation by system manufacturers<br />
+99: Reserved for allocation by system manufacturers<br />
+100: Reserved for allocation by system manufacturers<br />
+101: Reserved for allocation by system manufacturers<br />
+102: Reserved for allocation by system manufacturers<br />
+103: Reserved for allocation by system manufacturers<br />
+104: Reserved for allocation by system manufacturers<br />
+105: Reserved for allocation by system manufacturers<br />
+106: Reserved for allocation by system manufacturers<br />
+107: Reserved for allocation by system manufacturers<br />
+108: Reserved for allocation by system manufacturers<br />
+109: Reserved for allocation by system manufacturers<br />
+110: Reserved for allocation by system manufacturers<br />
+111: Reserved for allocation by system manufacturers<br />
+112: Reserved for allocation by system manufacturers<br />
+113: Reserved for allocation by system manufacturers<br />
+114: Reserved for allocation by system manufacturers<br />
+115: Reserved for allocation by system manufacturers<br />
+116: Reserved for allocation by system manufacturers<br />
+117: Reserved for allocation by system manufacturers<br />
+118: Reserved for allocation by system manufacturers<br />
+119: Reserved for allocation by system manufacturers<br />
+120: Reserved for allocation by system manufacturers<br />
+121: Reserved for allocation by system manufacturers<br />
+122: Reserved for allocation by system manufacturers<br />
+123: Reserved for allocation by system manufacturers<br />
+124: Reserved for allocation by system manufacturers<br />
+125: Reserved for allocation by system manufacturers<br />
+126: Reserved for allocation by system manufacturers<br />
+127: Reserved for allocation by system manufacturers<br />
+128: Reserved for allocation by system manufacturers<br />
+129: Reserved for allocation by system manufacturers<br />
+130: Reserved for allocation by system manufacturers<br />
+131: Reserved for allocation by system manufacturers<br />
+132: Reserved for allocation by system manufacturers<br />
+133: Reserved for allocation by system manufacturers<br />
+134: Reserved for allocation by system manufacturers<br />
+135: Reserved for allocation by system manufacturers<br />
+136: Reserved for allocation by system manufacturers<br />
+137: Reserved for allocation by system manufacturers<br />
+138: Reserved for allocation by system manufacturers<br />
+139: Reserved for allocation by system manufacturers<br />
+140: Reserved for allocation by system manufacturers<br />
+141: Reserved for allocation by system manufacturers<br />
+142: Reserved for allocation by system manufacturers<br />
+143: Reserved for allocation by system manufacturers<br />
+144: Reserved for allocation by system manufacturers<br />
+145: Reserved for allocation by system manufacturers<br />
+146: Reserved for allocation by system manufacturers<br />
+147: Reserved for allocation by system manufacturers<br />
+148: Reserved for allocation by system manufacturers<br />
+149: Reserved for allocation by system manufacturers<br />
+150: Reserved for allocation by system manufacturers<br />
+151: Reserved for allocation by system manufacturers<br />
+152: Reserved for allocation by system manufacturers<br />
+153: Reserved for allocation by system manufacturers<br />
+154: Reserved for allocation by system manufacturers<br />
+155: Reserved for allocation by system manufacturers<br />
+156: Reserved for allocation by system manufacturers<br />
+157: Reserved for allocation by system manufacturers<br />
+158: Reserved for allocation by system manufacturers<br />
+159: Reserved for allocation by system manufacturers<br />
+160: Reserved for allocation by system manufacturers<br />
+161: Reserved for allocation by system manufacturers<br />
+162: Reserved for allocation by system manufacturers<br />
+163: Reserved for allocation by system manufacturers<br />
+164: Reserved for allocation by system manufacturers<br />
+165: Reserved for allocation by system manufacturers<br />
+166: Reserved for allocation by system manufacturers<br />
+167: Reserved for allocation by system manufacturers<br />
+168: Reserved for allocation by system manufacturers<br />
+169: Reserved for allocation by system manufacturers<br />
+170: Reserved for allocation by system manufacturers<br />
+171: Reserved for allocation by system manufacturers<br />
+172: Reserved for allocation by system manufacturers<br />
+173: Reserved for allocation by system manufacturers<br />
+174: Reserved for allocation by system manufacturers<br />
+175: Reserved for allocation by system manufacturers<br />
+176: Reserved for allocation by system manufacturers<br />
+177: Reserved for allocation by system manufacturers<br />
+178: Reserved for allocation by system manufacturers<br />
+179: Reserved for allocation by system manufacturers<br />
+180: Reserved for allocation by system manufacturers<br />
+181: Reserved for allocation by system manufacturers<br />
+182: Reserved for allocation by system manufacturers<br />
+183: Reserved for allocation by system manufacturers<br />
+184: Reserved for allocation by system manufacturers<br />
+185: Reserved for allocation by system manufacturers<br />
+186: Reserved for allocation by system manufacturers<br />
+187: Reserved for allocation by system manufacturers<br />
+188: Reserved for allocation by system manufacturers<br />
+189: Reserved for allocation by system manufacturers<br />
+190: Reserved for allocation by system manufacturers<br />
+191: Reserved for allocation by system manufacturers<br />
+192: Reserved for allocation by system manufacturers<br />
+193: Reserved for allocation by system manufacturers<br />
+194: Reserved for allocation by system manufacturers<br />
+195: Reserved for allocation by system manufacturers<br />
+196: Reserved for allocation by system manufacturers<br />
+197: Reserved for allocation by system manufacturers<br />
+198: Reserved for allocation by system manufacturers<br />
+199: Reserved for allocation by system manufacturers<br />
+200: Reserved for allocation by system manufacturers<br />
+201: Reserved for allocation by system manufacturers<br />
+202: Reserved for allocation by system manufacturers<br />
+203: Reserved for allocation by system manufacturers<br />
+204: Reserved for allocation by system manufacturers<br />
+205: Reserved for allocation by system manufacturers<br />
+206: Reserved for allocation by system manufacturers<br />
+207: Reserved for allocation by system manufacturers<br />
+208: Reserved for allocation by system manufacturers<br />
+209: Reserved for allocation by system manufacturers<br />
+210: Reserved for allocation by system manufacturers<br />
+211: Reserved for allocation by system manufacturers<br />
+212: Reserved for allocation by system manufacturers<br />
+213: Reserved for allocation by system manufacturers<br />
+214: Reserved for allocation by system manufacturers<br />
+215: Reserved for allocation by system manufacturers<br />
+216: Reserved for allocation by system manufacturers<br />
+217: Reserved for allocation by system manufacturers<br />
+218: Reserved for allocation by system manufacturers<br />
+219: Reserved for allocation by system manufacturers<br />
+220: Reserved for allocation by system manufacturers<br />
+221: Reserved for allocation by system manufacturers<br />
+222: Reserved for allocation by system manufacturers<br />
+223: Reserved for allocation by system manufacturers<br />
+224: Reserved for allocation by system manufacturers<br />
+225: Reserved for allocation by system manufacturers<br />
+226: Reserved for allocation by system manufacturers<br />
+227: Reserved for allocation by system manufacturers<br />
+228: Reserved for allocation by system manufacturers<br />
+229: Reserved for allocation by system manufacturers<br />
+230: Reserved for allocation by system manufacturers<br />
+231: Reserved for allocation by system manufacturers<br />
+232: Reserved for allocation by system manufacturers<br />
+233: Reserved for allocation by system manufacturers<br />
+234: Reserved for allocation by system manufacturers<br />
+235: Reserved for allocation by system manufacturers<br />
+236: Reserved for allocation by system manufacturers<br />
+237: Reserved for allocation by system manufacturers<br />
+238: Reserved for allocation by system manufacturers<br />
+239: Reserved for allocation by system manufacturers<br />
+240: Reserved for allocation by system manufacturers<br />
+241: Reserved for allocation by system manufacturers<br />
+242: Reserved for allocation by system manufacturers<br />
+243: Reserved for allocation by system manufacturers<br />
+244: Reserved for allocation by system manufacturers<br />
+245: Reserved for allocation by system manufacturers<br />
+246: Reserved for allocation by system manufacturers<br />
+247: Reserved for allocation by system manufacturers<br />
+248: Reserved for allocation by system manufacturers<br />
+249: Reserved for allocation by system manufacturers<br />
+250: Reserved for allocation by system manufacturers<br />
+251: Reserved for allocation by system manufacturers<br />
+252: Reserved for allocation by system manufacturers<br />
+253: Reserved for allocation by system manufacturers<br />
+254: Reserved for allocation by system manufacturers<br />
+255: Reserved for allocation by system manufacturers</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The Warning &amp; Error codes contain information about the reason why
+the System and Service State (SSTAT in item I025/100) is different
+from “running”.</li>
+<li>A time source is considered as valid when either externally synchronised
+or running on a local oscillator within the required accuracy of UTC.</li>
+<li>A value of 4 indicates that the allocation of Track-IDs was re-started.</li>
+<li>Multiple error codes can be transmitted within the same ASTERIX record.</li>
+<li>Error codes in the range 0 to 31 shall be allocated centrally by
+the AMG. Error codes in the range from 32 to 255 are available for
+specification by the system manufacturers. They are not standardised
+and shall be described in the Interface Control Document (ICD) of the
+respective system.</li>
+</ol>
+</blockquote>
+<h3 id="i025120---component-status">I025/120 - Component Status</h3>
+<p><em>Definition</em>: Indications of status of various system components and, when applicable, error codes.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I025/120/CID</strong> - <em>Component ID</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I025/120/ERRC</strong> - <em>Error Code</em></p>
+<ul>
+<li><p>6 bits [<code>......</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No Error Detected<br />
+1: Error Code Undefined<br />
+2: Reserved for allocation by the AMG<br />
+3: Reserved for allocation by the AMG<br />
+4: Reserved for allocation by the AMG<br />
+5: Reserved for allocation by the AMG<br />
+6: Reserved for allocation by the AMG<br />
+7: Reserved for allocation by the AMG<br />
+8: Reserved for allocation by the AMG<br />
+9: Reserved for allocation by the AMG<br />
+10: Reserved for allocation by the AMG<br />
+11: Reserved for allocation by the AMG<br />
+12: Reserved for allocation by the AMG<br />
+13: Reserved for allocation by the AMG<br />
+14: Reserved for allocation by the AMG<br />
+15: Reserved for allocation by the AMG<br />
+16: Reserved for allocation by system manufacturers<br />
+17: Reserved for allocation by system manufacturers<br />
+18: Reserved for allocation by system manufacturers<br />
+19: Reserved for allocation by system manufacturers<br />
+20: Reserved for allocation by system manufacturers<br />
+21: Reserved for allocation by system manufacturers<br />
+22: Reserved for allocation by system manufacturers<br />
+23: Reserved for allocation by system manufacturers<br />
+24: Reserved for allocation by system manufacturers<br />
+25: Reserved for allocation by system manufacturers<br />
+26: Reserved for allocation by system manufacturers<br />
+27: Reserved for allocation by system manufacturers<br />
+28: Reserved for allocation by system manufacturers<br />
+29: Reserved for allocation by system manufacturers<br />
+30: Reserved for allocation by system manufacturers<br />
+31: Reserved for allocation by system manufacturers<br />
+32: Reserved for allocation by system manufacturers<br />
+33: Reserved for allocation by system manufacturers<br />
+34: Reserved for allocation by system manufacturers<br />
+35: Reserved for allocation by system manufacturers<br />
+36: Reserved for allocation by system manufacturers<br />
+37: Reserved for allocation by system manufacturers<br />
+38: Reserved for allocation by system manufacturers<br />
+39: Reserved for allocation by system manufacturers<br />
+40: Reserved for allocation by system manufacturers<br />
+41: Reserved for allocation by system manufacturers<br />
+42: Reserved for allocation by system manufacturers<br />
+43: Reserved for allocation by system manufacturers<br />
+44: Reserved for allocation by system manufacturers<br />
+45: Reserved for allocation by system manufacturers<br />
+46: Reserved for allocation by system manufacturers<br />
+47: Reserved for allocation by system manufacturers<br />
+48: Reserved for allocation by system manufacturers<br />
+49: Reserved for allocation by system manufacturers<br />
+50: Reserved for allocation by system manufacturers<br />
+51: Reserved for allocation by system manufacturers<br />
+52: Reserved for allocation by system manufacturers<br />
+53: Reserved for allocation by system manufacturers<br />
+54: Reserved for allocation by system manufacturers<br />
+55: Reserved for allocation by system manufacturers<br />
+56: Reserved for allocation by system manufacturers<br />
+57: Reserved for allocation by system manufacturers<br />
+58: Reserved for allocation by system manufacturers<br />
+59: Reserved for allocation by system manufacturers<br />
+60: Reserved for allocation by system manufacturers<br />
+61: Reserved for allocation by system manufacturers<br />
+62: Reserved for allocation by system manufacturers<br />
+63: Reserved for allocation by system manufacturers</div>
+</blockquote></li>
+</ul>
+<p><strong>I025/120/CS</strong> - <em>Component State/Mode</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Running<br />
+1: Failed<br />
+2: Maintenance<br />
+3: Reserved</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Error codes in the range 2 to 15 shall be allocated centrally by the
+AMG. Error codes in the range from 16 to 63 are available for
+specification by the system manufacturers. They are not standardised
+and shall be described in the Interface Control Document (ICD) of the
+respective system.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i025140---service-statistics">I025/140 - Service Statistics</h3>
+<p><em>Definition</em>: Statistics concerning the service. Provides counts of various message types
+that have been received since the report was last sent.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I025/140/TYPE</strong> - <em>Type of Report Counter</em></p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Number of unknown messages received<br />
+1: Number of too old messages received<br />
+2: Number of failed message conversions<br />
+3: Total Number of messages received<br />
+4: Total number of messages transmitted<br />
+5: Reserved for AMG<br />
+6: Reserved for AMG<br />
+7: Reserved for AMG<br />
+8: Reserved for AMG<br />
+9: Reserved for AMG<br />
+10: Reserved for AMG<br />
+11: Reserved for AMG<br />
+12: Reserved for AMG<br />
+13: Reserved for AMG<br />
+14: Reserved for AMG<br />
+15: Reserved for AMG<br />
+16: Reserved for AMG<br />
+17: Reserved for AMG<br />
+18: Reserved for AMG<br />
+19: Reserved for AMG<br />
+20: Implementation specific<br />
+21: Implementation specific<br />
+22: Implementation specific<br />
+23: Implementation specific<br />
+24: Implementation specific<br />
+25: Implementation specific<br />
+26: Implementation specific<br />
+27: Implementation specific<br />
+28: Implementation specific<br />
+29: Implementation specific<br />
+30: Implementation specific<br />
+31: Implementation specific<br />
+32: Implementation specific<br />
+33: Implementation specific<br />
+34: Implementation specific<br />
+35: Implementation specific<br />
+36: Implementation specific<br />
+37: Implementation specific<br />
+38: Implementation specific<br />
+39: Implementation specific<br />
+40: Implementation specific<br />
+41: Implementation specific<br />
+42: Implementation specific<br />
+43: Implementation specific<br />
+44: Implementation specific<br />
+45: Implementation specific<br />
+46: Implementation specific<br />
+47: Implementation specific<br />
+48: Implementation specific<br />
+49: Implementation specific<br />
+50: Implementation specific<br />
+51: Implementation specific<br />
+52: Implementation specific<br />
+53: Implementation specific<br />
+54: Implementation specific<br />
+55: Implementation specific<br />
+56: Implementation specific<br />
+57: Implementation specific<br />
+58: Implementation specific<br />
+59: Implementation specific<br />
+60: Implementation specific<br />
+61: Implementation specific<br />
+62: Implementation specific<br />
+63: Implementation specific<br />
+64: Implementation specific<br />
+65: Implementation specific<br />
+66: Implementation specific<br />
+67: Implementation specific<br />
+68: Implementation specific<br />
+69: Implementation specific<br />
+70: Implementation specific<br />
+71: Implementation specific<br />
+72: Implementation specific<br />
+73: Implementation specific<br />
+74: Implementation specific<br />
+75: Implementation specific<br />
+76: Implementation specific<br />
+77: Implementation specific<br />
+78: Implementation specific<br />
+79: Implementation specific<br />
+80: Implementation specific<br />
+81: Implementation specific<br />
+82: Implementation specific<br />
+83: Implementation specific<br />
+84: Implementation specific<br />
+85: Implementation specific<br />
+86: Implementation specific<br />
+87: Implementation specific<br />
+88: Implementation specific<br />
+89: Implementation specific<br />
+90: Implementation specific<br />
+91: Implementation specific<br />
+92: Implementation specific<br />
+93: Implementation specific<br />
+94: Implementation specific<br />
+95: Implementation specific<br />
+96: Implementation specific<br />
+97: Implementation specific<br />
+98: Implementation specific<br />
+99: Implementation specific<br />
+100: Implementation specific<br />
+101: Implementation specific<br />
+102: Implementation specific<br />
+103: Implementation specific<br />
+104: Implementation specific<br />
+105: Implementation specific<br />
+106: Implementation specific<br />
+107: Implementation specific<br />
+108: Implementation specific<br />
+109: Implementation specific<br />
+110: Implementation specific<br />
+111: Implementation specific<br />
+112: Implementation specific<br />
+113: Implementation specific<br />
+114: Implementation specific<br />
+115: Implementation specific<br />
+116: Implementation specific<br />
+117: Implementation specific<br />
+118: Implementation specific<br />
+119: Implementation specific<br />
+120: Implementation specific<br />
+121: Implementation specific<br />
+122: Implementation specific<br />
+123: Implementation specific<br />
+124: Implementation specific<br />
+125: Implementation specific<br />
+126: Implementation specific<br />
+127: Implementation specific<br />
+128: Implementation specific<br />
+129: Implementation specific<br />
+130: Implementation specific<br />
+131: Implementation specific<br />
+132: Implementation specific<br />
+133: Implementation specific<br />
+134: Implementation specific<br />
+135: Implementation specific<br />
+136: Implementation specific<br />
+137: Implementation specific<br />
+138: Implementation specific<br />
+139: Implementation specific<br />
+140: Implementation specific<br />
+141: Implementation specific<br />
+142: Implementation specific<br />
+143: Implementation specific<br />
+144: Implementation specific<br />
+145: Implementation specific<br />
+146: Implementation specific<br />
+147: Implementation specific<br />
+148: Implementation specific<br />
+149: Implementation specific<br />
+150: Implementation specific<br />
+151: Implementation specific<br />
+152: Implementation specific<br />
+153: Implementation specific<br />
+154: Implementation specific<br />
+155: Implementation specific<br />
+156: Implementation specific<br />
+157: Implementation specific<br />
+158: Implementation specific<br />
+159: Implementation specific<br />
+160: Implementation specific<br />
+161: Implementation specific<br />
+162: Implementation specific<br />
+163: Implementation specific<br />
+164: Implementation specific<br />
+165: Implementation specific<br />
+166: Implementation specific<br />
+167: Implementation specific<br />
+168: Implementation specific<br />
+169: Implementation specific<br />
+170: Implementation specific<br />
+171: Implementation specific<br />
+172: Implementation specific<br />
+173: Implementation specific<br />
+174: Implementation specific<br />
+175: Implementation specific<br />
+176: Implementation specific<br />
+177: Implementation specific<br />
+178: Implementation specific<br />
+179: Implementation specific<br />
+180: Implementation specific<br />
+181: Implementation specific<br />
+182: Implementation specific<br />
+183: Implementation specific<br />
+184: Implementation specific<br />
+185: Implementation specific<br />
+186: Implementation specific<br />
+187: Implementation specific<br />
+188: Implementation specific<br />
+189: Implementation specific<br />
+190: Implementation specific<br />
+191: Implementation specific<br />
+192: Implementation specific<br />
+193: Implementation specific<br />
+194: Implementation specific<br />
+195: Implementation specific<br />
+196: Implementation specific<br />
+197: Implementation specific<br />
+198: Implementation specific<br />
+199: Implementation specific<br />
+200: Implementation specific<br />
+201: Implementation specific<br />
+202: Implementation specific<br />
+203: Implementation specific<br />
+204: Implementation specific<br />
+205: Implementation specific<br />
+206: Implementation specific<br />
+207: Implementation specific<br />
+208: Implementation specific<br />
+209: Implementation specific<br />
+210: Implementation specific<br />
+211: Implementation specific<br />
+212: Implementation specific<br />
+213: Implementation specific<br />
+214: Implementation specific<br />
+215: Implementation specific<br />
+216: Implementation specific<br />
+217: Implementation specific<br />
+218: Implementation specific<br />
+219: Implementation specific<br />
+220: Implementation specific<br />
+221: Implementation specific<br />
+222: Implementation specific<br />
+223: Implementation specific<br />
+224: Implementation specific<br />
+225: Implementation specific<br />
+226: Implementation specific<br />
+227: Implementation specific<br />
+228: Implementation specific<br />
+229: Implementation specific<br />
+230: Implementation specific<br />
+231: Implementation specific<br />
+232: Implementation specific<br />
+233: Implementation specific<br />
+234: Implementation specific<br />
+235: Implementation specific<br />
+236: Implementation specific<br />
+237: Implementation specific<br />
+238: Implementation specific<br />
+239: Implementation specific<br />
+240: Implementation specific<br />
+241: Implementation specific<br />
+242: Implementation specific<br />
+243: Implementation specific<br />
+244: Implementation specific<br />
+245: Implementation specific<br />
+246: Implementation specific<br />
+247: Implementation specific<br />
+248: Implementation specific<br />
+249: Implementation specific<br />
+250: Implementation specific<br />
+251: Implementation specific<br />
+252: Implementation specific<br />
+253: Implementation specific<br />
+254: Implementation specific<br />
+255: Implementation specific</div>
+</blockquote></li>
+</ul>
+<p><strong>I025/140/REF</strong> - <em>Reference from which the Messages Are Counted</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: From UTC midnight<br />
+1: From the previous report</div>
+</blockquote></li>
+</ul>
+<p><strong>I025/140/(spare)</strong></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+</ul>
+<p><strong>I025/140/COUNT</strong> - <em>Counter Value</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>There is no special significance attributed to the numbering of the
+TYPE field. However the range from 0 to 19 is intended to cover
+generic messages which may be applicable to many types of service.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i025200---message-identification">I025/200 - Message Identification</h3>
+<p><em>Definition</em>: Identification of a unique message.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The Message Identification Number is to be used to uniquely identify
+each message. If messages are being sent on redundant links then this
+number shall be identical for the same message on each link. This will
+allow the receiver to easily identify and discard duplicate messages.</li>
+<li>It is not required that Message Identification Numbers be assigned in
+ascending order by time of message transmission.</li>
+</ol>
+</blockquote>
+<h3 id="i025600---position-of-the-system-reference-point">I025/600 - Position of the System Reference Point</h3>
+<p><em>Definition</em>: Position of the reference point in WGS-84 Coordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I025/600/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>32</sup></span> ° <span class="math inline"> ≈ 4.19<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt; 90</span> °</li>
+</ul>
+<p><strong>I025/600/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>32</sup></span> ° <span class="math inline"> ≈ 4.19<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> °</li>
+<li>value <span class="math inline"> &lt; 180</span> °</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Positive longitude indicates East. Positive latitude indicates North.</li>
+</ul>
+</blockquote>
+<h3 id="i025610---height-of-the-system-reference-point">I025/610 - Height of the System Reference Point</h3>
+<p><em>Definition</em>: Height of the system reference point in two’s complement form. The height
+shall use mean sea level as the zero reference level.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 8192</span> m</li>
+<li>value <span class="math inline"> &lt;  = 32767/4</span> m</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Item I025/610 shall only be sent together with item I025/600 “Position
+of the System Reference Point”.</li>
+</ul>
+</blockquote>
+<h3 id="i025sp---special-purpose-field">I025/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item (SP)</p>
+<h1 id="user-application-profile-for-category-025">User Application Profile for Category 025</h1>
+<ul>
+<li><ol type="1">
+<li><code>I025/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I025/000</code> - Report Type</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I025/200</code> - Message Identification</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I025/015</code> - Service Identification</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I025/020</code> - Service Designator</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I025/070</code> - Time of Day</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I025/100</code> - System and Service Status</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I025/105</code> - System and Service Error Codes</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I025/120</code> - Component Status</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I025/140</code> - Service Statistics</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I025/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I025/600</code> - Position of the System Reference Point</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I025/610</code> - Height of the System Reference Point</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

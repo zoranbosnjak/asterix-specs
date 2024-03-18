@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-expansion-062---coding-rules-for-reserved-expansion-field">Asterix expansion 062 - Coding rules for Reserved Expansion Field</h1>
+<p><strong>category</strong>: 062</p>
+<p><strong>edition</strong>: 1.2</p>
+<p><strong>date</strong>: 2011-06-01</p>
+<h2 id="description-of-asterix-expansion">Description of asterix expansion</h2>
+<p>Compound item (fspec=8 bits)</p>
+<blockquote>
+<p><strong>I062/CST</strong> - <em>Contributing Sensors With Local Tracknumbers</em></p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I062/CST/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I062/CST/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I062/CST/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I062/CST/TYP</strong></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No detection<br />
+1: Single PSR detection<br />
+2: Single SSR detection<br />
+3: SSR+PSR detection<br />
+4: Single Mode S All-Call<br />
+5: Single Mode S Roll-Call<br />
+6: Mode S All-Call + PSR<br />
+7: Mode S Roll-Call + PSR<br />
+8: ADS-B<br />
+9: WAM</div>
+</blockquote></li>
+</ul>
+<p><strong>I062/CST/LTN</strong> - <em>Local Track Number</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p><strong>I062/CSN</strong> - <em>Contributing Sensors No Local Tracknumbers</em></p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I062/CSN/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I062/CSN/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I062/CSN/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I062/CSN/TYP</strong></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No detection<br />
+1: Single PSR detection<br />
+2: Single SSR detection<br />
+3: SSR+PSR detection<br />
+4: Single Mode S All-Call<br />
+5: Single Mode S Roll-Call<br />
+6: Mode S All-Call + PSR<br />
+7: Mode S Roll-Call + PSR<br />
+8: ADS-B<br />
+9: WAM</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p><strong>I062/TVS</strong> - <em>Calculated Track Velocity Relative to System Reference Point</em></p>
+<blockquote>
+<p><strong>I062/TVS/VX</strong></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s <span class="math inline"> ≈ 0.25</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 8192</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 32767/4</span> m/s</li>
+</ul>
+<p><strong>I062/TVS/VY</strong></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s <span class="math inline"> ≈ 0.25</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 8192</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 32767/4</span> m/s</li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The y-axis points to the Geographical North at the system reference
+point as available in the Reserved Expansion Field of category 065.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I062/STS</strong> - <em>Supplementary Track Status</em></p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I062/STS/FDR</strong> - <em>Flight Data Retained</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Flight plan data from active FDPS<br />
+1: Flight plan data retained from no longer active FDPS</div>
+</blockquote></li>
+</ul>
+<p><strong>I062/STS/(spare)</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+</blockquote>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

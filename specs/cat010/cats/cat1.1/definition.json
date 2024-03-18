@@ -1,0 +1,2901 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the messages\nat the receiver side by further defining the type of transaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": "Notes:\n\n    1. In applications where transactions of various types are exchanged,\n       the Message Type Data Item facilitates the proper message handling\n       at the receiver side.\n    2. All Message Type values are reserved for common standard use.\n    3. The list of items present for the four message types is defined in\n       the following table.\n       M stands for mandatory, O for optional, X for never present.\n\nThe list of items present for the four message types is defined in the following\ntable. M stands for mandatory, O for optional, X for never present. ::\n\n    Item Type [001, 002, 003, 004]\n              [Target Report, Start of Update Cycle, Periodic Status Message, Event Status Message]\n\n    I010/000 Message Type M M M M\n    I010/010 Data Source Identifier M M M M\n    I010/020 Target Report Descriptor M X X X\n    I010/040 Measured Position in Polar Coordinates O X X X\n    I010/041 Position in WGS-84 Coordinates O X X X\n    I010/042 Position in Cartesian Coordinates O X X X\n    I010/060 Mode-3/A Code O X X X\n    I010/090 Flight Level in Binary Representation O X X X\n    I010/091 Measured Height O X X X\n    I010/131 Amplitude of Primary Plot O X X X\n    I010/140 Time of Day M M M M\n    I010/161 Track Number O X X X\n    I010/170 Track Status O X X X\n    I010/200 Calculated Track Velocity in Polar Coordinates O X X X\n    I010/202 Calculated Track Velocity in Cartesian Coordinates O X X X\n    I010/210 Calculated Acceleration O X X X\n    I010/220 Target Address O X X X\n    I010/245 Target Identification O X X X\n    I010/250 Mode S MB Data O X X X\n    I010/270 Target Size & Orientation O X X X\n    I010/280 Presence O X X X\n    I010/300 Vehicle Fleet Identification O X X X\n    I010/310 Pre-programmed Message O X X X\n    I010/500 Standard Deviation of Position O X X X\n    I010/550 System Status X O M M\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    1,
+                                    "Target Report"
+                                ],
+                                [
+                                    2,
+                                    "Start of Update Cycle"
+                                ],
+                                [
+                                    3,
+                                    "Periodic Status Message"
+                                ],
+                                [
+                                    4,
+                                    "Event-triggered Status Message"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Message Type"
+        },
+        {
+            "definition": "Identification of the system from which the data are received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "NOTE - The SAC is fixed to zero to indicate a data flow local to the airport.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identifier"
+        },
+        {
+            "definition": "Type and characteristics of the data as transmitted by a system.\n",
+            "description": null,
+            "name": "020",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TYP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "SSR multilateration"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Mode S multilateration"
+                                                ],
+                                                [
+                                                    2,
+                                                    "ADS-B"
+                                                ],
+                                                [
+                                                    3,
+                                                    "PSR"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Magnetic Loop System"
+                                                ],
+                                                [
+                                                    5,
+                                                    "HF multilateration"
+                                                ],
+                                                [
+                                                    6,
+                                                    "Not defined"
+                                                ],
+                                                [
+                                                    7,
+                                                    "Other types"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DCR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No differential correction (ADS-B)"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Differential correction (ADS-B)"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CHN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Chain 1"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Chain 2"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GBS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Transponder Ground bit not set"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Transponder Ground bit set"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CRT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No Corrupted reply in multilateration"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Corrupted replies in multilateration"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Actual target report"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Simulated target report"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TST",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Test Target"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RAB",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Report from target transponder"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Report from field monitor (fixed transponder)"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LOP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Undetermined"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Loop start"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Loop finish"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TOT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Undetermined"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Aircraft"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Ground vehicle"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Helicopter"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SPI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Absence of SPI"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Special Position Identification"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 6,
+                            "spare": true
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Target Report Descriptor"
+        },
+        {
+            "definition": "Measured position of a target in local polar co-ordinates.\n",
+            "description": null,
+            "name": "040",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RHO",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 65536
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "RHO"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TH",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Theta"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Measured Position in Polar Co-ordinates"
+        },
+        {
+            "definition": "Position of a target in WGS-84 Co-ordinates.\n",
+            "description": null,
+            "name": "041",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -90
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 90
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 31,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Latitude"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LON",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -180
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 180
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 31,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Longitude"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Position in WGS-84 Co-ordinates"
+        },
+        {
+            "definition": "Position of a target in Cartesian co-ordinates, in two’s complement form.\n",
+            "description": null,
+            "name": "042",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "X",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -32768
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 32768
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "X Coordinate"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "Y",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -32768
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 32768
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Y Coordinate"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Position in Cartesian Co-ordinates"
+        },
+        {
+            "definition": "Mode-3/A code converted into octal representation.\n",
+            "description": null,
+            "name": "060",
+            "remark": "Notes:\n\n    1. Bit 15 has no meaning in the case of a smoothed Mode-3/A code\n       and is set to 0 for a calculated track. For Mode S, it is set\n       to one when an error correction has been attempted.\n    2. For Mode S, bit 16 is normally set to zero, but can exceptionally\n       be set to one to indicate a non-validated Mode-3/A code (e.g. alert\n       condition detected, but new Mode-3/A code not successfully extracted).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "V",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Code validated"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Code not validated"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Validated"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "G",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Garbled code"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Garbled"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "L",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Mode-3/A code derived from the reply of the transponder"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Mode-3/A code not extracted during the last scan"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 1,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MODE3A",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringOctal"
+                                        }
+                                    },
+                                    "size": 12,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Mode-3/A Reply in Octal Representation"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Mode-3/A Code in Octal Representation"
+        },
+        {
+            "definition": "Flight Level (Mode C / Mode S Altitude) converted into binary two's\ncomplement representation.\n",
+            "description": null,
+            "name": "090",
+            "remark": "Notes:\n\n    1. The value shall be within the range described by ICAO Annex 10\n    2. For Mode S, bit 15 (G) is set to one when an error correction has\n       been attempted.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "V",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Code validated"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Code not validated"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Validated"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "G",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Garbled code"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Garbled"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "FL",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 2,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "FL"
+                                        }
+                                    },
+                                    "size": 14,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Flight Level"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Flight Level in Binary Representation"
+        },
+        {
+            "definition": "Height above local 2D co-ordinate reference system (two's complement)\nbased on direct measurements not related to barometric pressure.\n",
+            "description": null,
+            "name": "091",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": -204800
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 204800
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 2,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 25
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "ft"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Measured Height"
+        },
+        {
+            "definition": "Amplitude of Primary Plot.\n",
+            "description": null,
+            "name": "131",
+            "remark": "Notes:\n\n    - The value is radar-dependent, 0 being the minimum detectable level\n      for that radar.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Amplitude of Primary Plot"
+        },
+        {
+            "definition": "Absolute time stamping expressed as UTC.\n",
+            "description": null,
+            "name": "140",
+            "remark": "Notes:\n\n    - The time of day value is reset to zero each day at midnight.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day"
+        },
+        {
+            "definition": "An integer value representing a unique reference to a track record\nwithin a particular track file.\n",
+            "description": null,
+            "name": "161",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 4,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TRK",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 12,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Track Number"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Track Number"
+        },
+        {
+            "definition": "Status of track.\n",
+            "description": null,
+            "name": "170",
+            "remark": "Notes:\n\n    1. Some sensors are not be able to scan the whole coverage in one\n       refresh period. Therefore, track extrapolation is performed in\n       un-scanned sectors. CST is then set to 01.\n    2. Bit-8 (GHO) is used to signal that the track is suspected to have\n       been generated by a fake target.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CNF",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Confirmed track"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Track in initialisation phase"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TRE",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Last report for a track"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CST",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No extrapolation"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Predictable extrapolation due to sensor refresh period (see NOTE)"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Predictable extrapolation in masked area"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Extrapolation due to unpredictable absence of detection"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MAH",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Horizontal manoeuvre"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TCC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Tracking performed in 'Sensor Plane', i.e. neither slant range correction nor projection was applied"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Slant range correction and a suitable projection technique are used to track in a 2D.reference plane, tangential to the earth model at the Sensor Site co-ordinates"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STH",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Measured position"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Smoothed position"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TOM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown type of movement"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Taking-off"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Landing"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Other types of movement"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DOU",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No doubt"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Doubtful correlation (undetermined reason)"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Doubtful correlation in clutter"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Loss of accuracy"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Loss of accuracy in clutter"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Unstable track"
+                                                ],
+                                                [
+                                                    6,
+                                                    "Previously coasted"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MRS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Merge or split indication undetermined"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Track merged by association to plot"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Track merged by non-association to plot"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Split track"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GHO",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Ghost track"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 6,
+                            "spare": true
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Track Status"
+        },
+        {
+            "definition": "Calculated track velocity expressed in polar co-ordinates.\n",
+            "description": null,
+            "name": "200",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GSP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 2
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 14,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "NM/s"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Ground Speed"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TRA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Track Angle"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Calculated Track Velocity in Polar Co-ordinates"
+        },
+        {
+            "definition": "Calculated track velocity expressed in Cartesian co-ordinates, in two’s\ncomplement representation.\n",
+            "description": null,
+            "name": "202",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "VX",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -8192
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 8192
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 4,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m/s"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "X Velocity"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "VY",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -8192
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 8192
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 4,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m/s"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Y Velocity"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Calculated Track Velocity in Cartesian Co-ordinates"
+        },
+        {
+            "definition": "Calculated Acceleration of the target, in two’s complement form.\n",
+            "description": null,
+            "name": "210",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AX",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -31
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 31
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 4,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m/s²"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "X Acceleration"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AY",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -31
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 31
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 4,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m/s²"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Y Acceleration"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Calculated Acceleration"
+        },
+        {
+            "definition": "Target address (24-bits address) assigned uniquely to each Target.\n",
+            "description": null,
+            "name": "220",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Target Address"
+        },
+        {
+            "definition": "Target (aircraft or vehicle) identification in 8 characters.\n",
+            "description": null,
+            "name": "245",
+            "remark": "Notes:\n\n    - See ICAO document Annex 10, Volume I, Part I, section 3.8.2.9 for\n      the coding rules.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Callsign or registration downlinked from transponder"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Callsign not downlinked from transponder"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Registration not downlinked from transponder"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 6,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CHR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringICAO"
+                                        }
+                                    },
+                                    "size": 48,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Characters 1-8 (Coded on 6 Bits Each) Defining Target Identification"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Target Identification"
+        },
+        {
+            "definition": "Mode S Comm B data as extracted from the aircraft transponder.\n",
+            "description": null,
+            "name": "250",
+            "remark": "Notes:\n\n    - For the transmission of BDS20, item 245 is used.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": "56-bit message conveying Mode S Comm B message data\n",
+                                "name": "MBDATA",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 56,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": "Comm B Data Buffer Store 1 Address\n",
+                                "name": "BDS1",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 4,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": "Comm B Data Buffer Store 2 Address\n",
+                                "name": "BDS2",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 4,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Mode S MB Data"
+        },
+        {
+            "definition": "Target size defined as length and width of the detected target, and orientation.\n",
+            "description": null,
+            "name": "270",
+            "remark": "Notes:\n\n    - The orientation gives the direction which the aircraft nose is\n      pointing, relative to the Geographical North.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LENGTH",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Length"
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ORIENTATION",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 7,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Orientation"
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "WIDTH",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Width"
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Target Size and Orientation"
+        },
+        {
+            "definition": "Positions of all elementary presences constituting a plot.\n",
+            "description": null,
+            "name": "280",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": "Difference between the radial distance of the plot centre\nand that of the presence.\n",
+                                "name": "DRHO",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [
+                                                    {
+                                                        "type": ">=",
+                                                        "value": {
+                                                            "type": "Integer",
+                                                            "value": -127
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "<=",
+                                                        "value": {
+                                                            "type": "Integer",
+                                                            "value": 127
+                                                        }
+                                                    }
+                                                ],
+                                                "lsb": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "m"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": "Difference between the azimuth of the plot centre and that\nof the presence.\n",
+                                "name": "DTHETA",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [
+                                                    {
+                                                        "type": ">=",
+                                                        "value": {
+                                                            "denominator": {
+                                                                "type": "Integer",
+                                                                "value": 20
+                                                            },
+                                                            "numerator": {
+                                                                "type": "Integer",
+                                                                "value": -381
+                                                            },
+                                                            "type": "Div"
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "<=",
+                                                        "value": {
+                                                            "denominator": {
+                                                                "type": "Integer",
+                                                                "value": 20
+                                                            },
+                                                            "numerator": {
+                                                                "type": "Integer",
+                                                                "value": 381
+                                                            },
+                                                            "type": "Div"
+                                                        }
+                                                    }
+                                                ],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "type": "Integer",
+                                                        "value": 20
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 3
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "°"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Presence"
+        },
+        {
+            "definition": "Vehicle fleet identification number.\n",
+            "description": null,
+            "name": "300",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    0,
+                                    "Unknown"
+                                ],
+                                [
+                                    1,
+                                    "ATC equipment maintenance"
+                                ],
+                                [
+                                    2,
+                                    "Airport maintenance"
+                                ],
+                                [
+                                    3,
+                                    "Fire"
+                                ],
+                                [
+                                    4,
+                                    "Bird scarer"
+                                ],
+                                [
+                                    5,
+                                    "Snow plough"
+                                ],
+                                [
+                                    6,
+                                    "Runway sweeper"
+                                ],
+                                [
+                                    7,
+                                    "Emergency"
+                                ],
+                                [
+                                    8,
+                                    "Police"
+                                ],
+                                [
+                                    9,
+                                    "Bus"
+                                ],
+                                [
+                                    10,
+                                    "Tug (push/tow)"
+                                ],
+                                [
+                                    11,
+                                    "Grass cutter"
+                                ],
+                                [
+                                    12,
+                                    "Fuel"
+                                ],
+                                [
+                                    13,
+                                    "Baggage"
+                                ],
+                                [
+                                    14,
+                                    "Catering"
+                                ],
+                                [
+                                    15,
+                                    "Aircraft maintenance"
+                                ],
+                                [
+                                    16,
+                                    "Flyco (follow me)"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Vehicle Fleet Identification"
+        },
+        {
+            "definition": "Number related to a pre-programmed message that can be transmitted by a vehicle.\n",
+            "description": null,
+            "name": "310",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TRB",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "In Trouble"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MSG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    1,
+                                                    "Towing aircraft"
+                                                ],
+                                                [
+                                                    2,
+                                                    "“Follow me” operation"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Runway check"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Emergency operation (fire, medical...)"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Work in progress (maintenance, birds scarer, sweepers...)"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Pre-programmed Message"
+        },
+        {
+            "definition": "Standard Deviation of Position\n",
+            "description": null,
+            "name": "500",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DEVX",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 2,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Standard Deviation of X Component"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DEVY",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 2,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Standard Deviation of Y Component"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "COVXY",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 2,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Covariance in Two’s Complement Form"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Standard Deviation of Position"
+        },
+        {
+            "definition": "Information concerning the configuration and status of a System.\n",
+            "description": null,
+            "name": "550",
+            "remark": "Notes:\n\n    - For a radar, bit-4 (DIV) is set to zero either when diversity is\n      not used, or when diversity is used and operational.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NOGO",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Operational"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Degraded"
+                                                ],
+                                                [
+                                                    2,
+                                                    "NOGO"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Operational Release Status of the System"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "OVL",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No overload"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Overload"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Overload Indicator"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TSV",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Valid"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Invalid"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Time Source Validity"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DIV",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Normal Operation"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Diversity degraded"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TTF",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Test Target Operative"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Test Target Failure"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 2,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "System Status"
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "RE",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Reserved Expansion Field"
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "SP",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Special Purpose Field"
+        }
+    ],
+    "date": {
+        "day": 1,
+        "month": 3,
+        "year": 2007
+    },
+    "edition": {
+        "major": 1,
+        "minor": 1
+    },
+    "number": 10,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Transmission of Monosensor Surface Movement Data",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "020",
+            "140",
+            "041",
+            "040",
+            "042",
+            "200",
+            "202",
+            "161",
+            "170",
+            "060",
+            "220",
+            "245",
+            "250",
+            "300",
+            "090",
+            "091",
+            "270",
+            "550",
+            "310",
+            "500",
+            "280",
+            "131",
+            "210",
+            null,
+            "SP",
+            "RE"
+        ],
+        "type": "uap"
+    }
+}

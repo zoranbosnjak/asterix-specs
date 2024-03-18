@@ -1,0 +1,2676 @@
+{
+    "catalogue": [
+        {
+            "definition": "Allows identification of the message type.\n",
+            "description": null,
+            "name": "000",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    0,
+                                    "Associate_req"
+                                ],
+                                [
+                                    1,
+                                    "Associate_resp"
+                                ],
+                                [
+                                    2,
+                                    "Release_req"
+                                ],
+                                [
+                                    3,
+                                    "Release_resp"
+                                ],
+                                [
+                                    4,
+                                    "Abort_req"
+                                ],
+                                [
+                                    5,
+                                    "Keep_alive"
+                                ],
+                                [
+                                    16,
+                                    "Aircraft_report"
+                                ],
+                                [
+                                    17,
+                                    "Aircraft_command"
+                                ],
+                                [
+                                    18,
+                                    "II_code_change"
+                                ],
+                                [
+                                    32,
+                                    "Uplink_packet"
+                                ],
+                                [
+                                    33,
+                                    "Cancel_uplink_packet"
+                                ],
+                                [
+                                    34,
+                                    "Uplink_packet_ack"
+                                ],
+                                [
+                                    35,
+                                    "Downlink_packet"
+                                ],
+                                [
+                                    38,
+                                    "Data_XON"
+                                ],
+                                [
+                                    39,
+                                    "Data_XOFF"
+                                ],
+                                [
+                                    48,
+                                    "Uplink_broadcast"
+                                ],
+                                [
+                                    49,
+                                    "Cancel_uplink_broadcast"
+                                ],
+                                [
+                                    50,
+                                    "Uplink_broadcast_ack"
+                                ],
+                                [
+                                    52,
+                                    "Downlink_broadcast"
+                                ],
+                                [
+                                    64,
+                                    "GICB_extraction"
+                                ],
+                                [
+                                    65,
+                                    "Cancel_GICB_extraction"
+                                ],
+                                [
+                                    66,
+                                    "GICB_extraction_ack"
+                                ],
+                                [
+                                    67,
+                                    "GICB_response"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Message Type"
+        },
+        {
+            "definition": "Indicates the status of a particular message together with additional information.\n",
+            "description": null,
+            "name": "001",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CAUSE",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Accepted, the request is accepted and is under processing"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Rejected, the request has not been accepted"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Cancelled, the request has been cancelled"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Finished, the request has been accepted and successfully processed"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Delayed, the request processing is temporarily delayed but the request is still valid"
+                                                ],
+                                                [
+                                                    5,
+                                                    "In Progress, the request is being successfully processed"
+                                                ],
+                                                [
+                                                    6,
+                                                    "In Progress, the request is being successfully processed"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Cause"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DIAG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No diagnostic available"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Aircraft Exit"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Incorrect aircraft address"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Impossibility to process the message"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Insufficient or change in data link capability"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Invalid LV field"
+                                                ],
+                                                [
+                                                    6,
+                                                    "Duplicate request number"
+                                                ],
+                                                [
+                                                    7,
+                                                    "Unknown request number"
+                                                ],
+                                                [
+                                                    8,
+                                                    "Timer T3 expiry"
+                                                ],
+                                                [
+                                                    9,
+                                                    "Expiry of I/R delivery timer"
+                                                ],
+                                                [
+                                                    10,
+                                                    "Uplink flow disabled by UC"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Diagnostic"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Result"
+        },
+        {
+            "definition": "Absolute time stamping expressed as Co-ordinated Universal Time (UTC) time.\n",
+            "description": null,
+            "name": "002",
+            "remark": "Notes:\n    1. The time of day value is reset to zero each day at midnight.\n    2. For time management in radar transmission applications, refer\n       to Part 1, paragraph 5.4.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day"
+        },
+        {
+            "definition": "Indicates the interrogator’s current and previous II Code.\n",
+            "description": null,
+            "name": "004",
+            "remark": "Note:\n    - The Previous II code shall be set to the Current II code value when there is no Previous II code available.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PREVIOUSII",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Former II Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CURRENTII",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Current II Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "II Code"
+        },
+        {
+            "definition": "Technical Mode S address used for identification of an aircraft, as defined in ICAO Annex 10.\n",
+            "description": null,
+            "name": "005",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Mode S Address"
+        },
+        {
+            "definition": "List of technical Mode S addresses.\n",
+            "description": null,
+            "name": "006",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 24,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Mode S Address List"
+        },
+        {
+            "definition": "Command for the aircraft data link communications. It allows the\nGDLP to enable or disable the uplink & downlink data flows for a\nspecified aircraft.\n",
+            "description": null,
+            "name": "007",
+            "remark": "Note:\n    - This command applies to the interrogator's\n      Current status (UCS/DCS) and does not affect the\n      interrogator’s Default Status (see UDS/DDS in\n      Data Item I018/008).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "UM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "UC shall be ignored"
+                                                ],
+                                                [
+                                                    1,
+                                                    "UC shall be taken into account"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Uplink Mask"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "DC shall be ignored"
+                                                ],
+                                                [
+                                                    1,
+                                                    "DC shall be taken into account"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Downlink Mask"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "UC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "the uplink flow shall be enabled"
+                                                ],
+                                                [
+                                                    1,
+                                                    "the uplink flow shall be stopped"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Uplink Command"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "the downlink flow shall be enabled"
+                                                ],
+                                                [
+                                                    1,
+                                                    "the downlink flow shall be stopped"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Downlink Command"
+                        },
+                        {
+                            "length": 4,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Data Link Command"
+        },
+        {
+            "definition": "Status for the aircraft data link communications.\n",
+            "description": null,
+            "name": "008",
+            "remark": "Notes:\n    1. The current status should never be more restrictive than the default status.\n    2. IC is usually set 1when the interrogator is a member of a cluster with a\n       decentralised data link responsibility protocol.\n       IC is usually set to 0 when the interrogator is connected to a GDLP. IC\n       settings shall comply with the rules defined in Ref.3.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "UDS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The interrogator is enabled to uplink frames"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The interrogator is disabled to uplink frames"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Uplink Default Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DDS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The interrogator is enabled to extract frames"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The interrogator is disabled to extract frames"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Downlink Default Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "UCS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The interrogator is enabled to uplink frames"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The interrogator is disabled to uplink frames"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Uplink Current Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DCS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The interrogator is enabled to extract frames"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The interrogator is disabled to extract frames"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Downlink Current Status"
+                        },
+                        {
+                            "length": 2,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "EI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The aircraft is in the Datalink coverage map of the interrogator"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The aircraft is not in the Datalink coverage map of the interrogator"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Exit Indication"
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "IC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report could be changed using D_Data_link_command"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report cannot be changed using D_Data_link_command"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Interrogator Control"
+                        },
+                        {
+                            "length": 6,
+                            "spare": true
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Data Link Status"
+        },
+        {
+            "definition": "Request for an Aircraft_report message.\n",
+            "description": null,
+            "name": "009",
+            "remark": "Note:\n    - This item indicates to the DLF which items to send in the next Aircraft_report\n      messages (for a specified aircraft) through the use of flags. These flags\n      concern D_Data_link_status, D_COM, D_ECA, D_CQF, D_CQF_method,\n      D_Polar_position, D_Cartesian_position, D_Aircraft_ID, D_Mode_A,\n      D_Speed, D_Height, D_Heading.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include D_Data_link_status"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include D_Data_link_status"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include D_COM"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include D_COM"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ER",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include D_ECA"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include D_ECA"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "FR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include D_CQF"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include D_CQF"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include D_CQF_method"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include D_CQF_method"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include D_Polar_position"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include D_Polar_position"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include D_Cartesian_position"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include D_Cartesian_position"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ID",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include Aircraft_ID"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include Aircraft_ID"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include Mode_A"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include Mode_A"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include Speed"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include Speed"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "HG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include Height"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include Height"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "HD",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The next Aircraft_report may not include Heading"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The next Aircraft_report shall include Heading"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 2,
+                            "spare": true
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Data Link Report Request"
+        },
+        {
+            "definition": "Transponder Communications Capability\n",
+            "description": null,
+            "name": "010",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 5,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "COM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No communications capability (surveillance only)"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Comm. A and Comm. B capability"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Comm. A, Comm. B and Uplink ELM"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Comm. A, Comm. B and Uplink ELM and Downlink ELM"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Level 5 Transponder capability"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Communications Capability of the Transponder"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Transponder Communications Capability"
+        },
+        {
+            "definition": "Capability report as described in the Mode S subnetwork SARPs\n",
+            "description": null,
+            "name": "011",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 56,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Capability Report"
+        },
+        {
+            "definition": "Coverage Quality Factor (CQF) of an aircraft (for a given interrogator).\n",
+            "description": null,
+            "name": "012",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "FS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Aircraft is airborne"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Aircraft is on the ground"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Flight Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CQF",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The CQF calculation method is not supported"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The CQF is minimum"
+                                                ],
+                                                [
+                                                    126,
+                                                    "The CQF is maximum"
+                                                ],
+                                                [
+                                                    127,
+                                                    "The CQF is undefined according to the calculation method"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Aircraft CQF"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Coverage Quality Factor"
+        },
+        {
+            "definition": "Indicates which criteria to take into account when computing the CQF of an aircraft for an interrogator.\n",
+            "description": null,
+            "name": "013",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft CQF Calculation Method"
+        },
+        {
+            "definition": "Measured position of an aircraft in local polar co-ordinates.\n",
+            "description": null,
+            "name": "014",
+            "remark": "Note:\n    - When expressed in 16 bits, signed or unsigned azimuths have the same value.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RHO",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 256
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 8,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "NM"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "THETA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Position in Polar Co-ordinates"
+        },
+        {
+            "definition": "Calculated position of an aircraft in Cartesian co-ordinates.\n",
+            "description": null,
+            "name": "015",
+            "remark": "Note:\n    - Negative values are expressed in 2’s complement form, bit-32 and bit-16\n      shall be set to 0 for positive values and 1 for negative values.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "X",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -256
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 256
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 7,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "NM"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "X-Component"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "Y",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -256
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 256
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 7,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "NM"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Y-Component"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Position in Cartesian Co-ordinates"
+        },
+        {
+            "definition": "Number used to correlate an uplink packet request and its associated acknowledgement.\n",
+            "description": null,
+            "name": "016",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Packet Number"
+        },
+        {
+            "definition": "List of numbers used to correlate an uplink packet request and their associated acknowledgements\n",
+            "description": null,
+            "name": "017",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "constraints": [],
+                                "signed": false,
+                                "type": "Integer"
+                            }
+                        },
+                        "size": 32,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Packet Number List"
+        },
+        {
+            "definition": "Properties of an uplink Mode S packet, i.e. its internal priority and its capability to be\nmultiplexed or not, and its type (SVC, MSP or ROUTE).\n",
+            "description": null,
+            "name": "018",
+            "remark": "Note:\n    - The PT field is used to identify the ROUTE packets which have a higher\n      priority than SVCs.  The PR field is used to describe the priority of SVCs as\n      follows:\n\n          0 = low\n          1 = high\n\n      For ROUTE and MSP packets the value of PR has no significance.  However,\n      for the purpose of standardisation, it is recommended that for ROUTE\n      packets, PR is set to 15 and for MSPs the PR should be set to 31.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 1,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 5,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Mode S Packet Internal Priority"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "SVC packets"
+                                                ],
+                                                [
+                                                    1,
+                                                    "MSP packets"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Route packets"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Packet Type"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Mode S Packet Properties"
+        },
+        {
+            "definition": "A Mode S packet as defined in the Mode S subnetwork SARPs.\n",
+            "description": null,
+            "name": "019",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": null,
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Mode S Packet"
+        },
+        {
+            "definition": "Number used to correlate an uplink broadcast request and its associated acknowledgement.\n",
+            "description": null,
+            "name": "020",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Broadcast Number"
+        },
+        {
+            "definition": "Properties of an uplink broadcast request (power, duration, coverage).\n",
+            "description": null,
+            "name": "021",
+            "remark": "Notes:\n     1. A broadcast with a higher priority will temporarily delay a lower priority broadcast if\n        necessary. The delayed broadcast will be resumed as soon as possible for its\n        remaining time.\n     2. The sectors are numbered from 1 to 32 clockwise, sector 1 being the first sector after the North.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PRIORITY",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Priority"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "POWER",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Power"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DURATION",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "s"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Duration"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "COVERAGE",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Coverage"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Broadcast Properties"
+        },
+        {
+            "definition": "Contents of the 32 first bits of an uplink broadcast interrogation.\n",
+            "description": null,
+            "name": "022",
+            "remark": "Note:\n    - The Mode S uplink broadcast interrogation will be made up of this\n      D_Broadcast_prefix field followed by the D_Broadcast field and then by the\n      Address/Parity field (in this order), as defined in ICAO Annex 10. In the\n      interrogator, the 5 first bits of D_Broadcast_prefix will be replaced by ICAO\n      UF field, as defined in Annex 10.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 5,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PREFIX",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 27,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Prefix Field"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Broadcast Prefix"
+        },
+        {
+            "definition": "Broadcast message sent (MA field of the Comm-A frame) or received\n(MB field of the Comm-B frame), conformant with the ICAO Manual on\nMode S Specific Services.\n",
+            "description": null,
+            "name": "023",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 56,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Uplink or Downlink Broadcast"
+        },
+        {
+            "definition": "Number used to correlate subsequent GICB messages (i.e. responses\nand acknowledgements) with the original GICB request.\n",
+            "description": null,
+            "name": "025",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "GICB Number"
+        },
+        {
+            "definition": "BDS code of the GICB to be extracted.\n",
+            "description": null,
+            "name": "027",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "BDS Code"
+        },
+        {
+            "definition": "Periodicity of the GICB extractions.\n",
+            "description": null,
+            "name": "028",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "type": "Integer",
+                                "value": 1
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "GICB Extraction Periodicity"
+        },
+        {
+            "definition": "GICB extracted message (MB field of the Comm-B frame). i.e., the\ncontents of a BDS register, conformant with the ICAO Manual on\nMode S Specific Services.\n",
+            "description": null,
+            "name": "029",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Bds",
+                            "variation": {
+                                "address": null,
+                                "type": "BdsAt"
+                            }
+                        }
+                    },
+                    "size": 56,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "GICB Extracted"
+        },
+        {
+            "definition": "Properties of the GICB extractions.\n",
+            "description": null,
+            "name": "030",
+            "remark": "Note:\n    - The Non Extraction flag (NE) should be used only if the Asynchronous\n      Update flag (AU) is set to true. It is specially reserved to the ACAS' RA\n      extraction (asynchronous update without periodic extraction request).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PRIORITY",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 5,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "GICB Priority"
+                        },
+                        {
+                            "length": 3,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The periodicity may not be strictly respected"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The periodicity shall be strictly respected"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Periodicity Constraint"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AU",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "GICB extractions should be sent only when required by the periodicity"
+                                                ],
+                                                [
+                                                    1,
+                                                    "If a GICB extraction is done due to external conditions, an update will also be sent, even if it does not match the expected periodicity"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Asynchronous Update"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NE",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The GICB extraction is attempted according to the periodicity"
+                                                ],
+                                                [
+                                                    1,
+                                                    "There will no GICB attempts"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Non Extraction"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RD",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "The extracted GICB must be sent only on the Data Link line"
+                                                ],
+                                                [
+                                                    1,
+                                                    "The extracted GICB must be sent only on the Surveillance line"
+                                                ],
+                                                [
+                                                    2,
+                                                    "The extracted GICB must be sent both on the Data Link and on the Surveillance lines"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Reply Destination"
+                        },
+                        {
+                            "length": 3,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "GICB Properties"
+        },
+        {
+            "definition": "Identity of the aircraft extracted by a BDS 20 as described in ICAO Annex 10.\n",
+            "description": null,
+            "name": "031",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 48,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Identity"
+        },
+        {
+            "definition": "Mode-3/A code converted into octal representation.\n",
+            "description": null,
+            "name": "032",
+            "remark": "Note:\n    - Bit 15 has no meaning in the case of a smoothed Mode-3/A code and is set\n      to 0 for a calculated track. For Mode S, it is set to one when an error\n      correction has been attempted.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "V",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Code validated"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Code not validated"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "G",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Garbled code"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "L",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Mode-3/A code derived from the reply of the transponder"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Mode-3/A code not extracted during the last scan"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 1,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MOD3A",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringOctal"
+                                        }
+                                    },
+                                    "size": 12,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Mode A"
+        },
+        {
+            "definition": "Flight Level converted into binary representation.\n",
+            "description": null,
+            "name": "033",
+            "remark": "Notes:\n    1. The value shall be within the range described by ICAO Annex 10\n    2. For Mode S, bit 15 (G) is set to one when an error correction\n       has been attempted.\n    3. If Altitude is not extracted on the last scan, it is an implementation\n       issue as to whether Altitude is output from track file, if at all.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "V",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Code validated"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Code not validated"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "G",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Garbled code"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "FL",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 2,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "FL"
+                                        }
+                                    },
+                                    "size": 14,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Flight Level"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Height"
+        },
+        {
+            "definition": "Tracker calculated Ground Speed of an aircraft.\n",
+            "description": null,
+            "name": "034",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 14,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "NM/s"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Speed"
+        },
+        {
+            "definition": "Tracker calculated heading of an aircraft. . The heading is the heading with respect\nto the geographical north at the aircraft position.\n",
+            "description": null,
+            "name": "035",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 16,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 360
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Heading"
+        },
+        {
+            "definition": "Identification of the source node for the GDLP/LU data\n",
+            "description": null,
+            "name": "036",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identifier"
+        },
+        {
+            "definition": "Identification of the destination node for the GDLP/LU data.\n",
+            "description": null,
+            "name": "037",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Destination Identifier"
+        }
+    ],
+    "date": {
+        "day": 8,
+        "month": 11,
+        "year": 2015
+    },
+    "edition": {
+        "major": 1,
+        "minor": 7
+    },
+    "number": 18,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Mode S Datalink Function Messages",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "036",
+            "037",
+            "000",
+            "001",
+            "005",
+            "016",
+            "017",
+            "018",
+            "019",
+            "028",
+            "030",
+            "025",
+            "027",
+            "029",
+            "002",
+            "006",
+            "007",
+            "008",
+            "009",
+            "010",
+            "011",
+            "014",
+            "015",
+            "020",
+            "021",
+            "022",
+            "023",
+            "004",
+            "031",
+            "032",
+            "033",
+            "034",
+            "035",
+            "012",
+            "013"
+        ],
+        "type": "uap"
+    }
+}

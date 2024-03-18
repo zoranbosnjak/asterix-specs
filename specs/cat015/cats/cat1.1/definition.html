@@ -1,0 +1,2079 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-015---independent-non-cooperative-surveillance-system-target-reports">Asterix category 015 - Independent Non-Cooperative Surveillance System Target Reports</h1>
+<p><strong>category</strong>: 015</p>
+<p><strong>edition</strong>: 1.1</p>
+<p><strong>date</strong>: 2021-03-19</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i015000---message-type">I015/000 - Message Type</h3>
+<p><em>Definition</em>: This data item conveys the report type and whether the output is
+periodically updated or asynchronous depending upon external events.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I015/000/MT</strong> - <em>Message Type</em></p>
+<ul>
+<li><p>7 bits [<code>.......</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Measurement Plot<br />
+2: Measurement Track<br />
+3: Sensor Centric Plot<br />
+4: Sensor Centric Track<br />
+5: Track End Message</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/000/RG</strong> - <em>Report Generation</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Periodic Report<br />
+1: Event Driven Report</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Note 1: See Section 4.7 and ANNEX A for definitions of the Message
+Types.</p>
+<p>Note 2: Values 6 to 127 are reserved for future use</p>
+<p>Note 3: Periodic Report: A periodic report is one transmitted
+periodically with an independently configurable period.</p>
+<p>Note 4: Event Driven Report: An Event Driven Report is one
+generated in response to the occurrence of an external event such
+as an RF echo off a target.</p>
+<h3 id="i015010---data-source-identifier">I015/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the sensor from which the data is received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I015/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I015/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>Note 1: The up-to-date list of SACs is published on the EUROCONTROL
+Web Site (<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</p>
+<p>Note 2: The SICs are allocated by the national authority
+responsible for the surveillance infrastructure.</p>
+<p>Note 3: The SIC and SAC values shall be formatted as binary
+unsigned integers.</p>
+<h3 id="i015015---service-identification">I015/015 - Service Identification</h3>
+<p><em>Definition</em>: Identification of the service provided to one or more users.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p>Note 1: The Service Identification is allocated by the system.</p>
+<p>Note 2: The SID value shall be formatted as binary unsigned
+integers.</p>
+<h3 id="i015020---target-report-descriptor">I015/020 - Target Report Descriptor</h3>
+<p><em>Definition</em>: Type and characteristics of the data as transmitted by a system.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I015/020/MOMU</strong> - <em>Mono-Static Target Report or Multi-Static Target Report</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mono-Static Sensor<br />
+1: Multi-Static Sensor<br />
+2: Other<br />
+3: Unknown</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/020/TTAX</strong> - <em>Target Taxonomy</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Actual Target Report<br />
+1: Reference Target<br />
+2: Synthetic Target<br />
+3: Simulated / Replayed Target</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/020/SCD</strong> - <em>Scanning Direction</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: Forward<br />
+2: Backward<br />
+3: Static</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/020/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Note 1: The MoMu bit is used to indicate whether the target report
+was constructed from a multi-static (including bi-static) or
+mono-static sensor. Its setting dictates the interpretation of data
+items I015/625 and I015/626. The meaning of the value “other” shall
+be described in the system ICD.</p>
+<p>Note 2: In this context, a Reference Target Report stems from
+a non-aircraft target based on RF received externally to the system
+boundary. This may be generated, for example, by an external RF
+generator or a Permanent Echo or from a device, which is deployed
+in line of sight of the sensor.</p>
+<p>Note 3: A synthetic target is an internally generated diagnostic
+signal prior to the generation of the ASTERIX Category 015 target
+report. For example used to support test processes.</p>
+<p>Note 4: This value is used to represent externally generated
+targets or recorded data injected into the output data stream
+of the INCS system e.g. for test or training purposes.</p>
+<p>Note 5: This indication is used to inform about the scanning
+direction of the system (e.g. left/right, up/down,
+clockwise/anti-clockwise). It’s exact meaning is implementation
+dependent and shall be described in the system ICD.</p>
+<h3 id="i015030---warningerror-conditions">I015/030 - Warning/Error Conditions</h3>
+<p><em>Definition</em>: Warning/error conditions detected by a system for the target report
+involved.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item with FX extension</p>
+<blockquote>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>Note 1: It has to be stressed that a series of one or more W/E
+conditions can be reported per target report.</p>
+<p>Note 2: The nature of the warning / error condition may differ
+between sensor types and the declaration and use of such alerts
+is driven by end user requirements.</p>
+<p>Note 3: Potential applications could be to indicate that the target
+report correlates with road infrastructure (terrestrial vehicles)
+or a wind turbine or that it is a fixed or slow moving return or
+originating from an area of high clutter. Such data items could
+also be used to indicate the presence of interference – either
+deliberate or accidental.</p>
+<p>Note 4: The Warning/Error Condition Values from 1-31 are reserved
+for designation by the ASTERIX Maintenance Group. System
+implementers are free to use values of 32 and above. The allocation
+of the remaining values of this data item shall be defined in a
+local Interface Control Document.</p>
+<p>Note 5: The value of “0” must not be assigned.</p>
+<h3 id="i015050---update-period">I015/050 - Update Period</h3>
+<p><em>Definition</em>: Period until next expected output of a target report for this
+target.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I015/050/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I015/050/UPD</strong> - <em>Update Period</em></p>
+<ul>
+<li>14 bits [<code>..............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> s</li>
+<li>value <span class="math inline"> &lt;  = 128</span> s</li>
+</ul>
+</blockquote>
+<p>Note 1: It is not necessary that all targets detected by the INCS
+sensor have target reports generated at the same update period.</p>
+<p>Note 2: This data item indicates the period until the next expected
+output of a target report for this target relative to the Time
+of Applicability contained in data item I015/145</p>
+<h3 id="i015145---time-of-applicability">I015/145 - Time of Applicability</h3>
+<p><em>Definition</em>: Absolute time stamping for applicability of the measured
+information expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> s</li>
+<li>value <span class="math inline"> &lt; 86400</span> s</li>
+</ul>
+<p>Note 1: The Time of Applicability refers to the information
+contained in data item I015/600, I015/601, I015/625, I015/626,
+I015/627, I015/628 whichever is available. In case of a Track End
+Message (Message Type = 5) it refers to the time at which the track
+is terminated and the track number (data item I015/161) is released
+for re-use.</p>
+<p>Note 2: A distributed sensor, such as an MSPSR, may have multiple
+elements that are each individually time stamped which are
+consolidated in to a target report. Rather than provide details
+of each time stamped message, this data item conveys the time
+of applicability of position of the target report.</p>
+<p>Note 3: The Time of Applicability value is reset to zero each day
+at midnight.</p>
+<p>Note 4: The Time of Applicability value shall be formatted as a
+binary unsigned integer.</p>
+<h3 id="i015161---trackplot-number">I015/161 - Track/Plot Number</h3>
+<p><em>Definition</em>: An integer value representing a unique reference to a track/plot
+record.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &lt;  = 65535</span></li>
+</ul>
+<p>Note 1: Track numbers are required for Sensor and Measurement
+Tracks. However, for Sensor and Measurement Plots the inclusion
+of a track number is optional – depending upon whether the INCS
+sensor has used tracking processing to reduce the false alarm
+rates.</p>
+<p>Note 2: The track number is allocated by the system.</p>
+<p>Note 3: The track number value shall be formatted as binary
+unsigned integers.</p>
+<h3 id="i015170---trackplot-status">I015/170 - Track/Plot Status</h3>
+<p><em>Definition</em>: Status of Track/Plot.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I015/170/BIZ</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Target not in Blind Zone<br />
+1: Target in Blind Zone</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/170/BAZ</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Target not in Blanked Zone<br />
+1: Target in Blanked Zone</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/170/TUR</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Track Alive<br />
+1: Track Terminated by User Request</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/170/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I015/170/CSTP</strong> - <em>Coasted - Position</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Not extrapolated<br />
+1: Extrapolated</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/170/CSTH</strong> - <em>Coasted – Height</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Not extrapolated<br />
+1: Extrapolated</div>
+</blockquote></li>
+</ul>
+<p><strong>I015/170/CNF</strong> - <em>Confirmed vs. Tentative Track</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Confirmed Track<br />
+1: Tentative Track</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Note 1: The indication for CSTP and/or CSTH applies only to data
+items I015/600 and I015/605 respectively. In case one of these data
+items is not present, CSTP and/or CSTH has no meaning.</p>
+<p>Note 2: A coasted track is one for which the sensor detections have
+been interrupted and whose position/height is being predicted based
+on the previously received responses.</p>
+<p>Note 3: The blind zone or blanked zone are predictable zones where
+no detection is predicted.
+If bit 5 is set and TTS = 1 then the track is coasted because it is
+in a blind zone or sector blank zone.</p>
+<p>Note 4: The indication TUR=1 shall be sent only with
+Message Type = 5 “Track End Message”.</p>
+<h3 id="i015270---target-size-orientation">I015/270 - Target Size &amp; Orientation</h3>
+<p><em>Definition</em>: Data item containing the size and orientation information of the
+target.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/270/LEN</strong> - <em>Target Length</em></p>
+<p>The target length is the longest dimension in the targets
+direction of motion</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/100</span> m <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m</li>
+</ul>
+<p><strong>I015/270/WDT</strong> - <em>Target Width</em></p>
+<p>The target width is the longest dimension orthogonal to
+the targets direction of motion</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/100</span> m <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m</li>
+</ul>
+<p><strong>I015/270/HGT</strong> - <em>Target Height</em></p>
+<p>The target height is the longest dimension in the vertical
+direction.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/100</span> m <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m</li>
+</ul>
+<p><strong>I015/270/ORT</strong> - <em>Target Orientation</em></p>
+<p>The orientation gives the direction, which the target nose
+is pointing, relative to the Geographical North.</p>
+<ul>
+<li><p>16 bits [<code>................</code>]</p></li>
+<li><p>unsigned quantity</p></li>
+<li><p>unit: “°”</p></li>
+<li><p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</p></li>
+<li><p>value <span class="math inline"> &lt;  = 360</span> °</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The orientation shall increment in a clockwise manner
+relative to Geographic North.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Note: If length and width cannot be clearly determined, the greater
+value of the two shall be transmitted as length.</p>
+<h3 id="i015300---object-classification">I015/300 - Object Classification</h3>
+<p><em>Definition</em>: Classification result of the object detection.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I015/300/CLS</strong> - <em>Classification</em></p>
+<ul>
+<li>9 bits [<code>.........</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p><strong>I015/300/PRB</strong> - <em>Probability</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned integer</li>
+</ul>
+</blockquote>
+<p>Note 1: INCS processing may be able to provide an indication of the
+nature of the target e.g. road vehicle or aircraft with the
+potential for further discrimination in the type of the aircraft
+e.g. two engine, fixed wing/helicopter etc.
+Before including requirements for target classification it is
+necessary to consider the operational manner in which such
+information would be used and how/if such data would be made
+available to the controllers.</p>
+<p>Note 2: Target classification is attributing, with an acceptable
+degree of confidence, a target report as having originated from
+a specific object or target type e.g. fixed wing aircraft, flock
+of birds etc. (It should be noted that the probabilities assigned
+to a target do not necessarily need to add up to 100%)
+The ability of an INCS sensor to classify the targets it detects
+is dependent upon the systems capabilities and is driven by end
+user requirements. The use of this optional data item is to be
+agreed between parties such as the system manufacturer, the system
+operator agency and the end user. The allocation of the CLS octet
+is to be defined in a local Interface Control Document that shall
+be agreed by both parties.</p>
+<p>Note 3: If this functionality is implemented in the sensor, the
+classification result (CLS), PRB and REP value shall be formatted
+as a binary unsigned integer.</p>
+<h3 id="i015400---measurement-identifier">I015/400 - Measurement Identifier</h3>
+<p><em>Definition</em>: An identifier pointing to a measurement that was created from a
+specific contributing Tx/Rx Pair where the Pair Identifier refers
+to the index which details both the transmitter characteristics
+(DVB-T, DAB, FM, dedicated etc.) and the receiver characteristics.
+These are defined in ASTERIX Category 016 – Data Item I016/300).</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I015/400/PID</strong> - <em>Pair Identifier</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p><strong>I015/400/ON</strong> - <em>Observation Number</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+</blockquote>
+<p>Note 1: INCS sensors may achieve their operational requirements
+based upon different techniques and technologies. Some may utilise
+multiple transmitter stations or multiple receiver stations.
+This data items provides the means for subsequent processing stages
+to be able to analyse the target report data based upon the system
+components that contributed to the formation of the target report.
+See ANNEX A for further details.</p>
+<p>Note 2: The Pair Identifier shall be defined in ASTERIX Category
+016 (Data Item I016/300).</p>
+<p>Note 3: The Observation Number is identifying an element of
+‘raw data’ information. The sensor plots and sensor tracks are
+usually composed of several</p>
+<h3 id="i015480---associations">I015/480 - Associations</h3>
+<p><em>Definition</em>: Information on which Measurement Identifiers contributed to the
+Sensor Centric Plot / Sensor Centric Track.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<ul>
+<li>40 bits [<code>... 40 bits ...</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i015600---horizontal-position-information">I015/600 - Horizontal Position Information</h3>
+<p><em>Definition</em>: Data item containing the horizontal position information of the
+target.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/600/P84</strong> - <em>Horizontal Position in WGS-84 Coordinates</em></p>
+<p>Position of a target in WGS-84 Coordinates.</p>
+<blockquote>
+<p><strong>I015/600/P84/LATITUDE</strong></p>
+<p>Latitude in WGS-84, in Two’s complement.</p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt; 90</span> °</li>
+</ul>
+<p><strong>I015/600/P84/LONGITUDE</strong></p>
+<p>Longitude in WGS-84, in Two’s complement.</p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> °</li>
+<li>value <span class="math inline"> &lt; 180</span> °</li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The LSB provides a resolution of 1cm. Positive
+longitude indicates East. Positive latitude indicates North.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I015/600/HPR</strong> - <em>Horizontal Position Resolution</em></p>
+<p>A horizontal 2D dimensional area (ellipse) within which the
+sensor is unable to resolve two separate targets.</p>
+<blockquote>
+<p><strong>I015/600/HPR/RSHPX</strong></p>
+<p>Horizontal position resolution of the target in
+target centric Cartesian coordinates (X-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2</span> m <span class="math inline"> ≈ 0.50</span> m</li>
+<li>value <span class="math inline"> &lt;  = 32767</span> m</li>
+</ul>
+<p><strong>I015/600/HPR/RSHPY</strong></p>
+<p>Horizontal position resolution of the target in
+target centric Cartesian coordinates (Y-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2</span> m <span class="math inline"> ≈ 0.50</span> m</li>
+<li>value <span class="math inline"> &lt;  = 32767</span> m</li>
+</ul>
+<p><strong>I015/600/HPR/CORSHPXY</strong></p>
+<p>Correlation of horizontal position resolution
+of X and Y components, in Two’s complement.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/600/HPP</strong> - <em>Horizontal Position Precision</em></p>
+<p>The distribution of horizontal position random errors.</p>
+<blockquote>
+<p><strong>I015/600/HPP/SDHPX</strong></p>
+<p>Standard Deviation of horizontal position of the
+target in target centric Cartesian coordinates
+(X-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+<li>value <span class="math inline"> &lt;  = 65535/4</span> m</li>
+</ul>
+<p><strong>I015/600/HPP/SDHPY</strong></p>
+<p>Standard Deviation of horizontal position of the
+target in target centric Cartesian coordinates
+(Y-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+<li>value <span class="math inline"> &lt;  = 65535/4</span> m</li>
+</ul>
+<p><strong>I015/600/HPP/COSDHPXY</strong></p>
+<p>Correlation of standard deviation of horizontal
+position of X and Y components, in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i015601---geometric-height-information">I015/601 - Geometric Height Information</h3>
+<p><em>Definition</em>: Data item containing the geometric height information of the target
+in WGS 84 height above ellipsoid.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/601/GH</strong> - <em>Geometric Height (WGS-84)</em></p>
+<p>Vertical distance between the target and the projection
+of its position on the earth’s ellipsoid, as defined by
+WGS-84, in Two’s complement form.</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/100</span> m <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 83286</span> m</li>
+<li>value <span class="math inline"> &lt;  = 83286</span> m</li>
+</ul>
+<p><strong>I015/601/RSGH</strong> - <em>Geometric Height Resolution</em></p>
+<p>Vertical distance within which the sensor is unable to
+resolve two separate targets.</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/100</span> m <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m</li>
+<li>value <span class="math inline"> &lt;  = 3355443/20</span> m</li>
+</ul>
+<p><strong>I015/601/SDGH</strong> - <em>Geometric Height Precision</em></p>
+<p>The distribution of random Geometric Height errors (see
+also the definition of Precision in the appendix).</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/100</span> m <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m</li>
+<li>value <span class="math inline"> &lt;  = 3355443/20</span> m</li>
+</ul>
+<p><strong>I015/601/CI6</strong> - <em>Confidence Interval for Geometric Height (67%)</em></p>
+<p>A measure of the uncertainty within which 67% of geometric
+height measurements will be contained.</p>
+<blockquote>
+<p><strong>I015/601/CI6/UCI6</strong></p>
+<p>Upper confidence interval for Geometric Height (67%)</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">16</span> m</li>
+<li>value <span class="math inline"> &lt;  = 65520</span> m</li>
+</ul>
+<p><strong>I015/601/CI6/LCI6</strong></p>
+<p>Lower confidence interval for Geometric Height (67%)</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">16</span> m</li>
+<li>value <span class="math inline"> &lt;  = 65520</span> m</li>
+</ul>
+</blockquote>
+<p><strong>I015/601/CI9</strong> - <em>Confidence Interval for Geometric Height (95%)</em></p>
+<p>A measure of the certainty within which 95% of geometric
+height measurements will be contained.</p>
+<blockquote>
+<p><strong>I015/601/CI9/UCI9</strong></p>
+<p>Upper confidence interval for Geometric Height (95%)</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">16</span> m</li>
+<li>value <span class="math inline"> &lt;  = 65520</span> m</li>
+</ul>
+<p><strong>I015/601/CI9/LCI9</strong></p>
+<p>Lower confidence interval for Geometric Height (95%)</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">16</span> m</li>
+<li>value <span class="math inline"> &lt;  = 65520</span> m</li>
+</ul>
+</blockquote>
+<p><strong>I015/601/COGHHP</strong> - <em>Correlation of Geometric Height and Horizontal Position</em></p>
+<p>Correlation of Geometric Height converted into metres and
+Horizontal Position of X/Y-components.</p>
+<blockquote>
+<p><strong>I015/601/COGHHP/X</strong></p>
+<p>Correlation of Geometric Height converted into
+metres and Horizontal Position of (X-component),
+in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/601/COGHHP/Y</strong></p>
+<p>Correlation of Geometric Height converted into
+metres and Horizontal Position of (Y-component),
+in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/601/COGHHV</strong> - <em>Correlation of Geometric Height and Horizontal Velocity</em></p>
+<p>Correlation of Geometric Height converted into metres and
+Horizontal Velocity.</p>
+<blockquote>
+<p><strong>I015/601/COGHHV/X</strong></p>
+<p>Correlation of Geometric Height converted into
+metres and Horizontal Velocity of (X-component),
+in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/601/COGHHV/Y</strong></p>
+<p>Correlation of Geometric Height converted into
+metres and Horizontal Velocity of (Y-component),
+in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/601/COGHHA</strong> - <em>Correlation of Geometric Height and Horizontal Acceleration</em></p>
+<p>Correlation of Geometric Height converted into metres and
+Horizontal Acceleration of X/Y-components.</p>
+<blockquote>
+<p><strong>I015/601/COGHHA/X</strong></p>
+<p>Correlation of Geometric Height converted into
+metres and Horizontal Acceleration of
+(X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/601/COGHHA/Y</strong></p>
+<p>Correlation of Geometric Height converted into
+metres and Horizontal Acceleration of
+(Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i015602---horizontal-velocity-information">I015/602 - Horizontal Velocity Information</h3>
+<p><em>Definition</em>: Magnitude of the Horizontal Velocity Vector.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/602/HV</strong> - <em>Horizontal Velocity Vector</em></p>
+<p>Horizontal velocity vector expressed in target centric
+Cartesian coordinates.</p>
+<blockquote>
+<p><strong>I015/602/HV/X</strong></p>
+<p>Horizontal Velocity (X-component), in Two’s
+complement</p>
+<ul>
+<li>20 bits [<code>....................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 524287/100</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 524287/100</span> m/s</li>
+</ul>
+<p><strong>I015/602/HV/Y</strong></p>
+<p>Horizontal Velocity in (Y-component), in Two’s
+complement</p>
+<ul>
+<li>20 bits [<code>....................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 524287/100</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 524287/100</span> m/s</li>
+</ul>
+</blockquote>
+<p><strong>I015/602/RSHV</strong> - <em>Horizontal Velocity Resolution</em></p>
+<p>Minimum difference in Horizontal Velocity at which a sensor
+system is able to distinguish two targets with otherwise
+identical parameters in range and angular domain (under
+ideal measurement).</p>
+<blockquote>
+<p><strong>I015/602/RSHV/X</strong></p>
+<p>Horizontal velocity resolution of the target in
+target centric Cartesian coordinates (X-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m/s</li>
+</ul>
+<p><strong>I015/602/RSHV/Y</strong></p>
+<p>Horizontal velocity resolution of the target in
+target centric Cartesian coordinates (Y-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m/s</li>
+</ul>
+<p><strong>I015/602/RSHV/CORSHVXY</strong></p>
+<p>Correlation of horizontal position resolution of
+X and Y components, in Two’s complement.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The velocity resolution describes the capability
+of a sensor to be able to separate two closely located
+targets in the velocity domain. The velocity resolution
+for an INCS system depends on the signal integration time
+as well as the transmit frequency. A longer integration
+time or a higher transmit frequency leads to a better
+velocity resolution. Depending on the specific INCS
+application, a better velocity resolution may be more
+important than a high sensor refresh rate. The velocity
+resolution might also alleviate the limitations on the
+range resolution, in order to make small bandwidth
+applications possible.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I015/602/SDHV</strong> - <em>Horizontal Velocity Precision</em></p>
+<p>Root-mean-square (rms) error of the Horizontal Velocity
+estimate provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/602/SDHV/X</strong></p>
+<p>Standard Deviation of horizontal velocity
+(X-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m/s</li>
+</ul>
+<p><strong>I015/602/SDHV/Y</strong></p>
+<p>Standard Deviation of horizontal velocity
+(Y-component)</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m/s</li>
+</ul>
+<p><strong>I015/602/SDHV/COHVXY</strong></p>
+<p>Correlation of standard deviation of horizontal
+velocity of X and Y components, in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/602/COHVHP</strong> - <em>Correlation of Horizontal Velocity and Horizontal Position</em></p>
+<p>Correlation of the errors associated with the estimates
+of Horizontal Velocity and Horizontal Position provided
+by a sensor system.</p>
+<blockquote>
+<p><strong>I015/602/COHVHP/COHVXHPX</strong></p>
+<p>Correlation of Horizontal Velocity (X-component)
+and Horizontal Position (X-component), in Two’s
+complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/602/COHVHP/COHVXHPY</strong></p>
+<p>Correlation of Horizontal Velocity (X-component)
+and Horizontal Position (Y-component), in Two’s
+complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/602/COHVHP/COHVYHPX</strong></p>
+<p>Correlation of Horizontal Velocity (Y-component)
+and Horizontal Position (X-component), in Two’s
+complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/602/COHVHP/COHVYHPY</strong></p>
+<p>Correlation of Horizontal Velocity (Y-component)
+and Horizontal Position (Y-component), in Two’s
+complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i015603---horizontal-acceleration-information">I015/603 - Horizontal Acceleration Information</h3>
+<p><em>Definition</em>: Magnitude of the Horizontal Acceleration Vector.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/603/HA</strong> - <em>Horizontal Acceleration Vector</em></p>
+<p>Horizontal acceleration vector expressed in target centric
+local Cartesian coordinates, in Two’s complement
+representation.</p>
+<blockquote>
+<p><strong>I015/603/HA/X</strong></p>
+<p>Horizontal Acceleration (X-component), in Two’s
+complement</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s² <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &gt;  =  − 128</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 128</span> m/s²</li>
+</ul>
+<p><strong>I015/603/HA/Y</strong></p>
+<p>Horizontal Acceleration (Y-component), in Two’s
+complement</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s² <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &gt;  =  − 128</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 128</span> m/s²</li>
+</ul>
+</blockquote>
+<p><strong>I015/603/SDHA</strong> - <em>Horizontal Acceleration Precision</em></p>
+<p>Root-mean-square (rms) error of the Horizontal Acceleration
+estimate provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/603/SDHA/X</strong></p>
+<p>Standard Deviation of Horizontal Acceleration
+(X-component)</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s² <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 4095/16</span> m/s²</li>
+</ul>
+<p><strong>I015/603/SDHA/Y</strong></p>
+<p>Standard Deviation of Horizontal Acceleration
+(Y-component)</p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s² <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 4095/16</span> m/s²</li>
+</ul>
+<p><strong>I015/603/SDHA/COHAXY</strong></p>
+<p>Correlation of standard deviation of Horizontal
+Acceleration of X and Y components, in Two’s
+complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/603/COHAHP</strong> - <em>Correlation of Horizontal Acceleration and Horizontal Position</em></p>
+<p>Correlation of the errors associated with the estimates
+of Horizontal Acceleration and Horizontal Position provided
+by a sensor system.</p>
+<blockquote>
+<p><strong>I015/603/COHAHP/COHAXHPX</strong></p>
+<p>Correlation of Horizontal Acceleration
+(X-component) and Horizontal Position
+(X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/603/COHAHP/COHAXHPY</strong></p>
+<p>Correlation of Horizontal Acceleration
+(X-component) and Horizontal Position
+(Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/603/COHAHP/COHAYHPX</strong></p>
+<p>Correlation of Horizontal Acceleration
+(Y-component) and Horizontal Position
+(X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/603/COHAHP/COAYHPY</strong></p>
+<p>Correlation of Horizontal Acceleration
+(Y-component) and Horizontal Position
+(Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/603/COHAHV</strong> - <em>Correlation of Horizontal Acceleration and Horizontal Velocity</em></p>
+<p>Correlation of the errors associated with the estimates
+of Horizontal Acceleration and Horizontal Velocity provided
+by a sensor system.</p>
+<blockquote>
+<p><strong>I015/603/COHAHV/COHAXHVX</strong></p>
+<p>Correlation of Horizontal Acceleration
+(X-component) and Horizontal Velocity
+(X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/603/COHAHV/COHAXHVY</strong></p>
+<p>Correlation of Horizontal Acceleration
+(X-component) and Horizontal Velocity
+(Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/603/COHAHV/COHAYHVX</strong></p>
+<p>Correlation of Horizontal Acceleration
+(Y-component) and Horizontal Velocity
+(X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/603/COHAHV/COHAYHVY</strong></p>
+<p>Correlation of Horizontal Acceleration
+(Y-component) and Horizontal Velocity
+(Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i015604---vertical-velocity-information">I015/604 - Vertical Velocity Information</h3>
+<p><em>Definition</em>: Vertical velocity as given by the rate of change of the Geometric
+Height.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/604/VV</strong> - <em>Vertical Velocity</em></p>
+<p>Vertical velocity as given by the rate of change of the
+Geometric Height expressed in Two’s Complement.</p>
+<ul>
+<li><p>24 bits [<code>........................</code>]</p></li>
+<li><p>signed quantity</p></li>
+<li><p>unit: “m/s”</p></li>
+<li><p>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</p></li>
+<li><p>value <span class="math inline"> &gt;  =  − 8388607/100</span> m/s</p></li>
+<li><p>value <span class="math inline"> &lt;  = 8388607/100</span> m/s</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: Positive values indicates climbing target and
+negative values indicates descending target.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/604/RSVV</strong> - <em>Vertical Velocity Resolution</em></p>
+<p>Minimum difference in Vertical Velocity at which a sensor
+system is able to distinguish two targets with otherwise
+identical parameters in range and angular domain (under
+ideal measurement).</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m/s</li>
+</ul>
+<p><strong>I015/604/SDVV</strong> - <em>Vertical Velocity Precision</em></p>
+<p>Root-mean-square (rms) error of the Vertical Velocity
+estimate provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/604/SDVV/SDVV</strong></p>
+<p>Standard Deviation of Vertical Velocity</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 13107/20</span> m/s</li>
+</ul>
+<p><strong>I015/604/SDVV/COVVGH</strong></p>
+<p>Correlation of Vertical Velocity and Geometric
+Height, in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/604/COVVHP</strong> - <em>Correlation of Vertical Velocity and Horizontal Position</em></p>
+<p>Correlation of the errors associated with the estimates
+of Vertical Velocity converted in to metres/sec and
+Horizontal Position provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/604/COVVHP/X</strong></p>
+<p>Correlation of Vertical Velocity and Horizontal
+Position (X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/604/COVVHP/Y</strong></p>
+<p>Correlation of Vertical Velocity and Horizontal
+Position (Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/604/COVVHV</strong> - <em>Correlation of Vertical Velocity and Horizontal Velocity</em></p>
+<p>Correlation of the errors associated with the estimates
+of Vertical Velocity converted in to metres/sec and
+Horizontal Velocity provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/604/COVVHV/X</strong></p>
+<p>Correlation of Vertical Velocity and Horizontal
+Velocity (X-component)), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/604/COVVHV/Y</strong></p>
+<p>Correlation of Vertical Velocity and Horizontal
+Velocity (Y-component)), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/604/COVVHA</strong> - <em>Correlation of Vertical Velocity and Horizontal Acceleration</em></p>
+<p>Correlation of the errors associated with the estimates
+of Vertical Velocity converted in to metres/sec and
+Horizontal Acceleration provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/604/COVVHA/X</strong></p>
+<p>Correlation of Vertical and Horizontal Acceleration
+(X-component)), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/604/COVVHA/Y</strong></p>
+<p>Correlation of Vertical Velocity and Horizontal
+Acceleration (Y-component)), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i015605---vertical-velocity-information">I015/605 - Vertical Velocity Information</h3>
+<p><em>Definition</em>: Compound data item, comprising a primary subfield of one-octet,
+followed by one or more defined subfields.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/605/VA</strong> - <em>Vertical Acceleration</em></p>
+<p>Vertical acceleration information expressed in Two’s
+complement.</p>
+<ul>
+<li><p>16 bits [<code>................</code>]</p></li>
+<li><p>signed quantity</p></li>
+<li><p>unit: “m/s²”</p></li>
+<li><p>LSB = <span class="math inline">1/100</span> m/s² <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s²</p></li>
+<li><p>value <span class="math inline"> &gt;  =  − 32767/100</span> m/s²</p></li>
+<li><p>value <span class="math inline"> &lt;  = 32767/100</span> m/s²</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: Positive values indicates accelerating during climb
+or descent and negative values indicates deceleration
+during climb or descent.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/605/RSVA</strong> - <em>Vertical Acceleration Precision</em></p>
+<p>Root-mean-square (rms) error of the Vertical Acceleration
+estimate provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/605/RSVA/SDVA</strong></p>
+<p>Standard Deviation of Vertical Acceleration</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/100</span> m/s² <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 3355443/20</span> m/s²</li>
+</ul>
+<p><strong>I015/605/RSVA/COVAGH</strong></p>
+<p>Correlation of Vertical Acceleration and Geometric
+Height, in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/605/RSVA/COVAVV</strong></p>
+<p>Correlation of Vertical Acceleration and Vertical
+Velocity, in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/605/COVAHP</strong> - <em>Correlation of Vertical Acceleration and Horizontal Position</em></p>
+<p>Correlation of the errors associated with the estimates
+of Vertical Acceleration and Horizontal Position provided
+by a sensor system.</p>
+<blockquote>
+<p><strong>I015/605/COVAHP/X</strong></p>
+<p>Correlation of Vertical Acceleration and Horizontal
+Position (X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/605/COVAHP/Y</strong></p>
+<p>Correlation of Vertical Acceleration and Horizontal
+Position (Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/605/COVAHV</strong> - <em>Correlation of Vertical Acceleration and Horizontal Velocity</em></p>
+<p>Correlation of the errors associated with the estimates
+of Vertical Acceleration and Horizontal Velocity provided
+by a sensor system.</p>
+<blockquote>
+<p><strong>I015/605/COVAHV/X</strong></p>
+<p>Correlation of Vertical Acceleration and Horizontal
+Velocity (X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/605/COVAHV/Y</strong></p>
+<p>Correlation of Vertical Acceleration and Horizontal
+Velocity (Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/605/COVAHA</strong> - <em>Correlation of Vertical Acceleration and Horizontal Acceleration</em></p>
+<p>Correlation of the errors associated with the estimates
+of Vertical Acceleration and Horizontal Acceleration
+provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/605/COVAHA/X</strong></p>
+<p>Correlation of Vertical Acceleration and Horizontal
+Acceleration (X-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/605/COVAHA/Y</strong></p>
+<p>Correlation of Vertical Acceleration and Horizontal
+Acceleration (Y-component), in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i015625---range-information">I015/625 - Range Information</h3>
+<p><em>Definition</em>: The targets range information is given relative to the sensor
+reference point(s).</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/625/R</strong> - <em>Range</em></p>
+<p>Measured range between a target object and a pre-defined
+point associated with the sensor system (e.g., for
+a mono-static radar system the phase centre of the antenna
+aperture) or measured bistatic range between a pre-defined
+point associated with the transmitter station, the target
+object position and a pre-defined point associated with
+the sensor system (e.g., for a bistatic radar system
+the phase centres of the transmitter and receiver antenna
+aperture).</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/10</span> m <span class="math inline"> ≈ 0.10</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 8388607/10</span> m</li>
+<li>value <span class="math inline"> &lt;  = 8388607/10</span> m</li>
+</ul>
+<p><strong>I015/625/RSR</strong> - <em>Range Resolution</em></p>
+<p>Minimum difference in Range at which a sensor system is
+able to distinguish two targets with otherwise identical
+parameters in velocity and angular domain (under ideal
+measurement).</p>
+<ul>
+<li><p>24 bits [<code>........................</code>]</p></li>
+<li><p>unsigned quantity</p></li>
+<li><p>unit: “m”</p></li>
+<li><p>LSB = <span class="math inline">1/10</span> m <span class="math inline"> ≈ 0.10</span> m</p></li>
+<li><p>value <span class="math inline"> &lt;  = 3355443/2</span> m</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: This may differ from the cell size applied within
+the Sensor.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/625/SDR</strong> - <em>Range Precision</em></p>
+<p>Root-mean-square (rms) error of the Range estimate provided
+by a sensor system.</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/10</span> m <span class="math inline"> ≈ 0.10</span> m</li>
+<li>value <span class="math inline"> &lt;  = 3355443/2</span> m</li>
+</ul>
+<p><strong>I015/625/RR</strong> - <em>Range Rate</em></p>
+<p>The range rate is derived from different range measurements.</p>
+<ul>
+<li><p>24 bits [<code>........................</code>]</p></li>
+<li><p>signed quantity</p></li>
+<li><p>unit: “m/s”</p></li>
+<li><p>LSB = <span class="math inline">1/10</span> m/s <span class="math inline"> ≈ 0.10</span> m/s</p></li>
+<li><p>value <span class="math inline"> &gt;  =  − 8388607/10</span> m/s</p></li>
+<li><p>value <span class="math inline"> &lt;  = 8388607/10</span> m/s</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The range rate is the first derivative computed from
+the range. In contrast, the Doppler velocity in I015/626
+is actually measured through Doppler.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/625/RSRR</strong> - <em>Range Rate Resolution</em></p>
+<p>Minimum difference in Range Rate at which a sensor system
+is able to distinguish two targets with otherwise identical
+parameters in position and angular domain (under ideal
+measurement).</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/10</span> m/s <span class="math inline"> ≈ 0.10</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 3355443/2</span> m/s</li>
+</ul>
+<p><strong>I015/625/SDRR</strong> - <em>Range Rate Precision</em></p>
+<p>Root-mean-square (rms) error of the Range Rate estimate
+provided by a sensor system.</p>
+<blockquote>
+<p><strong>I015/625/SDRR/SDRR</strong></p>
+<p>Standard Deviation of Range Rate</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/10</span> m/s <span class="math inline"> ≈ 0.10</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 3355443/2</span> m/s</li>
+</ul>
+<p><strong>I015/625/SDRR/CORRR</strong></p>
+<p>Correlation of Range Rate and Range, in Two’s
+complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/625/RA</strong> - <em>Range Acceleration</em></p>
+<p>The range acceleration is derived from different range
+rates.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>6</sup></span> m/s² <span class="math inline"> ≈ 1.56<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &gt;  =  − 512</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 512</span> m/s²</li>
+</ul>
+<p><strong>I015/625/SDRA</strong> - <em>Range Acceleration Precision</em></p>
+<p>Root-mean-square (rms) error of the Range Acceleration
+determined by the sensor system.</p>
+<blockquote>
+<p><strong>I015/625/SDRA/SDRA</strong></p>
+<p>Standard Deviation of Range Acceleration</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> m/s² <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 512</span> m/s²</li>
+</ul>
+<p><strong>I015/625/SDRA/CORAR</strong></p>
+<p>Correlation of Range Acceleration and Range,
+in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/625/SDRA/CORARR</strong></p>
+<p>Correlation of Range Acceleration and Range Rate,
+in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+</blockquote>
+<p>Note 1: Depending upon its design the manner in which the
+positional data is declared by an INCS sensor may be expressed
+in WGS-84 (I015/ 600) or sensor centric coordinate system based
+upon the ‘system reference point’ of the sensor (I015/625).</p>
+<p>Note 2: The optional ‘precision’ fields (in Data Items
+I015/600 – I015/625) provide a measure of the accuracy the INCS
+system has assigned to positional data contained in the target
+report.
+Such information can be used to improve the quality with which
+the INCS target report data is integrated in to the subsequent
+processing stages of the ATM infrastructure.
+However a consideration of the sensor characteristics and
+capabilities, the manner in which INCS data is used operationally,
+the weighting assigned to INCS data within a multi-sensor tracker
+and the credibility assigned to the covariance data items should
+be made to support the decision of whether these optional
+covariance data items are required or whether the basic data items
+provide sufficient performance.
+Whilst not an operational consideration the additional costs that
+may be associated with the provision and use of such data items
+should also be weighed against the potential performance benefits
+that would be achieved through the inclusion of these Data Items
+in performance specifications.</p>
+<p>Note 3: If I015/020 MoMu indicates that the target report is
+Bi-Static (MoMu =1) then the range information is the difference
+between the path from the transmitter to target to the receiver
+less the distance between the transmitter and receiver. In this
+case, the reference points referred to above are the positions
+of the transmitter and receiver.
+If I015/020 MoMu indicates that the target report is Mono-Static
+(MoMu =0) then the range information is the distance between
+the sensor and the target. In this case, the reference point
+referred to above is the position of the mono-static sensor.</p>
+<p>Note 4: The meaning of range in Category 015 is significantly
+broader than the traditional hence the different INCS working
+principles. This is especially true for bi-static and multi-static
+radars. For readability the field is still called range and not
+mono-/bi-/multi-static range or pseudo-range.
+For radar the measured range is calculated from time differences
+of signals assumed to be transmitted/received at the sensor
+reference point(s). As noted above for bi-static radars the
+reference points are the positions of the transmitter and receiver.
+Moreover multi-static radars may receive identical signals from
+other transmitters than the assumed reference transmitter
+(e.g. passive INCS which are using single frequency networks as
+illuminators) and therefore may calculate negative values for
+bi-static range measurement data.</p>
+<h3 id="i015626---doppler-information">I015/626 - Doppler Information</h3>
+<p><em>Definition</em>: Doppler measurement of the Target.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/626/DV</strong> - <em>Doppler Velocity</em></p>
+<p>Radial velocity or bistatic velocity of a target object
+measured by a sensor system via a corresponding Doppler
+frequency shift.</p>
+<ul>
+<li><p>24 bits [<code>........................</code>]</p></li>
+<li><p>signed quantity</p></li>
+<li><p>unit: “m/s”</p></li>
+<li><p>LSB = <span class="math inline">1/100</span> m/s <span class="math inline"> ≈ 1.00<em>e</em> − 2</span> m/s</p></li>
+<li><p>value <span class="math inline"> &gt;  =  − 8388607/100</span> m/s</p></li>
+<li><p>value <span class="math inline"> &lt;  = 8388607/100</span> m/s</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The radial velocity is the magnitude of the
+3-dimensional velocity vector (i.e., the time derivative
+of the 3-dimensional position vector) projected onto the
+line between target object and sensor. The bistatic
+velocity is the magnitude of the 3-dimensional velocity
+vector projected onto the line between transmitter station
+and target object plus the magnitude of the 3-dimensional
+velocity vector projected onto the line between target
+object and sensor.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/626/SDDV</strong> - <em>Precision of Doppler Velocity</em></p>
+<p>Root-mean-square (rms) error of the Doppler Velocity
+measured by the sensor system.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>6</sup></span> m/s <span class="math inline"> ≈ 1.56<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 1024</span> m/s</li>
+</ul>
+<p><strong>I015/626/DA</strong> - <em>Doppler Acceleration</em></p>
+<p>Radial acceleration or bistatic acceleration of a target
+object measured by a sensor system via a corresponding
+Doppler frequency shift and a subsequent difference
+operation.</p>
+<ul>
+<li><p>16 bits [<code>................</code>]</p></li>
+<li><p>signed quantity</p></li>
+<li><p>unit: “m/s²”</p></li>
+<li><p>LSB = <span class="math inline">1/2<sup>6</sup></span> m/s² <span class="math inline"> ≈ 1.56<em>e</em> − 2</span> m/s²</p></li>
+<li><p>value <span class="math inline"> &gt;  =  − 512</span> m/s²</p></li>
+<li><p>value <span class="math inline"> &lt;  = 512</span> m/s²</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The radial acceleration is the magnitude of the
+3-dimensional acceleration vector (i.e., the time
+derivative of the 3-dimensional velocity vector) projected
+onto the line between target object and sensor. The
+bistatic acceleration is the magnitude of the 3-dimensional
+acceleration vector projected onto the line between
+transmitter station and target object plus the magnitude
+of the 3-dimensional acceleration vector projected onto
+the line between target object and sensor.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/626/SDDA</strong> - <em>Precision of Doppler Acceleration</em></p>
+<p>Root-mean-square (rms) error of the Doppler Velocity
+measured by the sensor system.</p>
+<blockquote>
+<p><strong>I015/626/SDDA/SDDA</strong></p>
+<p>Standard Deviation of Doppler Acceleration</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>6</sup></span> m/s² <span class="math inline"> ≈ 1.56<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 1024</span> m/s²</li>
+</ul>
+<p><strong>I015/626/SDDA/CODADV</strong></p>
+<p>Correlation of Doppler Acceleration and Doppler
+Velocity, in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/626/CODVR</strong> - <em>Correlation of Doppler Velocity and Range</em></p>
+<p>Correlation of Doppler Velocity and Range (e.g. bistatic
+range).</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/626/CODVRR</strong> - <em>Correlation of Doppler Velocity and Range Rate</em></p>
+<p>Correlation of Doppler Velocity and Range Rate.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/626/CODVRA</strong> - <em>Correlation of Doppler Velocity and Range Acceleration</em></p>
+<p>Correlation of Doppler Velocity and Range (e.g. bistatic
+range).</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/626/CODAR</strong> - <em>Correlation of Doppler Acceleration and Range</em></p>
+<p>Correlation of Doppler Acceleration and Range (e.g.
+bistatic range).</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/626/CODARR</strong> - <em>Correlation of Doppler Acceleration and Range Rate</em></p>
+<p>Correlation of Doppler Acceleration and Range Rate.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+<p><strong>I015/626/CODARA</strong> - <em>Correlation of Doppler Acceleration and Range Acceleration</em></p>
+<p>Correlation of Doppler Acceleration and Range Acceleration.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<h3 id="i015627---azimuth-information">I015/627 - Azimuth Information</h3>
+<p><em>Definition</em>: Azimuth information that is provided relative to the sensor
+or component reference point.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/627/AZ</strong> - <em>Azimuth</em></p>
+<p>Target angle relative to geographic North in the local
+reference system centred on the sensor.</p>
+<ul>
+<li><p>16 bits [<code>................</code>]</p></li>
+<li><p>unsigned quantity</p></li>
+<li><p>unit: “°”</p></li>
+<li><p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</p></li>
+<li><p>value <span class="math inline"> &gt;  = 360</span> °</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The azimuth shall increment in a clockwise manner
+relative to geographic North.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/627/RSAZ</strong> - <em>Azimuth Resolution</em></p>
+<p>Minimum angle in order to separate targets by the sensor
+in the azimuth dimension.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">45/2<sup>16</sup></span> ° <span class="math inline"> ≈ 6.87<em>e</em> − 4</span> °</li>
+<li>value <span class="math inline"> &lt;  = 45</span> °</li>
+</ul>
+<p><strong>I015/627/SDASZ</strong> - <em>Standard Deviation of Azimuth</em></p>
+<p>Estimated standard deviation of the azimuth angle.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">45/2<sup>16</sup></span> ° <span class="math inline"> ≈ 6.87<em>e</em> − 4</span> °</li>
+<li>value <span class="math inline"> &lt;  = 45</span> °</li>
+</ul>
+<p><strong>I015/627/AZR</strong> - <em>Azimuth Rate</em></p>
+<p>Rate of change of the azimuth angle.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>16</sup></span> ° <span class="math inline"> ≈ 2.75<em>e</em> − 3</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+<p><strong>I015/627/SDAZR</strong> - <em>Standard Deviation of Azimuth Rate</em></p>
+<p>Estimated standard deviation of the azimuth angle rate.</p>
+<blockquote>
+<p><strong>I015/627/SDAZR/SDAZR</strong></p>
+<p>Standard Deviation of Azimuth Rate</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">45/2<sup>16</sup></span> ° <span class="math inline"> ≈ 6.87<em>e</em> − 4</span> °</li>
+<li>value <span class="math inline"> &lt;  = 45</span> °</li>
+</ul>
+<p><strong>I015/627/SDAZR/COAZRAZ</strong></p>
+<p>Correlation of Azimuth Rate and Azimuth, in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/627/AZEX</strong> - <em>Azimuth Extent</em></p>
+<p>Target size in the azimuth angle dimension. The target
+extends between start angle and end angle traversed
+clockwise.</p>
+<blockquote>
+<p><strong>I015/627/AZEX/S</strong></p>
+<p>Azimuth Extent Start</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</li>
+<li>value <span class="math inline"> &lt;  = 360</span> °</li>
+</ul>
+<p><strong>I015/627/AZEX/E</strong></p>
+<p>Azimuth Extent End</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</li>
+<li>value <span class="math inline"> &lt;  = 360</span> °</li>
+</ul>
+</blockquote>
+</blockquote>
+<p>Note: The Sensor Reference Point is detailed in ASTERIX Category
+016 – where there is also provision for including the reference
+points for the transmitter(s) and receiver(s) that are used within
+the sensor configuration. The Sensor Reference Point is also
+contained in ASTERIX Category 025.</p>
+<h3 id="i015628---elevation-information">I015/628 - Elevation Information</h3>
+<p><em>Definition</em>: Information related to the elevation angle provided by the sensor.
+(Predominantly used by electro-optic sensors).</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/628/EL</strong> - <em>Elevation</em></p>
+<p>The elevation shall be given with respect to the horizontal
+plane of the sensor expressed in Two’s Complement.</p>
+<ul>
+<li><p>16 bits [<code>................</code>]</p></li>
+<li><p>signed quantity</p></li>
+<li><p>unit: “°”</p></li>
+<li><p>LSB = <span class="math inline">180/2<sup>16</sup></span> ° <span class="math inline"> ≈ 2.75<em>e</em> − 3</span> °</p></li>
+<li><p>value <span class="math inline"> &gt;  =  − 90</span> °</p></li>
+<li><p>value <span class="math inline"> &lt;  = 90</span> °</p>
+<blockquote>
+<dl>
+<dt>remark</dt>
+<dd>
+<p>Note: The elevation shall be given with respect to the
+local WGS-84 tangential plane of the receiver dedicated
+by I015/400.
+Note: For targets above the horizontal plane the elevation
+angle is positive and for targets below negative.</p>
+</dd>
+</dl>
+</blockquote></li>
+</ul>
+<p><strong>I015/628/RSEL</strong> - <em>Elevation Resolution</em></p>
+<p>Minimum angle in order to separate targets by the sensor
+in the elevation dimension.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">45/2<sup>16</sup></span> ° <span class="math inline"> ≈ 6.87<em>e</em> − 4</span> °</li>
+<li>value <span class="math inline"> &lt;  = 45</span> °</li>
+</ul>
+<p><strong>I015/628/SDEL</strong> - <em>Standard Deviation of Elevation</em></p>
+<p>Estimated standard deviation of the elevation angle.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">45/2<sup>16</sup></span> ° <span class="math inline"> ≈ 6.87<em>e</em> − 4</span> °</li>
+<li>value <span class="math inline"> &lt;  = 45</span> °</li>
+</ul>
+<p><strong>I015/628/ER</strong> - <em>Elevation Rate</em></p>
+<p>Rate of change of the elevation angle.</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°/s”</li>
+<li>LSB = <span class="math inline">180/2<sup>16</sup></span> °/s <span class="math inline"> ≈ 2.75<em>e</em> − 3</span> °/s</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °/s</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °/s</li>
+</ul>
+<p><strong>I015/628/SDER</strong> - <em>Standard Deviation of Elevation Rate</em></p>
+<p>Estimated standard deviation of the elevation angle rate.</p>
+<blockquote>
+<p><strong>I015/628/SDER/SDELR</strong></p>
+<p>Standard Deviation of Elevation Rate</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°/s”</li>
+<li>LSB = <span class="math inline">45/2<sup>16</sup></span> °/s <span class="math inline"> ≈ 6.87<em>e</em> − 4</span> °/s</li>
+</ul>
+<p><strong>I015/628/SDER/COELREL</strong></p>
+<p>Correlation of Elevation Rate and Elevation,
+in Two’s complement</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> <span class="math inline"> ≈ 7.81<em>e</em> − 3</span></li>
+</ul>
+</blockquote>
+<p><strong>I015/628/ELEX</strong> - <em>Elevation Extent</em></p>
+<p>Target size in the elevation angle dimension. The target
+extends between start angle and end angle.</p>
+<blockquote>
+<p><strong>I015/628/ELEX/S</strong></p>
+<p>Elevation Extent Start, in Two’s complement</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>16</sup></span> ° <span class="math inline"> ≈ 2.75<em>e</em> − 3</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+<p><strong>I015/628/ELEX/E</strong></p>
+<p>Elevation Extent End, in Two’s complement</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>16</sup></span> ° <span class="math inline"> ≈ 2.75<em>e</em> − 3</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+</blockquote>
+</blockquote>
+<h3 id="i015630---path-quality">I015/630 - Path Quality</h3>
+<p><em>Definition</em>: Measure characterising the signal quality associated with
+a specific target echo signal.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I015/630/DPP</strong> - <em>Direct Path - Power</em></p>
+<p>Signal power measured for the direct signal received
+from a specific transmitter station.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “dB”</li>
+<li>LSB = <span class="math inline">1</span> dB</li>
+<li>value <span class="math inline"> &gt;  =  − 128</span> dB</li>
+<li>value <span class="math inline"> &lt;  = 127</span> dB</li>
+</ul>
+<p><strong>I015/630/DPS</strong> - <em>Direct Path - Signal to Noise Ratio (SNR)</em></p>
+<p>Signal to noise ratio measured for the direct signal
+received from a specific transmitter station.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “dB”</li>
+<li>LSB = <span class="math inline">1</span> dB</li>
+<li>value <span class="math inline"> &gt;  =  − 128</span> dB</li>
+<li>value <span class="math inline"> &lt;  = 127</span> dB</li>
+</ul>
+<p><strong>I015/630/RPP</strong> - <em>Reflected Path - Power</em></p>
+<p>Signal power measured for a specific target echo signal
+found within range-Doppler matrix (associated with
+a specific transmitter station).</p>
+<blockquote>
+<p><strong>I015/630/RPP/(spare)</strong></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+</ul>
+<p><strong>I015/630/RPP/RPP</strong></p>
+<p>Power of reflected path, in Two’s complement”</p>
+<ul>
+<li>9 bits [<code>.........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “dB”</li>
+<li>LSB = <span class="math inline">1</span> dB</li>
+<li>value <span class="math inline"> &gt;  =  − 256</span> dB</li>
+<li>value <span class="math inline"> &lt;  = 255</span> dB</li>
+</ul>
+</blockquote>
+<p><strong>I015/630/RPS</strong> - <em>Reflected Path - Signal to Noise Ratio (SNR)</em></p>
+<p>Signal to noise ratio measured for a specific target echo
+signal found within range-Doppler matrix (associated with
+a specific transmitter station).</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “dB”</li>
+<li>LSB = <span class="math inline">1</span> dB</li>
+<li>value <span class="math inline"> &gt;  =  − 128</span> dB</li>
+<li>value <span class="math inline"> &lt;  = 127</span> dB</li>
+</ul>
+</blockquote>
+<p>Notes: Some INCS sensors may be capable of outputting an indication
+of the signal quality based upon the received echo signal strength
+for that target.
+Before including the provision of such data items in the technical
+specification, it is advised that the cost and operational benefits
+of the availability of such data is assessed.</p>
+<h3 id="i015631---contour-azimuth-elevation-angle-range-extent">I015/631 - Contour (Azimuth, Elevation Angle, Range Extent)</h3>
+<p><em>Definition</em>: Azimuth, elevation angles and range extent of all elementary
+presences constituting a plot.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I015/631/AZCON</strong></p>
+<p>Azimuth Contour</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</li>
+<li>value <span class="math inline"> &gt;  = 360</span> °</li>
+</ul>
+<p><strong>I015/631/ELCON</strong></p>
+<p>Elevation Contour, in Two’s complement</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>16</sup></span> ° <span class="math inline"> ≈ 2.75<em>e</em> − 3</span> °</li>
+<li>value <span class="math inline"> &lt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &gt;  = 90</span> °</li>
+</ul>
+<p><strong>I015/631/RGCONSTOP</strong></p>
+<p>Range Contour Stop</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">10000/2<sup>16</sup></span> m <span class="math inline"> ≈ 0.15</span> m</li>
+</ul>
+<p><strong>I015/631/RGCONSTART</strong></p>
+<p>Range Contour Start</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">10000/2<sup>16</sup></span> m <span class="math inline"> ≈ 0.15</span> m</li>
+</ul>
+</blockquote>
+<p>Note 1: The azimuth shall increment in a clockwise manner relative
+to geographic North centred at the System Reference Point.</p>
+<p>Note 2: The elevation shall be given with respect to the local
+WGS-84 tangential plane of the receiver dedicated by I015/400.</p>
+<p>Note 3: If populated, the range contour requires a start and stop
+point. The stop point is to be greater or equal than the start
+point.</p>
+<h3 id="i015sp---special-purpose-field">I015/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item (SP)</p>
+<h1 id="user-application-profile-for-category-015">User Application Profile for Category 015</h1>
+<ul>
+<li><ol type="1">
+<li><code>I015/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I015/000</code> - Message Type</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I015/015</code> - Service Identification</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I015/020</code> - Target Report Descriptor</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I015/030</code> - Warning/Error Conditions</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I015/145</code> - Time of Applicability</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I015/161</code> - Track/Plot Number</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I015/170</code> - Track/Plot Status</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I015/050</code> - Update Period</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I015/270</code> - Target Size &amp; Orientation</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I015/300</code> - Object Classification</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I015/400</code> - Measurement Identifier</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I015/600</code> - Horizontal Position Information</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I015/601</code> - Geometric Height Information</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="15" type="1">
+<li><code>I015/602</code> - Horizontal Velocity Information</li>
+</ol></li>
+<li><ol start="16" type="1">
+<li><code>I015/603</code> - Horizontal Acceleration Information</li>
+</ol></li>
+<li><ol start="17" type="1">
+<li><code>I015/604</code> - Vertical Velocity Information</li>
+</ol></li>
+<li><ol start="18" type="1">
+<li><code>I015/605</code> - Vertical Velocity Information</li>
+</ol></li>
+<li><ol start="19" type="1">
+<li><code>I015/480</code> - Associations</li>
+</ol></li>
+<li><ol start="20" type="1">
+<li><code>I015/625</code> - Range Information</li>
+</ol></li>
+<li><ol start="21" type="1">
+<li><code>I015/626</code> - Doppler Information</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="22" type="1">
+<li><code>I015/627</code> - Azimuth Information</li>
+</ol></li>
+<li><ol start="23" type="1">
+<li><code>I015/628</code> - Elevation Information</li>
+</ol></li>
+<li><ol start="24" type="1">
+<li><code>I015/630</code> - Path Quality</li>
+</ol></li>
+<li><ol start="25" type="1">
+<li><code>I015/631</code> - Contour (Azimuth, Elevation Angle, Range Extent)</li>
+</ol></li>
+<li><ol start="26" type="1">
+<li><code>I015/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><ol start="27" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="28" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

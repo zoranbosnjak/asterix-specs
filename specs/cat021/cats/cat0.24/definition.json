@@ -1,0 +1,2934 @@
+{
+    "catalogue": [
+        {
+            "definition": "Identification of the ADS-B station providing information.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the EUROCONTROL\n      ASTERIX Web Site\n      (http://www.eurocontrol.int/services/system-area-code-list).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identification"
+        },
+        {
+            "definition": "Characteristics of the originating ADS-B unit.\n",
+            "description": null,
+            "name": "020",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    1,
+                                    "Light aircraft <= 7000 kg"
+                                ],
+                                [
+                                    2,
+                                    "Reserved"
+                                ],
+                                [
+                                    3,
+                                    "7000 kg < Medium aircraft < 136000 kg"
+                                ],
+                                [
+                                    4,
+                                    "Reserved"
+                                ],
+                                [
+                                    5,
+                                    "136000 kg <= Heavy aircraft"
+                                ],
+                                [
+                                    6,
+                                    "Highly manoeuvrable (5g acceleration capability) and high speed (>400 knots cruise)"
+                                ],
+                                [
+                                    7,
+                                    "Reserved"
+                                ],
+                                [
+                                    8,
+                                    "Reserved"
+                                ],
+                                [
+                                    9,
+                                    "Reserved"
+                                ],
+                                [
+                                    10,
+                                    "Rotocraft"
+                                ],
+                                [
+                                    11,
+                                    "Glider / sailplane"
+                                ],
+                                [
+                                    12,
+                                    "Lighter-than-air"
+                                ],
+                                [
+                                    13,
+                                    "Unmanned aerial vehicle"
+                                ],
+                                [
+                                    14,
+                                    "Space / transatmospheric vehicle"
+                                ],
+                                [
+                                    15,
+                                    "Ultralight / handglider / paraglider"
+                                ],
+                                [
+                                    16,
+                                    "Parachutist / skydiver"
+                                ],
+                                [
+                                    17,
+                                    "Reserved"
+                                ],
+                                [
+                                    18,
+                                    "Reserved"
+                                ],
+                                [
+                                    19,
+                                    "Reserved"
+                                ],
+                                [
+                                    20,
+                                    "Surface emergency vehicle"
+                                ],
+                                [
+                                    21,
+                                    "Surface service vehicle"
+                                ],
+                                [
+                                    22,
+                                    "Fixed ground or tethered obstruction"
+                                ],
+                                [
+                                    23,
+                                    "Reserved"
+                                ],
+                                [
+                                    24,
+                                    "Reserved"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Emitter Category"
+        },
+        {
+            "definition": "Time of applicability (measurement) of the reported position, in the form of elapsed time since last midnight, expressed as UTC.\n",
+            "description": null,
+            "name": "030",
+            "remark": "The time of the day value is reset to zero at every midnight.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day"
+        },
+        {
+            "definition": "The maximum difference between the actual time of applicability of the reported position and the time reported in the Time of Day item (I021/030).\n",
+            "description": null,
+            "name": "032",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 8,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day Accuracy"
+        },
+        {
+            "definition": "Type and characteristics of the data as transmitted by a system.\n",
+            "description": null,
+            "name": "040",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DCR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No differential correction (ADS-B)"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Differential correction (ADS-B)"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Differential Correction"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GBS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Ground Bit not set"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Ground Bit set"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Ground Bit Setting"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Actual target report"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Simulated target report"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Simulated Target"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TST",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Test Target"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Test Target"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RAB",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Report from target transponder"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Report from field monitor (fixed transponder)"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Report Type"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Equipment capable to provide Selected Altitude"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Equipment not capable to provide Selected Altitude"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Selected Altitude Available"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SPI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Absence of SPI"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Special Position Identification"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Special Position Identification"
+                        },
+                        {
+                            "length": 1,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ATP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Non unique address"
+                                                ],
+                                                [
+                                                    1,
+                                                    "24-Bit ICAO address"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Surface vehicle address"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Anonymous address"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    6,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    7,
+                                                    "Reserved for future use"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Address Type"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ARC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "25 ft"
+                                                ],
+                                                [
+                                                    2,
+                                                    "100 ft"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Altitude Reporting Capability"
+                        },
+                        {
+                            "length": 3,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Target Report Descriptor"
+        },
+        {
+            "definition": "Target address (emitter identifier) assigned uniquely to each target.\n",
+            "description": null,
+            "name": "080",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Target Address"
+        },
+        {
+            "definition": "ADS figure of merit (FOM) provided by the aircraft avionics.\n",
+            "description": null,
+            "name": "090",
+            "remark": "Note:\n    bits-4/1 (PA) code the “Navigational Uncertainty Categories –\n    Position” as described in the ADS-B MASPS [Ref. 3]\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "ACAS not operational"
+                                                ],
+                                                [
+                                                    2,
+                                                    "ACAS operartional"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Invalid"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "ACAS Capabilities"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Multiple Navigation not operational"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Multiple Navigation operartional"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Invalid"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Multiple Navigation Aids"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Differencial Correction"
+                                                ],
+                                                [
+                                                    2,
+                                                    "NO Differencial Correction"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Invalid"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Differencial Correction"
+                        },
+                        {
+                            "length": 6,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": ""
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Position Accuracy"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Figure of Merit"
+        },
+        {
+            "definition": "Velocity uncertainty category of the least accurate velocity\n",
+            "description": null,
+            "name": "095",
+            "remark": "Note:\n    bits-8/1 code the “Navigational Uncertainty Categories – Velocity”\n    as described in the ADS-B MASPS [Ref. 3]\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Velocity Accuracy"
+        },
+        {
+            "definition": "Reports indicating the 4D intended trajectory of the aircraft.\n",
+            "description": null,
+            "name": "110",
+            "remark": "Notes:\n\n    1. NC is set to one when the aircraft will not fly the path described\n       by the TCP data.\n    2. TCP numbers start from zero.\n    3. LT = Lateral Type\n    4. VT = Vertical Type\n    5. TOV gives the estimated time before reaching the point. It is\n       defined as the absolute time from midnight.\n    6. TOV is meaningful only if TOA is set to 1.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "fspec": null,
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TIS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "items": [
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "NAV",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "Table",
+                                                            "values": [
+                                                                [
+                                                                    0,
+                                                                    "Trajectory Intent Data is available for this aircraft"
+                                                                ],
+                                                                [
+                                                                    1,
+                                                                    "Trajectory Intent Data is not available for this aircraft"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "size": 1,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        },
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "NVB",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "Table",
+                                                            "values": [
+                                                                [
+                                                                    0,
+                                                                    "Trajectory Intent Data is valid"
+                                                                ],
+                                                                [
+                                                                    1,
+                                                                    "Trajectory Intent Data is not valid"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "size": 1,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        },
+                                        {
+                                            "length": 5,
+                                            "spare": true
+                                        },
+                                        null
+                                    ],
+                                    "type": "Extended"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Trajectory Intent Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TID",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rep": {
+                                        "size": 8,
+                                        "type": "Regular"
+                                    },
+                                    "type": "Repetitive",
+                                    "variation": {
+                                        "items": [
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "TCA",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "TCP number available"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "TCP number not available"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "NC",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "TCP compliance"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "TCP non-compliance"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": "Trajectory Change Point number\n",
+                                                "name": "TCPN",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Raw"
+                                                            }
+                                                        },
+                                                        "size": 6,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "ALT",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [
+                                                                    {
+                                                                        "type": ">=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": -1500
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "<=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 150000
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "lsb": {
+                                                                    "type": "Integer",
+                                                                    "value": 10
+                                                                },
+                                                                "signed": true,
+                                                                "type": "Quantity",
+                                                                "unit": "ft"
+                                                            }
+                                                        },
+                                                        "size": 16,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "Altitude in Two's Complement Form"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "LAT",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [
+                                                                    {
+                                                                        "type": ">=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": -90
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "<=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 90
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "lsb": {
+                                                                    "denominator": {
+                                                                        "base": 2,
+                                                                        "exponent": 23,
+                                                                        "type": "Pow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "type": "Integer",
+                                                                        "value": 180
+                                                                    },
+                                                                    "type": "Div"
+                                                                },
+                                                                "signed": true,
+                                                                "type": "Quantity",
+                                                                "unit": "°"
+                                                            }
+                                                        },
+                                                        "size": 24,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "In WGS.84 in Two's Complement"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "LON",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [
+                                                                    {
+                                                                        "type": ">=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": -180
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "<",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 180
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "lsb": {
+                                                                    "denominator": {
+                                                                        "base": 2,
+                                                                        "exponent": 23,
+                                                                        "type": "Pow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "type": "Integer",
+                                                                        "value": 180
+                                                                    },
+                                                                    "type": "Div"
+                                                                },
+                                                                "signed": true,
+                                                                "type": "Quantity",
+                                                                "unit": "°"
+                                                            }
+                                                        },
+                                                        "size": 24,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "In WGS.84 in Two's Complement"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "PT",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Unknown"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Fly by waypoint (LT)"
+                                                                    ],
+                                                                    [
+                                                                        2,
+                                                                        "Fly over waypoint (LT)"
+                                                                    ],
+                                                                    [
+                                                                        3,
+                                                                        "Hold pattern (LT)"
+                                                                    ],
+                                                                    [
+                                                                        4,
+                                                                        "Procedure hold (LT)"
+                                                                    ],
+                                                                    [
+                                                                        5,
+                                                                        "Procedure turn (LT)"
+                                                                    ],
+                                                                    [
+                                                                        6,
+                                                                        "RF leg (LT)"
+                                                                    ],
+                                                                    [
+                                                                        7,
+                                                                        "Top of climb (VT)"
+                                                                    ],
+                                                                    [
+                                                                        8,
+                                                                        "Top of descent (VT)"
+                                                                    ],
+                                                                    [
+                                                                        9,
+                                                                        "Start of level (VT)"
+                                                                    ],
+                                                                    [
+                                                                        10,
+                                                                        "Cross-over altitude (VT)"
+                                                                    ],
+                                                                    [
+                                                                        11,
+                                                                        "Transition altitude (VT)"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 4,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "Point Type"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "TD",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "N/A"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Turn right"
+                                                                    ],
+                                                                    [
+                                                                        2,
+                                                                        "Turn left"
+                                                                    ],
+                                                                    [
+                                                                        3,
+                                                                        "No turn"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 2,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": "Turn Radius Availability\n",
+                                                "name": "TRA",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "TTR not available"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "TTR available"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "TOA",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "TOV available"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "TOV not available"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "TOV",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [],
+                                                                "lsb": {
+                                                                    "type": "Integer",
+                                                                    "value": 1
+                                                                },
+                                                                "signed": false,
+                                                                "type": "Quantity",
+                                                                "unit": "s"
+                                                            }
+                                                        },
+                                                        "size": 24,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "Time Over Point"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "TTR",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [
+                                                                    {
+                                                                        "type": ">=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 0
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "<=",
+                                                                        "value": {
+                                                                            "denominator": {
+                                                                                "type": "Integer",
+                                                                                "value": 20
+                                                                            },
+                                                                            "numerator": {
+                                                                                "type": "Integer",
+                                                                                "value": 13107
+                                                                            },
+                                                                            "type": "Div"
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "lsb": {
+                                                                    "denominator": {
+                                                                        "type": "Integer",
+                                                                        "value": 100
+                                                                    },
+                                                                    "numerator": {
+                                                                        "type": "Integer",
+                                                                        "value": 1
+                                                                    },
+                                                                    "type": "Div"
+                                                                },
+                                                                "signed": false,
+                                                                "type": "Quantity",
+                                                                "unit": "NM"
+                                                            }
+                                                        },
+                                                        "size": 16,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "TCP Turn Radius"
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                }
+                            },
+                            "spare": false,
+                            "title": "Trajectory Intent Data"
+                        }
+                    ],
+                    "type": "Compound"
+                }
+            },
+            "spare": false,
+            "title": "Trajectory Intent"
+        },
+        {
+            "definition": "Calculated Position in WGS-84 Co-ordinates with a resolution of 180/(2^25) degrees.\n",
+            "description": null,
+            "name": "130",
+            "remark": "Notes:\n\n    1. Positive longitude indicates East. Positive latitude indicates North.\n    2. The LSB provides a resolution at least better than 0.6m.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -90
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 90
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 25,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Latitude"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LON",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -180
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 180
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 25,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Longitude"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Position in WGS-84 Co-ordinates"
+        },
+        {
+            "definition": "Minimum height from a plane tangent to the earth’s ellipsoid, defined\nby WGS-84, in two’s complement form.\n",
+            "description": null,
+            "name": "140",
+            "remark": "Note:\n    1. LSB is required to be less than 10 ft by ICAO.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": -1500
+                                    }
+                                },
+                                {
+                                    "type": "<",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 150000
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 2,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 25
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "ft"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Geometric Altitude"
+        },
+        {
+            "definition": "Flight Level from barometric measurements,not QNH corrected, in two’s\ncomplement form.\n",
+            "description": null,
+            "name": "145",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": -15
+                                    }
+                                },
+                                {
+                                    "type": "<",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 1500
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 2,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "FL"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Flight Level"
+        },
+        {
+            "definition": "The short-term vertical intent as described by either the FMS selected\naltitude, the Altitude Control Panel Selected Altitude, or the current\naircraft altitude according to the aircraft's mode of flight.\n",
+            "description": null,
+            "name": "146",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No source information provided"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Source Information provided"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Source Availability"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SRC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Aircraft Altitude (Holding Altitude)"
+                                                ],
+                                                [
+                                                    2,
+                                                    "MCP/FCU Selected Altitude"
+                                                ],
+                                                [
+                                                    3,
+                                                    "FMS Selected Altitude"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Source"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ALT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -1300
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 100000
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 25
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "ft"
+                                        }
+                                    },
+                                    "size": 13,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Altitude"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Intermediate State Selected Altitude"
+        },
+        {
+            "definition": "The vertical intent value that corresponds with the ATC cleared altitude,\nas derived from the Altitude Control Panel (MCP/FCU).\n",
+            "description": null,
+            "name": "148",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MV",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not active"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Active"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Manage Vertical Mode"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AH",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not active"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Active"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Altitude Hold Mode"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not active"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Active"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Approach Mode"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ALT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -1300
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 100000
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 25
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "ft"
+                                        }
+                                    },
+                                    "size": 13,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Altitude"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Final State Selected Altitude"
+        },
+        {
+            "definition": "Calculated Air Speed (Element of Air Vector).\n",
+            "description": null,
+            "name": "150",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "IM",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Air Speed = Mach, LSB (Bit-1) = 0.001"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "cases": [
+                                            [
+                                                [
+                                                    0
+                                                ],
+                                                {
+                                                    "constraints": [],
+                                                    "lsb": {
+                                                        "denominator": {
+                                                            "base": 2,
+                                                            "exponent": 14,
+                                                            "type": "Pow"
+                                                        },
+                                                        "numerator": {
+                                                            "type": "Integer",
+                                                            "value": 1
+                                                        },
+                                                        "type": "Div"
+                                                    },
+                                                    "signed": false,
+                                                    "type": "Quantity",
+                                                    "unit": "NM/s"
+                                                }
+                                            ],
+                                            [
+                                                [
+                                                    1
+                                                ],
+                                                {
+                                                    "constraints": [],
+                                                    "lsb": {
+                                                        "denominator": {
+                                                            "type": "Integer",
+                                                            "value": 1000
+                                                        },
+                                                        "numerator": {
+                                                            "type": "Integer",
+                                                            "value": 1
+                                                        },
+                                                        "type": "Div"
+                                                    },
+                                                    "signed": false,
+                                                    "type": "Quantity",
+                                                    "unit": "Mach"
+                                                }
+                                            ]
+                                        ],
+                                        "default": {
+                                            "type": "Raw"
+                                        },
+                                        "items": [
+                                            [
+                                                "150",
+                                                "IM"
+                                            ]
+                                        ],
+                                        "type": "Dependent"
+                                    },
+                                    "size": 15,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Air Speed (IAS or Mach)"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Air Speed"
+        },
+        {
+            "definition": "True Air Speed.\n",
+            "description": null,
+            "name": "151",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "type": "Integer",
+                                "value": 1
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "kt"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "True Airspeed"
+        },
+        {
+            "definition": "Magnetic Heading (Element of Air Vector).\n",
+            "description": null,
+            "name": "152",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 16,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 360
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Magnetic Heading"
+        },
+        {
+            "definition": "Barometric Vertical Rate, in two’s complement form.\n",
+            "description": null,
+            "name": "155",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 2,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 25
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "ft/min"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Barometric Vertical Rate"
+        },
+        {
+            "definition": "Geometric Vertical Rate, in two’s complement form, with reference to WGS-84.\n",
+            "description": null,
+            "name": "157",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 2,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 25
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "ft/min"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Geometric Vertical Rate"
+        },
+        {
+            "definition": "Ground Speed and Track Angle elements of Ground Vector.\n",
+            "description": null,
+            "name": "160",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 2
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 14,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "NM/s"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Ground Speed in Two's Complement Form Referenced to WGS84"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Track Angle"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Ground Vector"
+        },
+        {
+            "definition": "Rate of Turn, in two’s complement form.\n",
+            "description": null,
+            "name": "165",
+            "remark": "Notes:\n    1. A positive value represents a right turn, whereas a negative value\n       represents a left turn.\n    2. Value 15 means 15 °/s or above.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not available"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Left"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Right"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Straight"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Turn Indicator"
+                        },
+                        {
+                            "length": 5,
+                            "spare": true
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ROT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 15
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 2,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°/s"
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Rate of Turn"
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Rate Of Turn"
+        },
+        {
+            "definition": "Target (aircraft or vehicle) identification in 8 characters, as reported\nby the target.\n",
+            "description": null,
+            "name": "170",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringICAO"
+                        }
+                    },
+                    "size": 48,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Target Identification"
+        },
+        {
+            "definition": "Status of the target\n",
+            "description": null,
+            "name": "200",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    0,
+                                    "No emergency / not reported"
+                                ],
+                                [
+                                    1,
+                                    "General emergency"
+                                ],
+                                [
+                                    2,
+                                    "Lifeguard / medical"
+                                ],
+                                [
+                                    3,
+                                    "Minimum fuel"
+                                ],
+                                [
+                                    4,
+                                    "No communications"
+                                ],
+                                [
+                                    5,
+                                    "Unlawful interference"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Target Status"
+        },
+        {
+            "definition": "Indication of which ADS link technology has been used to send the target\nreport.\n",
+            "description": null,
+            "name": "210",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 3,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "DTI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Aircraft equiped with CDTI"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Cockpit Display of Traffic Information"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MDS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not used"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Used"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Mode-S Extended Squitter"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "UAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not used"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Used"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "UAT"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "VDL",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not used"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Used"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "VDL Mode 4"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "OTR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Not used"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Used"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Other Technology"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Link Technology Indicator"
+        },
+        {
+            "definition": "Meteorological information.\n",
+            "description": null,
+            "name": "220",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "fspec": null,
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "WS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 300
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "kt"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Wind Speed"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "WD",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 360
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Wind Direction"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TMP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -100
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 100
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 2,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°C"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Temperature"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TRB",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 15
+                                                    }
+                                                }
+                                            ],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Turbulence"
+                        }
+                    ],
+                    "type": "Compound"
+                }
+            },
+            "spare": false,
+            "title": "Met Information"
+        },
+        {
+            "definition": "The roll angle, in two’s complement form, of an aircraft executing a turn.\n",
+            "description": null,
+            "name": "230",
+            "remark": "Notes:\n    1. Negative Value indicates “Left Wing Down”.\n    2. Resolution provided by the technology “1090 MHz Extended Squitter”\n       is 1 degree.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": -180
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 180
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "type": "Integer",
+                                    "value": 100
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Roll Angle"
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "RE",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Reserved Expansion Field"
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "SP",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Special Purpose Field"
+        }
+    ],
+    "date": {
+        "day": 1,
+        "month": 10,
+        "year": 2004
+    },
+    "edition": {
+        "major": 0,
+        "minor": 24
+    },
+    "number": 21,
+    "preamble": "Surveillance data exchange.\nADS-B Target Reports.\n",
+    "title": "ADS-B Target Reports",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "040",
+            "030",
+            "130",
+            "080",
+            "140",
+            "090",
+            "210",
+            "230",
+            "145",
+            "150",
+            "151",
+            "152",
+            "155",
+            "157",
+            "160",
+            "165",
+            "170",
+            "095",
+            "032",
+            "200",
+            "020",
+            "220",
+            "146",
+            "148",
+            "110",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            "RE",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}
