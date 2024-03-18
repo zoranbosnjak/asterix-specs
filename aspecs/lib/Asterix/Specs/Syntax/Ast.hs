@@ -315,7 +315,7 @@ pCompound = do
     pure $ Compound lst
   where
     pHeader = MC.string "compound" >> sc
-    pListElement sc' = try pDash <|> (Just <$> pItem sc')
+    pListElement sc' = try pDash <|> (Just <$> pNonSpare sc')
     pDash = MC.char '-' >> pure Nothing
 
 -- | Parse 'element'.
@@ -329,33 +329,35 @@ pVariation sc' = tryOne
     , pCompound
     ]
 
+pNonSpare :: Parser () -> Parser (NonSpare ())
+pNonSpare sc' = do
+    name <- pItemName <* sc'
+    title <- Title . T.pack <$> stringLiteral
+    definition <- optional . try $ do
+        sc'
+        T.pack <$> blockAfter "definition"
+    description <- optional . try $ do
+        sc'
+        T.pack <$> blockAfter "description"
+    rule <- pRule sc' (pVariation sc')
+    remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
+    let doc = Documentation definition description remark
+    pure $ NonSpare name title rule doc
+
 -- | Parse spare or regular item.
 pItem :: Parser () -> Parser (Item ())
 pItem sc' = tryOne
     [ pSpare
-    , pRegular
+    , fmap Item (pNonSpare sc')
     ]
   where
     pSpare = Spare
         <$> (MC.string "spare" >> sc' >> pure ())
         <*> fmap BitSize L.decimal
-    pRegular = do
-        name <- pItemName <* sc'
-        title <- Title . T.pack <$> stringLiteral
-        definition <- optional . try $ do
-            sc'
-            T.pack <$> blockAfter "definition"
-        description <- optional . try $ do
-            sc'
-            T.pack <$> blockAfter "description"
-        rule <- pRule sc' (pVariation sc')
-        remark <- optional . try $ (sc' >> (T.pack <$> blockAfter "remark"))
-        let doc = Documentation definition description remark
-        pure $ Item name title rule doc
 
 -- | Parse toplevel items.
-pItems :: Parser [Item ()]
-pItems = snd <$> parseList (MC.string "items") pItem
+pItems :: Parser [NonSpare ()]
+pItems = snd <$> parseList (MC.string "items") pNonSpare
 
 -- | Parser valid uap name.
 pUapName :: Parser UapName
@@ -443,11 +445,11 @@ pBasic = Basic
     <*> (scn >> (pUap <* scn))
 
 -- | Parse 'compound' item for expansion
-pCompoundExp :: Parser (ByteSize, [Maybe (Item ())])
+pCompoundExp :: Parser (ByteSize, [Maybe (NonSpare ())])
 pCompoundExp = parseList pHeader pListElement
   where
     pHeader = MC.string "compound" >> sc >> fmap ByteSize L.decimal
-    pListElement sc' = try pDash <|> (Just <$> pItem sc')
+    pListElement sc' = try pDash <|> (Just <$> pNonSpare sc')
     pDash = MC.char '-' >> pure Nothing
 
 -- | Parse expansion
@@ -560,10 +562,8 @@ instance MkBlock (Variation ()) where
                 Nothing -> "-"
                 Just item -> mkBlock item
 
-instance MkBlock (Item ()) where
-    mkBlock = \case
-        Spare () (BitSize n) -> fmt ("spare " % int) n
-        Item (ItemName name) (Title title) rule doc -> do
+instance MkBlock (NonSpare ()) where
+    mkBlock (NonSpare (ItemName name) (Title title) rule doc) = do
             fmt (stext % " \"" % stext % "\"") name title
             indent $ dumpText "definition" (docDefinition doc)
             indent $ dumpText "description" (docDescription doc)
@@ -571,12 +571,17 @@ instance MkBlock (Item ()) where
                 mkBlock rule
                 dumpText "remark" (docRemark doc)
       where
-        dumpText title = \case
+        dumpText title' = \case
             Nothing -> mempty
             Just t -> do
-                line title
+                line title'
                 indent $ forM_ (T.lines t) $ \i -> do
                     fmt stext i
+
+instance MkBlock (Item ()) where
+    mkBlock = \case
+        Spare () (BitSize n) -> fmt ("spare " % int) n
+        Item nsp -> mkBlock nsp
 
 instance MkBlock (Uap [UapItem ItemName]) where
     mkBlock = \case

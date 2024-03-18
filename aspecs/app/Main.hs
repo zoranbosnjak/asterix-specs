@@ -5,20 +5,20 @@ module Main where
 
 import           Control.Monad
 import           Crypto.Hash
-import qualified Data.ByteString               as BS
-import qualified Data.ByteString.Char8         as BS8
+import qualified Data.ByteString          as BS
+import qualified Data.ByteString.Char8    as BS8
 import           Data.IORef
-import qualified Data.Text                     as T
-import qualified Data.Text.IO                  as T
-import qualified Data.Text.Lazy.Builder        as T
-import qualified Data.Text.Lazy.IO             as TL
-import           Main.Utf8                     (withUtf8)
-import           Options.Applicative           as Opt
-import           System.Exit                   (die)
-import           System.IO                     as IO
+import qualified Data.Text                as T
+import qualified Data.Text.IO             as T
+import qualified Data.Text.Lazy.Builder   as T
+import qualified Data.Text.Lazy.IO        as TL
+import           Main.Utf8                (withUtf8)
+import           Options.Applicative      as Opt
+import           System.Exit              (die)
+import           System.IO                as IO
 
-import           Data.Version                  (showVersion)
-import           Paths_aspecs                  (version)
+import           Data.Version             (showVersion)
+import           Paths_aspecs             (version)
 
 import           Asterix.Specs.Syntaxes
 import           Asterix.Specs.Types

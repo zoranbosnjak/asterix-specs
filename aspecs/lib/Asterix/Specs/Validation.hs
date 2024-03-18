@@ -129,7 +129,7 @@ itemNames :: [Item offset] -> [ItemName]
 itemNames = mapMaybe f where
     f = \case
         Spare _ _ -> Nothing
-        Item name _ _ _ -> Just name
+        Item (NonSpare name _ _ _) -> Just name
 
 instance Validate (Variation a) where
     validate (Element _ (BitSize n) rule) = do
@@ -156,20 +156,15 @@ instance Validate (Variation a) where
     validate (Compound items) = do
         when (offset (Compound items) /= mempty) "alignment error"
         mapM_ validate lst
-        when (itemNames lst /= nub (itemNames lst)) "duplicated names"
+        when (itemNames lst' /= nub (itemNames lst')) "duplicated names"
         when (isNothing $ last items) "last element in compound is empty"
-        when (any isSpare lst) "unexpected spare item inside compound"
         when (length items <= 1) "compound item with just one element"
       where
         lst = catMaybes items
-        isSpare = \case
-            Spare _ _ -> True
-            _ -> False
+        lst' = fmap Item lst
 
-instance Validate (Item a) where
-    validate (Spare _ (BitSize n)) = do
-        when (n <= 0) "size error"
-    validate (Item (ItemName name) (Title title) rule _doc) = withPreffix name $ do
+instance Validate (NonSpare a) where
+    validate (NonSpare (ItemName name) (Title title) rule _doc) = withPreffix name $ do
         when (T.length name > 15) "Item name too long"
         forM_ (T.unpack name) $ \c -> do
             unless (c `elem` (['A'..'Z'] <> ['0'..'9'])) $ do
@@ -184,6 +179,11 @@ instance Validate (Item a) where
         when ('"' `elem` T.unpack title) $ do
             throw $ "Title contain quotes -> " <> title
         mapM_ validate rule
+
+instance Validate (Item a) where
+    validate (Spare _ (BitSize n)) = do
+        when (n <= 0) "size error"
+    validate (Item nsp) = validate nsp
 
 instance Validate CatNum where
     validate (CatNum n) = do
@@ -204,7 +204,7 @@ catUapItems = mapMaybe f where
         UapItem name -> Just name
         _ -> Nothing
 
-instance Validate ([Item ()], Uap [UapItem ItemName]) where
+instance Validate ([NonSpare ()], Uap [UapItem ItemName]) where
     validate (catalogue, uap) = case uap of
         Uap lst -> validateList lst
         Uaps lst1 msel -> do
@@ -266,13 +266,10 @@ instance Validate Basic where
             Uaps lst _msel -> nub (snd =<< lst)
 
         defined :: [ItemName]
-        defined = catalogue >>= \case
-            Spare _ _ -> []
-            Item name _title _variation _doc -> [name]
+        defined = [name | NonSpare name _title _variation _doc <- catalogue]
 
-        validateDepItem :: Item () -> ErrM ()
-        validateDepItem (Spare _ _) = pure ()
-        validateDepItem (Item name title rule doc) = forM_ (toList rule) $ \case
+        validateDepItem :: NonSpare () -> ErrM ()
+        validateDepItem (NonSpare name title rule doc) = forM_ (toList rule) $ \case
             Element _ _n rule' -> case rule' of
                 ContextFree _ -> pure ()
                 Dependent items _dv lst -> do
@@ -289,23 +286,24 @@ instance Validate Basic where
                                             when (x > (2^m)) $ do
                                                 throw $ showPath (ItemPath [name]) <> " too many cases"
             Group items -> do
-                forM_ items $ \item -> do
-                    validateDepItem item
-                    case item of
-                        Spare _ _ -> pure ()
-                        Item subName _title _var _doc -> do
-                            let (ItemName name') = name
-                                (ItemName subName') = subName
-                                n = T.length name'
-                                subName'' = T.take n subName'
-                            when (subName' /= name' && subName'' == name') $ do
-                                throw $
-                                    showPath (ItemPath [name, subName])
-                                  <> ": name repetition, suggesting -> "
-                                  <> showPath (ItemPath [name, ItemName (T.drop n subName')])
-            Extended lst -> mapM_ validateDepItem (catMaybes lst)
+                forM_ items $ \case
+                    Spare _ _ -> pure ()
+                    Item item@(NonSpare subName _title _var _doc) -> do
+                        validateDepItem item
+                        let (ItemName name') = name
+                            (ItemName subName') = subName
+                            n = T.length name'
+                            subName'' = T.take n subName'
+                        when (subName' /= name' && subName'' == name') $ do
+                            throw $
+                                showPath (ItemPath [name, subName])
+                                <> ": name repetition, suggesting -> "
+                                <> showPath (ItemPath [name, ItemName (T.drop n subName')])
+            Extended lst -> forM_ (catMaybes lst) $ \case
+                Spare _ _ -> pure ()
+                Item nsp -> validateDepItem nsp
             Repetitive _rt variation' -> validateDepItem
-                (Item name title (ContextFree variation') doc)
+                (NonSpare name title (ContextFree variation') doc)
             Explicit _ -> pure ()
             Compound lst -> mapM_ validateDepItem (catMaybes lst)
 

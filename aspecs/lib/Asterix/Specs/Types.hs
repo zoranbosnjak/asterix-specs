@@ -149,12 +149,15 @@ data Variation offset
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective
     -- presence bit in the first part is always zero
-    | Compound [Maybe (Item offset)]
+    | Compound [Maybe (NonSpare offset)]
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
+
+data NonSpare offset = NonSpare ItemName Title (Rule (Variation offset)) Documentation
     deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Item offset
     = Spare offset BitSize
-    | Item ItemName Title (Rule (Variation offset)) Documentation
+    | Item (NonSpare offset)
     deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data UapItem a
@@ -184,7 +187,7 @@ data Basic = Basic
     , basEdition   :: Edition
     , basDate      :: Date
     , basPreamble  :: Maybe Text
-    , basCatalogue :: [Item ()]
+    , basCatalogue :: [NonSpare ()]
     , basUap       :: Uap [UapItem ItemName]
     } deriving (Generic, Eq, Ord, Show, Read)
 
@@ -195,7 +198,7 @@ data Expansion = Expansion
     , expEdition   :: Edition
     , expDate      :: Date
     , expFspecSize :: ByteSize
-    , expItems     :: [Maybe (Item ())]
+    , expItems     :: [Maybe (NonSpare ())]
     } deriving (Generic, Eq, Ord, Show, Read)
 
 data Asterix

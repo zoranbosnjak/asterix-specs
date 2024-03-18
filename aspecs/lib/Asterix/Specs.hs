@@ -85,33 +85,38 @@ instance IsAligned (Variation a) where
         Group lst -> sum <$> mapM bitSize lst
         _ -> Nothing
 
+instance IsAligned (NonSpare a) where
+    offset (NonSpare _name _title rule _doc) = offset rule
+    bitSize (NonSpare _name _title rule _doc) = bitSize rule
+
 instance IsAligned (Item a) where
-    offset (Spare _ n)                   = offset n
-    offset (Item _name _title rule _doc) = offset rule
+    offset (Spare _ n) = offset n
+    offset (Item nsp)  = offset nsp
 
-    bitSize (Spare _ n)                   = bitSize n
-    bitSize (Item _name _title rule _doc) = bitSize rule
+    bitSize (Spare _ n) = bitSize n
+    bitSize (Item nsp)  = bitSize nsp
 
-findItemByName :: [Item a] -> ItemPath -> Maybe (Item a)
+findItemByName :: [NonSpare a] -> ItemPath -> Maybe (NonSpare a)
 findItemByName _ (ItemPath []) = Nothing
 findItemByName catalogue (ItemPath (x : xs)) = do
-    let f (Spare _ _)       = False
-        f (Item name _ _ _) = name == x
+    let f (NonSpare name _ _ _) = name == x
     item <- find f catalogue
     go item xs
   where
+    go :: NonSpare a -> [ItemName] -> Maybe (NonSpare a)
     go item [] = Just item
-    go item (y:ys) = case item of
-        Spare _ _ -> Nothing
-        Item _ _ rule _ -> case rule of
-            ContextFree variation -> do
-                let candidates = case variation of
-                        Group lst    -> lst
-                        Extended lst -> catMaybes lst
-                        Compound lst -> catMaybes lst
-                        _            -> []
-                    byName (Spare _ _)    = False
-                    byName (Item n _ _ _) = n == y
-                nextItem <- find byName candidates
-                go nextItem ys
-            Dependent {} -> Nothing
+    go (NonSpare _ _ rule _) (y:ys) = case rule of
+        ContextFree variation -> do
+            let candidates = case variation of
+                    Group lst    -> lst >>= \case
+                        Spare _ _ -> []
+                        Item nsp -> [nsp]
+                    Extended lst -> lst >>= \case
+                        Just (Item nsp) -> [nsp]
+                        _ -> []
+                    Compound lst -> catMaybes lst
+                    _            -> []
+                byName (NonSpare n _ _ _) = n == y
+            nextItem <- find byName candidates
+            go nextItem ys
+        Dependent {} -> Nothing
