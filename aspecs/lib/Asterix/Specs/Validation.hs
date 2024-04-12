@@ -158,7 +158,6 @@ instance Validate (Variation a) where
         mapM_ validate lst
         when (itemNames lst' /= nub (itemNames lst')) "duplicated names"
         when (isNothing $ last items) "last element in compound is empty"
-        when (length items <= 1) "compound item with just one element"
       where
         lst = catMaybes items
         lst' = fmap Item lst
