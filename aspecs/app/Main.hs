@@ -16,6 +16,7 @@ import           Main.Utf8                (withUtf8)
 import           Options.Applicative      as Opt
 import           System.Exit              (die)
 import           System.IO                as IO
+import           Text.Pandoc              (writeNative, def, runIOorExplode)
 
 import           Data.Version             (showVersion)
 import           Paths_aspecs             (version)
@@ -23,6 +24,7 @@ import           Paths_aspecs             (version)
 import           Asterix.Specs.Syntaxes
 import           Asterix.Specs.Types
 import           Asterix.Specs.Validation
+import           Asterix.Pandoc (toPandoc)
 
 hashing :: [(String, BS.ByteString -> String)]
 hashing =
@@ -37,9 +39,7 @@ data Command
     | Prettify (Decoder, Encoder) [FilePath]
     | Checksum Decoder (BS.ByteString -> String) (Maybe FilePath)
     | Validate Decoder [FilePath]
-    {-
-    | Pandoc Input Decoder -- generate pandoc native format for documentation
-    -}
+    | Pandoc Decoder (Maybe FilePath)
 
 pDecoder :: Parser Decoder
 pDecoder = asum $ do
@@ -76,6 +76,8 @@ pCommand = hsubparser
    <> command "prettify" (info pPrettify (progDesc "Reformat file to a normal form"))
    <> command "checksum" (info pChecksum (progDesc "Print file checksum"))
    <> command "validate" (info pValidate (progDesc "Validate input"))
+   <> command "pandoc"
+      (info pPandoc (progDesc "Convert to 'pandoc' documentation format"))
     )
   where
     pConvert = Convert <$> pDecoder <*> pEncoder
@@ -86,6 +88,8 @@ pCommand = hsubparser
         <*> optional (strArgument (metavar "PATH"))
     pValidate = Validate <$> pDecoder
         <*> some (strArgument (metavar "PATH"))
+    pPandoc = Pandoc <$> pDecoder
+        <*> optional (strArgument (metavar "PATH"))
 
 pOpts :: ParserInfo Command
 pOpts = info (helper <*> versionOption <*> pCommand)
@@ -123,3 +127,7 @@ main = withUtf8 $ execParser pOpts >>= \case
         readIORef ok >>= \case
             True -> pure ()
             False -> die "Validation error(s) present!"
+    Pandoc decoder input -> do
+        asterix <- decodeInput input decoder
+        t <- runIOorExplode $ writeNative def $ toPandoc asterix
+        T.putStrLn t

@@ -29,4 +29,10 @@ ghcid --no-title --lint "--command=ghci -Wall -iother -ilib -iapp app/Main.hs"
 
 # run program, show usage
 runhaskell -iother -ilib -iapp ./app/Main.hs --help
+
+# convert spec to html (via pandoc)
+runhaskell -iother -ilib -iapp ./app/Main.hs pandoc \
+    --input-ast ../specs/test/test-cat-000-1.0-basic.ast | \
+    pandoc -s -f native -t html -o output.html \
+    --css=style.css --metadata title="asterix specification"
 ```

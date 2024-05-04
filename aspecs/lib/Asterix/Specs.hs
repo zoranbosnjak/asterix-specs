@@ -43,6 +43,12 @@ getConstrainNumber = \case
     LessThan val -> val
     LessThanOrEqualTo val -> val
 
+evalNumber :: Fractional a => Number -> a
+evalNumber = \case
+    NumInt i -> fromIntegral i
+    NumDiv a b -> evalNumber a / evalNumber b
+    NumPow a b -> fromIntegral (a ^ b)
+
 isNegative :: Number -> Bool
 isNegative = \case
     NumInt val -> val < 0
