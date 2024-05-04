@@ -2,18 +2,18 @@
 
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-{-# LANGUAGE LambdaCase        #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE LambdaCase           #-}
+{-# LANGUAGE OverloadedStrings    #-}
 {-# LANGUAGE UndecidableInstances #-}
 
 module Asterix.Specs.Syntax.Json where
 
-import Data.Text as T
-import Data.Text.Encoding as T
-import           Data.Aeson hiding (Encoding)
-import           Data.Aeson.Types (Parser, typeMismatch, emptyArray)
-import qualified Data.Aeson.KeyMap as KM
+import           Data.Aeson               hiding (Encoding)
 import           Data.Aeson.Encode.Pretty as JsonP
+import qualified Data.Aeson.KeyMap        as KM
+import           Data.Aeson.Types         (Parser, emptyArray, typeMismatch)
+import           Data.Text                as T
+import           Data.Text.Encoding       as T
 
 import           Asterix.Specs.Syntax
 import           Asterix.Specs.Types
@@ -30,18 +30,18 @@ untagged :: String -> [(Text, Value -> Parser a)] -> Value -> Parser a
 untagged s lst = withObject s $ \obj -> do
     tag <- case KM.lookup "tag" obj of
         Just (String tag) -> pure tag
-        _ -> typeMismatch "tag" $ String "wrong type"
+        _                 -> typeMismatch "tag" $ String "wrong type"
     val <- case KM.lookup "contents" obj of
-        Nothing -> fail "'contents' element not present"
+        Nothing  -> fail "'contents' element not present"
         Just val -> pure val
     f <- case lookup tag lst of
         Nothing -> fail ("Unexpected tag: " <> T.unpack tag)
-        Just f -> pure f
+        Just f  -> pure f
     f val
 
 parseUnit :: Value -> Parser ()
 parseUnit v = case v == emptyArray of
-    True -> pure ()
+    True  -> pure ()
     False -> fail "Expecting empty array"
 
 instance ToJSON CatNum
@@ -431,7 +431,7 @@ coder = Coder
     }
   where
     decoder filename s = case eitherDecodeStrict (T.encodeUtf8 s) of
-        Left e -> Left $ filename ++ ": " ++ e
+        Left e    -> Left $ filename ++ ": " ++ e
         Right val -> Right val
     encoder = encodePrettyToTextBuilder' JsonP.Config
         { confIndent = Spaces 4

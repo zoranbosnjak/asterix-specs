@@ -3,15 +3,15 @@
 
 module Asterix.Pandoc where
 
-import Data.Coerce
-import Data.Scientific
-import Formatting               as F
-import Text.Pandoc
-import Text.Pandoc.Builder as PB
-import Data.Text (Text)
-import Data.List
+import           Data.Coerce
+import           Data.List           (intersperse)
+import           Data.Scientific
+import           Data.Text           (Text)
+import           Formatting          as F
+import           Text.Pandoc
+import           Text.Pandoc.Builder as PB
 
-import Asterix.Specs
+import           Asterix.Specs
 
 fromRST :: Text -> Blocks
 fromRST s = fromList val
@@ -48,17 +48,17 @@ instance ToPandoc Content where
             )
         ContentString t -> para $ str $ case t of
             StringAscii -> "Ascii string (8-bits per char)"
-            StringICAO -> "ICAO string (6-bits per char)"
+            StringICAO  -> "ICAO string (6-bits per char)"
             StringOctal -> "Octal string (3-bits per char)"
         ContentInteger sig cstr -> mconcat
             [ para $ str $ case sig of
-                Signed -> "Signed integer"
+                Signed   -> "Signed integer"
                 Unsigned -> "Unsigned integer"
             , mconcat $ fmap (tp p) cstr
             ]
         ContentQuantity sig lsb (Unit unit) cstr -> mconcat
             [ para $ str $ case sig of
-                Signed -> "Signed quantity"
+                Signed   -> "Signed quantity"
                 Unsigned -> "Unsigned quantity"
             , let lsb' = sformat (scifmt Generic Nothing) (evalNumber lsb)
               in para (str "LSB = "
@@ -129,9 +129,9 @@ instance ToPandoc (Variation ()) where
             , tp p var
             ]
         Explicit mt -> para $ str $ case mt of
-            Nothing -> "Explicit"
+            Nothing                -> "Explicit"
             Just ReservedExpansion -> "Explicit (ReservedExpansion)"
-            Just SpecialPurpose -> "Explicit (SpecialPurpose)"
+            Just SpecialPurpose    -> "Explicit (SpecialPurpose)"
         Compound lst -> mconcat
             [ para $ str "Compound"
             , blockQuote $ mconcat $ fmap f lst
@@ -152,10 +152,10 @@ instance ToPandoc (NonSpare ()) where
        <> blockQuote (mconcat
             [ case definition of
                 Nothing -> mempty
-                Just t -> para $ str $ sformat ("definition: " % stext) t
+                Just t  -> para $ str $ sformat ("definition: " % stext) t
             , case description of
                 Nothing -> mempty
-                Just t -> para $ str $ sformat ("description: " % stext) t
+                Just t  -> para $ str $ sformat ("description: " % stext) t
             , tp p'' rule
             , maybe mempty fromRST mRemark
             ])
@@ -211,7 +211,7 @@ instance ToPandoc ([NonSpare ()], Uap [UapItem ItemName]) where
 
         getTitle name = case lookup name titles of
             Nothing -> ""
-            Just x -> sformat (" - " % stext) x
+            Just x  -> sformat (" - " % stext) x
 
         go :: [UapItem ItemName] -> Blocks
         go

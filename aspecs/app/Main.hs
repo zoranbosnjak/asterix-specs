@@ -16,15 +16,15 @@ import           Main.Utf8                (withUtf8)
 import           Options.Applicative      as Opt
 import           System.Exit              (die)
 import           System.IO                as IO
-import           Text.Pandoc              (writeNative, def, runIOorExplode)
+import           Text.Pandoc              (def, runIOorExplode, writeNative)
 
 import           Data.Version             (showVersion)
 import           Paths_aspecs             (version)
 
+import           Asterix.Pandoc           (toPandoc)
 import           Asterix.Specs.Syntaxes
 import           Asterix.Specs.Types
 import           Asterix.Specs.Validation
-import           Asterix.Pandoc (toPandoc)
 
 hashing :: [(String, BS.ByteString -> String)]
 hashing =
