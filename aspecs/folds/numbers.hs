@@ -1,10 +1,10 @@
 -- What kind of numbers do we have in scaling factor?
 
 import           Options.Applicative as Opt
-import qualified Data.Set as Set
+import           Data.List (sort, nub)
 import           Main.Utf8 (withUtf8)
-import qualified Data.ByteString as BS
 import           Control.Monad
+import qualified Data.Text.IO as T
 
 import           Folds
 
@@ -19,21 +19,19 @@ parseOptions = Options
 opts :: ParserInfo Options
 opts = info (parseOptions <**> helper) fullDesc
 
-focus :: Fold [Asterix] Number
-focus
-    = folded
-    . focusAsterixVariation
-    . focusVariationRule
-    . focusRuleContent
-    . focusContentLsb
-    . _Just
-
-result :: [Asterix] -> Set.Set Number
-result = foldMapOf focus Set.singleton
-
 main :: IO ()
 main = withUtf8 $ do
     cmdOptions <- execParser opts
     specs <- forM (paths cmdOptions) $ \path -> do
-        loadSpec "ast" path (BS.readFile path)
-    mapM_ print (result specs)
+        loadSpec "ast" path (T.readFile path)
+
+    let result = specs
+            >>= fAstNsp
+            >>= fNspRuleVar
+            >>= fRuleX
+            >>= fVarRuleContent
+            >>= fRuleX
+            >>= fContentLsb
+
+    forM_ (sort $ nub result) $ \x -> do
+        print x
