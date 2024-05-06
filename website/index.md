@@ -18,7 +18,7 @@ is all about.
 This project contains:
 
 * [asterix definitions](/specs.html) in *zero overhead* custom text based [format](/syntax.html);
-* [tools](/tools.html) to validate and convert specifications between formats;
+* [aspecs](/aspecs.html) to validate and convert specifications between formats;
 * auto-generated specifications in *JSON* format;
 * auto-generated specifications in *HTML* and *PDF* format;
 * formal description of asterix [structure](/struct.html);
@@ -224,4 +224,3 @@ indirectly) and the source code is available, your are welcome to
   asterix filtering...
   Supported asterix categories and editions are automatically updated from
   this project.
-

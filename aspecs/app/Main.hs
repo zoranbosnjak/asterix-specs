@@ -6,12 +6,13 @@ module Main where
 import           Control.Monad
 import           Crypto.Hash
 import qualified Data.ByteString          as BS
+import qualified Data.ByteString.Lazy     as BSL
 import qualified Data.ByteString.Char8    as BS8
 import           Data.IORef
 import qualified Data.Text                as T
 import qualified Data.Text.IO             as T
+import qualified Data.Text.Lazy.Encoding  as T
 import qualified Data.Text.Lazy.Builder   as T
-import qualified Data.Text.Lazy.IO        as TL
 import           Main.Utf8                (withUtf8)
 import           Options.Applicative      as Opt
 import           System.Exit              (die)
@@ -110,10 +111,10 @@ main :: IO ()
 main = withUtf8 $ execParser pOpts >>= \case
     Convert decoder encoder input -> do
         asterix <- decodeInput input decoder
-        TL.putStr $ T.toLazyText $ encoder asterix
+        BSL.putStr $ T.encodeUtf8 $ T.toLazyText $ encoder asterix
     Prettify (decoder, encoder) paths -> forM_ paths $ \path -> do
         asterix <- decodeInput (Just path) decoder
-        TL.writeFile path $ T.toLazyText $ encoder asterix
+        BSL.writeFile path $ T.encodeUtf8 $ T.toLazyText $ encoder asterix
     Checksum decoder hsh input -> do
         asterix <- decodeInput input decoder
         putStrLn $ hsh $ BS8.pack $ show asterix

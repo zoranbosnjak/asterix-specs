@@ -98,7 +98,7 @@ Remark:
 ## Validation rules
 
 For each defined item or subitem, the following validation rules are
-enforced by the [validator](/tools.html):
+enforced by the [validator](/aspecs.html):
 
 - Tables shall not contain duplicated entries.
 - Each table entry shall contain non-empty description.
@@ -172,9 +172,9 @@ The `Rule` type is extended, to support `I004/120/CC` content cases.
 `.ast` syntax is extended to include 'default' value, `.json` syntax requires
 minor update (change in field types and names). See changes in:
 
-- `tools/lib/Asterix/Specs/Types.hs`
-- `tools/lib/Asterix/Specs/Syntax/Ast.hs`
-- `tools/lib/Asterix/Specs/Syntax/Json.hs`
+- `aspecs/lib/Asterix/Specs/Types.hs`
+- `aspecs/lib/Asterix/Specs/Syntax/Ast.hs`
+- `aspecs/lib/Asterix/Specs/Syntax/Json.hs`
 
 ### 2023-12-18 - precise numeric expression
 

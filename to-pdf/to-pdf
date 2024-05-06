@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
 if [ "$#" -ne 2 ]; then
-    echo "Expected arguments: input.rst output.pdf" 1>&2
+    echo "Expected arguments: input.some-ext output.pdf" 1>&2
     exit 1
 fi
 
-rst=$1
+inp=$1
 pdf=$2
 
 preamble=$(dirname $0)/../preamble.tex
 
-SOURCE_DATE_EPOCH=0 pandoc "$rst" \
-    -f rst \
+SOURCE_DATE_EPOCH=0 pandoc "$inp" \
     --include-in-header $preamble \
     -V linkcolor:blue \
     -V geometry:a4paper \

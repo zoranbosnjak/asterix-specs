@@ -22,8 +22,8 @@ Before submitting new category, please make sure that
 definitions are:
 
 - complete (including remarks);
-- validated with the [tools](/tools.html) (enable `--warnings`);
-- prettified with the [tools](/tools.html);
+- validated with the [aspecs](/aspecs.html);
+- prettified with the [aspecs](/aspecs.html);
 - *code reviewed* by an independent reviewer;
 
 # Project structure
@@ -31,10 +31,10 @@ definitions are:
 - [specs/](https://github.com/zoranbosnjak/asterix-specs/tree/master/specs):
   Source files of [asterix definitions](/specs.html).
 
-- [tools/](https://github.com/zoranbosnjak/asterix-specs/tree/master/tools):
-  Implementation of [specs related tools](/tools.html).
+- [aspecs/](https://github.com/zoranbosnjak/asterix-specs/tree/master/aspecs):
+  Implementation of [specs related tool](/aspecs.html).
 
-- [rst-to-pdf/](https://github.com/zoranbosnjak/asterix-specs/tree/master/rst-to-pdf):
+- [to-pdf/](https://github.com/zoranbosnjak/asterix-specs/tree/master/to-pdf):
   PDF documentation generator, a simple wrapper
   around [pandoc](https://pandoc.org/) tool.
 
@@ -112,4 +112,3 @@ nix-build
 # check locally generated web site with some web browser
 netsurf ./result/index.html
 ```
-

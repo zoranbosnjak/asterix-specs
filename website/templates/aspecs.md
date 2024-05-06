@@ -1,8 +1,8 @@
 ---
-title: Tools
+title: Aspecs
 ---
 
-# Tools
+# Aspecs
 
 Asterix conversion and validation tool is an integral part of this project.
 
@@ -14,7 +14,7 @@ Features:
 * dump file as a list of items
 * show asterix definition signature (like a fingerprint, but not
   depending on a particular file format)
-* generate documentation format (`ast-to-rst`)
+* generate documentation format
 
 Conversion process works in the following steps:
 
@@ -42,8 +42,8 @@ following methods.
 Pre-build 64-bit linux binary is available to download from
 [this link](/bin/aspecs-static).
 
-- current version: `$toolsVersion$`
-- SHA256SUM: `$toolsSha256Sum$`
+- current version: `$aspecsVersion$`
+- SHA256SUM: `$aspecsSha256Sum$`
 
 Download and copy the file to some location and set
 file mode, for example under UbuntuOS:
@@ -61,13 +61,12 @@ aspecs --version
 With active [nix](https://nixos.org/) environment:
 
 ```bash
-cd tools
+cd aspecs
 nix-build
 nix-env -i $$(readlink result)
 
 # verify installation
 aspecs --version
-ast-to-rst --version
 ```
 
 ## Usage
@@ -102,10 +101,10 @@ Install nix package manager, clone repository
 ```bash
 curl -L https://nixos.org/nix/install | sh
 git clone https://github.com/zoranbosnjak/asterix-specs.git
-cd asterix-specs/tools/
+cd asterix-specs/aspecs/
 ```
 
-(Re)build tools with `nix-build` and run it
+(Re)build aspecs with `nix-build` and run it
 
 ```bash
 nix-build
@@ -117,15 +116,11 @@ Use `nix-shell` environment
 ```bash
 nix-shell
 
-# select application
-app=Aspecs.hs
-app=Ast-to-rst.hs
-
 # monitor changes, auto rebuild on any source change
-ghcid "--command=ghci -Wall $$EXTENSIONS -iother -ilib -iapp app/$${app}"
+ghcid "--command=ghci -Wall $$EXTENSIONS -iother -ilib -iapp app/Main.hs"
 
 # run program without rebuild
-runhaskell $$EXTENSIONS -iother -ilib -iapp app/$${app} --help
+runhaskell $$EXTENSIONS -iother -ilib -iapp app/Main --help
 
 # (re)build with 'cabal' and run program
 cabal build
@@ -133,4 +128,3 @@ find . -type f -executable | grep -v "\.so"
 
 exit
 ```
-

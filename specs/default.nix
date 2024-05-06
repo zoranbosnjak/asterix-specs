@@ -4,7 +4,7 @@
 }:
 
 let
-  tools = import ../tools/default.nix { inherit packages; inShell = false; };
+  aspecs = import ../aspecs/default.nix { inherit packages; inShell = false; };
 
   cats =
     let
@@ -17,13 +17,15 @@ let
 
       isCat = key: val:
         (val == "directory" && toCatNumber key != null);
-    in map toCatNumber (builtins.attrNames (packages.lib.attrsets.filterAttrs isCat (builtins.readDir ../specs)));
+    in map toCatNumber (builtins.attrNames
+      (packages.lib.attrsets.filterAttrs isCat (builtins.readDir ../specs)));
 
   values = lst: builtins.filter (x: x != null) lst;
 
   isRegular = key: val: (val == "regular");
 
-  listing = catnum: builtins.attrNames (packages.lib.attrsets.filterAttrs isRegular (builtins.readDir (../specs/. + "/cat" + catnum)));
+  listing = catnum: builtins.attrNames (packages.lib.attrsets.filterAttrs isRegular
+    (builtins.readDir (./. + "/cat" + catnum)));
 
   findAst = x: s:
     let m = builtins.match (x + "-(.*).ast") s;
@@ -112,7 +114,7 @@ let
       # test specs validation
       for i in $(find ../specs/test/*ast); do
           echo "validating test spec: $i"
-          ${tools}/bin/aspecs validate -f $i --ast --warnings
+          ${aspecs}/bin/aspecs validate --input-ast $i
       done
     '';
   };

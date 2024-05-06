@@ -34,7 +34,6 @@ pandoc --metadata title="asterix specification" \
     -f native -t html $dst/definition.pandoc.native \
     -o $dst/definition.html --embed-resources --standalone \
     --css=../style/default.css --css=../style/syntax.css
-
-#rst-to-pdf $dst/definition.rst $dst/definition.pdf
+to-pdf $dst/definition.pandoc.native $dst/definition.pdf
 
 echo "done... result is in $dst" directory

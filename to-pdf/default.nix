@@ -17,7 +17,7 @@ let
   ];
 
   drv = packages.stdenv.mkDerivation rec {
-    name = "rst-to-pdf";
+    name = "to-pdf";
     src = builtins.filterSource
       (path: type: type != "symlink" || baseNameOf path != "result")
       ./.;
@@ -26,8 +26,8 @@ let
     installPhase = ''
       mkdir -p $out/bin
       cp $src/preamble.tex $out
-      cp $src/rst-to-pdf $out/bin
-      wrapProgram $out/bin/rst-to-pdf --prefix PATH ":" ${packages.pandoc}/bin --prefix PATH ":" ${tex}/bin;
+      cp $src/to-pdf $out/bin
+      wrapProgram $out/bin/to-pdf --prefix PATH ":" ${packages.pandoc}/bin --prefix PATH ":" ${tex}/bin;
     '';
   } // { inherit env; };
 

@@ -40,8 +40,8 @@ main = do
     Just (manifest :: [Cat]) <- decodeFileStrict (specs <> "/" <> "manifest.json")
     syntax <- getEnvVariableExpr "SYNTAX"
     syntaxImages <- listDirectory $ syntax++"/syntax/png"
-    toolsVersion <- getEnvVariableExpr "TOOLS_VERSION"
-    toolsSha256Sum <- getEnvVariableExpr "TOOLS_SHA256"
+    aspecsVersion <- getEnvVariableExpr "ASPECS_VERSION"
+    aspecsSha256Sum <- getEnvVariableExpr "ASPECS_SHA256"
     typesSimple <- readFile "types_simple.hs"
 
     hakyllWith config $ do
@@ -68,22 +68,11 @@ main = do
                     src = specs ++ "/" ++ dst
 
                 -- copy specs files in various formats
-                forM_ ["ast", "txt", "json", "rst", "pdf"] $ \fmt -> do
+                forM_ ["ast", "txt", "json", "pandoc.native", "html", "pdf"] $ \fmt -> do
                     create [ fromFilePath (dst ++ fmt) ] $ do
                         route idRoute
                         compile $ do
                             unsafeCompiler (BSL.readFile (src ++ fmt)) >>= makeItem
-
-                -- create html version
-                create [ fromFilePath (dst ++ "html") ] $ do
-                    route idRoute
-                    compile $ do
-                        unsafeCompiler (readFile (src ++ "rst"))
-                        >>= (\x -> pure (Item "definition.rst" x))
-                        >>= renderPandoc
-                        >>= (\(Item _a val) -> pure (Item (fromFilePath $ dst ++ "html") val))
-                        >>= loadAndApplyTemplate "templates/default.html" defaultContext
-                        >>= relativizeUrls
 
         -- syntax images
         forM_ syntaxImages $ \img -> do
@@ -103,9 +92,9 @@ main = do
                     let imgCtx = field "img" (\(Item _ i) -> pure i)
                     in defaultContext
                         <> listField "images" imgCtx (mapM makeItem syntaxImages))
-                , ("tools", defaultContext
-                    <> constField "toolsVersion" toolsVersion
-                    <> constField "toolsSha256Sum" toolsSha256Sum
+                , ("aspecs", defaultContext
+                    <> constField "aspecsVersion" aspecsVersion
+                    <> constField "aspecsSha256Sum" aspecsSha256Sum
                   )
                 ]
 
@@ -130,14 +119,13 @@ catCtx :: Context Cat
 catCtx = mconcat
     [ field "num" (\(Item _ i) -> pure (catNumber i))
 
-    , boolField "hasCats" (\(Item _ i) -> (catCats i /= []))
+    , boolField "hasCats" (\(Item _ i) -> catCats i /= [])
     , listFieldWith "cats" edCtx (\(Item _ i) -> mapM makeItem [(catNumber i, x) | x <- catCats i])
 
-    , boolField "hasRefs" (\(Item _ i) -> (catRefs i /= []))
+    , boolField "hasRefs" (\(Item _ i) -> catRefs i /= [])
     , listFieldWith "refs" edCtx (\(Item _ i) -> mapM makeItem [(catNumber i, x) | x <- catRefs i])
     ]
   where
     edCtx
         = field "n" (\(Item _ (n, _ed)) -> pure n)
        <> field "ed" (\(Item _ (_n, ed)) -> pure ed)
-
