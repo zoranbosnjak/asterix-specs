@@ -234,14 +234,13 @@ instance FromJSON ExplicitType where
         , ("SpecialPurpose", \o -> parseUnit o >> pure SpecialPurpose)
         ]
 
-instance (ToJSON offset, ToJSON (Item offset)) => ToJSON (Variation offset) where
+instance ToJSON (Variation ()) where
     toJSON = \case
-        Element offset bitSize rule -> tagged "Element" $ object
-            [ "offset" .= offset
-            , "bitSize" .= bitSize
+        Element () bitSize rule -> tagged "Element" $ object
+            [ "bitSize" .= bitSize
             , "rule" .= rule
             ]
-        Group lst -> tagged "Group" lst
+        Group () lst -> tagged "Group" lst
         Extended lst -> tagged "Extended" lst
         Repetitive t var -> tagged "Repetitive" $ object
             [ "type" .= t
@@ -250,14 +249,13 @@ instance (ToJSON offset, ToJSON (Item offset)) => ToJSON (Variation offset) wher
         Explicit mt -> tagged "Explicit" mt
         Compound lst -> tagged "Compound" lst
 
-instance FromJSON offset => FromJSON (Variation offset) where
+instance FromJSON (Variation ()) where
     parseJSON = untagged "Variation"
-        [ ("Element", withObject "Element" $ \o -> Element
-          <$> o .: "offset"
-          <*> o .: "bitSize"
+        [ ("Element", withObject "Element" $ \o -> Element ()
+          <$> o .: "bitSize"
           <*> o .: "rule"
           )
-        , ("Group", fmap Group . parseJSON)
+        , ("Group", fmap (Group ()) . parseJSON)
         , ("Extended", fmap Extended . parseJSON)
         , ("Repetitive", withObject "Repetitive" $ \o -> Repetitive
           <$> o .: "type"
@@ -267,20 +265,14 @@ instance FromJSON offset => FromJSON (Variation offset) where
         , ("Compound", fmap Compound . parseJSON)
         ]
 
-instance ToJSON offset => ToJSON (Item offset) where
+instance ToJSON (Item ()) where
     toJSON = \case
-        Spare offset bitSize -> tagged "Spare" $ object
-            [ "offset" .= offset
-            , "bitSize" .= bitSize
-            ]
+        Spare () bitSize -> tagged "Spare" bitSize
         Item nsp -> tagged "Item" nsp
 
-instance FromJSON offset => FromJSON (Item offset) where
+instance FromJSON (Item ()) where
     parseJSON = untagged "Item"
-        [ ("Spare", withObject "Spare" $ \o -> Spare
-          <$> o .: "offset"
-          <*> o .: "bitSize"
-          )
+        [ ("Spare", fmap (Spare ()) . parseJSON)
         , ("Item", fmap Item . parseJSON)
         ]
 
@@ -316,7 +308,7 @@ instance FromJSON Documentation where
         <*> o .: "description"
         <*> o .: "remark"
 
-instance ToJSON offset => ToJSON (NonSpare offset) where
+instance ToJSON (NonSpare ()) where
     toJSON (NonSpare name title rule doc) = object
         [ "name" .= name
         , "title" .= title
@@ -324,7 +316,7 @@ instance ToJSON offset => ToJSON (NonSpare offset) where
         , "documentation" .= doc
         ]
 
-instance FromJSON offset => FromJSON (NonSpare offset) where
+instance FromJSON (NonSpare ()) where
     parseJSON = withObject "NonSpare" $ \o -> NonSpare
         <$> o .: "name"
         <*> o .: "title"

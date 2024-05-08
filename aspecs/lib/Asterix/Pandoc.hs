@@ -108,7 +108,7 @@ instance ToPandoc (Variation ()) where
             , para (str $ sformat ("bit size: " % int) n)
             , tp p rule
             ]
-        Group lst -> mconcat
+        Group _ lst -> mconcat
             [ para $ str "Group"
             , blockQuote $ mconcat $ fmap (tp p) lst
             ]

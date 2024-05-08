@@ -135,7 +135,7 @@ instance Validate (Variation a) where
     validate (Element _ (BitSize n) rule) = do
         when (n <= 0) "element size"
         validate (BitSize n, rule)
-    validate (Group lst) = do
+    validate (Group _ lst) = do
         mapM_ validate lst
         when (length lst <= 1) "group requires more items"
         when (itemNames lst /= nub (itemNames lst)) "duplicated names"
@@ -284,7 +284,7 @@ instance Validate Basic where
                                         Just m -> do
                                             when (x > (2^m)) $ do
                                                 throw $ showPath (ItemPath [name]) <> " too many cases"
-            Group items -> do
+            Group _ items -> do
                 forM_ items $ \case
                     Spare _ _ -> pure ()
                     Item item@(NonSpare subName _title _var _doc) -> do

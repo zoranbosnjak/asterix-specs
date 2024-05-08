@@ -135,7 +135,7 @@ data Variation offset
 
     -- concatinated subitems, example:
     -- item 010 is concatinated list of subitems SAC and SIC
-    | Group [Item offset]
+    | Group offset [Item offset]
 
     -- extended item with FX extension mechanism
     | Extended [Maybe (Item offset)]

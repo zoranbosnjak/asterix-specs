@@ -72,7 +72,7 @@ instance IsAligned a => IsAligned (Rule a) where
 
 instance IsAligned (Variation a) where
     offset (Element _ n _rule) = offset n
-    offset (Group lst) = mconcat $ fmap offset lst
+    offset (Group _ lst) = mconcat $ fmap offset lst
     offset (Extended lst) = mconcat $ do
         lst >>= \case
             Nothing -> pure $ bitOffset 1
@@ -88,7 +88,7 @@ instance IsAligned (Variation a) where
 
     bitSize = \case
         Element _ n _rule -> bitSize n
-        Group lst -> sum <$> mapM bitSize lst
+        Group _ lst -> sum <$> mapM bitSize lst
         _ -> Nothing
 
 instance IsAligned (NonSpare a) where
@@ -114,7 +114,7 @@ findItemByName catalogue (ItemPath (x : xs)) = do
     go (NonSpare _ _ rule _) (y:ys) = case rule of
         ContextFree variation -> do
             let candidates = case variation of
-                    Group lst    -> lst >>= \case
+                    Group _ lst   -> lst >>= \case
                         Spare _ _ -> []
                         Item nsp -> [nsp]
                     Extended lst -> lst >>= \case

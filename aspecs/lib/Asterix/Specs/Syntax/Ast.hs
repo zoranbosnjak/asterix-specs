@@ -262,7 +262,7 @@ pElement sc' = Element
 
 -- | Parse group of nested items.
 pGroup :: Parser (Variation ())
-pGroup = Group . snd <$> parseList (MC.string "group") pItem
+pGroup = Group () . snd <$> parseList (MC.string "group") pItem
 
 -- | Parse 'extended' item.
 pExtended :: Parser (Variation ())
@@ -533,7 +533,7 @@ instance MkBlock (Variation ()) where
             fmt ("element " % int) n
             indent $ mkBlock rule
 
-        Group lst -> do
+        Group () lst -> do
             line "group"
             indent $ mapM_ mkBlock lst
 
