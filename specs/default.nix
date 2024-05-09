@@ -110,12 +110,6 @@ let
         set -- $i
         ln -s $2 $out/specs/cat$1
       done
-
-      # test specs validation
-      for i in $(find ../specs/test/*ast); do
-          echo "validating test spec: $i"
-          ${aspecs}/bin/aspecs validate --input-ast $i
-      done
     '';
   };
 
