@@ -69,7 +69,7 @@ items
                 remark
                     Note:
                         See Plan and Track Numbers.
-                        
+
                         The currently defined range for plan reference numbers used in MADAP is 0 .. 1999. Client systems
                         should allow for a range of 0 .. 2047.
             050 "Callsign"
@@ -101,6 +101,132 @@ items
                 remark
                     Translation:
                         See Present Mode 3A.
+            080 "Departure Aerodrome"
+                definition
+                    Identification of the flight’s departure aerodrome.
+                element 32
+                    string ascii
+                remark
+                    Translation:
+                        - zzzz: no standard ICAO location identifier
+                        - other: unique ICAO location identifier
+
+                        where:
+                        - z :== 'z'
+            090 "Destination Aerodrome"
+                definition
+                    Identification of the flight’s destination aerodrome. 
+                element 32
+                    string ascii
+                remark
+                    Translation:
+                        See Departure Aerodrome.
+            100 "Type Flags"
+                definition
+                    Type of flight and type of flight plan. 
+                group
+                    GAT "General Air Traffic"
+                        element 1
+                            raw
+                    OAT "Operational Air Traffic"
+                        element 1
+                            raw
+                    spare 3
+                    CPL "Complete Flight Plan"
+                        element 1
+                            raw
+                    SPN "Short Flight Plan"
+                        element 1
+                            raw
+                    spare 1 
+            110 "Status Flags"
+                definition
+                    Status of the flight. 
+                group
+                    spare 1
+                    HLD "Aircraft is in Hold State"
+                        element 1
+                            raw
+                    RVQ "Aircraft is RVSM Equipped"
+                        element 1
+                            raw
+                    RVC "Aircraft is RVSM Capable"
+                        element 1
+                            raw
+                    RVX "Aircraft is RVSM Exempted"
+                        element 1
+                            raw
+                remark
+                    Note:
+                        If an aircraft is set in hold status then the ETO values are increased with 3 hours. 
+
+                        RVQ is set for 
+                        - GAT or GAT SPN: never 
+                        - GAT or OAT CPL: if “W” filed in field 10a [Radio Communication, Navigation and Approach Aid
+                        Equipment] of the flightplan
+
+                        RVC is set for:
+                        - GAT or OAT SPN: on controller input or reception of ACT with “RVSM Capable”
+                        - GAT or OAT CPL (in decreasing priority):
+                        - Controller input or reception of ABI or ACT with “RVSM Capable”
+                        - “W” filed in field 10a [Radio Communication, Navigation and Approach Aid Equipment] and “1” filed in
+                        field 9a [number of aircraft] in the flightplan. 
+
+                        RVX is set for:
+                        - GAT SPN: on controller input “RVSM Exempted”
+                        - OAT SPN: by default or on controller input “RVSM Exempted”
+                        - GAT or OAT CPL: if “O”, “M” or “A” filed in field 8b [type of flight] of the flightplan 
+            120 "Aircraft Type"
+                definition
+                    Flight formation details. 
+                group
+                    NOA "Number of Aircraft"
+                        element 16
+                            string ascii
+                    TOA "Number of Aircraft"
+                        element 32
+                            string ascii
+                    WT "Wake Turbulence"
+                        element 8
+                            string ascii
+            130 "Cleared Flight Level"
+                definition
+                    Cleared flight level from the sector that has the aircraft under control. 
+                element 24
+                    string ascii
+                remark
+                    Translation:
+                        Cleared Flight Level is listed in FLs (100ft).
+                    Note:
+                        The Cleared Flight Level corresponds to the “current Planned Flight Level”, valid for the sector which
+                        is currently in communications with the aircraft.
+                        
+                        Intermediate flight levels, temporarily assigned by controllers, are not distributed by MADAP. 
+            140 "Route Points, Description"
+                definition
+                    Route point descriptions. 
+                repetitive 8
+                    group
+                        T "Route Point Type"
+                            element 8
+                                table
+                                    1: P, point
+                                    2: B, point with bearing and distance
+                                    3: LS, latitude/logitude position short format
+                                    4: LL, latitude/logitude position long format
+                                    5: X, x/y co-ordinate position
+                                    6: G, georeference position
+                                    14: E, airport
+                        E "Route Point Description Element"
+                            element 88
+                                string ascii
+                remark
+                    Translation:
+                        See layout table in specification document.
+                    Note:
+                        For all route point items (140..180), present in a single message the count values are equal. Co4 ordinate (1), description (1), etc. form a single route point.
+                        
+                        The maximum number of route points is currently set to 28. 
 
 uap
     150
