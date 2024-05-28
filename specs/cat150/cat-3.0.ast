@@ -24,5 +24,41 @@ items
                 Hence, the centre identifier is set to broadcast.
                 The workstation identifier can be ignored.
 
+    020 "Source ID"
+        definition
+            Identification of the sending centre.
+        group
+            CEN "Centre Identifier"
+                element 8
+                    raw
+            POS "Workstation Identifier"
+                element 8
+                    raw
+        remark
+            Translation:
+                See Destination ID.
+            Note:
+                The Source ID centre identifier will define the flight plan source centre.
+                The workstation identifier can be ignored.
+
+    030 "Message Type"
+        definition
+            The event that triggered the message transmission.
+        element 8
+            table
+                1: Flight plan creation
+                2: Flight plan modification
+                3: Flight plan repetition
+                4: Manual flight plan deletion
+                5: Automatic flight plan deletion
+                6: Flight is beyond extraction area boundary
+                251: Short term conflict alert
+                252: Correlations
+                253: Decorrelations
+                254: Start of background loop
+                255: End of background loop
+
 uap
     010
+    020
+    030
