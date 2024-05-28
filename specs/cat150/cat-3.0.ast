@@ -6,105 +6,97 @@ preamble
 
 items
 
-    010 "Destination ID"
+    150 "Flight Data Message"
         definition
-            Identification of the receiving centre.
-        group
-            CEN "Centre Identifier"
+            See User Application Profile
+        compound
+            010 "Destination ID"
+                definition
+                    Identification of the receiving centre.
+                group
+                    CEN "Centre Identifier"
+                        element 8
+                            raw
+                    POS "Workstation Identifier"
+                        element 8
+                            raw
+                remark
+                    Translation:
+                        See Annex 1 Centre ID definition
+                    Note:
+                        The Destination ID is irrelevant in CAT150 messages since the flight plan messages are sent to all 10 centres.
+                        Hence, the centre identifier is set to broadcast.
+                        The workstation identifier can be ignored.
+            020 "Source ID"
+                definition
+                    Identification of the sending centre.
+                group
+                    CEN "Centre Identifier"
+                        element 8
+                            raw
+                    POS "Workstation Identifier"
+                        element 8
+                            raw
+                remark
+                    Translation:
+                        See Destination ID.
+                    Note:
+                        The Source ID centre identifier will define the flight plan source centre.
+                        The workstation identifier can be ignored.
+            030 "Message Type"
+                definition
+                    The event that triggered the message transmission.
                 element 8
+                    table
+                        1: Flight plan creation
+                        2: Flight plan modification
+                        3: Flight plan repetition
+                        4: Manual flight plan deletion
+                        5: Automatic flight plan deletion
+                        6: Flight is beyond extraction area boundary
+                        251: Short term conflict alert
+                        252: Correlations
+                        253: Decorrelations
+                        254: Start of background loop
+                        255: End of background loop
+            040 "Plan Reference Number"
+                definition
+                    Identification of the flight plan.
+                element 16
                     raw
-            POS "Workstation Identifier"
-                element 8
-                    raw
-        remark
-            Translation:
-                See Annex 1 Centre ID definition
-            Note:
-                The Destination ID is irrelevant in CAT150 messages since the flight plan messages are sent to all 10 centres.
-                Hence, the centre identifier is set to broadcast.
-                The workstation identifier can be ignored.
-
-    020 "Source ID"
-        definition
-            Identification of the sending centre.
-        group
-            CEN "Centre Identifier"
-                element 8
-                    raw
-            POS "Workstation Identifier"
-                element 8
-                    raw
-        remark
-            Translation:
-                See Destination ID.
-            Note:
-                The Source ID centre identifier will define the flight plan source centre.
-                The workstation identifier can be ignored.
-
-    030 "Message Type"
-        definition
-            The event that triggered the message transmission.
-        element 8
-            table
-                1: Flight plan creation
-                2: Flight plan modification
-                3: Flight plan repetition
-                4: Manual flight plan deletion
-                5: Automatic flight plan deletion
-                6: Flight is beyond extraction area boundary
-                251: Short term conflict alert
-                252: Correlations
-                253: Decorrelations
-                254: Start of background loop
-                255: End of background loop
-
-    040 "Plan Reference Number"
-        definition
-            Identification of the flight plan.
-        element 16
-            raw
-        remark
-            Note:
-                See Plan and Track Numbers.
-                The currently defined range for plan reference numbers used in MADAP is 0 .. 1999. Client systems
-                should allow for a range of 0 .. 2047.
-
-    050 "Callsign"
-        definition
-            Flight identity.
-        element 56
-            string ascii
-
-    060 "Present Mode 3A"
-        definition
-            Actual transponder code mode 3A of the flight.
-        element 32
-            string ascii
-        remark
-            Translation:
-                Octal representation.
-                zzzz: no code availlable/assigned
-                dd00: code family
-                other: discrete code
-                where:
-                - z :== 'z'
-                - 0 :== '0'
-                - d :== '0' .. '7'
-
-    070 "Next Mode 3A"
-        definition
-            Next transponder code mode 3A of the flight.
-        element 32
-            string ascii
-        remark
-            Translation:
-                See Present Mode 3A.
+                remark
+                    Note:
+                        See Plan and Track Numbers.
+                        The currently defined range for plan reference numbers used in MADAP is 0 .. 1999. Client systems
+                        should allow for a range of 0 .. 2047.
+            050 "Callsign"
+                definition
+                    Flight identity.
+                element 56
+                    string ascii
+            060 "Present Mode 3A"
+                definition
+                    Actual transponder code mode 3A of the flight.
+                element 32
+                    string ascii
+                remark
+                    Translation:
+                        Octal representation.
+                        zzzz: no code availlable/assigned
+                        dd00: code family
+                        other: discrete code
+                        where:
+                            z :== 'z'
+                            0 :== '0'
+                            d :== '0' .. '7'
+            070 "Next Mode 3A"
+                definition
+                    Next transponder code mode 3A of the flight.
+                element 32
+                    string ascii
+                remark
+                    Translation:
+                        See Present Mode 3A.
 
 uap
-    010
-    020
-    030
-    040
-    050
-    060
-    070
+    150
