@@ -1,0 +1,1726 @@
+{
+    "catalogue": [
+        {
+            "definition": "Identification of the Server of track information.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Notes:\n\n    1. The up-to-date list of SACs is published on the EUROCONTROL ASTERIX\n       Web Site (http://www.eurocontrol.int/services/system-area-code-list).\n    2. In case of message originating from an FPPS, the Server Identification\n       Tag corresponds to the SDPS unit receiving the Miniplan.\n    3. In case of message originating from a SDPS, the Server Identification\n       Tag corresponds to the SDPS unit sending the Miniplan.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Server Identification Tag"
+        },
+        {
+            "definition": "Identification of the User of the track data.\n",
+            "description": null,
+            "name": "015",
+            "remark": "Notes:\n\n    1. The User numbers are predefined in the User registration data base\n       of the SDPS Unit to which the User wants to connect.\n    2. In case of message originating from an FPPS, the User Number\n       corresponds to the FPPS one.\n    3. In case of message originating from an SDPS, the User Number\n       corresponds to the SDPS unit receiving the Miniplan.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "User Number"
+        },
+        {
+            "definition": "Identification of the data source (FPPS system) from which the information\ncontained in the message was initially originated.\n",
+            "description": null,
+            "name": "018",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the EUROCONTROL ASTERIX\n      Web Site (http://www.eurocontrol.int/services/system-area-code-list).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identification Tag"
+        },
+        {
+            "definition": "Time of the generation of the ASTERIX category 032 report in the form of\nelapsed time since last midnight, expressed as UTC.\n",
+            "description": null,
+            "name": "020",
+            "remark": "Notes:\n\n    1. The Time of ASTERIX Report Generation is reset to zero at every midnight.\n    2. This time is determined at an application level (e.g. time at which\n       a message is filled), and not at the communication level (i.e. not\n       the time at which the data-block is sent).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of ASTERIX Report Generation"
+        },
+        {
+            "definition": "This data item allows for a more convenient handling of the message at the\nreceiver side by further defining the type of transaction.\n",
+            "description": null,
+            "name": "035",
+            "remark": "Note:\n    - The composition of the messages is described in the following table. ::\n\n        Data        Description         FPL to track Initial    End of correlation ($13),\n        Ref Num                         Correlation ($11),      Miniplan cancellation ($14),\n                                        Miniplan update ($12)   Retained Miniplan ($15)\n\n        I032/010    Server id ...               M                       M\n        I032/015    User Number                 O                       O\n        I032/018    Data Source ...             M                       M\n        I032/020    Time of ...                 M                       M\n        I032/035    Type of Message             M                       M\n        I032/040    Track Number            M from FPPS             M from FPPS\n                                            X from SDPS             X from SDPS\n        I032/050    Composed trknum...      M from SDPS             M from SDPS\n                                            X from FPPS             X from FDPS\n        I032/060    Track Mode 3/A              O                       X\n        I032/400    Callsign                    O                       X\n        I032/410    Plan Number                 O                       X\n        I032/420    Flight Category             O                       X\n        I032/430    Type of Aircraft            O                       X\n        I032/435    Wake Turbulence ...         O                       X\n        I032/440    Departure ...               O                       X\n        I032/450    Destination ...             O                       X\n        I032/460    Allocated SSR Codes         O                       X\n        I032/480    Current Cleared FL...       O                       X\n        I032/490    Current Control Pos...      O                       X\n        I032/500    Supplementary FD...         O                       X\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "FAMILY",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    1,
+                                                    "Information sent by an FPPS"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NATURE",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    1,
+                                                    "Flight Plan to track initial correlation"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Miniplan update"
+                                                ],
+                                                [
+                                                    3,
+                                                    "End of correlation"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Miniplan Cancellation"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Retained Miniplan"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Type of Message"
+        },
+        {
+            "definition": "Identification of a track (track number)\n",
+            "description": null,
+            "name": "040",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Track Number"
+        },
+        {
+            "definition": "Identification of a system track.\n",
+            "description": null,
+            "name": "050",
+            "remark": "Notes:\n\n    1. Each Track Number (i.e. either a Master or a Slave Track Number)\n       is composed of a System Unit Identification (i.e. the identification\n       of the SDPS unit processing the) together with the relevant System\n       Track Number (i.e. the number of the track local to the SDPS Unit\n       in question).\n    2. The Composed Track Number is used by co-operating SDPS units to\n       uniquely identify a track. It consists of the unit identifier and\n       system track number for each unit involved in the co-operation.\n       The first unit identification identifies the unit that is responsible\n       for the track amalgamation.\n    3. The Master Track Number and the possible extensions (Slave Tracks\n       Numbers) are identically composed.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SUI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Unit Identification"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 15,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Track Number"
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Composed Track Number"
+        },
+        {
+            "definition": "Mode 3/A code associated to the track\n",
+            "description": null,
+            "name": "060",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 4,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MODE3A",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringOctal"
+                                        }
+                                    },
+                                    "size": 12,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "(Mode 3/A Code) 4 Digits, Octal Representation"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Track Mode 3/A"
+        },
+        {
+            "definition": "Callsign (in 7 characters) of an aircraft (provided in the Miniplan).\n",
+            "description": null,
+            "name": "400",
+            "remark": "Note:\n    - Each one of the seven octets contains an ASCII Character. The Callsign\n      is always left adjusted. It contains up to seven upper-case alphanumeric\n      characters, the remaining character positions (if any) are padded with\n      space characters.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 56,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Callsign"
+        },
+        {
+            "definition": "The Plan Number is an integer value representing a unique reference to a\nFlight-plan record within a particular FPPS.\n",
+            "description": null,
+            "name": "410",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Plan Number"
+        },
+        {
+            "definition": "Flight Category.\n",
+            "description": null,
+            "name": "420",
+            "remark": "Note:\n    - The definition of the sub-categories is system dependent and shall\n      be descried in the system ICD.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GATOAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "General Air Traffic"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Operational Air Traffic"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Not applicable"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "FR1FR2",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Instrument Flight Rules"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Visual Flight rules"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Not applicable"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Controlled Visual Flight Rules"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SP3",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SP2",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SP1",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "length": 1,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Flight Category"
+        },
+        {
+            "definition": "Type of Aircraft.\n",
+            "description": null,
+            "name": "430",
+            "remark": "Notes:\n\n    1. Each one of the four octets composing the type of aircraft contains\n       an ASCII Character (upper-case alphabetic characters with trailing\n       spaces).\n    2. The types of aircraft are defined in the ICAO Document 4444.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Type of Aircraft"
+        },
+        {
+            "definition": "Wake turbulence category of an aircraft.\n",
+            "description": null,
+            "name": "435",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    76,
+                                    "Light"
+                                ],
+                                [
+                                    77,
+                                    "Medium"
+                                ],
+                                [
+                                    72,
+                                    "Heavy"
+                                ],
+                                [
+                                    74,
+                                    "Super"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Wake Turbulence Category"
+        },
+        {
+            "definition": "Departure Aerodrome\n",
+            "description": null,
+            "name": "440",
+            "remark": "Notes:\n\n    1. Each octet contains one ASCII Character (Upper Case Alphabetic)\n    2. The Aerodrome Names are indicated in the ICAO Location Indicators book.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Departure Aerodrome"
+        },
+        {
+            "definition": "Departure Aerodrome\n",
+            "description": null,
+            "name": "450",
+            "remark": "Notes:\n\n    1. Each octet contains one ASCII Character (Upper Case Alphabetic).\n    2. The Aerodrome Names are indicated in the ICAO Location Indicators book [Ref. 5].\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Destination Aerodrome"
+        },
+        {
+            "definition": "List of successive SSR Codes allocated to a flight.\n",
+            "description": null,
+            "name": "460",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "length": 4,
+                                "spare": true
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "OCT1",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "1st Octal Digit"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "OCT2",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "2nd Octal Digit"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "OCT3",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "3rd Octal Digit"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "OCT4",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 3,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "4th Octal Digit"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Allocated SSR Codes"
+        },
+        {
+            "definition": "Current Cleared Flight Level\n",
+            "description": null,
+            "name": "480",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 0
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 1500
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 2,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "FL"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Current Cleared Flight Level"
+        },
+        {
+            "definition": "Identification of the Control Position currently controlling a flight.\n",
+            "description": null,
+            "name": "490",
+            "remark": "Note:\n    - The Centre and Control Position Identification Codes are implementation\n      specific and have to be agreed upon between communication partners.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CEN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Centre"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "POS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Position"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Current Control Position"
+        },
+        {
+            "definition": "Flight related data provided by ground based systems.\n",
+            "description": null,
+            "name": "500",
+            "remark": "Notes:\n\n    1. NU1, NU2 and LTR each contain an ASCII character (upper case alphabetic).\n    2. For details refer to ICAO Annex 14 Chapter 5 [Ref. 4].\n    3. Estimated times are derived from flight plan processing systems.\n       Predicted times are derived by the fusion system based on surveillance\n       data. For definitions see [Ref.4]\n    4. Each one of the six Octets contains an ASCII Character. The Aircraft\n       Stand identification is always left adjusted. It contains up to six\n       upper-case alphanumeric characters, the remaining character positions\n       (if any) are padded with space characters.\n    5. Each one of the seven Octets contains an ASCII Character. The SID is\n       always left adjusted. It contains up to seven alphanumeric characters,\n       the remaining character positions (if any) are padded with space characters.\n    6. Each one of the seven Octets contains an ASCII Character. The STAR\n       is always left adjusted. It contains up to seven alphanumeric\n       characters, the remaining character positions (if any) are padded\n       with space characters.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "fspec": null,
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "IFI",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "items": [
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "TYP",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "Table",
+                                                            "values": [
+                                                                [
+                                                                    0,
+                                                                    "Plan Number"
+                                                                ],
+                                                                [
+                                                                    1,
+                                                                    "Unit 1 internal flight number"
+                                                                ],
+                                                                [
+                                                                    2,
+                                                                    "Unit 2 internal flight number"
+                                                                ],
+                                                                [
+                                                                    3,
+                                                                    "Unit 3 internal flight number"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "size": 2,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        },
+                                        {
+                                            "length": 3,
+                                            "spare": true
+                                        },
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "NBR",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "constraints": [
+                                                                {
+                                                                    "type": ">=",
+                                                                    "value": {
+                                                                        "type": "Integer",
+                                                                        "value": 0
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "type": "<=",
+                                                                    "value": {
+                                                                        "type": "Integer",
+                                                                        "value": 99999999
+                                                                    }
+                                                                }
+                                                            ],
+                                                            "signed": false,
+                                                            "type": "Integer"
+                                                        }
+                                                    },
+                                                    "size": 27,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        }
+                                    ],
+                                    "type": "Group"
+                                }
+                            },
+                            "spare": false,
+                            "title": "IFPS FLIGHT ID"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RVP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "items": [
+                                        {
+                                            "length": 5,
+                                            "spare": true
+                                        },
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "RVSM",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "Table",
+                                                            "values": [
+                                                                [
+                                                                    0,
+                                                                    "Unknown"
+                                                                ],
+                                                                [
+                                                                    1,
+                                                                    "Approved"
+                                                                ],
+                                                                [
+                                                                    2,
+                                                                    "Exempt"
+                                                                ],
+                                                                [
+                                                                    3,
+                                                                    "Not approved"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "size": 2,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        },
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "HPR",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "Table",
+                                                            "values": [
+                                                                [
+                                                                    0,
+                                                                    "Normal Priority Flight"
+                                                                ],
+                                                                [
+                                                                    1,
+                                                                    "High Priority Flight"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "size": 1,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        }
+                                    ],
+                                    "type": "Group"
+                                }
+                            },
+                            "spare": false,
+                            "title": "RVSM & Flight Priority"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RDS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "items": [
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "NU1",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "String",
+                                                            "variation": "StringAscii"
+                                                        }
+                                                    },
+                                                    "size": 8,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": "First Number"
+                                        },
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "NU2",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "String",
+                                                            "variation": "StringAscii"
+                                                        }
+                                                    },
+                                                    "size": 8,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": "Second Number"
+                                        },
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "LTR",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "String",
+                                                            "variation": "StringAscii"
+                                                        }
+                                                    },
+                                                    "size": 8,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": "Letter"
+                                        }
+                                    ],
+                                    "type": "Group"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Runway Designation"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TOD",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rep": {
+                                        "size": 8,
+                                        "type": "Regular"
+                                    },
+                                    "type": "Repetitive",
+                                    "variation": {
+                                        "items": [
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "TYP",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Scheduled Off-Block Time"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Estimated Off-Block Time"
+                                                                    ],
+                                                                    [
+                                                                        2,
+                                                                        "Estimated Take-Off Time"
+                                                                    ],
+                                                                    [
+                                                                        3,
+                                                                        "Actual Off-Block Time"
+                                                                    ],
+                                                                    [
+                                                                        4,
+                                                                        "Predicted Time at Runway Hold"
+                                                                    ],
+                                                                    [
+                                                                        5,
+                                                                        "Actual Time at Runway Hold"
+                                                                    ],
+                                                                    [
+                                                                        6,
+                                                                        "Actual Line-Up Time"
+                                                                    ],
+                                                                    [
+                                                                        7,
+                                                                        "Actual Take-Off Time"
+                                                                    ],
+                                                                    [
+                                                                        8,
+                                                                        "Estimated Time of Arrival"
+                                                                    ],
+                                                                    [
+                                                                        9,
+                                                                        "Predicted Landing Time"
+                                                                    ],
+                                                                    [
+                                                                        10,
+                                                                        "Actual Landing Time"
+                                                                    ],
+                                                                    [
+                                                                        11,
+                                                                        "Actual Time off Runway"
+                                                                    ],
+                                                                    [
+                                                                        12,
+                                                                        "Predicted Time to Gate"
+                                                                    ],
+                                                                    [
+                                                                        13,
+                                                                        "Actual On-Block Time"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 5,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "DAY",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Today"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Yesterday"
+                                                                    ],
+                                                                    [
+                                                                        2,
+                                                                        "Tomorrow"
+                                                                    ],
+                                                                    [
+                                                                        3,
+                                                                        "Invalid"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 2,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "length": 4,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "HOR",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [
+                                                                    {
+                                                                        "type": ">=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 0
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "<=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 23
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "signed": false,
+                                                                "type": "Integer"
+                                                            }
+                                                        },
+                                                        "size": 5,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "length": 2,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "MIN",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [
+                                                                    {
+                                                                        "type": ">=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 0
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "<=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 59
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "signed": false,
+                                                                "type": "Integer"
+                                                            }
+                                                        },
+                                                        "size": 6,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "AVS",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Seconds available"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Seconds not available"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "length": 1,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "SEC",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "constraints": [
+                                                                    {
+                                                                        "type": ">=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 0
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        "type": "<=",
+                                                                        "value": {
+                                                                            "type": "Integer",
+                                                                            "value": 59
+                                                                        }
+                                                                    }
+                                                                ],
+                                                                "signed": false,
+                                                                "type": "Integer"
+                                                            }
+                                                        },
+                                                        "size": 6,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                }
+                            },
+                            "spare": false,
+                            "title": "Time of Departure / Arrival"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "AST",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringAscii"
+                                        }
+                                    },
+                                    "size": 48,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Aircraft Stand"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "items": [
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "EMP",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "Table",
+                                                            "values": [
+                                                                [
+                                                                    0,
+                                                                    "Empty"
+                                                                ],
+                                                                [
+                                                                    1,
+                                                                    "Occupied"
+                                                                ],
+                                                                [
+                                                                    2,
+                                                                    "Unknown"
+                                                                ],
+                                                                [
+                                                                    3,
+                                                                    "Invalid"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "size": 2,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        },
+                                        {
+                                            "definition": null,
+                                            "description": null,
+                                            "name": "AVL",
+                                            "remark": null,
+                                            "rule": {
+                                                "type": "ContextFree",
+                                                "value": {
+                                                    "rule": {
+                                                        "type": "ContextFree",
+                                                        "value": {
+                                                            "type": "Table",
+                                                            "values": [
+                                                                [
+                                                                    0,
+                                                                    "Available"
+                                                                ],
+                                                                [
+                                                                    1,
+                                                                    "Not available"
+                                                                ],
+                                                                [
+                                                                    2,
+                                                                    "Unknown"
+                                                                ],
+                                                                [
+                                                                    3,
+                                                                    "Invalid"
+                                                                ]
+                                                            ]
+                                                        }
+                                                    },
+                                                    "size": 2,
+                                                    "type": "Element"
+                                                }
+                                            },
+                                            "spare": false,
+                                            "title": ""
+                                        },
+                                        {
+                                            "length": 4,
+                                            "spare": true
+                                        }
+                                    ],
+                                    "type": "Group"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Stand Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SID",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringAscii"
+                                        }
+                                    },
+                                    "size": 56,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Standard Instrument Departure"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STAR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringAscii"
+                                        }
+                                    },
+                                    "size": 56,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Standard Instrument Arrival"
+                        }
+                    ],
+                    "type": "Compound"
+                }
+            },
+            "spare": false,
+            "title": "Supplementary Flight Data"
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "RE",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Reserved Expansion Field"
+        }
+    ],
+    "date": {
+        "day": 11,
+        "month": 12,
+        "year": 2020
+    },
+    "edition": {
+        "major": 1,
+        "minor": 1
+    },
+    "number": 32,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Miniplan Reports to an SDPS",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "015",
+            "018",
+            "035",
+            "020",
+            "040",
+            "050",
+            "060",
+            "400",
+            "410",
+            "420",
+            "440",
+            "450",
+            "480",
+            "490",
+            "430",
+            "435",
+            "460",
+            "500",
+            null,
+            "RE"
+        ],
+        "type": "uap"
+    }
+}

@@ -1,0 +1,951 @@
+{
+    "catalogue": [
+        {
+            "definition": "Identification of the radar station from which the data are received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    The defined SACs are on the EUROCONTROL ASTERIX website\n    (www.eurocontrol.int/asterix)\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identifier"
+        },
+        {
+            "definition": "Identification of the service provided to one or more users.\n",
+            "description": null,
+            "name": "015",
+            "remark": "The service identification is allocated by the SDPS\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Service Identification"
+        },
+        {
+            "definition": "Absolute time stamping of the message, in the form of elapsed time\nsince last midnight, expressed as UTC.\n",
+            "description": null,
+            "name": "030",
+            "remark": "The time of the day value is reset to zero at every midnight.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Message"
+        },
+        {
+            "definition": null,
+            "description": null,
+            "name": "050",
+            "remark": "- The up-to-date list of SACs is published on the EUROCONTROL\n  Web Site (http://www.eurocontrol.int/asterix).\n- If the SAC/SIC refers to an SDPS used as input, the respective\n  sensor status information will be transmitted using the Reserved\n  Expansion Field.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Sensor Identifier"
+        },
+        {
+            "definition": "Configuration and status of the sensor\n",
+            "description": null,
+            "name": "060",
+            "remark": "1. GO/NOGO information from PSR, SSR, Mode S, ADS and MLT is derived\n   from monosensor categories and has a meaning only for operational\n   sensors, whereas (CON) is derived by the SDPS.\n2. The information (OPS), (ODP), (OXT), (MSC) and (TSV) are only related to\n   CNS/ATM Ground Station and are derived from monosensor category\n   (ASTERIX Cat 023).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CON",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Operational"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Degraded"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Initialization"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Not currently connected"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PSR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "PSR GO"
+                                                ],
+                                                [
+                                                    1,
+                                                    "PSR NOGO"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SSR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "SSR GO"
+                                                ],
+                                                [
+                                                    1,
+                                                    "SSR NOGO"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MDS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "MDS GO"
+                                                ],
+                                                [
+                                                    1,
+                                                    "MDS NOGO"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ADS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "ADS GO"
+                                                ],
+                                                [
+                                                    1,
+                                                    "ADS NOGO"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MLT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "MLT GO"
+                                                ],
+                                                [
+                                                    1,
+                                                    "MLT NOGO"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "OPS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "System is released for operational use"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Operational use of System is inhibited"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Operational Release Status of the System"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ODP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default, no overload"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Overload in DP"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Data Processor Overload Indicator"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "OXT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default, no overload"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Overload in transmission subsystem"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Transmission Subsystem Overload Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MSC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Monitoring system connected"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Monitoring system disconnected"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Monitoring System Connected Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TSV",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Valid"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Invalid"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Time Source Validity"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NPW",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default (no meaning)"
+                                                ],
+                                                [
+                                                    1,
+                                                    "No plots being received"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "No Plot Warning"
+                        },
+                        {
+                            "length": 1,
+                            "spare": true
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Sensor Configuration and Status"
+        },
+        {
+            "definition": "Plot Time stamping bias, in two’s complement form\n",
+            "description": null,
+            "name": "070",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "type": "Integer",
+                                "value": 1
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "ms"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time Stamping Bias"
+        },
+        {
+            "definition": "SSR / Mode S Range Gain and Range Bias, in two’s complement form.\n",
+            "description": null,
+            "name": "080",
+            "remark": "Note:\n\n    The following formula is used to correct range:\n\n    .. math::\n\n        \\rho_\\mathrm{corrected} = \\frac{\\rho_\\mathrm{measured} - range\\_bias}{1 + range\\_gain}\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SRG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "type": "Integer",
+                                                    "value": 100000
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": ""
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Mode S Range Gain"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SRB",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 7,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "NM"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Mode S Range Bias"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "SSR / Mode S Range Gain and Bias"
+        },
+        {
+            "definition": "SSR / Mode S Azimuth Bias, in two’s complement form.\n",
+            "description": null,
+            "name": "081",
+            "remark": "Note:\n\n    The following formula is used to correct azimuth:\n\n    .. math::\n\n        \\theta_\\mathrm{corrected} = \\theta_\\mathrm{measured} - azimuth\\_bias\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 16,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 360
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "SSR Mode S Azimuth Bias"
+        },
+        {
+            "definition": "PSR Range Gain and PSR Range Bias, in two’s complement form.\n",
+            "description": null,
+            "name": "090",
+            "remark": "Note:\n\n    The following formula is used to correct range:\n\n    .. math:\n\n        \\rho_\\mathrm{corrected} = \\frac{\\rho_\\mathrm{measured} - range\\_bias}{1 + range\\_gain}\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PRG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "type": "Integer",
+                                                    "value": 100000
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": ""
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "PSR Range Gain"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "PRB",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 7,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "NM"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "PSR Range Bias"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "PSR Range Gain and Bias"
+        },
+        {
+            "definition": "PSR Azimuth Bias, in two’s complement form.\n",
+            "description": null,
+            "name": "091",
+            "remark": "Note:\n\n    The following formula is used to correct azimuth:\n\n    .. math::\n\n        \\theta_\\mathrm{corrected} = \\theta_\\mathrm{measured} - azimuth\\_bias\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 16,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 360
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "PSR Azimuth Bias"
+        },
+        {
+            "definition": "PSR Elevation Bias, in two’s complement form.\n",
+            "description": null,
+            "name": "092",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 16,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 360
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "PSR Elevation Bias"
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "RE",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Reserved Expansion Field"
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "SP",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Special Purpose Field"
+        }
+    ],
+    "date": {
+        "day": 4,
+        "month": 8,
+        "year": 2020
+    },
+    "edition": {
+        "major": 1,
+        "minor": 6
+    },
+    "number": 63,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Sensor Status Reports",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "015",
+            "030",
+            "050",
+            "060",
+            "070",
+            "080",
+            "081",
+            "090",
+            "091",
+            "092",
+            null,
+            "RE",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}

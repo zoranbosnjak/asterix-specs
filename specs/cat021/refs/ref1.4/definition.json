@@ -1,0 +1,1523 @@
+{
+    "date": {
+        "day": 8,
+        "month": 3,
+        "year": 2018
+    },
+    "edition": {
+        "major": 1,
+        "minor": 4
+    },
+    "number": 21,
+    "title": "ADS-B Target Reports Expansion",
+    "type": "Expansion",
+    "variation": {
+        "fspec": 8,
+        "items": [
+            {
+                "definition": "Barometric Pressure Setting\n",
+                "description": null,
+                "name": "BPS",
+                "remark": "Notes:\n\n    - BPS is the barometric pressure setting of the aircraft minus 800 hPa\n\n    - A value of \"0\" indicates that in the aircraft a value of 800 hPa or\n      less has been selected.\n\n    - A value of \"409.5\" indicates that in the aircraft a value of 1209.5\n      hPa or more has been selected.\n",
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "items": [
+                            {
+                                "length": 4,
+                                "spare": true
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "BPS",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [
+                                                    {
+                                                        "type": ">=",
+                                                        "value": {
+                                                            "type": "Integer",
+                                                            "value": 0
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "<=",
+                                                        "value": {
+                                                            "denominator": {
+                                                                "type": "Integer",
+                                                                "value": 2
+                                                            },
+                                                            "numerator": {
+                                                                "type": "Integer",
+                                                                "value": 819
+                                                            },
+                                                            "type": "Div"
+                                                        }
+                                                    }
+                                                ],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "type": "Integer",
+                                                        "value": 10
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "hPa"
+                                            }
+                                        },
+                                        "size": 12,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Barometric Pressure Setting"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                },
+                "spare": false,
+                "title": "Barometric Pressure Setting"
+            },
+            {
+                "definition": "Selected Heading\n",
+                "description": null,
+                "name": "SH",
+                "remark": "On many aircraft, the ADS-B Transmitting Subsystem receives\nSelected Heading from a Mode Control Panel / Flight Control Unit\n(MCP / FCU). Users of this data are cautioned that the Selected\nHeading value transmitted by the ADS-B Transmitting Subsystem\ndoes not necessarily reflect the true intention of the airplane during\ncertain flight modes (e.g., during LNAV mode).\n",
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "items": [
+                            {
+                                "length": 4,
+                                "spare": true
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "HDR",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "True North"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Magnetic North"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Horizontal Reference Direction"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "STAT",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Data is either unavailable or invalid"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Data is available and valid"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Selected Heading Status"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "SH",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 45
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "°"
+                                            }
+                                        },
+                                        "size": 10,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Selected Heading"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                },
+                "spare": false,
+                "title": "Selected Heading"
+            },
+            {
+                "definition": "Navigation Mode Settings\n",
+                "description": null,
+                "name": "NAV",
+                "remark": "This data-item should only be transmitted if an ADS-B indication has\nbeen received that the mode bits have been \"actively populated\".by\nthe avionics (1090 ES version 2 (as defined in I021/210) BDS 6,2,\nsubtype 1, bit 47: \"Status of MCP / FCU Mode Bits\")\n",
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "AP",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Autopilot not engaged"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Autopilot engaged"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Autopilot"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "VN",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Vertical Navigation not active"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Vertical Navigation active"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Vertical Navigation"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "AH",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Altitude Hold not engaged"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Altitude Hold engaged"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Altitude Hold"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "AM",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Approach Mode not active"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Approach Mode active"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Approach Mode"
+                            },
+                            {
+                                "length": 4,
+                                "spare": true
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                },
+                "spare": false,
+                "title": "Navigation Mode"
+            },
+            {
+                "definition": "GPS Antenna Offset\n",
+                "description": null,
+                "name": "GAO",
+                "remark": "The value of this field is copied from the respective bits 33-40 of\nversion 2 (as defined in I021/210) of 1090 ES BDS register 6,5\n(Aircraft Operational Status)\n",
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 8,
+                        "type": "Element"
+                    }
+                },
+                "spare": false,
+                "title": "GPS Antenna Offset"
+            },
+            {
+                "definition": "Ground Speed and Track Angle elements of the Surface\nGround Vector.\n",
+                "description": null,
+                "name": "SGV",
+                "remark": null,
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "STP",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Aircraft has not stopped"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Aircraft has stopped"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "HTS",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Heading/Ground Track data is not valid"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Heading/Ground Track data is valid"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "HTT",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Heading data provided"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Ground Track provided"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "HRD",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "True North"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Magnetic North"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "GSS",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 3,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "kt"
+                                            }
+                                        },
+                                        "size": 11,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Ground Speed"
+                            },
+                            null,
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "HGT",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 4,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 45
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "°"
+                                            }
+                                        },
+                                        "size": 7,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Heading/Ground Track Information"
+                            },
+                            null
+                        ],
+                        "type": "Extended"
+                    }
+                },
+                "spare": false,
+                "title": "Surface Ground Vector"
+            },
+            {
+                "definition": "This item contains flags to convey information on the status\nof a target.\n",
+                "description": null,
+                "name": "STA",
+                "remark": null,
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "ES",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Target is not 1090 ES IN capable"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Target is 1090 ES IN capable"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "UAT",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Target is not UAT IN capable"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Target is UAT IN capable"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "length": 5,
+                                "spare": true
+                            },
+                            null
+                        ],
+                        "type": "Extended"
+                    }
+                },
+                "spare": false,
+                "title": "Aircraft Status"
+            },
+            {
+                "definition": "True North Heading (Element of Air Vector).\n",
+                "description": null,
+                "name": "TNH",
+                "remark": "Magnetic Heading is defined in I021/152.\n",
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "constraints": [],
+                                "lsb": {
+                                    "denominator": {
+                                        "base": 2,
+                                        "exponent": 16,
+                                        "type": "Pow"
+                                    },
+                                    "numerator": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    },
+                                    "type": "Div"
+                                },
+                                "signed": false,
+                                "type": "Quantity",
+                                "unit": "°"
+                            }
+                        },
+                        "size": 16,
+                        "type": "Element"
+                    }
+                },
+                "spare": false,
+                "title": "True North Heading"
+            },
+            {
+                "definition": "Contents of Extended Squitters transmitted by Military Aircraft\n",
+                "description": null,
+                "name": "MES",
+                "remark": "Notes:\n\n    - The Reserved Expansion Field is optional. When used to transmit MES, it shall\n      be sent when the targets are represented by Mode 5 Level 2 reports.\n\n    - The information contained in this data item is specific to\n      1090MHz Extended Squitter messages transmitted by military\n      aircraft (Mode 5 Level 2 squitter).\n",
+                "rule": {
+                    "type": "ContextFree",
+                    "value": {
+                        "fspec": null,
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "SUM",
+                                "remark": "Notes:\n\n    1. The flag M2 refers to the contents of Subfield #6 below, M3, MC refer\n       to the contents of data items I021/070 and I021/145 respectively. The\n       flag M1 refers to the contents of Subfield #3 below (Extended Mode 1\n       Code in Octal Representation).\n\n    2. If a Mode 5 reply/report is received with the Emergency bit set, then\n       the Military Emergency bit (ME) in Data Item I021/200, Target Status,\n       shall be set.\n\n    3. If a Mode 5 reply/report is received with the Identification of Position bit\n       set, then the Special Position Identification bit (SPI) in Data Item\n       I021/200, Target Status, shall be set.\n\n    4. If a Mode 5 report (ID or Data) is received and fullfill the autentication\n       criteria the corresponding authentication bit shall be set.\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "items": [
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "M5",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "No Mode 5 interrogation"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Mode 5 interrogation"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "ID",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "No authenticated Mode 5 ID reply/report"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Authenticated Mode 5 ID reply/report"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "DA",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "No authenticated Mode 5 Data reply or Report"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply type other than ID)"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "M1",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Mode 1 code not present or not from Mode 5 reply/report"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Mode 1 code from Mode 5 reply/report"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "M2",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Mode 2 code not present or not from Mode 5 reply/report"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Mode 2 code from Mode 5 reply/report"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "M3",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Mode 3 code not present or not from Mode 5 reply/report"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Mode 3 code from Mode 5 reply/report"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "MC",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Flightlevel not present or not from Mode 5 reply/report"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Flightlevel from Mode 5 reply/report"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "PO",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Position not from Mode 5 report (ADS-B report)"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Position from Mode 5 report"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Mode 5 Summary"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "PNO",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "items": [
+                                            {
+                                                "length": 2,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "PIN",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Raw"
+                                                            }
+                                                        },
+                                                        "size": 14,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "PIN Code"
+                                            },
+                                            {
+                                                "length": 5,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "NO",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Raw"
+                                                            }
+                                                        },
+                                                        "size": 11,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "National Origin Code"
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Mode 5 PIN / National Origin"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "EM1",
+                                "remark": "Notes:\n\n    - Subfield #1 is present, the M1 bit in Subfield #1 indicates whether the\n      Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If\n      Subfield #1 is not present, the Extended Mode 1 Code is from a Mode\n      1 reply.\n\n    - If Subfield #3 is not present the Mode 1 Code was not reported or all\n      Code Bits were equal to 0.\n\n    - The valid bit is set if the Code was only reported once for that target.\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "items": [
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "V",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Code validated"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Code not validated"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "length": 1,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "L",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Mode 1 code as derived from the report of the transponder"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Smoothed Mode 1 code as provided by a local tracker"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "length": 1,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "EM1",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "String",
+                                                                "variation": "StringOctal"
+                                                            }
+                                                        },
+                                                        "size": 12,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "Extended Mode 1 Code in Octal Representation"
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Extended Mode 1 Code in Octal Representation"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "XP",
+                                "remark": "Within Mode 5 reports, the X-Pulse can be set for the following cases:\n\n1. In a combined Mode 1 and Mode 2 report: in this case the X5 bit and the X2 bit\nshall be set;\n\n2. In a combined Mode 3 and Mode C report: in this case the X5 bit and the X3\nbit shall be set;\n\n3. In a Mode 5 PIN data report: in this case the X5 bit and the XP bit shall be set.\nThe X1 bit and the XC bit are meaningless as in Mode 1 and Mode C\nreplies/reports the X Pulse is not defined. They are kept for compatibility\nreasons.\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "items": [
+                                            {
+                                                "length": 2,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "XP",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "X-Pulse not present"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "X-pulse present"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "X-pulse from Mode 5 PIN Reply/report"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "X5",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "X-pulse set to zero or no authenticated Data reply or Report received"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "X-pulse set to one (present)"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "X-pulse from Mode 5 Data Reply or Report"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "XC",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "X-pulse set to zero or no Mode C reply"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "X-pulse set to one (present)"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "X-pulse from Mode C Reply"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "X3",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "X-pulse set to zero or no Mode 3/A reply"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "X-pulse set to one (present)"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "X-pulse from Mode 3/A Reply"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "X2",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "0 X-pulse set to zero or no Mode 2 reply"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "X-pulse set to one (present)"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "X-pulse from Mode 2 Reply"
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "X1",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "X-pulse set to zero or no Mode 1 reply"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "X-pulse set to one (present)"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "X-pulse from Mode 1 Reply"
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "X Pulse Presence"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "FOM",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "items": [
+                                            {
+                                                "length": 3,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "FOM",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Raw"
+                                                            }
+                                                        },
+                                                        "size": 5,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "Figure of Merit"
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Figure of Merit"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "M2",
+                                "remark": "If Subfield 6 is not present the Mode 2 Code was no reported or all\nCode Bits were equal to 0.\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "items": [
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "V",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Code validated"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Code not validated"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "length": 1,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "L",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "Table",
+                                                                "values": [
+                                                                    [
+                                                                        0,
+                                                                        "Mode-2 code as derived from the reply of the transponder"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Smoothed Mode-2 code as provided by a local tracker"
+                                                                    ]
+                                                                ]
+                                                            }
+                                                        },
+                                                        "size": 1,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": ""
+                                            },
+                                            {
+                                                "length": 1,
+                                                "spare": true
+                                            },
+                                            {
+                                                "definition": null,
+                                                "description": null,
+                                                "name": "MODE2",
+                                                "remark": null,
+                                                "rule": {
+                                                    "type": "ContextFree",
+                                                    "value": {
+                                                        "rule": {
+                                                            "type": "ContextFree",
+                                                            "value": {
+                                                                "type": "String",
+                                                                "variation": "StringOctal"
+                                                            }
+                                                        },
+                                                        "size": 12,
+                                                        "type": "Element"
+                                                    }
+                                                },
+                                                "spare": false,
+                                                "title": "Mode 2 Code in Octal Representation"
+                                            }
+                                        ],
+                                        "type": "Group"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Mode 2 Code in Octal Representation"
+                            }
+                        ],
+                        "type": "Compound"
+                    }
+                },
+                "spare": false,
+                "title": "Military Extended Squitter"
+            }
+        ],
+        "type": "Compound"
+    }
+}

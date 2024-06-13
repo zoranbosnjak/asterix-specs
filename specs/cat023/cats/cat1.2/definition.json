@@ -1,0 +1,994 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the\nreports at the receiver side by further defining the type of\ntransaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": "NOTES:\n    1. In applications where transactions of various types are exchanged, the\n       Report Type Data Item facilitates the proper report handling at the\n       receiver side.\n    2. All Report Type values are reserved for common standard use.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    1,
+                                    "Ground station status report"
+                                ],
+                                [
+                                    2,
+                                    "Service status report"
+                                ],
+                                [
+                                    3,
+                                    "Service statistics report"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Report Type"
+        },
+        {
+            "definition": "Identification of the Ground Station from which the data is received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identifier"
+        },
+        {
+            "definition": "Identifies the type of service being reported.\n",
+            "description": null,
+            "name": "015",
+            "remark": "Note:\n    - The service identification is allocated by the system.\n    - The service identification is also available in item I021/015.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SID",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Service Identification"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STYP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    1,
+                                                    "ADS-B VDL4"
+                                                ],
+                                                [
+                                                    2,
+                                                    "ADS-B Ext Squitter"
+                                                ],
+                                                [
+                                                    3,
+                                                    "ADS-B UAT"
+                                                ],
+                                                [
+                                                    4,
+                                                    "TIS-B VDL4"
+                                                ],
+                                                [
+                                                    5,
+                                                    "TIS-B Ext Squitter"
+                                                ],
+                                                [
+                                                    6,
+                                                    "TIS-B UAT"
+                                                ],
+                                                [
+                                                    7,
+                                                    "FIS-B VDL4"
+                                                ],
+                                                [
+                                                    8,
+                                                    "GRAS VDL4"
+                                                ],
+                                                [
+                                                    9,
+                                                    "MLT"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 4,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Type of Service"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Service Type and Identification"
+        },
+        {
+            "definition": "Absolute time stamping expressed as UTC time.\n",
+            "description": null,
+            "name": "070",
+            "remark": "Notes:\n\n    1. The time of day value is reset to zero each day at midnight.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day"
+        },
+        {
+            "definition": "Information concerning the status of a Ground Station.\n",
+            "description": null,
+            "name": "100",
+            "remark": "Notes:\n\n    1. A time source is considered as valid when either externally\n       synchronised or running on a local oscillator within the\n       required accuracy of UTC.\n    2. Bit 8 (NOGO), when set to “1” indicates that the data transmitted\n       by the GS is not released for operational use.\n    3. Bit 2 indicates that the allocation of Track-IDs (Item I021/161)\n       was re-started.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NOGO",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Data is released for operational use"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Data must not be used operationally"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Operational Release Status of the Data"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ODP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default, no overload"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Overload in DP"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Data Processor Overload Indicator"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "OXT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default, no overload"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Overload in transmission subsystem"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Ground Interface Data Communications Overload"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "MSC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Monitoring system not connected or unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Monitoring system connected"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Monitoring System Connected Status"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TSV",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Valid"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Invalid"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Time Source Validity"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SPO",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No spoofing detected"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Potential spoofing attack"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Indication of Spoofing Attack"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Track numbering has restarted"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Renumbering Indication for Track ID"
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GSSP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 127
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "s"
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Ground Station Status Reporting Period"
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Ground Station Status"
+        },
+        {
+            "definition": "Information concerning the configuration of a Service.\n",
+            "description": null,
+            "name": "101",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "type": "Integer",
+                                                    "value": 2
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "s"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Report Period for Category 021 Reports"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No information"
+                                                ],
+                                                [
+                                                    1,
+                                                    "NRA class"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    6,
+                                                    "Reserved for future use"
+                                                ],
+                                                [
+                                                    7,
+                                                    "Reserved for future use"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Service Class"
+                        },
+                        {
+                            "length": 4,
+                            "spare": true
+                        },
+                        null,
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SSRP",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 127
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "s"
+                                        }
+                                    },
+                                    "size": 7,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Service Status Reporting Period"
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Service Configuration"
+        },
+        {
+            "definition": "Information concerning the status of the Service provided by a Ground Station.\n",
+            "description": null,
+            "name": "110",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 4,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Unknown"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Failed"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Disabled"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Degraded"
+                                                ],
+                                                [
+                                                    4,
+                                                    "Normal"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Initialisation"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Status of the Service"
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Service Status"
+        },
+        {
+            "definition": "Statistics concerning the service. Provides counts of various ADS-B\nmessage types that have been received since the report was last sent.\n",
+            "description": null,
+            "name": "120",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "TYPE",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "Number of unknown messages received"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "Number of too old messages received"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "Number of failed message conversions"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "Total Number of messages received"
+                                                    ],
+                                                    [
+                                                        4,
+                                                        "Total Number of messages transmitted"
+                                                    ],
+                                                    [
+                                                        20,
+                                                        "Number of TIS-B management messages received"
+                                                    ],
+                                                    [
+                                                        21,
+                                                        "Number of Basic messages received"
+                                                    ],
+                                                    [
+                                                        22,
+                                                        "Number of High Dynamic messages received"
+                                                    ],
+                                                    [
+                                                        23,
+                                                        "Number of Full Position messages received"
+                                                    ],
+                                                    [
+                                                        24,
+                                                        "Number of Basic Ground  messages received"
+                                                    ],
+                                                    [
+                                                        25,
+                                                        "Number of TCP messages received"
+                                                    ],
+                                                    [
+                                                        26,
+                                                        "Number of UTC time  messages received"
+                                                    ],
+                                                    [
+                                                        27,
+                                                        "Number of Data messages received"
+                                                    ],
+                                                    [
+                                                        28,
+                                                        "Number of High Resolution messages received"
+                                                    ],
+                                                    [
+                                                        29,
+                                                        "Number of Aircraft Target Airborne messages received"
+                                                    ],
+                                                    [
+                                                        30,
+                                                        "Number of Aircraft Target Ground messages received"
+                                                    ],
+                                                    [
+                                                        31,
+                                                        "Number of Ground Vehicle Target messages received"
+                                                    ],
+                                                    [
+                                                        32,
+                                                        "Number of 2 slots TCP messages received"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Type of Report Counter"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "REF",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        0,
+                                                        "From midnight"
+                                                    ],
+                                                    [
+                                                        1,
+                                                        "From the last report"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 1,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Reference from which the Messages Are Countered"
+                            },
+                            {
+                                "length": 7,
+                                "spare": true
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "CV",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 32,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "32-bit Counter Value"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Service Statistics"
+        },
+        {
+            "definition": "Currently active operational range of the Ground Station.\n",
+            "description": null,
+            "name": "200",
+            "remark": "Notes:\n\n    1. Maximum value indicates “maximum value or above”.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "type": "Integer",
+                                "value": 1
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "NM"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Operational Range"
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "RE",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Reserved Expansion Field"
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "SP",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Special Purpose Field"
+        }
+    ],
+    "date": {
+        "day": 1,
+        "month": 3,
+        "year": 2009
+    },
+    "edition": {
+        "major": 1,
+        "minor": 2
+    },
+    "number": 23,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "CNS/ATM Ground Station and Service Status Reports",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "015",
+            "070",
+            "100",
+            "101",
+            "200",
+            "110",
+            "120",
+            null,
+            null,
+            null,
+            "RE",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}

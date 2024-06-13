@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-017---mode-s-surveillance-coordination-function-messages">Asterix category 017 - Mode S Surveillance Coordination Function Messages</h1>
+<p><strong>category</strong>: 017</p>
+<p><strong>edition</strong>: 1.3</p>
+<p><strong>date</strong>: 2009-01-01</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i017000---message-type">I017/000 - Message Type</h3>
+<p><em>Definition</em>: Definition of the type of message in the Surveillance
+Coordination Network (SCN) environment</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Network information<br />
+10: Track data<br />
+20: Track data request<br />
+21: Track data stop<br />
+22: Cancel track data request<br />
+23: Track data stop acknowledgement<br />
+30: New Node / Change-over Initial or intermediate message segment<br />
+31: New Node / Change-over Final or only message segment<br />
+32: New Node / Change-over Initial or intermediate message segment reply<br />
+33: New Node / Change-over Final or only message segment reply<br />
+110: Move node to new cluster state;<br />
+111: Move node to new cluster state acknowledgement</div>
+</blockquote></li>
+</ul>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>Message types 30 to 33 are specific to POEMS stations.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017010---data-source-identifier">I017/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the source node for the SCN data</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I017/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the Eurocontrol
+Web Site (<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017012---data-destination-identifier">I017/012 - Data Destination Identifier</h3>
+<p><em>Definition</em>: Identification of the destination node for the SCN data.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/012/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I017/012/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the Eurocontrol
+Web Site (<a href="http://www.eurocontrol.int">http://www.eurocontrol.int</a>).</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017045---calculated-position-in-wgs-84-coordinates">I017/045 - Calculated Position in WGS-84 Coordinates</h3>
+<p><em>Definition</em>: Calculated Position in WGS-84 Coordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/045/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>25</sup></span> ° <span class="math inline"> ≈ 5.36<em>e</em> − 6</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+<p><strong>I017/045/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>25</sup></span> ° <span class="math inline"> ≈ 5.36<em>e</em> − 6</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> °</li>
+<li>value <span class="math inline"> &lt; 180</span> °</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>See Annex A for calculation details</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017050---flight-level-in-binary-representation">I017/050 - Flight Level in Binary Representation</h3>
+<p><em>Definition</em>: Flight Level of the Aircraft</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/050/V</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Code validated<br />
+1: Code not validated</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/050/G</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Garbled code / Error correction applied</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/050/ALT</strong> - <em>Altitude</em></p>
+<ul>
+<li>14 bits [<code>..............</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “FL”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> FL <span class="math inline"> ≈ 0.25</span> FL</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTES:</dt>
+<dd>
+<ol type="1">
+<li>The value shall be within the range described by ICAO Annex
+10</li>
+<li>Bit-15 (G) is set to one when an error correction has been
+attempted</li>
+<li>In case of a track miss (coasted position) the flight level
+sent will be either he predicted flight level from the
+vertical tracking or the last measured flight level, if no
+vertical tracking is performed. Bit 7 (FLT) of I017/240
+(Track Status) indicates whether vertical tracking was
+performed or not.</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i017070---mode-3a-code-in-octal-representation">I017/070 - Mode 3/A Code in Octal Representation</h3>
+<p><em>Definition</em>: Mode 3/A code converted into octal representation.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/070/V</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Code validated<br />
+1: Code not validated</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/070/G</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Garbled code</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/070/L</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode-3/A code derived from the reply of the transponder<br />
+1: Smoothed Mode-3/A code not extracted during the last scan</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/070/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I017/070/MODE3A</strong> - <em>Mode 3/A Reply in Octal Representation</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>Octal string (3-bits per digit)</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTES:</dt>
+<dd>
+<ol type="1">
+<li>Bit 15 is set to one when an error correction has been
+attempted</li>
+<li>The data could be used to correlate tracks with non unique
+Mode S addresses</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i017140---time-of-day">I017/140 - Time of Day</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as Coordinated Universal Time
+(UTC) time.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> s</li>
+<li>value <span class="math inline"> &lt; 86400</span> s</li>
+</ul>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>The time of day is reset to zero each day at midnight</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017200---track-velocity-in-polar-co-ordinates">I017/200 - Track Velocity in Polar Co-ordinates</h3>
+<p><em>Definition</em>: Calculated track velocity expressed in polar co-ordinates. The
+heading is the heading with respect to the geographical north at
+the aircraft position. For clarification see annex A, paragraph5.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/200/GSP</strong> - <em>Calculated Groundspeed</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “NM/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s <span class="math inline"> ≈ 6.10<em>e</em> − 5</span> NM/s</li>
+</ul>
+<p><strong>I017/200/HDG</strong> - <em>Calculated Heading</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</li>
+</ul>
+</blockquote>
+<h3 id="i017210---mode-s-address-list">I017/210 - Mode S Address List</h3>
+<p><em>Definition</em>: Repetitive Data Item starting with a one-octet Repetition Factor
+followed by at least one Mode S Address of 3-octets length.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>This data item shall be sent even if there is no Mode S
+Address. In this case it is reduced in length to one octet
+only (REP =0) with all bits set to zero.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017220---aircraft-address">I017/220 - Aircraft Address</h3>
+<p><em>Definition</em>: Aircraft address (24-bits Mode S address) assigned uniquely to
+each aircraft.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>raw value</li>
+</ul>
+<h3 id="i017221---duplicate-address-reference-number-drn">I017/221 - Duplicate Address Reference Number (DRN)</h3>
+<p><em>Definition</em>: A number uniquely identifying the aircraft in case the Mode-S
+Address is not unique.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>raw value</li>
+</ul>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ol type="1">
+<li>The DRN shall be added to the Track Data message, if the
+radar node, which is sending the Track Data messages,
+detects two or more aircraft with the same mode-S address
+in its coverage. How the numbers are generated is determined
+by the sending station.</li>
+<li>The radar node receiving the Track Data Messages containing
+a DRN shall add this DRN in the corresponding ”Cancellation
+of Track Data” message.</li>
+<li>The DRN is used to associate the ”Cancellation of Track
+Data” message with the corresponding ”Track Data” messages.</li>
+<li>The cluster controller node will not use the DRN in the
+track data message, because there is no cancellation.</li>
+</ol>
+</dd>
+</dl>
+<h3 id="i017230---transponder-capability">I017/230 - Transponder Capability</h3>
+<p><em>Definition</em>: Communications capability of the transponder received in the
+All-Call reply when the aircraft is initially acquired.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/230/CA</strong> - <em>Communications Capability of the Transponder</em></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No communications capability (surveillance only), no ability to set CA code 7 either airborne or on the ground<br />
+1: Reserved<br />
+2: Reserved<br />
+3: Reserved<br />
+4: At Least Comm. A and Comm. B capability and the ability to set CA code 7 and on the ground<br />
+5: At Least Comm. A and Comm. B capability and the ability to set CA code 7 and airborne<br />
+6: At Least Comm. A and Comm. B capability and the ability to set CA code 7 and either airborne or on the ground<br />
+7: Signifies the DR field is not equal to 0 or the FS field equals 2, 3, 4 or 5 and either airborne or on the ground SI/II-capabilities of the Transponder</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/230/SI</strong> - <em>SI/II-capabilities of the Transponder</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Transponder SI capable<br />
+1: Transponder not SI capable</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/230/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+</blockquote>
+<h3 id="i017240---track-status">I017/240 - Track Status</h3>
+<p><em>Definition</em>: Status of the track position</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I017/240/CST</strong> - <em>Track Coasted</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Measured position<br />
+1: No measured position (coasted)</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/240/FLT</strong> - <em>Flight Level Tracking</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Last Measured Flight Level<br />
+1: Predicted Flight Level</div>
+</blockquote></li>
+</ul>
+<p><strong>I017/240/(spare)</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>This item shall not be sent when CST and FLT equal zero.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017350---cluster-stationnode-list">I017/350 - Cluster Station/Node List</h3>
+<p><em>Definition</em>: List of stations/nodes stored in the known network topology
+maintained by NMP. The topology to be reported is as defined
+in the SCN ICD.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I017/350/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I017/350/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the Eurocontrol
+Web Site (<a href="http://www.eurocontrol.int">http://www.eurocontrol.int</a>).</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017360---cluster-controller-command-state">I017/360 - Cluster Controller Command State</h3>
+<p><em>Definition</em>: Defines the current mode and state in which a cluster station,
+the radar node taking part in the cluster, should be operating.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<dl>
+<dt>NOTE:</dt>
+<dd>
+<ul>
+<li>The Cluster Controller will use this field to select the
+state in which a cluster station should be operating and
+the cluster station will use this field to indicate to the
+cluster controller the adopted state.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i017sp---special-purpose-field">I017/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item (SP)</p>
+<h1 id="user-application-profile-for-category-017">User Application Profile for Category 017</h1>
+<ul>
+<li><ol type="1">
+<li><code>I017/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I017/012</code> - Data Destination Identifier</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I017/000</code> - Message Type</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I017/350</code> - Cluster Station/Node List</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I017/220</code> - Aircraft Address</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I017/221</code> - Duplicate Address Reference Number (DRN)</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I017/140</code> - Time of Day</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I017/045</code> - Calculated Position in WGS-84 Coordinates</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I017/070</code> - Mode 3/A Code in Octal Representation</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I017/050</code> - Flight Level in Binary Representation</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I017/200</code> - Track Velocity in Polar Co-ordinates</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I017/230</code> - Transponder Capability</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I017/240</code> - Track Status</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I017/210</code> - Mode S Address List</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="15" type="1">
+<li><code>I017/360</code> - Cluster Controller Command State</li>
+</ol></li>
+<li><ol start="16" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="17" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="18" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="19" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="20" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="21" type="1">
+<li><code>I017/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

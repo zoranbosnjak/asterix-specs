@@ -1,0 +1,1111 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ntransaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    1,
+                                    "System Position Report"
+                                ],
+                                [
+                                    2,
+                                    "System Bearing Report"
+                                ],
+                                [
+                                    3,
+                                    "System Position Report of conflicting transmission"
+                                ],
+                                [
+                                    4,
+                                    "System Detection End Report"
+                                ],
+                                [
+                                    5,
+                                    "Sensor Data Report"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Message Type"
+        },
+        {
+            "definition": "Identification of the Radio Direction Finder System or Sensor from which the \nreport is received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    The up-to-date list of SACs is published on the\n    EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identifier"
+        },
+        {
+            "definition": "Identification of the service provided to one or more users.\n",
+            "description": null,
+            "name": "015",
+            "remark": "Note:\n    The service identification is allocated by the system.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Service Identification"
+        },
+        {
+            "definition": "UTC time of transmission of this ASTERIX message.\n",
+            "description": null,
+            "name": "030",
+            "remark": "Note:\n    The TOD value is reset to zero at every midnight UTC. \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day"
+        },
+        {
+            "definition": "Sequential and cyclic number of position detection reports.\n",
+            "description": null,
+            "name": "040",
+            "remark": "Note:\n    The number is incremented if there is a new position or bearing detected, independent \n    from the respective channel. The report number shall also be incremented if, during \n    the ongoing position or bearing detection, the position or bearing value is deviating by \n    a system-defined threshold from the previous one. If the message type (I205/000) \n    changes to another Detection Report, the report number is incremented as well.\n    to detect lost messages.\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Report Number"
+        },
+        {
+            "definition": "Calculated position in WGS-84 Coordinates.\n",
+            "description": null,
+            "name": "050",
+            "remark": "Note:\n    The LSB provides a resolution at least better than 0.6 meters.\n    For reports of Message Type 001 and 003, the item shall contain the estimated \n    position of the transmitting aircraft.\n    For reports of Message Type 002, the item shall contain the position of the bearing \n    starting point, i.e. the position of the respective RDF sensor.\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -90
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 90
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 25,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Latitude in WGS-84"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LON",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -180
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 180
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 25,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Longitude in WGS-84"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Position in WGS-84 Coordinates"
+        },
+        {
+            "definition": "Calculated position in Cartesian Coordinates.\n",
+            "description": null,
+            "name": "060",
+            "remark": "Note:\n    The Cartesian coordinates are relative to an agreed System Reference Point. The \n    System Reference Point may be communicated in ASTERIX category 025, item 600.\n    For reports of Message Type 001 and 003, the item shall contain the estimated \n    position of the transmitting aircraft.\n    For reports of Message Type 002, the item shall contain the position of the bearing \n    starting point, i.e. the position of the respective RDF sensor.\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "X",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -4194300
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 4194300
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "type": "Integer",
+                                                    "value": 2
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 24,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "X-coordinate"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "Y",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -4194300
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 4194300
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "type": "Integer",
+                                                    "value": 2
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 24,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Y-coordinate"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Position in Cartesian Coordinates"
+        },
+        {
+            "definition": "Bearing of the detected radio transmission, starting at the position contained in \nI205/050 and given relative to this position.\n",
+            "description": null,
+            "name": "070",
+            "remark": "Note:\n    The angle is given in degrees, in clock-wise notation, \n    starting with 0 degrees for the geographical North. \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 0
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "type": "Integer",
+                                    "value": 100
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Local Bearing"
+        },
+        {
+            "definition": "Bearing of the detected radio transmission, starting at the position contained in \nI205/060, projected to the Cartesian Coordinate System relative to the System \nReference Point (as used for I205/ 060).\n",
+            "description": null,
+            "name": "080",
+            "remark": "Note:\n    The angle is given in degrees, in clock-wise notation, \n    starting with 0 degrees for the geographical North. \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 0
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 360
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "type": "Integer",
+                                    "value": 100
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "System Bearing"
+        },
+        {
+            "definition": "Name of the channel the radio transmission is detected on.\n",
+            "description": null,
+            "name": "090",
+            "remark": "Note:\n    NU1 till NU7 contain digits or a decimal point in ASCII representation, specifying the \n    name of the radio channel. Channel names that could be provided with less than 6 \n    digits shall be filled with trailing zeroes (e.g. 121.100).\n    This channel name is not identical with the actual physical frequency.\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 56,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Radio Channel Name"
+        },
+        {
+            "definition": "Quality of the measurement provided by the Radio Direction Finder system.\n",
+            "description": null,
+            "name": "100",
+            "remark": "Note:\n    The actual meanings of the bits are application dependent.\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Quality of Measurement"
+        },
+        {
+            "definition": "Uncertainty estimation of the RDF System. The transmitter is expected to be \nwithin the provided radius around the calculated position.\n",
+            "description": null,
+            "name": "110",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 0
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 25500
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "type": "Integer",
+                                "value": 100
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "m"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Estimated Uncertainty"
+        },
+        {
+            "definition": "The identification of the RDF sensors that contributed to the detection of the radio \ntransmitter.\n",
+            "description": null,
+            "name": "120",
+            "remark": "Note:\n    The actual identification of the receivers is application dependent.\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 8,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Contributing Sensors"
+        },
+        {
+            "definition": "Calculated position in WGS-84 Coordinates. This is the position of a second \ntransmitter on the same frequency and overlapping in time with the transmitter \nposition communicated in data item I205/050.\n",
+            "description": null,
+            "name": "130",
+            "remark": "Note:\n    The LSB provides a resolution at least better than 0.6 meters.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -90
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 90
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 25,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Latitude in WGS-84"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "LON",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -180
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 180
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 25,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 180
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Longitude in WGS-84"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Conflicting Transmitter Position in WGS-84 Coordinates"
+        },
+        {
+            "definition": "Calculated position in Cartesian Coordinates. This is the position of a second \ntransmitter on the same frequency and overlapping in time with the transmitter \nposition communicated in data item I205/060.\n",
+            "description": null,
+            "name": "140",
+            "remark": "Note:\n    The Cartesian coordinates are relative to an agreed System Reference Point. The \n    System Reference Point may be communicated in ASTERIX category 025, item 600.\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "X",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -4194300
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 4194300
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "type": "Integer",
+                                                    "value": 2
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 24,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "X-coordinate"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "Y",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": -4194300
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 4194300
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "type": "Integer",
+                                                    "value": 2
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 1
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": true,
+                                            "type": "Quantity",
+                                            "unit": "m"
+                                        }
+                                    },
+                                    "size": 24,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Y-coordinate"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Conflicting Transmitter Position in Cartesian Coordinates"
+        },
+        {
+            "definition": "Range uncertainty estimation of the RDF System for the Conflicting Transmitter, \ni.e. a transmitter on the same frequency and with a timely overlapping \ntransmission. The transmitter is estimated to be within the provided radius around \nthe detected position.\n",
+            "description": null,
+            "name": "150",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 0
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 25500
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "type": "Integer",
+                                "value": 100
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "m"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Conflicting Transmitter Estimated Uncertainty"
+        },
+        {
+            "definition": "Unique identification of a track at the calculated RDF position.\n",
+            "description": null,
+            "name": "160",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Track Number"
+        },
+        {
+            "definition": "Unique identification of an RDF sensor.\n",
+            "description": null,
+            "name": "170",
+            "remark": "Note:\n    For Message Type 5 (Sensor Data Report) in I205/000, the item has to be used if \n    there is no unique SAC/SIC defined for each RDF Sensor.\n    The actual identification number is application dependent\n    \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Sensor Identification"
+        },
+        {
+            "definition": "The level of the signal received by an RDF sensor.\n",
+            "description": null,
+            "name": "180",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "type": "Integer",
+                                    "value": 100
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "dBµV"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Signal Level"
+        },
+        {
+            "definition": "Relative quality of the received signal as estimated by the RDF sensor.\n",
+            "description": null,
+            "name": "190",
+            "remark": "Note:\n    255 corresponds to the best quality,\n    0 to the worst quality\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Signal Quality"
+        },
+        {
+            "definition": "The elevation of the signal received by an RDF sensor.\n",
+            "description": null,
+            "name": "200",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [
+                                {
+                                    "type": ">=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": -90
+                                    }
+                                },
+                                {
+                                    "type": "<=",
+                                    "value": {
+                                        "type": "Integer",
+                                        "value": 90
+                                    }
+                                }
+                            ],
+                            "lsb": {
+                                "denominator": {
+                                    "type": "Integer",
+                                    "value": 100
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": true,
+                            "type": "Quantity",
+                            "unit": "°"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Signal Elevation"
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "SP",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Special Purpose Field"
+        }
+    ],
+    "date": {
+        "day": 17,
+        "month": 3,
+        "year": 2020
+    },
+    "edition": {
+        "major": 1,
+        "minor": 0
+    },
+    "number": 205,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Radio Direction Finder Reports",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "015",
+            "000",
+            "030",
+            "040",
+            "090",
+            "050",
+            "060",
+            "070",
+            "080",
+            "100",
+            "110",
+            "120",
+            "130",
+            "140",
+            "150",
+            "160",
+            "170",
+            "180",
+            "190",
+            "200",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}

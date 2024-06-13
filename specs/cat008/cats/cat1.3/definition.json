@@ -1,0 +1,1187 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the messages\nat the receiver side by further defining the type of transaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    1,
+                                    "Polar vector"
+                                ],
+                                [
+                                    2,
+                                    "Cartesian vector of start point/length"
+                                ],
+                                [
+                                    3,
+                                    "Contour record"
+                                ],
+                                [
+                                    4,
+                                    "Cartesian start point and end point vector"
+                                ],
+                                [
+                                    254,
+                                    "SOP message"
+                                ],
+                                [
+                                    255,
+                                    "EOP message"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Message Type"
+        },
+        {
+            "definition": "Identification of the radar station from which the data are received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    The defined SACs are on the EUROCONTROL ASTERIX website\n    (www.eurocontrol.int/asterix)\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identifier"
+        },
+        {
+            "definition": "Precipitation intensity level, shading orientation of the vectors\nrepresenting the precipitation area and coordinate system used.\n",
+            "description": null,
+            "name": "020",
+            "remark": "Note:\n    For polar vectors bits-4/2 are meaningless and are set to zero.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ORG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Local Coordinates"
+                                                ],
+                                                [
+                                                    1,
+                                                    "System Coordinates"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "I",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Intensity Level"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "S",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "0°"
+                                                ],
+                                                [
+                                                    1,
+                                                    "22.5°"
+                                                ],
+                                                [
+                                                    2,
+                                                    "45°"
+                                                ],
+                                                [
+                                                    3,
+                                                    "67.5°"
+                                                ],
+                                                [
+                                                    4,
+                                                    "90°"
+                                                ],
+                                                [
+                                                    5,
+                                                    "112.5°"
+                                                ],
+                                                [
+                                                    6,
+                                                    "135°"
+                                                ],
+                                                [
+                                                    7,
+                                                    "157.5°"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Shading Orientation with Respect to North"
+                        },
+                        null,
+                        {
+                            "length": 5,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TST",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Test vector"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ER",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Default"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Error condition encountered"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Vector Qualifier"
+        },
+        {
+            "definition": "Sequence of weather vectors in local polar coordinates.\n",
+            "description": null,
+            "name": "034",
+            "remark": "Note:\n    f is a parameter of the SOP message.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "STR",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 7,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Start Range"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "ENDR",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 7,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "End Range"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "AZ",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 16,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 360
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "°"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Azimuth"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Sequence of Polar Vectors in SPF Notation"
+        },
+        {
+            "definition": "Sequence of weather vectors, in the representation start point/length,\nin local or in system cartesian coordinates.\n",
+            "description": null,
+            "name": "036",
+            "remark": "Note:\n    1. LSB of [X, Y, L] is calculated as :math:`2^{-6+F}`.\n    2. F is a parameter of the SOP message.\n    3. Negative values are expressed in 2's complement form, bit-24\n       and bit-16 are set to 0 for positive values and 1 for negative\n       values.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "X",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "X-Component"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "Y",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Y-Component"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "LENGTH",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": false,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Length"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Sequence of Cartesian Vectors in SPF Notation"
+        },
+        {
+            "definition": "Sequence of weather vectors, in the representation start point/ end\npoint, in local or in system cartesian coordinates.\n",
+            "description": null,
+            "name": "038",
+            "remark": "Note:\n    1. LSB of [X1, Y1, X2, Y2] is calculated as :math:`2^{-6+f}`.\n    2. f is a parameter of the SOP message.\n    3. Negative values are expressed in 2's complement form, bits-32,\n       24, 16 and 8 are set to 0 for positive values and 1 for negative\n       values.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "X1",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "X1-Component"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "Y1",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Y1-Component"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "X2",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "X2-Component"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "Y2",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Y2-Component"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Sequence of Weather Vectors in SPF Notation"
+        },
+        {
+            "definition": "Contour serial number together with the precipitation intensity levels\nand the coordinates system used.\n",
+            "description": null,
+            "name": "040",
+            "remark": "Note:\n    The Contour Serial Number provides an unambiguous identification\n    for each contour record. Within one update cycle, a serial number\n    shall never be assigned twice.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ORG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Local Coordinates"
+                                                ],
+                                                [
+                                                    1,
+                                                    "System Coordinates"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "I",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Intensity Level"
+                        },
+                        {
+                            "length": 2,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "FSTLST",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "Intermediate record of a contour"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Last record of a contour of at least two records"
+                                                ],
+                                                [
+                                                    2,
+                                                    "First record of a contour of at least two records"
+                                                ],
+                                                [
+                                                    3,
+                                                    "First and only record, fully defining a contour"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 2,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": ""
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CSN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Contour Serial Number"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Contour Identifier"
+        },
+        {
+            "definition": "Cartesian coordinates of a variable number of points defining a contour.\n",
+            "description": null,
+            "name": "050",
+            "remark": "Note:\n    1. LSB of [X1, Y1] is calculated as :math:`2^{-6+f}`.\n    2. f is a parameter of the SOP message.\n    3. Negative values are expressed in 2's complement form, bit-16\n       and bit-8 shall be set to 0 for positive values and 1 for\n       negative values.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "X1",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "Y1",
+                                "remark": "Adjust with scaling factor '100/F'\n",
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "(NM)"
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": ""
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Sequence of Contour Points in SPF Notation"
+        },
+        {
+            "definition": "Absolute time stamping expressed as Coordinated Universal Time (UTC) time.\n",
+            "description": null,
+            "name": "090",
+            "remark": "Notes:\n    1. The time of day value is reset to zero each day at midnight.\n    2. For time management in radar transmission applications, refer\n       to Part 1, paragraph 5.4 [Ref. 1].\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day"
+        },
+        {
+            "definition": "Information concerning the scaling factor currently applied, current\nreduction step in use, etc.\n",
+            "description": null,
+            "name": "100",
+            "remark": "Note:\n    F: Scaling factor, negative values are represented in 2's complement\n    form, bit-24 is set to 0 for positive values and 1 for negative values.\n    R: Current reduction stage in use. Normal operation is indicated by a\n    value of zero. The actual bit signification is application dependent.\n    Q: Processing parameters. The actual bit signification isapplication dependent.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "F",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": true,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 5,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Scaling Factor"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "R",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 3,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Current Reduction Stage in Use"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "Q",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 15,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Processing Parameters"
+                        },
+                        null
+                    ],
+                    "type": "Extended"
+                }
+            },
+            "spare": false,
+            "title": "Processing Status"
+        },
+        {
+            "definition": "Information concerning the use and status of some vital hardware\ncomponents of a radar system .\n",
+            "description": null,
+            "name": "110",
+            "remark": "Note:\n    Due to the diversity in hardware design and requirements of present\n    and future radar stations, it is felt impractical to attempt to\n    define individual bits.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "type": "Fx"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 7,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Station Configuration Status"
+        },
+        {
+            "definition": "Total number of vectors, respectively contour points, constituting\nthe total weather image, provided with the EOP message.\n",
+            "description": null,
+            "name": "120",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Total Number of Items Constituting One Weather Picture"
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "SP",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Special Purpose Field"
+        },
+        {
+            "definition": "Random Field Sequencing\n",
+            "description": null,
+            "name": "RFS",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "type": "Rfs"
+                }
+            },
+            "spare": false,
+            "title": "Random Field Sequencing"
+        }
+    ],
+    "date": {
+        "day": 1,
+        "month": 4,
+        "year": 2021
+    },
+    "edition": {
+        "major": 1,
+        "minor": 3
+    },
+    "number": 8,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Monoradar Derived Weather Information",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "020",
+            "036",
+            "034",
+            "040",
+            "050",
+            "090",
+            "100",
+            "110",
+            "120",
+            "038",
+            "SP",
+            "RFS"
+        ],
+        "type": "uap"
+    }
+}

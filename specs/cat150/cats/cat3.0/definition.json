@@ -1,0 +1,1430 @@
+{
+    "catalogue": [
+        {
+            "definition": "Identification of the receiving centre.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Translation:\n    See Annex 1 Centre ID definition\nNote:\n    The Destination ID is irrelevant in CAT150 messages since the flight plan messages are sent to all 10 centres.\n    Hence, the centre identifier is set to broadcast.\n\n    The workstation identifier can be ignored.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CEN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Centre Identifier"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "POS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Workstation Identifier"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Destination ID"
+        },
+        {
+            "definition": "Identification of the sending centre.\n",
+            "description": null,
+            "name": "020",
+            "remark": "Translation:\n    See Destination ID.\nNote:\n    The Source ID centre identifier will define the flight plan source centre.\n\n    The workstation identifier can be ignored.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CEN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Centre Identifier"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "POS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Workstation Identifier"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Source ID"
+        },
+        {
+            "definition": "The event that triggered the message transmission.\n",
+            "description": null,
+            "name": "030",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    1,
+                                    "Flight plan creation"
+                                ],
+                                [
+                                    2,
+                                    "Flight plan modification"
+                                ],
+                                [
+                                    3,
+                                    "Flight plan repetition"
+                                ],
+                                [
+                                    4,
+                                    "Manual flight plan deletion"
+                                ],
+                                [
+                                    5,
+                                    "Automatic flight plan deletion"
+                                ],
+                                [
+                                    6,
+                                    "Flight is beyond extraction area boundary"
+                                ],
+                                [
+                                    251,
+                                    "Short term conflict alert"
+                                ],
+                                [
+                                    252,
+                                    "Correlations"
+                                ],
+                                [
+                                    253,
+                                    "Decorrelations"
+                                ],
+                                [
+                                    254,
+                                    "Start of background loop"
+                                ],
+                                [
+                                    255,
+                                    "End of background loop"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Message Type"
+        },
+        {
+            "definition": "Identification of the flight plan.\n",
+            "description": null,
+            "name": "040",
+            "remark": "Note:\n    See Plan and Track Numbers.\n\n    The currently defined range for plan reference numbers used in MADAP is 0 .. 1999. Client systems\n    should allow for a range of 0 .. 2047.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Plan Reference Number"
+        },
+        {
+            "definition": "Flight identity.\n",
+            "description": null,
+            "name": "050",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 56,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Callsign"
+        },
+        {
+            "definition": "Actual transponder code mode 3A of the flight.\n",
+            "description": null,
+            "name": "060",
+            "remark": "Translation:\n    Octal representation.\n\n    - zzzz: no code availlable/assigned\n    - dd00: code family\n    - other: discrete code\n\n    where:\n\n    - z :== 'z'\n    - 0 :== '0'\n    - d :== '0' .. '7'\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Present Mode 3A"
+        },
+        {
+            "definition": "Next transponder code mode 3A of the flight.\n",
+            "description": null,
+            "name": "070",
+            "remark": "Translation:\n    See Present Mode 3A.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Next Mode 3A"
+        },
+        {
+            "definition": "Identification of the flight’s departure aerodrome.\n",
+            "description": null,
+            "name": "080",
+            "remark": "Translation:\n    - zzzz: no standard ICAO location identifier\n    - other: unique ICAO location identifier\n\n    where:\n\n    - z :== 'z'\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Departure Aerodrome"
+        },
+        {
+            "definition": "Identification of the flight’s destination aerodrome. \n",
+            "description": null,
+            "name": "090",
+            "remark": "Translation:\n    See Departure Aerodrome.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Destination Aerodrome"
+        },
+        {
+            "definition": "Type of flight and type of flight plan. \n",
+            "description": null,
+            "name": "100",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "GAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "General Air Traffic"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "OAT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Operational Air Traffic"
+                        },
+                        {
+                            "length": 3,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CPL",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Complete Flight Plan"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SPN",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Short Flight Plan"
+                        },
+                        {
+                            "length": 1,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Type Flags"
+        },
+        {
+            "definition": "Status of the flight. \n",
+            "description": null,
+            "name": "110",
+            "remark": "Note:\n    If an aircraft is set in hold status then the ETO values are increased with 3 hours. \n\n    RVQ is set for:\n\n    - GAT or GAT SPN: never\n    - GAT or OAT CPL: if “W” filed in field 10a [Radio Communication, Navigation and Approach Aid Equipment] of the flightplan\n\n    RVC is set for:\n\n    - GAT or OAT SPN: on controller input or reception of ACT with “RVSM Capable”\n    - GAT or OAT CPL (in decreasing priority):\n        - Controller input or reception of ABI or ACT with “RVSM Capable”\n        - “W” filed in field 10a [Radio Communication, Navigation and Approach Aid Equipment] and “1” filed in field 9a [number of aircraft] in the flightplan.\n\n    RVX is set for:\n\n    - GAT SPN: on controller input “RVSM Exempted”\n    - OAT SPN: by default or on controller input “RVSM Exempted”\n    - GAT or OAT CPL: if “O”, “M” or “A” filed in field 8b [type of flight] of the flightplan \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "length": 1,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "HLD",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Aircraft is in Hold State"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RVQ",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Aircraft is RVSM Equipped"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RVC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Aircraft is RVSM Capable"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RVX",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Aircraft is RVSM Exempted"
+                        },
+                        {
+                            "length": 3,
+                            "spare": true
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Status Flags"
+        },
+        {
+            "definition": "Flight formation details. \n",
+            "description": null,
+            "name": "120",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NOA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringAscii"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Number of Aircraft"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "TOA",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringAscii"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Type of Aircraft"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "WT",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "String",
+                                            "variation": "StringAscii"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Wake Turbulence"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Aircraft Type"
+        },
+        {
+            "definition": "Cleared flight level from the sector that has the aircraft under control. \n",
+            "description": null,
+            "name": "130",
+            "remark": "Translation:\n    Cleared Flight Level is listed in FLs (100ft).\nNote:\n    The Cleared Flight Level corresponds to the “current Planned Flight Level”, valid for the sector which\n    is currently in communications with the aircraft.\n    \n    Intermediate flight levels, temporarily assigned by controllers, are not distributed by MADAP. \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Cleared Flight Level"
+        },
+        {
+            "definition": "Route point descriptions. \n",
+            "description": null,
+            "name": "140",
+            "remark": "Translation:\n    See layout table in specification document.\nNote:\n    For all route point items (140..180), present in a single message the count values are equal. Co4 ordinate (1), description (1), etc. form a single route point.\n    \n    The maximum number of route points is currently set to 28. \n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "T",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Table",
+                                                "values": [
+                                                    [
+                                                        1,
+                                                        "P, point"
+                                                    ],
+                                                    [
+                                                        2,
+                                                        "B, point with bearing and distance"
+                                                    ],
+                                                    [
+                                                        3,
+                                                        "LS, latitude/longitude position short format"
+                                                    ],
+                                                    [
+                                                        4,
+                                                        "LL, latitude/longitude position long format"
+                                                    ],
+                                                    [
+                                                        5,
+                                                        "X, x/y co-ordinate position"
+                                                    ],
+                                                    [
+                                                        6,
+                                                        "G, georeference position"
+                                                    ],
+                                                    [
+                                                        14,
+                                                        "E, airport"
+                                                    ]
+                                                ]
+                                            }
+                                        },
+                                        "size": 8,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Route Point Type"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "E",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "String",
+                                                "variation": "StringAscii"
+                                            }
+                                        },
+                                        "size": 88,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Route Point Description Element"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Route Points, Description"
+        },
+        {
+            "definition": "Route point co-ordinates.\n",
+            "description": null,
+            "name": "150",
+            "remark": "Translation:\n    Co-ordinate values are in [NM] as Cartesian offsets from 51°00’00”N, 008°00’00”E.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "X",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "NM"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "X Co-ordinate"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "Y",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 6,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 1
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "NM"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Y Co-ordinate"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Route Points, Coordinates"
+        },
+        {
+            "definition": "Route point position in Lat. / Long. (WSG84).\n",
+            "description": null,
+            "name": "151",
+            "remark": "Note:\n    This corresponds to an accuracy of at least 2.4 meters.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "LAT",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [
+                                                    {
+                                                        "type": ">=",
+                                                        "value": {
+                                                            "type": "Integer",
+                                                            "value": -90
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "<=",
+                                                        "value": {
+                                                            "type": "Integer",
+                                                            "value": 90
+                                                        }
+                                                    }
+                                                ],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 23,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 180
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "°"
+                                            }
+                                        },
+                                        "size": 24,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Latitude in WGS.84 in Two's Complement Form"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "LON",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "constraints": [
+                                                    {
+                                                        "type": ">=",
+                                                        "value": {
+                                                            "type": "Integer",
+                                                            "value": -180
+                                                        }
+                                                    },
+                                                    {
+                                                        "type": "<",
+                                                        "value": {
+                                                            "type": "Integer",
+                                                            "value": 180
+                                                        }
+                                                    }
+                                                ],
+                                                "lsb": {
+                                                    "denominator": {
+                                                        "base": 2,
+                                                        "exponent": 23,
+                                                        "type": "Pow"
+                                                    },
+                                                    "numerator": {
+                                                        "type": "Integer",
+                                                        "value": 180
+                                                    },
+                                                    "type": "Div"
+                                                },
+                                                "signed": true,
+                                                "type": "Quantity",
+                                                "unit": "°"
+                                            }
+                                        },
+                                        "size": 24,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Longitude in WGS.84 in Two's Complement Form"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Route Points, Geographic Position"
+        },
+        {
+            "definition": "Estimated times over route points.\n",
+            "description": null,
+            "name": "160",
+            "remark": "Translation:\n    Times are specified in 24-hour format. I.e. ranging from 00:00 to 23:59.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "HH",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "String",
+                                                "variation": "StringAscii"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Hours"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "MM",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "String",
+                                                "variation": "StringAscii"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Minutes"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Route Points, Time"
+        },
+        {
+            "definition": "Planned flight level over route point.\n",
+            "description": null,
+            "name": "170",
+            "remark": "Translation:\n    The planned flight levels are given in FLs (100 ft).\nNote:\n    All flight levels have the same value, equal to the “Current Planned Flight Level”. This is the Planned\n    Flight Level valid for the sector which is in communication with the aircraft.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "String",
+                                "variation": "StringAscii"
+                            }
+                        },
+                        "size": 24,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Route Points, Flight Level"
+        },
+        {
+            "definition": "Requested flight level over route point.\n",
+            "description": null,
+            "name": "171",
+            "remark": "Translation:\n    The planned flight levels are given in FLs (100 ft).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "String",
+                                "variation": "StringAscii"
+                            }
+                        },
+                        "size": 24,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Route Points, Requested Flight Level"
+        },
+        {
+            "definition": "Filed true air speed over route point.\n",
+            "description": null,
+            "name": "180",
+            "remark": "Translation:\n    The true airspeed is indicated in Knots [NM/h].\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "String",
+                                "variation": "StringAscii"
+                            }
+                        },
+                        "size": 32,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Route Points, Speed"
+        },
+        {
+            "definition": "Current control position in charge of the aircraft.\n",
+            "description": null,
+            "name": "190",
+            "remark": "Translation:\n    Single character controller ids are sent with a leading space character. This can be interpreted as a\n    right aligned value.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "String",
+                            "variation": "StringAscii"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Controller ID"
+        },
+        {
+            "definition": "Field 18 free text information. Contains subfields, each starting with a 3 or 4 letter keyword followed by\nforward slash; e.g. RMK/free text.\n",
+            "description": null,
+            "name": "200",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "String",
+                                "variation": "StringAscii"
+                            }
+                        },
+                        "size": 8,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Field 18"
+        },
+        {
+            "definition": "The track number of the track that has been correlated to the flight plan.\n",
+            "description": null,
+            "name": "210",
+            "remark": "Note:\n    See Plan and Track Numbers.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Raw"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Correlated Track Number"
+        },
+        {
+            "definition": "Maximum plan count is the maximum number of possible active plans.\n",
+            "description": null,
+            "name": "220",
+            "remark": "Note:\n    The maximum number of active plans is fixed and, at present, set to 302.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Maximum Plan Count"
+        },
+        {
+            "definition": "Number of plans that were sent during the last update cycle.\n",
+            "description": null,
+            "name": "230",
+            "remark": "Note:\n    The number of extracted plans should be equal to the number of plans received between the start of\n    cycle and end of cycle messages.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 16,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Number of Plans"
+        },
+        {
+            "definition": "Array of correlated plan/track combinations valid in the Maastricht UAC Area of Interest.\n",
+            "description": null,
+            "name": "240",
+            "remark": "Note:\n    See Plan and Track Numbers.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "PLAN",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Plan Number"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "TRACK",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Track Number"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Newly Correlated Plans"
+        },
+        {
+            "definition": "Array of de-correlated plans.\n",
+            "description": null,
+            "name": "250",
+            "remark": "Note:\n    Contains an array of Plan Numbers.\n    See Plan and Track Numbers.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 16,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Newly De-correlated Plans"
+        },
+        {
+            "definition": "Array of conflicting track/track combinations.\n",
+            "description": null,
+            "name": "251",
+            "remark": "Note:\n    See Plan and Track Numbers.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "items": [
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "TRACK1",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Track Number 1"
+                            },
+                            {
+                                "definition": null,
+                                "description": null,
+                                "name": "TRACK2",
+                                "remark": null,
+                                "rule": {
+                                    "type": "ContextFree",
+                                    "value": {
+                                        "rule": {
+                                            "type": "ContextFree",
+                                            "value": {
+                                                "type": "Raw"
+                                            }
+                                        },
+                                        "size": 16,
+                                        "type": "Element"
+                                    }
+                                },
+                                "spare": false,
+                                "title": "Track Number 2"
+                            }
+                        ],
+                        "type": "Group"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Tracks in Conflict"
+        }
+    ],
+    "date": {
+        "day": 20,
+        "month": 8,
+        "year": 2004
+    },
+    "edition": {
+        "major": 3,
+        "minor": 0
+    },
+    "number": 150,
+    "preamble": "The main purpose of I150 messages is to distribute Flight Plan data to clients. However, other data\nitems can be sent using I150 as well. I150 messages can be divided into the following sub-categories:\n\n- Flight Plan (Short & Complete)\n- Start/End of cycle\n- Correlation/De-correlation\n- Conflict Alert\n",
+    "title": "MADAP Plan Server - Flight Data Message",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "020",
+            "030",
+            "040",
+            "050",
+            "060",
+            "070",
+            "080",
+            "090",
+            "100",
+            "110",
+            "120",
+            "130",
+            "140",
+            "150",
+            "160",
+            "170",
+            "180",
+            "190",
+            "200",
+            "210",
+            "220",
+            "230",
+            "240",
+            "250",
+            "251",
+            "171",
+            "151"
+        ],
+        "type": "uap"
+    }
+}

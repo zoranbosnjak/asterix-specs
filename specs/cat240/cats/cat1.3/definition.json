@@ -1,0 +1,825 @@
+{
+    "catalogue": [
+        {
+            "definition": "This Data Item allows for a more convenient handling of the messages at\nthe receiver side by further defining the type of transaction.\n",
+            "description": null,
+            "name": "000",
+            "remark": "Notes:\n\n    1. In applications where transactions of various types are exchanged,\n       the Message Type Data Item facilitates the proper report handling\n       at the receiver side.\n    2. All Message Type values are reserved for common standard use.\n    3. The list of items present for the two message types is defined in\n       the following table.\n\n    Table: Message Types ::\n\n        Type Item       001         002\n        I240/000        M           M\n        I240/010        M           M\n        I240/020        X           M\n        I240/030        M           X\n        I240/040        X           O(1)\n        I240/041        X           O(1)\n        I240/048        X           M\n        I240/049        X           M\n        I240/050        X           O(2)\n        I240/051        X           O(2)\n        I240/052        X           O(2)\n        I240/140        O           O\n\n    (1) - Either Item I240/040 or I240/041 shall be present in each Video Message\n    (2) - Either Item I240/050 or I240/051 or I240/052 shall be present in each video\n          message\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "type": "Table",
+                            "values": [
+                                [
+                                    1,
+                                    "Video Summary message"
+                                ],
+                                [
+                                    2,
+                                    "Video message"
+                                ]
+                            ]
+                        }
+                    },
+                    "size": 8,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Message Type"
+        },
+        {
+            "definition": "Identification of the system from which the data are received.\n",
+            "description": null,
+            "name": "010",
+            "remark": "Note:\n    - The up-to-date list of SACs is published on the EUROCONTROL Web Site\n      (http://www.eurocontrol.int/asterix)\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SAC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Area Code"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "SIC",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Raw"
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "System Identification Code"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Data Source Identifier"
+        },
+        {
+            "definition": "Contains a message sequence identifier.\n",
+            "description": null,
+            "name": "020",
+            "remark": "Note:\n    - The Message Sequence Identifier is used by the receiving application\n      to detect lost messages.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "signed": false,
+                            "type": "Integer"
+                        }
+                    },
+                    "size": 32,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Video Record Header"
+        },
+        {
+            "definition": "Contains an ASCII string (free text to define stream meta data).\n",
+            "description": null,
+            "name": "030",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "String",
+                                "variation": "StringAscii"
+                            }
+                        },
+                        "size": 8,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Video Summary"
+        },
+        {
+            "definition": "Defines a group of video cells corresponding to a video radial: all cells\nhave the same size in azimuth and range and are consecutive in range.\n",
+            "description": null,
+            "name": "040",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STARTAZ",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 360
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Start Azimuth of the Cells Group"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ENDAZ",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 360
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "End Azimuth of the Cells Group"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STARTRG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Starting Range of the Cells Group, Expressed in Number of Cells"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CELLDUR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "ns"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Video Cell Duration in Nano-seconds"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Video Header Nano"
+        },
+        {
+            "definition": "Defines a group of video cells corresponding to a video radial: all cells\nhave the same size in azimuth and range and are consecutive in range.\n",
+            "description": null,
+            "name": "041",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STARTAZ",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 360
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Start Azimuth of the Cells Group"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "ENDAZ",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [
+                                                {
+                                                    "type": ">=",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 0
+                                                    }
+                                                },
+                                                {
+                                                    "type": "<",
+                                                    "value": {
+                                                        "type": "Integer",
+                                                        "value": 360
+                                                    }
+                                                }
+                                            ],
+                                            "lsb": {
+                                                "denominator": {
+                                                    "base": 2,
+                                                    "exponent": 16,
+                                                    "type": "Pow"
+                                                },
+                                                "numerator": {
+                                                    "type": "Integer",
+                                                    "value": 360
+                                                },
+                                                "type": "Div"
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "°"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "End Azimuth of the Cells Group"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "STARTRG",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Starting Range of the Cells Group, Expressed in Number of Cells"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "CELLDUR",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "lsb": {
+                                                "type": "Integer",
+                                                "value": 1
+                                            },
+                                            "signed": false,
+                                            "type": "Quantity",
+                                            "unit": "fs"
+                                        }
+                                    },
+                                    "size": 32,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Video Cell Duration in Femto-seconds"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Video Header Femto"
+        },
+        {
+            "definition": "This Data Item defines the bit resolution used in the coding of the video\nsignal amplitude in all cells of the video group as well as an indicator\nwhether data compression has been applied.\n",
+            "description": null,
+            "name": "048",
+            "remark": "Note:\n    - When the Data Compression Indicator (C) is set, shows that a data\n      compression technique has been applied. The actual algorithm used\n      and the related parameters have to be specified in a relevant ICD\n      (Interface Control Document).\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "C",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    0,
+                                                    "No compression applied"
+                                                ],
+                                                [
+                                                    1,
+                                                    "Compression applied"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 1,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Data Compression Indicator"
+                        },
+                        {
+                            "length": 7,
+                            "spare": true
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "RES",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "type": "Table",
+                                            "values": [
+                                                [
+                                                    1,
+                                                    "Monobit Resolution (1 bit)"
+                                                ],
+                                                [
+                                                    2,
+                                                    "Low Resolution (2 bits)"
+                                                ],
+                                                [
+                                                    3,
+                                                    "Medium Resolution (4 bits)"
+                                                ],
+                                                [
+                                                    4,
+                                                    "High Resolution (8 bits)"
+                                                ],
+                                                [
+                                                    5,
+                                                    "Very High Resolution (16 bits)"
+                                                ],
+                                                [
+                                                    6,
+                                                    "Ultra High Resolution (32 bits)"
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    "size": 8,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Bit Resolution"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Video Cells Resolution & Data Compression Indicator"
+        },
+        {
+            "definition": "This Data Item contains the number of “valid” octets (i.e. nonempty octets)\nused in the coding of the video signal amplitude and the number of “valid”\ncells in the video group.\n",
+            "description": null,
+            "name": "049",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "items": [
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NBVB",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 16,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Number of 'valid' Octets"
+                        },
+                        {
+                            "definition": null,
+                            "description": null,
+                            "name": "NBCELLS",
+                            "remark": null,
+                            "rule": {
+                                "type": "ContextFree",
+                                "value": {
+                                    "rule": {
+                                        "type": "ContextFree",
+                                        "value": {
+                                            "constraints": [],
+                                            "signed": false,
+                                            "type": "Integer"
+                                        }
+                                    },
+                                    "size": 24,
+                                    "type": "Element"
+                                }
+                            },
+                            "spare": false,
+                            "title": "Number of 'valid' Cells"
+                        }
+                    ],
+                    "type": "Group"
+                }
+            },
+            "spare": false,
+            "title": "Video Octets & Video Cells Counters"
+        },
+        {
+            "definition": "Contains a group of video cells corresponding to a video radial; all cells\nhave the same size in azimuth and range and are consecutive in range. This\nitem shall be used in cases where a low data volume, up to 1020 bytes, will\nbe transmitted.\n",
+            "description": null,
+            "name": "050",
+            "remark": "Notes:\n\n    1. The first cell in the block is always the closest to the sensor and\n       the following cells are in increasing range order.\n    2. To get the range in meters of the cell at position “NU_CELL” in the\n       data stream, the following formula shall be used:\n       D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)\n       where c = 299 792 458 m/s: light celerity.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 32,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Video Block Low Data Volume"
+        },
+        {
+            "definition": "Contains a group of video cells corresponding to a video radial; all cells\nhave the same size in azimuth and range and are consecutive in range. This\nitem shall be used in cases where a medium data volume, up to 16320 bytes,\nwill be transmitted.\n",
+            "description": null,
+            "name": "051",
+            "remark": "Notes:\n\n    1. The first cell in the block is always the closest to the sensor and\n       the following cells are in increasing range order.\n    2. To get the range in meters of the cell at position “NU_CELL” in the\n       data stream, the following formula shall be used:\n       D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)\n       where c = 299 792 458 m/s: light celerity.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 512,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Video Block Medium Data Volume"
+        },
+        {
+            "definition": "Contains a group of video cells corresponding to a video radial; all cells\nhave the same size in azimuth and range and are consecutive in range. This\nitem shall be used in cases where a high data volume, up to 65024 bytes,\nwill be transmitted.\n",
+            "description": null,
+            "name": "052",
+            "remark": "Notes:\n\n    1. The first cell in the block is always the closest to the sensor and\n       the following cells are in increasing range order.\n    2. The maximum value of REP that should be used is 254, in order to keep\n       the maximum size of the field at 64kbytes.\n    3. To get the range in meters of the cell at position “NU_CELL” in the\n       data stream, the following formula shall be used:\n       D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)\n       where c = 299 792 458 m/s: light celerity.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rep": {
+                        "size": 8,
+                        "type": "Regular"
+                    },
+                    "type": "Repetitive",
+                    "variation": {
+                        "rule": {
+                            "type": "ContextFree",
+                            "value": {
+                                "type": "Raw"
+                            }
+                        },
+                        "size": 2048,
+                        "type": "Element"
+                    }
+                }
+            },
+            "spare": false,
+            "title": "Video Block High Data Volume"
+        },
+        {
+            "definition": "Absolute time stamping expressed as UTC.\n",
+            "description": null,
+            "name": "140",
+            "remark": "Note:\n    - The time information, shall reflect the exact time of an event,\n      expressed as a number of 1/128 s elapsed since last midnight.\n",
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "rule": {
+                        "type": "ContextFree",
+                        "value": {
+                            "constraints": [],
+                            "lsb": {
+                                "denominator": {
+                                    "base": 2,
+                                    "exponent": 7,
+                                    "type": "Pow"
+                                },
+                                "numerator": {
+                                    "type": "Integer",
+                                    "value": 1
+                                },
+                                "type": "Div"
+                            },
+                            "signed": false,
+                            "type": "Quantity",
+                            "unit": "s"
+                        }
+                    },
+                    "size": 24,
+                    "type": "Element"
+                }
+            },
+            "spare": false,
+            "title": "Time of Day"
+        },
+        {
+            "definition": "Expansion\n",
+            "description": null,
+            "name": "RE",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "RE",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Reserved Expansion Field"
+        },
+        {
+            "definition": "Special Purpose Field\n",
+            "description": null,
+            "name": "SP",
+            "remark": null,
+            "rule": {
+                "type": "ContextFree",
+                "value": {
+                    "expl": "SP",
+                    "type": "Explicit"
+                }
+            },
+            "spare": false,
+            "title": "Special Purpose Field"
+        }
+    ],
+    "date": {
+        "day": 13,
+        "month": 5,
+        "year": 2015
+    },
+    "edition": {
+        "major": 1,
+        "minor": 3
+    },
+    "number": 240,
+    "preamble": "Surveillance data exchange.\n",
+    "title": "Radar Video Transmission",
+    "type": "Basic",
+    "uap": {
+        "items": [
+            "010",
+            "000",
+            "020",
+            "030",
+            "040",
+            "041",
+            "048",
+            "049",
+            "050",
+            "051",
+            "052",
+            "140",
+            "RE",
+            "SP"
+        ],
+        "type": "uap"
+    }
+}

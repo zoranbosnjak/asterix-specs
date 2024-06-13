@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-032---miniplan-reports-to-an-sdps">Asterix category 032 - Miniplan Reports to an SDPS</h1>
+<p><strong>category</strong>: 032</p>
+<p><strong>edition</strong>: 1.1</p>
+<p><strong>date</strong>: 2020-12-11</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i032010---server-identification-tag">I032/010 - Server Identification Tag</h3>
+<p><em>Definition</em>: Identification of the Server of track information.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I032/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The up-to-date list of SACs is published on the EUROCONTROL ASTERIX
+Web Site (<a href="http://www.eurocontrol.int/services/system-area-code-list">http://www.eurocontrol.int/services/system-area-code-list</a>).</li>
+<li>In case of message originating from an FPPS, the Server Identification
+Tag corresponds to the SDPS unit receiving the Miniplan.</li>
+<li>In case of message originating from a SDPS, the Server Identification
+Tag corresponds to the SDPS unit sending the Miniplan.</li>
+</ol>
+</blockquote>
+<h3 id="i032015---user-number">I032/015 - User Number</h3>
+<p><em>Definition</em>: Identification of the User of the track data.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The User numbers are predefined in the User registration data base
+of the SDPS Unit to which the User wants to connect.</li>
+<li>In case of message originating from an FPPS, the User Number
+corresponds to the FPPS one.</li>
+<li>In case of message originating from an SDPS, the User Number
+corresponds to the SDPS unit receiving the Miniplan.</li>
+</ol>
+</blockquote>
+<h3 id="i032018---data-source-identification-tag">I032/018 - Data Source Identification Tag</h3>
+<p><em>Definition</em>: Identification of the data source (FPPS system) from which the information
+contained in the message was initially originated.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I032/018/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/018/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL ASTERIX
+Web Site (<a href="http://www.eurocontrol.int/services/system-area-code-list">http://www.eurocontrol.int/services/system-area-code-list</a>).</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i032020---time-of-asterix-report-generation">I032/020 - Time of ASTERIX Report Generation</h3>
+<p><em>Definition</em>: Time of the generation of the ASTERIX category 032 report in the form of
+elapsed time since last midnight, expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> s</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The Time of ASTERIX Report Generation is reset to zero at every midnight.</li>
+<li>This time is determined at an application level (e.g. time at which
+a message is filled), and not at the communication level (i.e. not
+the time at which the data-block is sent).</li>
+</ol>
+</blockquote>
+<h3 id="i032035---type-of-message">I032/035 - Type of Message</h3>
+<p><em>Definition</em>: This data item allows for a more convenient handling of the message at the
+receiver side by further defining the type of transaction.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I032/035/FAMILY</strong></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Information sent by an FPPS</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/035/NATURE</strong></p>
+<ul>
+<li><p>4 bits [<code>....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Flight Plan to track initial correlation<br />
+2: Miniplan update<br />
+3: End of correlation<br />
+4: Miniplan Cancellation<br />
+5: Retained Miniplan</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li><p>The composition of the messages is described in the following table. :</p>
+<pre><code>Data        Description         FPL to track Initial    End of correlation ($13),
+Ref Num                         Correlation ($11),      Miniplan cancellation ($14),
+                                Miniplan update ($12)   Retained Miniplan ($15)
+
+I032/010    Server id ...               M                       M
+I032/015    User Number                 O                       O
+I032/018    Data Source ...             M                       M
+I032/020    Time of ...                 M                       M
+I032/035    Type of Message             M                       M
+I032/040    Track Number            M from FPPS             M from FPPS
+                                    X from SDPS             X from SDPS
+I032/050    Composed trknum...      M from SDPS             M from SDPS
+                                    X from FPPS             X from FDPS
+I032/060    Track Mode 3/A              O                       X
+I032/400    Callsign                    O                       X
+I032/410    Plan Number                 O                       X
+I032/420    Flight Category             O                       X
+I032/430    Type of Aircraft            O                       X
+I032/435    Wake Turbulence ...         O                       X
+I032/440    Departure ...               O                       X
+I032/450    Destination ...             O                       X
+I032/460    Allocated SSR Codes         O                       X
+I032/480    Current Cleared FL...       O                       X
+I032/490    Current Control Pos...      O                       X
+I032/500    Supplementary FD...         O                       X</code></pre></li>
+</ul>
+</dd>
+</dl>
+<h3 id="i032040---track-number">I032/040 - Track Number</h3>
+<p><em>Definition</em>: Identification of a track (track number)</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<h3 id="i032050---composed-track-number">I032/050 - Composed Track Number</h3>
+<p><em>Definition</em>: Identification of a system track.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I032/050/SUI</strong> - <em>System Unit Identification</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p><strong>I032/050/STN</strong> - <em>System Track Number</em></p>
+<ul>
+<li>15 bits [<code>...............</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each Track Number (i.e. either a Master or a Slave Track Number)
+is composed of a System Unit Identification (i.e. the identification
+of the SDPS unit processing the) together with the relevant System
+Track Number (i.e. the number of the track local to the SDPS Unit
+in question).</li>
+<li>The Composed Track Number is used by co-operating SDPS units to
+uniquely identify a track. It consists of the unit identifier and
+system track number for each unit involved in the co-operation.
+The first unit identification identifies the unit that is responsible
+for the track amalgamation.</li>
+<li>The Master Track Number and the possible extensions (Slave Tracks
+Numbers) are identically composed.</li>
+</ol>
+</blockquote>
+<h3 id="i032060---track-mode-3a">I032/060 - Track Mode 3/A</h3>
+<p><em>Definition</em>: Mode 3/A code associated to the track</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I032/060/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I032/060/MODE3A</strong> - <em>(Mode 3/A Code) 4 Digits, Octal Representation</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>Octal string (3-bits per digit)</li>
+</ul>
+</blockquote>
+<h3 id="i032400---callsign">I032/400 - Callsign</h3>
+<p><em>Definition</em>: Callsign (in 7 characters) of an aircraft (provided in the Miniplan).</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>56 bits [<code>... 56 bits ...</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Each one of the seven octets contains an ASCII Character. The Callsign
+is always left adjusted. It contains up to seven upper-case alphanumeric
+characters, the remaining character positions (if any) are padded with
+space characters.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i032410---plan-number">I032/410 - Plan Number</h3>
+<p><em>Definition</em>: The Plan Number is an integer value representing a unique reference to a
+Flight-plan record within a particular FPPS.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned integer</li>
+</ul>
+<h3 id="i032420---flight-category">I032/420 - Flight Category</h3>
+<p><em>Definition</em>: Flight Category.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I032/420/GATOAT</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: General Air Traffic<br />
+2: Operational Air Traffic<br />
+3: Not applicable</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/420/FR1FR2</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Instrument Flight Rules<br />
+1: Visual Flight rules<br />
+2: Not applicable<br />
+3: Controlled Visual Flight Rules</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/420/SP3</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/420/SP2</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/420/SP1</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/420/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The definition of the sub-categories is system dependent and shall
+be descried in the system ICD.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i032430---type-of-aircraft">I032/430 - Type of Aircraft</h3>
+<p><em>Definition</em>: Type of Aircraft.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each one of the four octets composing the type of aircraft contains
+an ASCII Character (upper-case alphabetic characters with trailing
+spaces).</li>
+<li>The types of aircraft are defined in the ICAO Document 4444.</li>
+</ol>
+</blockquote>
+<h3 id="i032435---wake-turbulence-category">I032/435 - Wake Turbulence Category</h3>
+<p><em>Definition</em>: Wake turbulence category of an aircraft.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">76: Light<br />
+77: Medium<br />
+72: Heavy<br />
+74: Super</div>
+</blockquote></li>
+</ul>
+<h3 id="i032440---departure-aerodrome">I032/440 - Departure Aerodrome</h3>
+<p><em>Definition</em>: Departure Aerodrome</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each octet contains one ASCII Character (Upper Case Alphabetic)</li>
+<li>The Aerodrome Names are indicated in the ICAO Location Indicators book.</li>
+</ol>
+</blockquote>
+<h3 id="i032450---destination-aerodrome">I032/450 - Destination Aerodrome</h3>
+<p><em>Definition</em>: Departure Aerodrome</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each octet contains one ASCII Character (Upper Case Alphabetic).</li>
+<li>The Aerodrome Names are indicated in the ICAO Location Indicators book [Ref. 5].</li>
+</ol>
+</blockquote>
+<h3 id="i032460---allocated-ssr-codes">I032/460 - Allocated SSR Codes</h3>
+<p><em>Definition</em>: List of successive SSR Codes allocated to a flight.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I032/460/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I032/460/OCT1</strong> - <em>1st Octal Digit</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/460/OCT2</strong> - <em>2nd Octal Digit</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/460/OCT3</strong> - <em>3rd Octal Digit</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/460/OCT4</strong> - <em>4th Octal Digit</em></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i032480---current-cleared-flight-level">I032/480 - Current Cleared Flight Level</h3>
+<p><em>Definition</em>: Current Cleared Flight Level</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “FL”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> FL <span class="math inline"> ≈ 0.25</span> FL</li>
+<li>value <span class="math inline"> &gt;  = 0</span> FL</li>
+<li>value <span class="math inline"> &lt;  = 1500</span> FL</li>
+</ul>
+<h3 id="i032490---current-control-position">I032/490 - Current Control Position</h3>
+<p><em>Definition</em>: Identification of the Control Position currently controlling a flight.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I032/490/CEN</strong> - <em>Centre</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I032/490/POS</strong> - <em>Position</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The Centre and Control Position Identification Codes are implementation
+specific and have to be agreed upon between communication partners.</li>
+</ul>
+</dd>
+</dl>
+<h3 id="i032500---supplementary-flight-data">I032/500 - Supplementary Flight Data</h3>
+<p><em>Definition</em>: Flight related data provided by ground based systems.</p>
+<p><em>Structure</em>:</p>
+<p>Compound item (FX)</p>
+<blockquote>
+<p><strong>I032/500/IFI</strong> - <em>IFPS FLIGHT ID</em></p>
+<blockquote>
+<p><strong>I032/500/IFI/TYP</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Plan Number<br />
+1: Unit 1 internal flight number<br />
+2: Unit 2 internal flight number<br />
+3: Unit 3 internal flight number</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/500/IFI/(spare)</strong></p>
+<ul>
+<li>3 bits [<code>...</code>]</li>
+</ul>
+<p><strong>I032/500/IFI/NBR</strong></p>
+<ul>
+<li>27 bits [<code>...........................</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 99999999</span></li>
+</ul>
+</blockquote>
+<p><strong>I032/500/RVP</strong> - <em>RVSM &amp; Flight Priority</em></p>
+<blockquote>
+<p><strong>I032/500/RVP/(spare)</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+</ul>
+<p><strong>I032/500/RVP/RVSM</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: Approved<br />
+2: Exempt<br />
+3: Not approved</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/500/RVP/HPR</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Normal Priority Flight<br />
+1: High Priority Flight</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p><strong>I032/500/RDS</strong> - <em>Runway Designation</em></p>
+<blockquote>
+<p><strong>I032/500/RDS/NU1</strong> - <em>First Number</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I032/500/RDS/NU2</strong> - <em>Second Number</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I032/500/RDS/LTR</strong> - <em>Letter</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+</blockquote>
+<p><strong>I032/500/TOD</strong> - <em>Time of Departure / Arrival</em></p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I032/500/TOD/TYP</strong></p>
+<ul>
+<li><p>5 bits [<code>.....</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Scheduled Off-Block Time<br />
+1: Estimated Off-Block Time<br />
+2: Estimated Take-Off Time<br />
+3: Actual Off-Block Time<br />
+4: Predicted Time at Runway Hold<br />
+5: Actual Time at Runway Hold<br />
+6: Actual Line-Up Time<br />
+7: Actual Take-Off Time<br />
+8: Estimated Time of Arrival<br />
+9: Predicted Landing Time<br />
+10: Actual Landing Time<br />
+11: Actual Time off Runway<br />
+12: Predicted Time to Gate<br />
+13: Actual On-Block Time</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/500/TOD/DAY</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Today<br />
+1: Yesterday<br />
+2: Tomorrow<br />
+3: Invalid</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/500/TOD/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I032/500/TOD/HOR</strong></p>
+<ul>
+<li>5 bits [<code>.....</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 23</span></li>
+</ul>
+<p><strong>I032/500/TOD/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+<p><strong>I032/500/TOD/MIN</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 59</span></li>
+</ul>
+<p><strong>I032/500/TOD/AVS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Seconds available<br />
+1: Seconds not available</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/500/TOD/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I032/500/TOD/SEC</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+<li>unsigned integer</li>
+<li>value <span class="math inline"> &gt;  = 0</span></li>
+<li>value <span class="math inline"> &lt;  = 59</span></li>
+</ul>
+</blockquote>
+<p><strong>I032/500/AST</strong> - <em>Aircraft Stand</em></p>
+<ul>
+<li>48 bits [<code>... 48 bits ...</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I032/500/STS</strong> - <em>Stand Status</em></p>
+<blockquote>
+<p><strong>I032/500/STS/EMP</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Empty<br />
+1: Occupied<br />
+2: Unknown<br />
+3: Invalid</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/500/STS/AVL</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Available<br />
+1: Not available<br />
+2: Unknown<br />
+3: Invalid</div>
+</blockquote></li>
+</ul>
+<p><strong>I032/500/STS/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+</blockquote>
+<p><strong>I032/500/SID</strong> - <em>Standard Instrument Departure</em></p>
+<ul>
+<li>56 bits [<code>... 56 bits ...</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+<p><strong>I032/500/STAR</strong> - <em>Standard Instrument Arrival</em></p>
+<ul>
+<li>56 bits [<code>... 56 bits ...</code>]</li>
+<li>Ascii string (8-bits per character)</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>NU1, NU2 and LTR each contain an ASCII character (upper case alphabetic).</li>
+<li>For details refer to ICAO Annex 14 Chapter 5 [Ref. 4].</li>
+<li>Estimated times are derived from flight plan processing systems.
+Predicted times are derived by the fusion system based on surveillance
+data. For definitions see [Ref.4]</li>
+<li>Each one of the six Octets contains an ASCII Character. The Aircraft
+Stand identification is always left adjusted. It contains up to six
+upper-case alphanumeric characters, the remaining character positions
+(if any) are padded with space characters.</li>
+<li>Each one of the seven Octets contains an ASCII Character. The SID is
+always left adjusted. It contains up to seven alphanumeric characters,
+the remaining character positions (if any) are padded with space characters.</li>
+<li>Each one of the seven Octets contains an ASCII Character. The STAR
+is always left adjusted. It contains up to seven alphanumeric
+characters, the remaining character positions (if any) are padded
+with space characters.</li>
+</ol>
+</blockquote>
+<h3 id="i032re---reserved-expansion-field">I032/RE - Reserved Expansion Field</h3>
+<p><em>Definition</em>: Expansion</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item (RE)</p>
+<h1 id="user-application-profile-for-category-032">User Application Profile for Category 032</h1>
+<ul>
+<li><ol type="1">
+<li><code>I032/010</code> - Server Identification Tag</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I032/015</code> - User Number</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I032/018</code> - Data Source Identification Tag</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I032/035</code> - Type of Message</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I032/020</code> - Time of ASTERIX Report Generation</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I032/040</code> - Track Number</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I032/050</code> - Composed Track Number</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I032/060</code> - Track Mode 3/A</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I032/400</code> - Callsign</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I032/410</code> - Plan Number</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I032/420</code> - Flight Category</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I032/440</code> - Departure Aerodrome</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I032/450</code> - Destination Aerodrome</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I032/480</code> - Current Cleared Flight Level</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="15" type="1">
+<li><code>I032/490</code> - Current Control Position</li>
+</ol></li>
+<li><ol start="16" type="1">
+<li><code>I032/430</code> - Type of Aircraft</li>
+</ol></li>
+<li><ol start="17" type="1">
+<li><code>I032/435</code> - Wake Turbulence Category</li>
+</ol></li>
+<li><ol start="18" type="1">
+<li><code>I032/460</code> - Allocated SSR Codes</li>
+</ol></li>
+<li><ol start="19" type="1">
+<li><code>I032/500</code> - Supplementary Flight Data</li>
+</ol></li>
+<li><ol start="20" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="21" type="1">
+<li><code>I032/RE</code> - Reserved Expansion Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+

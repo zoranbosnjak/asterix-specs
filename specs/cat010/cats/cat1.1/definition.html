@@ -1,0 +1,1078 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - definition</title>
+
+        <link rel="stylesheet" type="text/css" href="../../../../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../../../../css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="../../../../index.html">Home</a>
+                <a href="../../../../specs.html">Specifications</a>
+                <a href="../../../../struct.html">Structure</a>
+                <a href="../../../../syntax.html">Syntax</a>
+                <a href="../../../../tools.html">Tools</a>
+                <a href="../../../../faq.html">FAQ</a>
+                <a href="../../../../source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="asterix-category-010---transmission-of-monosensor-surface-movement-data">Asterix category 010 - Transmission of Monosensor Surface Movement Data</h1>
+<p><strong>category</strong>: 010</p>
+<p><strong>edition</strong>: 1.1</p>
+<p><strong>date</strong>: 2007-03-01</p>
+<h2 id="preamble">Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2 id="description-of-standard-data-items">Description of standard data items</h2>
+<h3 id="i010000---message-type">I010/000 - Message Type</h3>
+<p><em>Definition</em>: This Data Item allows for a more convenient handling of the messages
+at the receiver side by further defining the type of transaction.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Target Report<br />
+2: Start of Update Cycle<br />
+3: Periodic Status Message<br />
+4: Event-triggered Status Message</div>
+</blockquote></li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>In applications where transactions of various types are exchanged,
+the Message Type Data Item facilitates the proper message handling
+at the receiver side.</li>
+<li>All Message Type values are reserved for common standard use.</li>
+<li>The list of items present for the four message types is defined in
+the following table.
+M stands for mandatory, O for optional, X for never present.</li>
+</ol>
+</blockquote>
+<p>The list of items present for the four message types is defined in the following
+table. M stands for mandatory, O for optional, X for never present. :</p>
+<pre><code>Item Type [001, 002, 003, 004]
+          [Target Report, Start of Update Cycle, Periodic Status Message, Event Status Message]
+
+I010/000 Message Type M M M M
+I010/010 Data Source Identifier M M M M
+I010/020 Target Report Descriptor M X X X
+I010/040 Measured Position in Polar Coordinates O X X X
+I010/041 Position in WGS-84 Coordinates O X X X
+I010/042 Position in Cartesian Coordinates O X X X
+I010/060 Mode-3/A Code O X X X
+I010/090 Flight Level in Binary Representation O X X X
+I010/091 Measured Height O X X X
+I010/131 Amplitude of Primary Plot O X X X
+I010/140 Time of Day M M M M
+I010/161 Track Number O X X X
+I010/170 Track Status O X X X
+I010/200 Calculated Track Velocity in Polar Coordinates O X X X
+I010/202 Calculated Track Velocity in Cartesian Coordinates O X X X
+I010/210 Calculated Acceleration O X X X
+I010/220 Target Address O X X X
+I010/245 Target Identification O X X X
+I010/250 Mode S MB Data O X X X
+I010/270 Target Size &amp; Orientation O X X X
+I010/280 Presence O X X X
+I010/300 Vehicle Fleet Identification O X X X
+I010/310 Pre-programmed Message O X X X
+I010/500 Standard Deviation of Position O X X X
+I010/550 System Status X O M M</code></pre>
+<h3 id="i010010---data-source-identifier">I010/010 - Data Source Identifier</h3>
+<p><em>Definition</em>: Identification of the system from which the data are received.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/010/SAC</strong> - <em>System Area Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I010/010/SIC</strong> - <em>System Identification Code</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>NOTE - The SAC is fixed to zero to indicate a data flow local to the airport.</p>
+<h3 id="i010020---target-report-descriptor">I010/020 - Target Report Descriptor</h3>
+<p><em>Definition</em>: Type and characteristics of the data as transmitted by a system.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I010/020/TYP</strong></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: SSR multilateration<br />
+1: Mode S multilateration<br />
+2: ADS-B<br />
+3: PSR<br />
+4: Magnetic Loop System<br />
+5: HF multilateration<br />
+6: Not defined<br />
+7: Other types</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/DCR</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No differential correction (ADS-B)<br />
+1: Differential correction (ADS-B)</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/CHN</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Chain 1<br />
+1: Chain 2</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/GBS</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Transponder Ground bit not set<br />
+1: Transponder Ground bit set</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/CRT</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No Corrupted reply in multilateration<br />
+1: Corrupted replies in multilateration</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/SIM</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Actual target report<br />
+1: Simulated target report</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/TST</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Test Target</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/RAB</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Report from target transponder<br />
+1: Report from field monitor (fixed transponder)</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/LOP</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Undetermined<br />
+1: Loop start<br />
+2: Loop finish</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/TOT</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Undetermined<br />
+1: Aircraft<br />
+2: Ground vehicle<br />
+3: Helicopter</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/SPI</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Absence of SPI<br />
+1: Special Position Identification</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/020/(spare)</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<h3 id="i010040---measured-position-in-polar-co-ordinates">I010/040 - Measured Position in Polar Co-ordinates</h3>
+<p><em>Definition</em>: Measured position of a target in local polar co-ordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/040/RHO</strong> - <em>RHO</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+<li>value <span class="math inline"> &lt;  = 65536</span> m</li>
+</ul>
+<p><strong>I010/040/TH</strong> - <em>Theta</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</li>
+</ul>
+</blockquote>
+<h3 id="i010041---position-in-wgs-84-co-ordinates">I010/041 - Position in WGS-84 Co-ordinates</h3>
+<p><em>Definition</em>: Position of a target in WGS-84 Co-ordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/041/LAT</strong> - <em>Latitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 90</span> °</li>
+<li>value <span class="math inline"> &lt;  = 90</span> °</li>
+</ul>
+<p><strong>I010/041/LON</strong> - <em>Longitude</em></p>
+<ul>
+<li>32 bits [<code>................................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">180/2<sup>31</sup></span> ° <span class="math inline"> ≈ 8.38<em>e</em> − 8</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 180</span> °</li>
+<li>value <span class="math inline"> &lt; 180</span> °</li>
+</ul>
+</blockquote>
+<h3 id="i010042---position-in-cartesian-co-ordinates">I010/042 - Position in Cartesian Co-ordinates</h3>
+<p><em>Definition</em>: Position of a target in Cartesian co-ordinates, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/042/X</strong> - <em>X Coordinate</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 32768</span> m</li>
+<li>value <span class="math inline"> &lt;  = 32768</span> m</li>
+</ul>
+<p><strong>I010/042/Y</strong> - <em>Y Coordinate</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 32768</span> m</li>
+<li>value <span class="math inline"> &lt;  = 32768</span> m</li>
+</ul>
+</blockquote>
+<h3 id="i010060---mode-3a-code-in-octal-representation">I010/060 - Mode-3/A Code in Octal Representation</h3>
+<p><em>Definition</em>: Mode-3/A code converted into octal representation.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/060/V</strong> - <em>Validated</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Code validated<br />
+1: Code not validated</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/060/G</strong> - <em>Garbled</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Garbled code</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/060/L</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Mode-3/A code derived from the reply of the transponder<br />
+1: Mode-3/A code not extracted during the last scan</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/060/(spare)</strong></p>
+<ul>
+<li>1 bit [<code>.</code>]</li>
+</ul>
+<p><strong>I010/060/MODE3A</strong> - <em>Mode-3/A Reply in Octal Representation</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>Octal string (3-bits per digit)</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Bit 15 has no meaning in the case of a smoothed Mode-3/A code
+and is set to 0 for a calculated track. For Mode S, it is set
+to one when an error correction has been attempted.</li>
+<li>For Mode S, bit 16 is normally set to zero, but can exceptionally
+be set to one to indicate a non-validated Mode-3/A code (e.g. alert
+condition detected, but new Mode-3/A code not successfully extracted).</li>
+</ol>
+</blockquote>
+<h3 id="i010090---flight-level-in-binary-representation">I010/090 - Flight Level in Binary Representation</h3>
+<p><em>Definition</em>: Flight Level (Mode C / Mode S Altitude) converted into binary two’s
+complement representation.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/090/V</strong> - <em>Validated</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Code validated<br />
+1: Code not validated</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/090/G</strong> - <em>Garbled</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Garbled code</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/090/FL</strong> - <em>Flight Level</em></p>
+<ul>
+<li>14 bits [<code>..............</code>]</li>
+<li>signed quantity</li>
+<li>unit: “FL”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> FL <span class="math inline"> ≈ 0.25</span> FL</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The value shall be within the range described by ICAO Annex 10</li>
+<li>For Mode S, bit 15 (G) is set to one when an error correction has
+been attempted.</li>
+</ol>
+</blockquote>
+<h3 id="i010091---measured-height">I010/091 - Measured Height</h3>
+<p><em>Definition</em>: Height above local 2D co-ordinate reference system (two’s complement)
+based on direct measurements not related to barometric pressure.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “ft”</li>
+<li>LSB = <span class="math inline">25/2<sup>2</sup></span> ft <span class="math inline"> ≈ 6.25</span> ft</li>
+<li>value <span class="math inline"> &gt;  =  − 204800</span> ft</li>
+<li>value <span class="math inline"> &lt;  = 204800</span> ft</li>
+</ul>
+<h3 id="i010131---amplitude-of-primary-plot">I010/131 - Amplitude of Primary Plot</h3>
+<p><em>Definition</em>: Amplitude of Primary Plot.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>raw value</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The value is radar-dependent, 0 being the minimum detectable level
+for that radar.</li>
+</ul>
+</blockquote>
+<h3 id="i010140---time-of-day">I010/140 - Time of Day</h3>
+<p><em>Definition</em>: Absolute time stamping expressed as UTC.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “s”</li>
+<li>LSB = <span class="math inline">1/2<sup>7</sup></span> s <span class="math inline"> ≈ 7.81<em>e</em> − 3</span> s</li>
+</ul>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The time of day value is reset to zero each day at midnight.</li>
+</ul>
+</blockquote>
+<h3 id="i010161---track-number">I010/161 - Track Number</h3>
+<p><em>Definition</em>: An integer value representing a unique reference to a track record
+within a particular track file.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/161/(spare)</strong></p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+</ul>
+<p><strong>I010/161/TRK</strong> - <em>Track Number</em></p>
+<ul>
+<li>12 bits [<code>............</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<h3 id="i010170---track-status">I010/170 - Track Status</h3>
+<p><em>Definition</em>: Status of track.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I010/170/CNF</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Confirmed track<br />
+1: Track in initialisation phase</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/TRE</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Last report for a track</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/CST</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No extrapolation<br />
+1: Predictable extrapolation due to sensor refresh period (see NOTE)<br />
+2: Predictable extrapolation in masked area<br />
+3: Extrapolation due to unpredictable absence of detection</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/MAH</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Horizontal manoeuvre</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/TCC</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Tracking performed in ‘Sensor Plane’, i.e. neither slant range correction nor projection was applied<br />
+1: Slant range correction and a suitable projection technique are used to track in a 2D.reference plane, tangential to the earth model at the Sensor Site co-ordinates</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/STH</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Measured position<br />
+1: Smoothed position</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/TOM</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown type of movement<br />
+1: Taking-off<br />
+2: Landing<br />
+3: Other types of movement</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/DOU</strong></p>
+<ul>
+<li><p>3 bits [<code>...</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No doubt<br />
+1: Doubtful correlation (undetermined reason)<br />
+2: Doubtful correlation in clutter<br />
+3: Loss of accuracy<br />
+4: Loss of accuracy in clutter<br />
+5: Unstable track<br />
+6: Previously coasted</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/MRS</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Merge or split indication undetermined<br />
+1: Track merged by association to plot<br />
+2: Track merged by non-association to plot<br />
+3: Split track</div>
+</blockquote></li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/GHO</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: Ghost track</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/170/(spare)</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Some sensors are not be able to scan the whole coverage in one
+refresh period. Therefore, track extrapolation is performed in
+un-scanned sectors. CST is then set to 01.</li>
+<li>Bit-8 (GHO) is used to signal that the track is suspected to have
+been generated by a fake target.</li>
+</ol>
+</blockquote>
+<h3 id="i010200---calculated-track-velocity-in-polar-co-ordinates">I010/200 - Calculated Track Velocity in Polar Co-ordinates</h3>
+<p><em>Definition</em>: Calculated track velocity expressed in polar co-ordinates.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/200/GSP</strong> - <em>Ground Speed</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “NM/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s <span class="math inline"> ≈ 6.10<em>e</em> − 5</span> NM/s</li>
+<li>value <span class="math inline"> &lt;  = 2</span> NM/s</li>
+</ul>
+<p><strong>I010/200/TRA</strong> - <em>Track Angle</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">360/2<sup>16</sup></span> ° <span class="math inline"> ≈ 5.49<em>e</em> − 3</span> °</li>
+</ul>
+</blockquote>
+<h3 id="i010202---calculated-track-velocity-in-cartesian-co-ordinates">I010/202 - Calculated Track Velocity in Cartesian Co-ordinates</h3>
+<p><em>Definition</em>: Calculated track velocity expressed in Cartesian co-ordinates, in two’s
+complement representation.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/202/VX</strong> - <em>X Velocity</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 8192</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 8192</span> m/s</li>
+</ul>
+<p><strong>I010/202/VY</strong> - <em>Y Velocity</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s</li>
+<li>value <span class="math inline"> &gt;  =  − 8192</span> m/s</li>
+<li>value <span class="math inline"> &lt;  = 8192</span> m/s</li>
+</ul>
+</blockquote>
+<h3 id="i010210---calculated-acceleration">I010/210 - Calculated Acceleration</h3>
+<p><em>Definition</em>: Calculated Acceleration of the target, in two’s complement form.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/210/AX</strong> - <em>X Acceleration</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s² <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &gt;  =  − 31</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 31</span> m/s²</li>
+</ul>
+<p><strong>I010/210/AY</strong> - <em>Y Acceleration</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m/s²”</li>
+<li>LSB = <span class="math inline">1/2<sup>4</sup></span> m/s² <span class="math inline"> ≈ 6.25<em>e</em> − 2</span> m/s²</li>
+<li>value <span class="math inline"> &gt;  =  − 31</span> m/s²</li>
+<li>value <span class="math inline"> &lt;  = 31</span> m/s²</li>
+</ul>
+</blockquote>
+<h3 id="i010220---target-address">I010/220 - Target Address</h3>
+<p><em>Definition</em>: Target address (24-bits address) assigned uniquely to each Target.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li>24 bits [<code>........................</code>]</li>
+<li>raw value</li>
+</ul>
+<h3 id="i010245---target-identification">I010/245 - Target Identification</h3>
+<p><em>Definition</em>: Target (aircraft or vehicle) identification in 8 characters.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/245/STI</strong></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Callsign or registration downlinked from transponder<br />
+1: Callsign not downlinked from transponder<br />
+2: Registration not downlinked from transponder</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/245/(spare)</strong></p>
+<ul>
+<li>6 bits [<code>......</code>]</li>
+</ul>
+<p><strong>I010/245/CHR</strong> - <em>Characters 1-8 (Coded on 6 Bits Each) Defining Target Identification</em></p>
+<ul>
+<li>48 bits [<code>... 48 bits ...</code>]</li>
+<li>ICAO string (6-bits per character)</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>See ICAO document Annex 10, Volume I, Part I, section 3.8.2.9 for
+the coding rules.</li>
+</ul>
+</blockquote>
+<h3 id="i010250---mode-s-mb-data">I010/250 - Mode S MB Data</h3>
+<p><em>Definition</em>: Mode S Comm B data as extracted from the aircraft transponder.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I010/250/MBDATA</strong></p>
+<p>56-bit message conveying Mode S Comm B message data</p>
+<ul>
+<li>56 bits [<code>... 56 bits ...</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I010/250/BDS1</strong></p>
+<p>Comm B Data Buffer Store 1 Address</p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+<p><strong>I010/250/BDS2</strong></p>
+<p>Comm B Data Buffer Store 2 Address</p>
+<ul>
+<li>4 bits [<code>....</code>]</li>
+<li>raw value</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>For the transmission of BDS20, item 245 is used.</li>
+</ul>
+</blockquote>
+<h3 id="i010270---target-size-and-orientation">I010/270 - Target Size and Orientation</h3>
+<p><em>Definition</em>: Target size defined as length and width of the detected target, and orientation.</p>
+<p><em>Structure</em>:</p>
+<p>Extended item.</p>
+<blockquote>
+<p><strong>I010/270/LENGTH</strong> - <em>Length</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/270/ORIENTATION</strong> - <em>Orientation</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">360/2<sup>7</sup></span> ° <span class="math inline"> ≈ 2.81</span> °</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/270/WIDTH</strong> - <em>Width</em></p>
+<ul>
+<li>7 bits [<code>.......</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+</ul>
+<p><code>(FX)</code></p>
+<ul>
+<li><p>extension bit</p>
+<blockquote>
+<div class="line-block">0: End of data item<br />
+1: Extension into next extent</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The orientation gives the direction which the aircraft nose is
+pointing, relative to the Geographical North.</li>
+</ul>
+</blockquote>
+<h3 id="i010280---presence">I010/280 - Presence</h3>
+<p><em>Definition</em>: Positions of all elementary presences constituting a plot.</p>
+<p><em>Structure</em>:</p>
+<p>Repetitive item, repetition factor 8 bits.</p>
+<blockquote>
+<p><strong>I010/280/DRHO</strong></p>
+<p>Difference between the radial distance of the plot centre
+and that of the presence.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1</span> m</li>
+<li>value <span class="math inline"> &gt;  =  − 127</span> m</li>
+<li>value <span class="math inline"> &lt;  = 127</span> m</li>
+</ul>
+<p><strong>I010/280/DTHETA</strong></p>
+<p>Difference between the azimuth of the plot centre and that
+of the presence.</p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>signed quantity</li>
+<li>unit: “°”</li>
+<li>LSB = <span class="math inline">3/20</span> ° <span class="math inline"> ≈ 0.15</span> °</li>
+<li>value <span class="math inline"> &gt;  =  − 381/20</span> °</li>
+<li>value <span class="math inline"> &lt;  = 381/20</span> °</li>
+</ul>
+</blockquote>
+<h3 id="i010300---vehicle-fleet-identification">I010/300 - Vehicle Fleet Identification</h3>
+<p><em>Definition</em>: Vehicle fleet identification number.</p>
+<p><em>Structure</em>:</p>
+<ul>
+<li><p>8 bits [<code>........</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Unknown<br />
+1: ATC equipment maintenance<br />
+2: Airport maintenance<br />
+3: Fire<br />
+4: Bird scarer<br />
+5: Snow plough<br />
+6: Runway sweeper<br />
+7: Emergency<br />
+8: Police<br />
+9: Bus<br />
+10: Tug (push/tow)<br />
+11: Grass cutter<br />
+12: Fuel<br />
+13: Baggage<br />
+14: Catering<br />
+15: Aircraft maintenance<br />
+16: Flyco (follow me)</div>
+</blockquote></li>
+</ul>
+<h3 id="i010310---pre-programmed-message">I010/310 - Pre-programmed Message</h3>
+<p><em>Definition</em>: Number related to a pre-programmed message that can be transmitted by a vehicle.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/310/TRB</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Default<br />
+1: In Trouble</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/310/MSG</strong></p>
+<ul>
+<li><p>7 bits [<code>.......</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">1: Towing aircraft<br />
+2: “Follow me” operation<br />
+3: Runway check<br />
+4: Emergency operation (fire, medical…)<br />
+5: Work in progress (maintenance, birds scarer, sweepers…)</div>
+</blockquote></li>
+</ul>
+</blockquote>
+<h3 id="i010500---standard-deviation-of-position">I010/500 - Standard Deviation of Position</h3>
+<p><em>Definition</em>: Standard Deviation of Position</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/500/DEVX</strong> - <em>Standard Deviation of X Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+</ul>
+<p><strong>I010/500/DEVY</strong> - <em>Standard Deviation of Y Component</em></p>
+<ul>
+<li>8 bits [<code>........</code>]</li>
+<li>unsigned quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+</ul>
+<p><strong>I010/500/COVXY</strong> - <em>Covariance in Two’s Complement Form</em></p>
+<ul>
+<li>16 bits [<code>................</code>]</li>
+<li>signed quantity</li>
+<li>unit: “m”</li>
+<li>LSB = <span class="math inline">1/2<sup>2</sup></span> m <span class="math inline"> ≈ 0.25</span> m</li>
+</ul>
+</blockquote>
+<h3 id="i010550---system-status">I010/550 - System Status</h3>
+<p><em>Definition</em>: Information concerning the configuration and status of a System.</p>
+<p><em>Structure</em>:</p>
+<blockquote>
+<p><strong>I010/550/NOGO</strong> - <em>Operational Release Status of the System</em></p>
+<ul>
+<li><p>2 bits [<code>..</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Operational<br />
+1: Degraded<br />
+2: NOGO</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/550/OVL</strong> - <em>Overload Indicator</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: No overload<br />
+1: Overload</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/550/TSV</strong> - <em>Time Source Validity</em></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Valid<br />
+1: Invalid</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/550/DIV</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Normal Operation<br />
+1: Diversity degraded</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/550/TTF</strong></p>
+<ul>
+<li><p>1 bit [<code>.</code>]</p></li>
+<li><p>values:</p>
+<blockquote>
+<div class="line-block">0: Test Target Operative<br />
+1: Test Target Failure</div>
+</blockquote></li>
+</ul>
+<p><strong>I010/550/(spare)</strong></p>
+<ul>
+<li>2 bits [<code>..</code>]</li>
+</ul>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>For a radar, bit-4 (DIV) is set to zero either when diversity is
+not used, or when diversity is used and operational.</li>
+</ul>
+</blockquote>
+<h3 id="i010re---reserved-expansion-field">I010/RE - Reserved Expansion Field</h3>
+<p><em>Definition</em>: Expansion</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item (RE)</p>
+<h3 id="i010sp---special-purpose-field">I010/SP - Special Purpose Field</h3>
+<p><em>Definition</em>: Special Purpose Field</p>
+<p><em>Structure</em>:</p>
+<p>Explicit item (SP)</p>
+<h1 id="user-application-profile-for-category-010">User Application Profile for Category 010</h1>
+<ul>
+<li><ol type="1">
+<li><code>I010/010</code> - Data Source Identifier</li>
+</ol></li>
+<li><ol start="2" type="1">
+<li><code>I010/000</code> - Message Type</li>
+</ol></li>
+<li><ol start="3" type="1">
+<li><code>I010/020</code> - Target Report Descriptor</li>
+</ol></li>
+<li><ol start="4" type="1">
+<li><code>I010/140</code> - Time of Day</li>
+</ol></li>
+<li><ol start="5" type="1">
+<li><code>I010/041</code> - Position in WGS-84 Co-ordinates</li>
+</ol></li>
+<li><ol start="6" type="1">
+<li><code>I010/040</code> - Measured Position in Polar Co-ordinates</li>
+</ol></li>
+<li><ol start="7" type="1">
+<li><code>I010/042</code> - Position in Cartesian Co-ordinates</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="8" type="1">
+<li><code>I010/200</code> - Calculated Track Velocity in Polar Co-ordinates</li>
+</ol></li>
+<li><ol start="9" type="1">
+<li><code>I010/202</code> - Calculated Track Velocity in Cartesian Co-ordinates</li>
+</ol></li>
+<li><ol start="10" type="1">
+<li><code>I010/161</code> - Track Number</li>
+</ol></li>
+<li><ol start="11" type="1">
+<li><code>I010/170</code> - Track Status</li>
+</ol></li>
+<li><ol start="12" type="1">
+<li><code>I010/060</code> - Mode-3/A Code in Octal Representation</li>
+</ol></li>
+<li><ol start="13" type="1">
+<li><code>I010/220</code> - Target Address</li>
+</ol></li>
+<li><ol start="14" type="1">
+<li><code>I010/245</code> - Target Identification</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="15" type="1">
+<li><code>I010/250</code> - Mode S MB Data</li>
+</ol></li>
+<li><ol start="16" type="1">
+<li><code>I010/300</code> - Vehicle Fleet Identification</li>
+</ol></li>
+<li><ol start="17" type="1">
+<li><code>I010/090</code> - Flight Level in Binary Representation</li>
+</ol></li>
+<li><ol start="18" type="1">
+<li><code>I010/091</code> - Measured Height</li>
+</ol></li>
+<li><ol start="19" type="1">
+<li><code>I010/270</code> - Target Size and Orientation</li>
+</ol></li>
+<li><ol start="20" type="1">
+<li><code>I010/550</code> - System Status</li>
+</ol></li>
+<li><ol start="21" type="1">
+<li><code>I010/310</code> - Pre-programmed Message</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+<li><ol start="22" type="1">
+<li><code>I010/500</code> - Standard Deviation of Position</li>
+</ol></li>
+<li><ol start="23" type="1">
+<li><code>I010/280</code> - Presence</li>
+</ol></li>
+<li><ol start="24" type="1">
+<li><code>I010/131</code> - Amplitude of Primary Plot</li>
+</ol></li>
+<li><ol start="25" type="1">
+<li><code>I010/210</code> - Calculated Acceleration</li>
+</ol></li>
+<li><ol start="26" type="1">
+<li><code>(spare)</code></li>
+</ol></li>
+<li><ol start="27" type="1">
+<li><code>I010/SP</code> - Special Purpose Field</li>
+</ol></li>
+<li><ol start="28" type="1">
+<li><code>I010/RE</code> - Reserved Expansion Field</li>
+</ol></li>
+<li><code>(FX)</code> - Field extension indicator</li>
+</ul>
+        </main>
+
+        <footer>
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
+
