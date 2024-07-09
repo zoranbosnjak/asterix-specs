@@ -18,7 +18,7 @@ is all about.
 This project contains:
 
 * [asterix definitions](/specs.html) in *zero overhead* custom text based [format](/syntax.html);
-* [tools](/tools.html) to validate and convert specifications between formats;
+* [aspecs](/aspecs.html) to validate and convert specifications between formats;
 * auto-generated specifications in *JSON* format;
 * auto-generated specifications in *HTML* and *PDF* format;
 * formal description of asterix [structure](/struct.html);
@@ -103,83 +103,158 @@ This example is using asterix category description in `json` format.
 import sys
 import json
 
-# input json file
-infile=sys.argv[1]
+def split(obj):
+    return (obj['tag'], obj['contents'])
 
-# load definition and decode json
-with open(infile) as f:
-    s = f.read()
-root = json.loads(s)
-
-# show category info
-print(root['number'], root['edition'], root['date'])
-
-# show top level items
-for i in root['catalogue']:
-    print(i['name'])
-
-# show user application profile
-for i in root['uap']['items']:
-    print(i)
-
-def get_rule(rule):
-    t = rule['type']
+def dump_rule(f, obj):
+    t, cont = split(obj)
     if t == 'ContextFree':
-        return rule['value']
+        f(cont)
     elif t == 'Dependent':
-        return rule['default']
+        f(cont['default'])
     else:
-        raise Exception('unexpected type: {}'.format(t))
+        raise Exception('unexpected', t)
 
-# recursivly walk over the structure and show all items
-
-def dump_item(item, parent=''):
-    path = parent
-    if item['spare']:
-        path = path + '/spare'
-        n = item['length']
-        print('{}, bits: {}'.format(path, n))
-        return
-    path = path + '/' + item['name']
-    dump_variation(get_rule(item['rule']), path)
-
-def dump_variation(variation, path):
-    t = variation['type']
-    if t == 'Element':
-        n = variation['size']
-        cont = get_rule(variation['rule']) # exemine content
-        print('{} Element, bits: {}'.format(path, n))
-    elif t == 'Group':
-        print('{} Gorup'.format(path))
-        for i in variation['items']:
-            dump_item(i, path)
-    elif t == 'Extended':
-        print('{} Extended'.format(path))
-        for i in variation['items']:
-            if i is not None:
-                dump_item(i, path)
-    elif t == 'Repetitive':
-        rt = variation['rep']
-        if rt['type'] == 'Regular':
-            n = rt['size']
-            print('{} Repetitive ({})'.format(path, n))
-        elif rt['type'] == 'Fx':
-            print('{} Repetitive with FX bit'.format(path))
+def dump_uap(obj):
+    t, cont = split(obj)
+    def f(i):
+        t, name = split(i)
+        if t == 'UapItem':
+            return name
+        elif t == 'UapItemRFS':
+            return 'RFS'
+        elif t == 'UapItemSpare':
+            return '-'
         else:
-            raise Exception('unexpected repetitive type {}'.format(rt))
-        dump_variation(variation['variation'], path)
-    elif t == 'Explicit':
-        print('{} Explicit'.format(path))
-    elif t == 'Compound':
-        print('{} Compound'.format(path))
-        for i in variation['items']:
-            if i is not None:
-                dump_item(i, path)
+            raise Exception('unexpected', t)
+    if t == 'Uap':
+        print('Single uap... {}'.format([f(i) for i in cont]))
+    elif t == 'Uaps':
+        raise NotImplementedError
     else:
-        raise Exception('unexpected variation type {}'.format(t))
+        raise Exception('unexpected', t)
 
-for i in root['catalogue']:
-    dump_item(i)
+def handle_signedness(obj):
+    t, cont = split(obj)
+    if t == 'Signed':
+        return True
+    elif t == 'Unsigned':
+        return False
+    else:
+        raise Exception('unexpected', t)
+
+def handle_number(obj):
+    t, cont = split(obj)
+    if t == 'NumInt':
+        return cont
+    elif t == 'NumDiv':
+        a = handle_number(cont['numerator'])
+        b = handle_number(cont['denominator'])
+        return float(a) / float(b)
+    elif t == 'NumPow':
+        return pow(cont['base'], cont['exponent'])
+    else:
+        raise Exception('unexpected', t)
+
+def handle_constrain(obj):
+    t, cont = split(obj)
+    if t == 'EqualTo': s = '=='
+    elif t == 'NotEqualTo': s = '/='
+    elif t == 'GreaterThan': s = '>'
+    elif t == 'GreaterThanOrEqualTo': s = '>='
+    elif t == 'LessThan': s = '<'
+    elif t == 'LessThanOrEqualTo': s = '<='
+    else:
+        raise Exception('unexpected', t)
+    return {
+        'type': s,
+        'value': handle_number(cont),
+    }
+
+def dump_content(obj):
+    t, cont = split(obj)
+    if t == 'ContentRaw':
+        print('Raw content')
+    elif t == 'ContentTable':
+        print('Table content {}'.format(cont))
+    elif t == 'ContentString':
+        print('String content {}'.format(cont['tag']))
+    elif t == 'ContentInteger':
+        print({
+            'type': 'Integer',
+            'signed': handle_signedness(cont['signedness']),
+            'constraints': [handle_constrain(i) for i in cont['constraints']],
+        })
+    elif t == 'ContentQuantity':
+        print({
+            'type': 'Quantity',
+            'constraints': [handle_constrain(i) for i in cont['constraints']],
+            'lsb': handle_number(cont['lsb']),
+            'signed': handle_signedness(cont['signedness']),
+            'unit': cont['unit'],
+        })
+    elif t == 'ContentBds':
+        print('BDS register...')
+    else:
+        raise Exception('unexpected', t)
+
+def dump_variation(obj):
+    t, cont = split(obj)
+    if t == 'Element':
+        print('Element {} bit(s)'.format(cont['bitSize']))
+        dump_rule(dump_content, cont['rule'])
+    elif t == 'Group':
+        print('Group of items')
+        [dump_item(i) for i in cont]
+    elif t == 'Extended':
+        print('Extended')
+        for i in cont:
+            if i is None:
+                print('FX')
+            else:
+                dump_item(i)
+    elif t == 'Repetitive':
+        print('Repetitive item {}'.format(cont['type']))
+        dump_variation(cont['variation'])
+    elif t == 'Explicit':
+        print('Explicit item')
+    elif t == 'Compound':
+        print('Compound item')
+        [dump_nonspare(i) for i in cont if i is not None]
+    else:
+        raise Exception('unexpected', t)
+
+def dump_item(obj):
+    t, cont = split(obj)
+    if t == 'Spare':
+        print('spare item {} bit(s)'.format(cont))
+    elif t == 'Item':
+        return dump_nonspare(cont)
+    else:
+        raise Exception('unexpected', t)
+
+def dump_nonspare(obj):
+    doc = obj['documentation'] # definition, description...
+    print('item {} - {}'.format(obj['name'], obj['title']))
+    dump_rule(dump_variation, obj['rule'])
+
+def dump_asterix(obj):
+    t, cont = split(obj)
+    if t == 'AsterixBasic':
+        print('Basic asterix category {}, {}, {}'.format(
+            cont['category'], cont['edition'], cont['date']))
+        dump_uap(cont['uap'])
+        [dump_nonspare(i) for i in cont['catalogue']]
+    elif t == 'AsterixExpansion':
+        print('This is asterix expansion...')
+    else:
+        raise Exception('unexpected', t)
+
+# main
+infile=sys.argv[1]
+with open(infile) as f:
+    obj = json.loads(f.read())
+dump_asterix(obj)
 ```
 
 # Related projects
@@ -224,4 +299,3 @@ indirectly) and the source code is available, your are welcome to
   asterix filtering...
   Supported asterix categories and editions are automatically updated from
   this project.
-

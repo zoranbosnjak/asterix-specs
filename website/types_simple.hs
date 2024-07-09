@@ -1,17 +1,16 @@
-type RegisterSize = Int
-type RepetitionSize = Int
-type FractBits = Int
-
-type Name = Text
-type Title = Text
-type UapName = Text
-type Unit = Text
-type ItemPath = [Name]
+newtype CatNum = CatNum Int
+newtype BitSize = BitSize Int
+newtype ByteSize = ByteSize Int
+newtype ItemName = ItemName Text
+newtype Title = Title Text
+newtype UapName = UapName Text
+newtype Unit = Unit Text
+newtype ItemPath = ItemPath [ItemName]
 
 data Documentation = Documentation
-    { docDefinition     :: Maybe Text
-    , docDescription    :: Maybe Text
-    , docRemark         :: Maybe Text
+    { docDefinition  :: Maybe Text
+    , docDescription :: Maybe Text
+    , docRemark      :: Maybe Text
     }
 
 data Edition = Edition
@@ -78,8 +77,8 @@ data Rule a
         [([Int], a)] -- cases
 
 data RepetitiveType
-    -- N bits reserved for REP lengt field
-    = RepetitiveRegular RepetitionSize
+    -- N bytes reserved for REP lengt field
+    = RepetitiveRegular ByteSize
 
     -- Number of repetitions are defined by FX bit value
     | RepetitiveFx
@@ -88,70 +87,73 @@ data ExplicitType
     = ReservedExpansion
     | SpecialPurpose
 
-data Variation
+data Variation offset
     -- leaf of the structure
-    = Element RegisterSize (Rule Content)
+    = Element offset BitSize (Rule Content)
 
     -- concatinated subitems, example:
     -- item 010 is concatinated list of subitems SAC and SIC
-    | Group [Item]
+    | Group offset [Item offset]
 
     -- extended item with FX extension mechanism
-    | Extended [Maybe Item]
+    | Extended [Maybe (Item offset)]
 
     -- repetitive item
-    | Repetitive RepetitiveType Variation
+    | Repetitive RepetitiveType (Variation offset)
 
     -- item with explicit size
     | Explicit (Maybe ExplicitType)
 
-    -- random field sequencing
-    | RandomFieldSequencing
-
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective
     -- presence bit in the first part is always zero
-    | Compound (Maybe RegisterSize) [Maybe Item]
+    | Compound [Maybe (NonSpare offset)]
 
-data Item
-    = Spare RegisterSize
-    | Item Name Title (Rule Variation) Documentation
+data NonSpare offset = NonSpare ItemName Title (Rule (Variation offset)) Documentation
+
+data Item offset
+    = Spare offset BitSize
+    | Item (NonSpare offset)
+
+data UapItem a
+    = UapItem a
+    | UapItemSpare
+    | UapItemRFS
 
 data UapSelector = UapSelector
-    { selItem :: ItemPath           -- UAP depends on this item
+    { selItem  :: ItemPath           -- UAP depends on this item
     , selTable :: [(Int, UapName)]  -- value lookup table
     }
 
 -- User applicaton profile type
-data Uap
+data Uap r
     -- single UAP
-    = Uap [Maybe Name]
+    = Uap r
 
     -- multiple UAPs
-    | Uaps [(UapName, [Maybe Name])] (Maybe UapSelector)
-
+    | Uaps [(UapName, r)] (Maybe UapSelector)
 
 -- Basic category definition
 data Basic = Basic
-    { basCategory   :: Int
-    , basTitle      :: Text
-    , basEdition    :: Edition
-    , basDate       :: Date
-    , basPreamble   :: Maybe Text
-    , basCatalogue  :: [Item]
-    , basUap        :: Uap
+    { basCategory  :: CatNum
+    , basTitle     :: Title
+    , basEdition   :: Edition
+    , basDate      :: Date
+    , basPreamble  :: Maybe Text
+    , basCatalogue :: [NonSpare ()]
+    , basUap       :: Uap [UapItem ItemName]
     }
 
 -- Expansion category definition
 data Expansion = Expansion
-    { expCategory   :: Int
-    , expTitle      :: Text
-    , expEdition    :: Edition
-    , expDate       :: Date
-    , expVariation  :: Variation
+    { expCategory  :: CatNum
+    , expTitle     :: Title
+    , expEdition   :: Edition
+    , expDate      :: Date
+    , expFspecSize :: ByteSize
+    , expItems     :: [Maybe (NonSpare ())]
     }
 
 data Asterix
     = AsterixBasic Basic
     | AsterixExpansion Expansion
-

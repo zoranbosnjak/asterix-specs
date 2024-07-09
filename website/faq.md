@@ -69,7 +69,7 @@ version of a file (align indents, sort key/value pairs...).
 In other words, *reading* and *writing* of the specs files **is required**,
 regardless of the format.
 
-It is important to note that [tools](/tools.html) handle
+It is important to note that [aspecs](/aspecs.html) handles
 the conversion in a very safe way.
 
 During automatic conversion process, it is verified that all supported formats

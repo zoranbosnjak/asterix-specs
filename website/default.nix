@@ -9,12 +9,12 @@ let
 
   haskellPackages = packages.haskellPackages;
 
-  tools = import ../tools/default.nix { inherit  packages; inShell = false; };
-  toolsStatic = import ../tools/default.nix { inherit packages; inShell = false; static = true; };
+  aspecs = import ../aspecs/default.nix { inherit  packages; inShell = false; };
+  aspecsStatic = import ../aspecs/default.nix { inherit packages; inShell = false; static = true; };
 
-  rst-to-pdf  = import ../rst-to-pdf/default.nix { inherit packages; inShell = false; };
+  to-pdf  = import ../to-pdf/default.nix { inherit packages; inShell = false; };
 
-  specs = import ./specs.nix { inherit gitrev; inherit packages;};
+  specs = import ../specs/default.nix { inherit gitrev; inherit packages;};
 
   site = haskellPackages.callCabal2nix "website" ./. { };
 
@@ -24,14 +24,14 @@ let
     export SHORT_GITREV=${shortGitrev}
     export SPECS=${specs}
     export SYNTAX=${syntax}
-    export TOOLS_VERSION=${toolsStatic.version}
-    export TOOLS_SHA256=$(sha256sum ${toolsStatic}/bin/aspecs | cut -d " " -f1)
+    export ASPECS_VERSION=${aspecsStatic.version}
+    export ASPECS_SHA256=$(sha256sum ${aspecsStatic}/bin/aspecs | cut -d " " -f1)
   '';
 
   env = packages.stdenv.mkDerivation rec {
     name = "website-devel-environment";
     buildInputs = site.env.nativeBuildInputs ++ [
-      rst-to-pdf
+      to-pdf
     ];
     shellHook = envVars;
   };
@@ -48,11 +48,9 @@ let
       echo ${gitrev} > $out/gitrev.txt
 
       mkdir -p $out/bin
-      ln -s ${tools}/bin/aspecs $out/bin/aspecs
-      ln -s ${tools}/bin/ast-to-rst $out/bin/ast-to-rst
-      ln -s ${toolsStatic}/bin/aspecs $out/bin/aspecs-static
-      ln -s ${toolsStatic}/bin/ast-to-rst $out/bin/ast-to-rst-static
-      ln -s ${rst-to-pdf}/bin/rst-to-pdf $out/bin/rst-to-pdf
+      ln -s ${aspecs}/bin/aspecs $out/bin/aspecs
+      ln -s ${aspecsStatic}/bin/aspecs $out/bin/aspecs-static
+      ln -s ${to-pdf}/bin/to-pdf $out/bin/to-pdf
 
       cp ${specs}/manifest.json $out/manifest.json
 
@@ -72,4 +70,3 @@ in
   if inShell == false
     then drv
     else if packages.lib.inNixShell then env else drv
-

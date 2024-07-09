@@ -28,7 +28,7 @@ $for(cats)$
     [[ast](/specs/cat$n$/cats/cat$ed$/definition.ast)]
     [[txt](/specs/cat$n$/cats/cat$ed$/definition.txt)]
     [[json](/specs/cat$n$/cats/cat$ed$/definition.json)]
-    [[rst](/specs/cat$n$/cats/cat$ed$/definition.rst)]
+    [[pandoc](/specs/cat$n$/cats/cat$ed$/definition.pandoc.native)]
     [[pdf](/specs/cat$n$/cats/cat$ed$/definition.pdf)]
     [[html](/specs/cat$n$/cats/cat$ed$/definition.html)]
 $endfor$
@@ -41,7 +41,7 @@ $for(refs)$
     [[ast](/specs/cat$n$/refs/ref$ed$/definition.ast)]
     [[txt](/specs/cat$n$/refs/ref$ed$/definition.txt)]
     [[json](/specs/cat$n$/refs/ref$ed$/definition.json)]
-    [[rst](/specs/cat$n$/refs/ref$ed$/definition.rst)]
+    [[pandoc](/specs/cat$n$/refs/ref$ed$/definition.pandoc.native)]
     [[pdf](/specs/cat$n$/refs/ref$ed$/definition.pdf)]
     [[html](/specs/cat$n$/refs/ref$ed$/definition.html)]
 $endfor$
@@ -60,7 +60,6 @@ Format description:
 * *ast* source format  ([syntax description](/syntax.html))
 * *txt* reformated source file, generated from ast
 * *json* representation, generated from ast
-* *rst* documentation format, generated from json
-* *pdf* documentation, generated from rst
-* *html* documentation, generated from rst
-
+* *pandoc* native documentation format
+* *pdf* documentation, generated from pandoc
+* *html* documentation, generated from pandoc

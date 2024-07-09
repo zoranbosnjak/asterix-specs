@@ -1,0 +1,74 @@
+cabal-version:      3.0
+name:               aspecs
+version:            2.0.0
+synopsis:           Asterix specifications tools.
+-- description:
+homepage:           https://zoranbosnjak.github.io/asterix-specs/
+bug-reports:        https://github.com/zoranbosnjak/asterix-specs/issues
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Zoran Bošnjak
+maintainer:         zoran.bosnjak@via.si
+-- copyright:
+category:           Data
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+-- extra-source-files:
+
+common base
+    ghc-options:
+        -Wall
+        -Wincomplete-uni-patterns
+        -Wincomplete-record-updates
+        -Wcompat
+        -Widentities
+        -Wredundant-constraints
+    default-language:
+        GHC2021
+    build-depends:
+        base < 5
+        , with-utf8
+        , text
+        , bytestring
+        , transformers
+        , optparse-applicative
+        , megaparsec
+        , parser-combinators
+        , formatting
+        , cryptonite
+        , pretty-show
+        , aeson
+        , aeson-pretty
+        , pandoc
+        , pandoc-types
+        , scientific
+
+library
+    import:           base
+    exposed-modules:
+        Asterix.Indent
+        Asterix.Specs
+        Asterix.Specs.Types
+        Asterix.Specs.Validation
+        Asterix.Specs.Syntax
+        Asterix.Specs.Syntax.Internal
+        Asterix.Specs.Syntax.Ast
+        Asterix.Specs.Syntax.Json
+        Asterix.Specs.Syntaxes
+        Asterix.Pandoc
+    -- other-modules:
+    -- other-extensions:
+    hs-source-dirs:   lib
+
+executable aspecs
+    import:           base
+    ghc-options:
+        -O2 -rtsopts -funbox-strict-fields -with-rtsopts=-T -threaded
+    main-is:          Main.hs
+    other-modules:
+        Paths_aspecs
+    -- other-extensions:
+    build-depends:
+        base < 5
+        , aspecs
+    hs-source-dirs:   app
