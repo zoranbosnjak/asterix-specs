@@ -20,6 +20,8 @@ let
 
   syntax = import ../syntax/default.nix { inherit gitrev; inherit packages; inShell = false; };
 
+  style = ../style;
+
   envVars = ''
     export SHORT_GITREV=${shortGitrev}
     export SPECS=${specs}
@@ -58,6 +60,8 @@ let
       rm -rf _site _cache
       ${site}/bin/site rebuild
       cp -a _site/* $out
+      mkdir -p $out/css
+      cp ${style}/* $out/css
 
       cd $out
       tar -cvf  specs.tar specs
