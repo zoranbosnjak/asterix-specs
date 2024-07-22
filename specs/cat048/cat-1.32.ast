@@ -1,0 +1,1176 @@
+asterix 048 "Monoradar Target Reports"
+edition 1.32
+date 2024-07-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data is received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    020 "Target Report Descriptor"
+        definition
+            Type and properties of the target report.
+        extended
+            TYP ""
+                element 3
+                    table
+                        0: No detection
+                        1: Single PSR detection
+                        2: Single SSR detection
+                        3: SSR + PSR detection
+                        4: Single ModeS All-Call
+                        5: Single ModeS Roll-Call
+                        6: ModeS All-Call + PSR
+                        7: ModeS Roll-Call +PSR
+            SIM ""
+                element 1
+                    table
+                        0: Actual target report
+                        1: Simulated target report
+            RDP ""
+                element 1
+                    table
+                        0: Report from RDP Chain 1
+                        1: Report from RDP Chain 2
+            SPI ""
+                element 1
+                    table
+                        0: Absence of SPI
+                        1: Special Position Identification
+            RAB ""
+                element 1
+                    table
+                        0: Report from aircraft transponder
+                        1: Report from field monitor (fixed transponder)
+            -
+            TST ""
+                element 1
+                    table
+                        0: Real target report
+                        1: Test target report
+            ERR ""
+                element 1
+                    table
+                        0: No Extended Range
+                        1: Extended Range present
+            XPP ""
+                element 1
+                    table
+                        0: No X-Pulse present
+                        1: X-Pulse present
+            ME ""
+                element 1
+                    table
+                        0: No military emergency
+                        1: Military emergency
+            MI ""
+                element 1
+                    table
+                        0: No military identification
+                        1: Military identification
+            FOEFRI ""
+                element 2
+                    table
+                        0: No Mode 4 interrogation
+                        1: Friendly target
+                        2: Unknown target
+                        3: No reply
+            -
+            ADSB "On-Site ADS-B Information"
+                group
+                    EP "ADSB Element Populated Bit"
+                        element 1
+                            table
+                                0: ADSB not populated
+                                1: ADSB populated
+                    VAL "On-Site ADS-B Information"
+                        element 1
+                            table
+                                0: Not available
+                                1: Available
+            SCN "Surveillance Cluster Network Information"
+                group
+                    EP "SCN Element Populated Bit"
+                        element 1
+                            table
+                                0: SCN not populated
+                                1: SCN populated
+                    VAL "Surveillance Cluster Network Information"
+                        element 1
+                            table
+                                0: Not available
+                                1: Available
+            PAI "Passive Acquisition Interface Information"
+                group
+                    EP "PAI Element Populated Bit"
+                        element 1
+                            table
+                                0: PAI not populated
+                                1: PAI populated
+                    VAL "Passive Acquisition Interface Information"
+                        element 1
+                            table
+                                0: Not available
+                                1: Available
+            spare 1
+            -
+            ACASXV "Extended Version"
+                group
+                    EP "ACASXV Element Populated Bit"
+                        element 1
+                            table
+                                0: ACASXV not populated
+                                1: ACASXV populated
+                    VAL "ACAS Extended Version Value"
+                        element 4
+                            table
+                                0: Non-Extended Version
+                                1: ACAS Xa Version 1
+                                2: ACAS Xu Version 1
+            POXPR "PO Transponder Capability"
+                group
+                    EP "POXPR Element Populated Bit"
+                        element 1
+                            table
+                                0: POXPR not populated
+                                1: POXPR populated
+                    VAL "PO Transpomder Capability"
+                        element 1
+                            table
+                                0: PO not supported (PPM only)
+                                1: PO supported
+            -
+            POACT "PO Active for Current Plot"
+                group
+                    EP "POACT Element Populated Bit"
+                        element 1
+                            table
+                                0: POACT not populated
+                                1: POACT populated
+                    VAL "POACT Active for Current Plot"
+                        element 1
+                            table
+                                0: PO not active
+                                1: PO active
+            DTFXPR "Basic Dataflash Transponder Capability"
+                group
+                    EP "DTFXPR Element Populated Bit"
+                        element 1
+                            table
+                                0: DTFXPR not populated
+                                1: DTFXPR populated
+                    VAL "Basic Dataflash Transponder Capability"
+                        element 1
+                            table
+                                0: Basic Dataflash not supported
+                                1: Basic Dataflash supported
+            DTFACT "Basic Dataflash Active for Current Plot"
+                group
+                    EP "DTFACT Element Populated Bit"
+                        element 1
+                            table
+                                0: DTFACT not populated
+                                1: DTFACT populated
+                    VAL "Basic Dataflash in Current Plot"
+                        element 1
+                            table
+                                0: Basic Dataflash not active
+                                1: Basic Dataflash active
+            spare 1
+            -
+            IRMXPR "IRM Transponder Capability"
+                group
+                    EP "IRMXPR Element Populated Bit"
+                        element 1
+                            table
+                                0: IRMXPR not populated
+                                1: IRMXPR populated
+                    VAL "Transponder IRM Capability"
+                        element 1
+                            table
+                                0: Transponder not IRM capable
+                                1: Transponder IRM capable
+            IRMACT "IRM Active for Current Plot"
+                group
+                    EP "IRM Element Populated Bit"
+                        element 1
+                            table
+                                0: IRMACT not populated
+                                1: IRMACT populated
+                    VAL "IRM Active for Current Plot"
+                        element 1
+                            table
+                                0: IRM not active
+                                1: IRM active
+            spare 3
+            -
+        remark
+            Notes:
+
+                1. For Mode S aircraft, the SPI information is also contained in I048/230.
+                2. To bits 3/2 of extension 1 (FOE/FRI): IFF interrogators supporting a three level
+                   classification of the processing of the Mode 4 interrogation result
+                   shall encode the detailed response information in data item M4E of
+                   the Reserved Expansion Field of category 048. In this case the value
+                   for FOE/FRI in I048/020 shall be set to “00”.
+                   However, even those interrogators shall use I048/020 to encode the information “No reply”.
+                3. To bit 6 of extension 1 (XPP): This bit shall always be set when the X-pulse has
+                   been extracted, independent from the Mode it was extracted with.
+                4. To bit 7 of extension 1  (ERR): This bit set to “1” indicates that the range of the
+                   target is beyond the maximum range in data item I048/040.In this
+                   case – and this case only - the ERR Data Item in the Reserved
+                   Expansion Field shall provide the range value of the Measured
+                   Position in Polar Coordinates.
+                5. To Extension 2: The EUROCONTROL Specification for European Mode S Stations Edition 4.0
+                   (EMS 4.0) [Ref. 4] defines new functionalities that can use external data inputs.
+                   The possibilities described in EMS 4.0 cover the presence of target information acquired
+                   via the on-site ADS-B, the Surveillance Cluster Network or the Passive Acquisition Interface.
+                   The second extension provides information – per target – on whether such information is available
+                   supporting performance improvements, e.g. Passive Acquisition, and new features, e.g. detection
+                   of a potential IC Conflict.
+                6. To Extensions 3, 4, and 5: The transponder MOPS ED-73F/DO-181F (Minimum Operational Performance Standard
+                   [Ref. 2 ]) defines new optional functionalities:
+
+                       - Basic Dataflash (to reduce BDS registers extractions by groundsystems)
+                       - IRM (Interrogation/Reply Monitoring)
+                       - Phase Overlay (to convey more data within a single long Roll Call Reply, using Downlink Formats 20 and 21)
+
+                7. To Extensions 3 and 4: To populate bits in these extensions, Mode S radars will have to decode/analyse
+                   the content of BDS register 1,0 (bits 15, 42 and 44) as per [Ref. 2 ].
+
+    030 "Warning/Error Conditions and Target Classification"
+        definition
+            Warning/error conditions detected by a radar station for the target report
+            involved. Target Classification information for the target involved.
+        repetitive fx
+            element 7
+                table
+                    0: Not defined; never used
+                    1: Multipath Reply (Reflection)
+                    2: Reply due to sidelobe interrogation/reception
+                    3: Split plot
+                    4: Second time around reply
+                    5: Angel
+                    6: Slow moving target correlated with road infrastructure (terrestrial vehicle)
+                    7: Fixed PSR plot
+                    8: Slow PSR target
+                    9: Low quality PSR plot
+                    10: Phantom SSR plot
+                    11: Non-Matching Mode-3/A Code
+                    12: Mode C code / Mode S altitude code abnormal value compared to the track
+                    13: Target in Clutter Area
+                    14: Maximum Doppler Response in Zero Filter
+                    15: Transponder anomaly detected
+                    16: Duplicated or Illegal Mode S Aircraft Address
+                    17: Mode S error correction applied
+                    18: Undecodable Mode C code / Mode S altitude code
+                    19: Birds
+                    20: Flock of Birds
+                    21: Mode-1 was present in original reply
+                    22: Mode-2 was present in original reply
+                    23: Plot potentially caused by Wind Turbine
+                    24: Helicopter
+                    25: Maximum number of re-interrogations reached (surveillance information)
+                    26: Maximum number of re-interrogations reached (BDS Extractions)
+                    27: BDS Overlay Incoherence
+                    28: Potential BDS Swap Detected
+                    29: Track Update in the Zenithal Gap
+                    30: Mode S Track re-acquired
+                    31: Duplicated Mode 5 Pair NO/PIN detected
+                    32: Wrong DF reply format detected
+                    33: Transponder anomaly (MS XPD replies with Mode A/C to Mode A/C-only all-call)
+                    34: Transponder anomaly (SI capability report wrong)
+                    35: Potential IC Conflict
+                    36: IC Conflict detection possible-no conflict currently detected
+                    37: Duplicate Mode 5 PIN (refer to the Mode 5 items in the REF)
+        remark
+            Notes:
+
+                1. It has to be stressed that a series of one or more codes can
+                   be reported per target report.
+                2. Data conveyed in this item are of secondary importance, and
+                   can generally also be derived from the processing of mandatory items.
+                3. As of Edition 1.28 of this specification it is possible to indicate specific
+                   Transponder Anomalies by means of dedicated Codes (such as Codes 33 and 34).
+                   Code 15 is kept for backwards compatibility. It needs to be understood that
+                   ASTERIX Encoders implementing Category 048 in line with Edition 1.27 or earlier
+                   of this specification cannot indicate specific Transponder Anomalies.
+                4. Values 25 to 30 have been defined to comply with the updated
+                   European Mode S Specification (EMS) and to provide the possibility
+                   to report the following information:
+
+                       - Code 25: the maximum number of permitted re-interrogations to
+                         acquire the surveillance information has been reached;
+                       - Code 26: the maximum number of permitted re-interrogations to
+                         extract BDS Registers has been reached;
+                       - Code 27: inconsistency detected between the contents of the
+                         message and the BDS register overlayed;
+                       - Code 28: a BDS swap has been detected and the respective information
+                         has been discarded;
+                       - Code 29: the track has been updated while being in the zenithal
+                         gap (also referred to as “Cone of Silence”);
+                       - Code 30: the radar had lost track of an aircraft and subsequently
+                         re-acquired it.
+                       - Code 31: ???
+                       - Code 32: the transponder has used a wrong Downlink Format.
+                       - Code 33 & 34: reporting specific Transponder Anomalies.
+                       - Code 35 indicates that a plot has been obtained despite a high probability
+                         of an IC Conflict with another interrogator.
+                       - Code 36 indicates that a plot is in a configuration that it would be possible
+                         to detect an IC Conflict with another interrogator. Currently no potential IC
+                         Conflict has been detected.
+                         NOTE: Although implementation dependent, the use of this code should
+                         be limited to the target acquisition phase.
+
+                5. Together with Codes 35 and 36 the possibility to communicate the area within which
+                   the detection of an IC Conflict is possible was implemented in the Category 034
+                   Specification Ref. [5] by means of Message Type 008.
+                6. The use of this Data Item is implementation specific and shall be described in the ICD
+                   of the system generating the Category 048 target reports.
+
+    040 "Measured Position in Polar Co-ordinates"
+        definition
+            Measured position of an aircraft in local polar co-ordinates.
+        group
+            RHO ""
+                element 16
+                    unsigned quantity 1/2^8 "NM" < 256
+            THETA ""
+                element 16
+                    unsigned quantity 360/2^16 "°"
+        remark
+            Notes:
+
+                1. In case of no detection, the extrapolated position expressed in slant
+                   polar co-ordinates may be sent, except for a track cancellation message.
+                   No detection is signalled by the TYP field set to zero in I048/020
+                   Target Report Descriptor.
+                2. This item represents the measured target position of the plot, even
+                   if associated with a track, for the present antenna scan. It is
+                   expressed in polar co-ordinates in the local reference system,
+                   centred on the radar station.
+                3. In case of combined detection by a PSR and an SSR, then the SSR
+                   position is sent.
+                4. For targets having a range beyond the maximum range the data item
+                   “Extended Range Report” has been added to the Reserved Expansion
+                   Field of category 048. The presence of this data item is indicated
+                   by the ERR bit set to one in data item I048/020, first extension.
+                   The ERR data item shall only be sent if the value of RHO is equal
+                   to or greater than 256NM.
+                   Please note that if this data item is used, the Encoding Rule to
+                   data item I048/040 still applies, meaning that the extra item in
+                   the Reserved Expansion Field shall be transmitted in addition to
+                   data item I048/040.
+                   If the Extended Range Report item in the Reserved Expansion Field
+                   is used, it is recommended to set the value of RHO in data item
+                   I048/040 to its maximum, meaning bits 32/17 all set to 1.
+
+    042 "Calculated Position in Cartesian Co-ordinates"
+        definition
+            Calculated position of an aircraft in Cartesian co-ordinates.
+        group
+            X "X-Component"
+                element 16
+                    signed quantity 1/2^7 "NM" >= -256 <= 256
+            Y "X-Component"
+                element 16
+                    signed quantity 1/2^7 "NM" >= -256 <= 256
+
+    050 "Mode-2 Code in Octal Representation"
+        definition
+            Reply to Mode-2 interrogation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-2 code as derived from the reply of the transponder
+                        1: Smoothed Mode-2 code as provided by a local tracker
+            spare 1
+            MODE2 "Mode-2 Code in Octal Representation"
+                element 12
+                    string octal
+        remark
+            Note:
+                - Bit 15 has no meaning in the case of a smoothed Mode-2 and is set
+                  to 0 for a calculated track.
+            Note:
+                - For radar systems interrogation with various technologies (such as
+                  military radars interrogating in Mode S and Mode 5), element
+                  I048/REF/GEN48/ALTM2 provides the possibility to transmit an
+                  alternative Mode-2 value. If this Data Item carries a Mode-2 value that has
+                  been derived from a Mode 5 Reply/Report, then bit-4 in
+
+    055 "Mode-1 Code in Octal Representation"
+        definition
+            Reply to Mode-1 interrogation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-1 code as derived from the reply of the transponder
+                        1: Smoothed Mode-1 code as provided by a local tracker
+            MODE1 "Mode-1 Code"
+                element 5
+                    raw
+        remark
+            Notes:
+
+                1. Bit 7 has no meaning in the case of a smoothed Mode-1 and is set
+                   to 0 for a calculated track.
+                2. The values of the bits for V, G, L, A4, A2, A1, B2 and B1 shall be
+                   identical to the values of the corresponding bits in subfield #5
+                   of data item “MD5 – Mode 5 Reports” and in subfield #5 of data
+                   item “MD5 – Mode 5 Reports, New Format” in the Reserved Expansion Field.
+
+    060 "Mode-2 Code Confidence Indicator"
+        definition
+            Confidence level for each bit of a Mode-2 reply as provided by a monopulse SSR station.
+        group
+            spare 4
+            QA4 ""
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QA2 ""
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QA1 ""
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QB4 ""
+                element 1
+                    table
+                        0: High quality pulse B4
+                        1: Low quality pulse B4
+            QB2 ""
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QB1 ""
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+            QC4 ""
+                element 1
+                    table
+                        0: High quality pulse C4
+                        1: Low quality pulse C4
+            QC2 ""
+                element 1
+                    table
+                        0: High quality pulse C2
+                        1: Low quality pulse C2
+            QC1 ""
+                element 1
+                    table
+                        0: High quality pulse C1
+                        1: Low quality pulse C1
+            QD4 ""
+                element 1
+                    table
+                        0: High quality pulse D4
+                        1: Low quality pulse D4
+            QD2 ""
+                element 1
+                    table
+                        0: High quality pulse D2
+                        1: Low quality pulse D2
+            QD1 ""
+                element 1
+                    table
+                        0: High quality pulse D1
+                        1: Low quality pulse D1
+
+    065 "Mode-1 Code Confidence Indicator"
+        definition
+            Confidence level for each bit of a Mode-1 reply as provided by a monopulse SSR station.
+        group
+            spare 3
+            QA4 ""
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QA2 ""
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QA1 ""
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QB2 ""
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QB1 ""
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+
+    070 "Mode-3/A Code in Octal Representation"
+        definition
+            Mode-3/A code converted into octal representation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-3/A code derived from the reply of the transponder
+                        1: Mode-3/A code not extracted during the last scan
+            spare 1
+            MODE3A "Mode-3/A Reply in Octal Representation"
+                element 12
+                    string octal
+        remark
+            Notes:
+
+                1. Bit 15 has no meaning in the case of a smoothed Mode-3/A code and
+                   is set to 0 for a calculated track. For Mode S, it is set to one
+                   when an error correction has been attempted.
+                2. For Mode S, bit 16 is normally set to zero, but can exceptionally
+                   be set to one to indicate a non-validated Mode-3/A code (e.g. alert
+                   condition detected, but new Mode-3/A code not successfully extracted).
+                3. For radar systems interrogation with various technologies (such as
+                   military radars interrogating in Mode S and Mode 5), element I048/REF/GEN48/ALTM3
+                   provides the possibility to transmit an alternative Mode-3/A value. If this Data
+                   Item carries a Mode-3/A value that has been derived from a Mode 5 Reply/Report,
+                   then bit-3 in I048/REF/MD5/SF#1 or bit-3 in I048/REF/M5N/SF#1 shall be set to 1.
+
+    080 "Mode-3/A Code Confidence Indicator"
+        definition
+            Confidence level for each bit of a Mode-3/A reply as provided by a monopulse SSR station.
+        group
+            spare 4
+            QA4 ""
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QA2 ""
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QA1 ""
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QB4 ""
+                element 1
+                    table
+                        0: High quality pulse B4
+                        1: Low quality pulse B4
+            QB2 ""
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QB1 ""
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+            QC4 ""
+                element 1
+                    table
+                        0: High quality pulse C4
+                        1: Low quality pulse C4
+            QC2 ""
+                element 1
+                    table
+                        0: High quality pulse C2
+                        1: Low quality pulse C2
+            QC1 ""
+                element 1
+                    table
+                        0: High quality pulse C1
+                        1: Low quality pulse C1
+            QD4 ""
+                element 1
+                    table
+                        0: High quality pulse D4
+                        1: Low quality pulse D4
+            QD2 ""
+                element 1
+                    table
+                        0: High quality pulse D2
+                        1: Low quality pulse D2
+            QD1 ""
+                element 1
+                    table
+                        0: High quality pulse D1
+                        1: Low quality pulse D1
+
+    090 "Flight Level in Binary Representation"
+        definition
+            Flight Level converted into binary representation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            FL ""
+                element 14
+                    signed quantity 1/2^2 "FL"
+        remark
+            Notes:
+
+                1. When Mode C code / Mode S altitude code is present but not decodable,
+                   the “Undecodable Mode C code / Mode S altitude code” Warning/Error
+                   should be sent in I048/030.
+                2. When local tracking is applied and the received Mode C code / Mode S
+                   altitude code corresponds to an abnormal value (the variation with
+                   the previous plot is estimated too important by the tracker),
+                   the “Mode C code / Mode S altitude code abnormal value compared
+                   to the track“ Warning/Error should be sent in I048/030.
+                3. The value shall be within the range described by ICAO Annex 10
+                4. For Mode S, bit 15 (G) is set to one when an error correction has
+                   been attempted.
+                5. For radar systems interrogating with various technologies (such as military
+                   radars interrogating in Mode S and Mode 5), element I048/REF/GEN48/ALTFL
+                   provides the possibility to transmit an alternative Flight Level value.
+                   If this Data Item carries a Flight Level value that has been derived
+                   from a Mode 5 Reply/Report, then bit-2 in I048/REF/MD5/SF#1 or bit-2
+                   in I048/REF/M5N/SF#1 shall be set to 1.
+
+    100 "Mode-C Code and Code Confidence Indicator"
+        definition
+            Mode-C height in Gray notation as received from the transponder together
+            with the confidence level for each reply bit as provided by a MSSR/Mode S station.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            spare 2
+            MODEC "Mode-C Reply in Gray Notation"
+                element 12
+                    raw
+            spare 4
+            QC1 ""
+                element 1
+                    table
+                        0: High quality pulse C1
+                        1: Low quality pulse C1
+            QA1 ""
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QC2 ""
+                element 1
+                    table
+                        0: High quality pulse C2
+                        1: Low quality pulse C2
+            QA2 ""
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QC4 ""
+                element 1
+                    table
+                        0: High quality pulse C4
+                        1: Low quality pulse C4
+            QA4 ""
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QB1 ""
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+            QD1 ""
+                element 1
+                    table
+                        0: High quality pulse D1
+                        1: Low quality pulse D1
+            QB2 ""
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QD2 ""
+                element 1
+                    table
+                        0: High quality pulse D2
+                        1: Low quality pulse D2
+            QB4 ""
+                element 1
+                    table
+                        0: High quality pulse B4
+                        1: Low quality pulse B4
+            QD4 ""
+                element 1
+                    table
+                        0: High quality pulse D4
+                        1: Low quality pulse D4
+        remark
+            Notes:
+
+                1. For Mode S, D1 is also designated as Q, and is used to denote either
+                   25ft or 100ft reporting.
+                2. For Mode S, bit-31 (G) is set when an error correction has been attempted.
+
+    110 "Height Measured by a 3D Radar"
+        definition
+            Height of a target as measured by a 3D radar. The height shall use mean
+            sea level as the zero reference level.
+        group
+            spare 2
+            3DH "3D Height, in Binary Notation. Negative Values Are Expressed in Two's Complement"
+                element 14
+                    signed quantity 25 "ft"
+
+    120 "Radial Doppler Speed"
+        definition
+            Information on the Doppler Speed of the target report.
+        compound
+            CAL "Calculated Doppler Speed"
+                group
+                    D ""
+                        element 1
+                            table
+                                0: Doppler speed is valid
+                                1: Doppler speed is doubtful
+                    spare 5
+                    CAL "Calculated Doppler Speed, Coded in Two's Complement"
+                        element 10
+                            signed quantity 1 "m/s"
+            RDS "Raw Doppler Speed"
+                repetitive 1
+                    group
+                        DOP "Doppler Speed"
+                            element 16
+                                unsigned quantity 1 "m/s"
+                        AMB "Ambiguity Range"
+                            element 16
+                                unsigned quantity 1 "m/s"
+                        FRQ "Transmitter Frequency"
+                            element 16
+                                unsigned quantity 1 "MHz"
+        remark
+            Notes:
+
+                - Although the meaning of a positive or negative value is implementation
+                  dependent and shall be described in the ICD of the system generating
+                  the ASTERIX record, it is recommended to transmit a positive value for
+                  targets moving away from the radar.
+
+    130 "Radar Plot Characteristics"
+        definition
+            Additional information on the quality of the target report.
+        compound
+            SRL "SSR Plot Runlength"
+                description
+                    SSR plot runlength, expressed as a positive binary value.
+                element 8
+                    unsigned quantity 360/2^13 "°"
+            SRR "Number of Received Replies for (M)SSR"
+                description
+                    Number of Received Replies for (M)SSR
+                element 8
+                    unsigned integer
+            SAM "Amplitude of (M)SSR Reply"
+                description
+                    Amplitude of (M)SSR Reply
+                element 8
+                    signed quantity 1 "dBm"
+            PRL "Primary Plot Runlength"
+                description
+                    Primary Plot Runlength, expressed as positive binary value
+                element 8
+                    unsigned quantity 360/2^13 "°"
+            PAM "Amplitude of Primary Plot"
+                description
+                    Amplitude of Primary Plot
+                element 8
+                    signed quantity 1 "dBm"
+            RPD "Difference in Range Between PSR and SSR Plot"
+                description
+                    Range (PSR-SSR)
+                element 8
+                    signed quantity 1/2^8 "NM"
+            APD "Difference in Azimuth Between PSR and SSR Plot"
+                description
+                    Azimuth (PSR-SSR)
+                element 8
+                    signed quantity 360/2^14 "°"
+        remark
+            Notes:
+
+                1. The total range covered is therefore from 0 to 11.21 °.
+                2. Negative values are coded in two's complement form.
+                3. The total range covered is therefore from 0 to 11.21 °.
+                4. Negative values are coded in two's complement form.
+                5. Negative values are coded in two's complement form.
+                6. The covered range difference is +/- 0.5 NM.
+                7. Sending the maximum value means that the difference in range
+                   is equal or greater than the maximum value.
+                8. Negative values are coded in two's complement form.
+                9. The covered azimuth difference is +/-360/2 7 = +/- 2.8125 °.
+                10. Sending the maximum value means that the difference in range
+                    is equal or greater than the maximum value.
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as Co-ordinated Universal Time (UTC).
+        element 24
+            unsigned quantity 1/2^7 "s" < 86400
+        remark
+            Notes:
+
+                1. The time of day value is reset to 0 each day at midnight.
+                2. Every radar station using ASTERIX should be equipped with at least
+                   one synchronised time source
+
+    161 "Track Number"
+        definition
+            An integer value representing a unique reference to a track record within
+            a particular track file.
+        group
+            spare 4
+            TRN "Track Number"
+                element 12
+                    raw
+
+    170 "Track Status"
+        definition
+            Status of monoradar track (PSR and/or SSR updated).
+        extended
+            CNF "Confirmed Vs. Tentative Track"
+                element 1
+                    table
+                        0: Confirmed Track
+                        1: Tentative Track
+            RAD "Type of Sensor(s) Maintaining Track"
+                element 2
+                    table
+                        0: Combined Track
+                        1: PSR Track
+                        2: SSR/Mode S Track
+                        3: Invalid
+            DOU "Signals Level of Confidence in Plot to Track Association Process"
+                element 1
+                    table
+                        0: Normal confidence
+                        1: Low confidence in plot to track association
+            MAH "Manoeuvre Detection in Horizontal Sense"
+                element 1
+                    table
+                        0: No horizontal man.sensed
+                        1: Horizontal man. sensed
+            CDM "Climbing / Descending Mode"
+                element 2
+                    table
+                        0: Maintaining
+                        1: Climbing
+                        2: Descending
+                        3: Unknown
+            -
+            TRE "Signal for End_of_Track"
+                element 1
+                    table
+                        0: Track still alive
+                        1: End of track lifetime(last report for this track)
+            GHO "Ghost Vs. True Target"
+                element 1
+                    table
+                        0: True target track
+                        1: Ghost target track
+            SUP "Track Maintained with Track Information from Neighbouring Node B on the Cluster, or Network"
+                element 1
+                    table
+                        0: No
+                        1: Yes
+            TCC "Type of Plot Coordinate Transformation Mechanism:"
+                element 1
+                    table
+                        0: Tracking performed in so-called 'Radar Plane', i.e. neither slant range correction nor stereographical projection was applied
+                        1: Slant range correction and a suitable projection technique are used to track in a 2D.reference plane, tangential to the earth model at the Radar Site co-ordinates
+            spare 3
+            -
+
+    200 "Calculated Track Velocity in Polar Co-ordinates"
+        definition
+            Calculated track velocity expressed in polar co-ordinates.
+        group
+            GSP "Calculated Groundspeed"
+                element 16
+                    unsigned quantity 1/2^14 "NM/s"
+            HDG "Calculated Heading"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+        remark
+            Notes:
+
+                - The calculated heading is related to the geographical North at the
+                  aircraft position.
+
+    210 "Track Quality"
+        definition
+            Track quality in the form of a vector of standard deviations.
+        group
+            SIGX "Sigma (X)) Standard Deviation on the Horizontal Axis of the Local Grid System"
+                element 8
+                    unsigned quantity 1/2^7 "NM"
+            SIGY "Sigma (Y)) Standard Deviation on the Vertical Axis of the Local Grid System"
+                element 8
+                    unsigned quantity 1/2^7 "NM"
+            SIGV "Sigma (V)) Standard Deviation on the Groundspeed Within the Local Grid System"
+                element 8
+                    unsigned quantity 1/2^14 "NM/s"
+            SIGH "Sigma (H)) Standard Deviation on the Heading Within the Local Grid System"
+                element 8
+                    unsigned quantity 360/2^12 "°"
+        remark
+            Notes:
+
+                1. The standard deviation is per definition a positive value, hence
+                   the range covered is : 0<= Sigma(X)<2 NM
+                2. The standard deviation is per definition a positive value, hence
+                   the range covered is : 0<= Sigma(Y)<2 NM
+                3. The standard deviation is per definition a positive value, hence
+                   the range covered is: 0<=Sigma (V)<56.25 Kt
+                4. The standard deviation is per definition a positive value; hence
+                   the range covered is: 0 <= sigma (H) < 22.5 degrees.
+
+    220 "Aircraft Address"
+        definition
+            Aircraft address (24-bits Mode S address) assigned uniquely to each aircraft.
+        element 24
+            raw
+        remark
+            Note:
+                - The Encoding Rule for Data Item I048/220 has been relaxed in Edition
+                  1.30 for the “End of Track Message”. In order to prevent interoperability
+                  problems it is recommended that systems sending I048/220 in an “End
+                  of Track Message” continue to do so.
+
+    230 "Communications/ACAS Capability and Flight Status"
+        definition
+            Communications capability of the transponder, capability of the on-board
+            ACAS equipment and flight status.
+        group
+            COM "Communications Capability of the Transponder"
+                element 3
+                    table
+                        0: No communications capability (surveillance only)
+                        1: Comm. A and Comm. B capability
+                        2: Comm. A, Comm. B and Uplink ELM
+                        3: Comm. A, Comm. B, Uplink ELM and Downlink ELM
+                        4: Level 5 Transponder capability
+            STAT "Flight Status"
+                element 3
+                    table
+                        0: No alert, no SPI, aircraft airborne
+                        1: No alert, no SPI, aircraft on ground
+                        2: Alert, no SPI, aircraft airborne
+                        3: Alert, no SPI, aircraft on ground
+                        4: Alert, SPI, aircraft airborne or on ground
+                        5: No alert, SPI, aircraft airborne or on ground
+                        7: Unknown
+            SI "SI/II Transponder Capability"
+                element 1
+                    table
+                        0: SI-Code Capable
+                        1: II-Code Capable
+            spare 1
+            MSSC "Mode-S Specific Service Capability"
+                element 1
+                    table
+                        0: No
+                        1: Yes
+            ARC "Altitude Reporting Capability"
+                element 1
+                    table
+                        0: 100 ft resolution
+                        1: 25 ft resolution
+            AIC "Aircraft Identification Capability"
+                element 1
+                    table
+                        0: No
+                        1: Yes
+            B1A "BDS 1,0 Bit 16"
+                element 1
+                    raw
+            B1B "BDS 1,0 Bits 37/40"
+                element 4
+                    raw
+        remark
+            Note:
+                - This  item  shall  be  present  in  every  ASTERIX  record  conveying
+                  data  related  to  a  Mode  S  target,  except  for  an  “End  of  Track
+                  Message” (i.e. I048/170, First Extension, Bit 8 is set to “1”) in which
+                  this  Data  Item  is  optional.  If  the  datalink  capability  has  not  been
+                  extracted yet, bits 16/14 shall be set to zero.
+
+    240 "Aircraft Identification"
+        definition
+            Aircraft identification (in 8 characters) obtained from an aircraft
+            equipped with a Mode S transponder.
+        element 48
+            string icao
+        remark
+            Notes:
+
+                1. This data item contains the flight identification as available in
+                   the respective Mode S transponder registers.
+                2. The  Encoding  Rule  for  Data  Item  I048/240  has  been  relaxed  in  Edition
+                   1.30 for the “End of Track Message”. In order to prevent interoperability
+                   problems it is recommended that systems sending I048/240 in an “End of
+                   Track Message” continue to do so.
+
+    250 "BDS Register Data"
+        definition
+            BDS Register Data as extracted from the aircraft transponder.
+        repetitive 1
+            group
+                MBDATA "Mode S Comm B Message Data"
+                    element 56
+                        raw
+                BDS1 "Comm B Data Buffer Store 1 Address"
+                    element 4
+                        raw
+                BDS2 "Comm B Data Buffer Store 2 Address"
+                    element 4
+                        raw
+        remark
+            Notes:
+
+                1. For the transmission of BDS Register 2,0, Data Item I048/240 is used.
+                2. For the transmission of BDS Register 3,0, Data Item I048/260 is used. In
+                   case of ACAS Xu (as defined in [3]), the Resolution Advisory consists of two
+                   parts (BDS Register 3,0 and BDS Register 3,1). BDS Register 3,1 will be
+                   transmitted using Data Item I048/250. For the detailed definition of BDS
+                   Register 3,0 and 3,1please refer to [2] Tables B-3-48a and B-3-49.
+                3. In case of data extracted via Comm-B broadcast, all bits of fields BDS1 and
+                   BDS2 are set to 0; in case of data extracted via GICB requests, the fields
+                   BDS1 and BDS2 correspond to the GICB register number.
+                4. The Encoding Rule for Data Item I048/250 has been relaxed in Edition 1.30
+                   for the “End of Track Message”. In order to prevent interoperability problems
+                   it is recommended that systems sending I048/250 in an “End of Track
+                   Message” continue to do so.
+
+    260 "ACAS Resolution Advisory Report"
+        definition
+            Currently active Resolution Advisory (RA), if any, generated by the ACAS
+            associated with the transponder transmitting the report and threat identity data.
+        element 56
+            raw
+        remark
+            Notes:
+
+                1. Refer to ICAO Draft SARPs for ACAS for detailed explanations.
+                2. In case of ACAS Xu, the Resolution Advisory consists of two parts (BDS30
+                   and BDS31). BDS31 will be transmitted using item 250.
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    140
+    020
+    040
+    070
+    090
+    130
+    220
+    240
+    250
+    161
+    042
+    200
+    170
+    210
+    030
+    080
+    100
+    110
+    120
+    230
+    260
+    055
+    050
+    065
+    060
+    SP
+    RE
