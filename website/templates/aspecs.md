@@ -76,11 +76,11 @@ aspecs --version
 aspecs --help
 
 # validate a file (ast/json format)
-aspecs validate -f input.ast --ast --warnings
-aspecs validate -f input.json --json --warnings
+aspecs validate -f input.ast --ast
+aspecs validate -f input.json --json
 
 # prettify ast file after editing, the file will be overwritten
-aspecs prettify --remove-comments input.ast --ast
+aspecs prettify input.ast --ast
 
 # show definition fingerprint, for the same definitions
 # the fingerprint shall be the same, regardless of the format
