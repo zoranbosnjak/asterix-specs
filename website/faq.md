@@ -190,3 +190,8 @@ you some time when implementing asterix encoder/decoder.
   with the intention to extend it with the FX bit, for example `I002/050`.
   In this project, such items are handled as a special case of *repetitive*
   item, denoted as `repetitive fx`.
+
+* The interpretation of `V` bit (code validated bit) is sometimes used
+  inconsistently. For example, REF-048, edition 1.12 is using both variants,
+  where `0` means `Code validated` or `Code not validated`, depending on
+  the subitem. See corresponding subitem notes for details.
