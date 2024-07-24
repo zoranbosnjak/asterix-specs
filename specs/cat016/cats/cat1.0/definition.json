@@ -1,0 +1,1259 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "This data item conveys the message type.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "System Configuration"
+                                        ],
+                                        [
+                                            2,
+                                            "Transmitter / Receiver Configuration"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the Ground System from which the data is received.\n",
+                    "description": null,
+                    "remark": "NOTE - The up-to-date list of SACs is published on the EUROCONTROL\nWeb Site (http://www.eurocontrol.int/asterix).\n\nNOTE - The SICs are allocated by the national authority responsible\nfor the surveillance infrastructure.\n"
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Identifies the service being reported.\n",
+                    "description": null,
+                    "remark": "NOTE - The service identification is allocated by the system.\n"
+                },
+                "name": "015",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Service Identification"
+            },
+            {
+                "documentation": {
+                    "definition": "Absolute time stamping expressed as UTC time.\n",
+                    "description": null,
+                    "remark": "NOTE - The time of day value is reset to zero each day at midnight.\n"
+                },
+                "name": "140",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Day"
+            },
+            {
+                "documentation": {
+                    "definition": "Data item to indicate the reporting period of the system\nconfiguration messages.\n",
+                    "description": null,
+                    "remark": "NOTE - The item will be sent periodically (every SCRP) and each\ntime a value change occurs.\n"
+                },
+                "name": "200",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThan"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": 1,
+                                            "tag": "NumInt"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "System Configuration Reporting Period"
+            },
+            {
+                "documentation": {
+                    "definition": "The use of a pair identifier in this data item, that is common\nwith its counterpart in ASTERIX Category I015/400, enables direct\nmapping from the INCS Target Report to the Transmitter/Receiver\nPair that contributed to the target report.\nThis is an identifier pointing to a measurement that was created\nfrom a specific contributing pair where the Pair Identifier refers\nto the index that details both the transmitter characteristics\n(DVB-T, DAB, FM, dedicated etc) and the receiver characteristics.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "300",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": [
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "PID",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [],
+                                                                "tag": "ContentRaw"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Pair Identification"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "TID",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [],
+                                                                "tag": "ContentRaw"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Transmitter Identification"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "RID",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [],
+                                                                "tag": "ContentRaw"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Receiver Identification"
+                                        },
+                                        "tag": "Item"
+                                    }
+                                ],
+                                "tag": "Group"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Pair Identification"
+            },
+            {
+                "documentation": {
+                    "definition": "Position of the system reference point in WGS-84 coordinates.\n",
+                    "description": null,
+                    "remark": "NOTE - Positive longitude indicates East. Positive latitude\nindicates North.\n\nNOTE - I016/400 shall only be sent together with item I016/405\n“Height of the System Reference Point”.\n"
+                },
+                "name": "400",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LAT",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 31
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Latitude"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LON",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 31
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Longitude"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Position of the System Reference Point"
+            },
+            {
+                "documentation": {
+                    "definition": "Height of the system reference point in Two’s Complement form.\nThe height shall use mean sea level as the zero reference level.\n",
+                    "description": null,
+                    "remark": "NOTE - I016/405 shall only be sent together with item I016/400\n“Position of the System Reference Point”.\n"
+                },
+                "name": "405",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": -8192,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThan"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "contents": 8192,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "LessThan"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 2
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Signed"
+                                        },
+                                        "unit": "m"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Height of System Reference Point"
+            },
+            {
+                "documentation": {
+                    "definition": "This item provides properties of a transmitter component.\n",
+                    "description": null,
+                    "remark": "NOTE - Regarding Transmitter Identification:\n    a. Individual channels of a transmitter are considered as\n    separate collocated transmitters.\n\n    b. A Transmitter ID may be assigned to individual channels\n    of a compound transmitter. i.e. a single multi-channel\n    transmitter may be assigned several Tx ID.\n\n    c. The Tx ID shall be used in a unique way for a specific\n    SAC/SIC.\n\nNOTE - Regarding Transmitter Latitude and Longitude and Altitude:\n    a. The Tx Location and Altitude is the position of the\n    component in WGS-84 coordinates. The vertical distance between\n    the component and the projection of its position on the earth’s\n    ellipsoid, as defined by WGS-84, in two’s complement form.\n\nNOTE - Regarding Transmission Time Offset\n    a. Time offset of transmitter compared to the reference\n    transmitter within the single frequency network (SFN).\n\nNOTE - Regarding Accuracy of Transmission Time Offset\n    a. The Accuracy of the Transmission Time Offset is the Standard\n    Deviation of the measurement of the transmission time offset\n    between the transmitter channel compared to the reference\n    transmitter within the single frequency network (SFN).\n\nNOTE - Regarding Parallel Transmitter Index\n    a. The Parallel Transmitter Index is the identification of the\n    transmitter via index, which is sent in parallel.\n\n    b. For referring to a one-octet index bits-16/9 shall be set\n    to zero.\n\n    c. This index shall be used in a unique way for a specific\n    SAC/SIC.\n\n    d. In a Single Frequency Network the parallel transmitter\n    index is the index of the reference transmitter.\n"
+                },
+                "name": "410",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": [
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "TID",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [],
+                                                                "tag": "ContentRaw"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Transmitter ID"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "LAT",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 32,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": -90,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "GreaterThanOrEqualTo"
+                                                                        },
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": 90,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "LessThanOrEqualTo"
+                                                                        }
+                                                                    ],
+                                                                    "lsb": {
+                                                                        "contents": {
+                                                                            "denominator": {
+                                                                                "contents": {
+                                                                                    "base": 2,
+                                                                                    "exponent": 31
+                                                                                },
+                                                                                "tag": "NumPow"
+                                                                            },
+                                                                            "numerator": {
+                                                                                "contents": 180,
+                                                                                "tag": "NumInt"
+                                                                            }
+                                                                        },
+                                                                        "tag": "NumDiv"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Signed"
+                                                                    },
+                                                                    "unit": "°"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Latitude"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "LON",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 32,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": -180,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "GreaterThanOrEqualTo"
+                                                                        },
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": 180,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "LessThan"
+                                                                        }
+                                                                    ],
+                                                                    "lsb": {
+                                                                        "contents": {
+                                                                            "denominator": {
+                                                                                "contents": {
+                                                                                    "base": 2,
+                                                                                    "exponent": 31
+                                                                                },
+                                                                                "tag": "NumPow"
+                                                                            },
+                                                                            "numerator": {
+                                                                                "contents": 180,
+                                                                                "tag": "NumInt"
+                                                                            }
+                                                                        },
+                                                                        "tag": "NumDiv"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Signed"
+                                                                    },
+                                                                    "unit": "°"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Longitude"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "ALT",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": -8192,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "GreaterThan"
+                                                                        },
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": 8192,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "LessThan"
+                                                                        }
+                                                                    ],
+                                                                    "lsb": {
+                                                                        "contents": {
+                                                                            "denominator": {
+                                                                                "contents": {
+                                                                                    "base": 2,
+                                                                                    "exponent": 2
+                                                                                },
+                                                                                "tag": "NumPow"
+                                                                            },
+                                                                            "numerator": {
+                                                                                "contents": 1,
+                                                                                "tag": "NumInt"
+                                                                            }
+                                                                        },
+                                                                        "tag": "NumDiv"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Signed"
+                                                                    },
+                                                                    "unit": "m"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Altitude"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "TTO",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 32,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [],
+                                                                    "lsb": {
+                                                                        "contents": 2,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Signed"
+                                                                    },
+                                                                    "unit": "ns"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Transmission Time Offset"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": 4,
+                                        "tag": "Spare"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "ATO",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 20,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [],
+                                                                    "lsb": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Unsigned"
+                                                                    },
+                                                                    "unit": "ns"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Accuracy of Transmission Time Offset"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "PCI",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [],
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Unsigned"
+                                                                    }
+                                                                },
+                                                                "tag": "ContentInteger"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Parallel Transmitter Index"
+                                        },
+                                        "tag": "Item"
+                                    }
+                                ],
+                                "tag": "Group"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Transmitter Properties"
+            },
+            {
+                "documentation": {
+                    "definition": "This item provides properties of the receiver component.\n",
+                    "description": null,
+                    "remark": "NOTE - Regarding the Receiver Identification\n    a. The Rx ID shall be used in a unique way for a specific\n    SAC/SIC.\n\nNOTE - Regarding the Receiver Location and Altitude (WGS-84)\n    a. The Rx Location and Altitude is the of the component\n    in WGS-84 coordinates. The vertical distance between the\n    component and the projection of its position on the earth’s\n    ellipsoid, as defined by WGS-84, in two’s complement form.\n"
+                },
+                "name": "420",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": [
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "RID",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [],
+                                                                "tag": "ContentRaw"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Receiver Component ID"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "LAT",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 32,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": -90,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "GreaterThanOrEqualTo"
+                                                                        },
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": 90,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "LessThanOrEqualTo"
+                                                                        }
+                                                                    ],
+                                                                    "lsb": {
+                                                                        "contents": {
+                                                                            "denominator": {
+                                                                                "contents": {
+                                                                                    "base": 2,
+                                                                                    "exponent": 31
+                                                                                },
+                                                                                "tag": "NumPow"
+                                                                            },
+                                                                            "numerator": {
+                                                                                "contents": 180,
+                                                                                "tag": "NumInt"
+                                                                            }
+                                                                        },
+                                                                        "tag": "NumDiv"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Signed"
+                                                                    },
+                                                                    "unit": "°"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Latitude"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "LON",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 32,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": -180,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "GreaterThanOrEqualTo"
+                                                                        },
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": 180,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "LessThan"
+                                                                        }
+                                                                    ],
+                                                                    "lsb": {
+                                                                        "contents": {
+                                                                            "denominator": {
+                                                                                "contents": {
+                                                                                    "base": 2,
+                                                                                    "exponent": 31
+                                                                                },
+                                                                                "tag": "NumPow"
+                                                                            },
+                                                                            "numerator": {
+                                                                                "contents": 180,
+                                                                                "tag": "NumInt"
+                                                                            }
+                                                                        },
+                                                                        "tag": "NumDiv"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Signed"
+                                                                    },
+                                                                    "unit": "°"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Longitude"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "ALT",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 16,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": -8192,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "GreaterThan"
+                                                                        },
+                                                                        {
+                                                                            "contents": {
+                                                                                "contents": 8192,
+                                                                                "tag": "NumInt"
+                                                                            },
+                                                                            "tag": "LessThan"
+                                                                        }
+                                                                    ],
+                                                                    "lsb": {
+                                                                        "contents": {
+                                                                            "denominator": {
+                                                                                "contents": {
+                                                                                    "base": 2,
+                                                                                    "exponent": 2
+                                                                                },
+                                                                                "tag": "NumPow"
+                                                                            },
+                                                                            "numerator": {
+                                                                                "contents": 1,
+                                                                                "tag": "NumInt"
+                                                                            }
+                                                                        },
+                                                                        "tag": "NumDiv"
+                                                                    },
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Signed"
+                                                                    },
+                                                                    "unit": "m"
+                                                                },
+                                                                "tag": "ContentQuantity"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Altitude"
+                                        },
+                                        "tag": "Item"
+                                    }
+                                ],
+                                "tag": "Group"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Receiver Properties"
+            },
+            {
+                "documentation": {
+                    "definition": "Special Purpose Field\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "SP",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "SpecialPurpose"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Special Purpose Field"
+            }
+        ],
+        "category": 16,
+        "date": {
+            "day": 15,
+            "month": 7,
+            "year": 2019
+        },
+        "edition": {
+            "major": 1,
+            "minor": 0
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "Independent Non-Cooperative Surveillance System Configuration Reports",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "015",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "140",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "200",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "300",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "400",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "405",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "410",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "420",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "SP",
+                    "tag": "UapItem"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}

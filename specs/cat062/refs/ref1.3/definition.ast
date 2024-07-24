@@ -1,0 +1,318 @@
+ref 062 "Coding rules for Reserved Expansion Field"
+edition 1.3
+date 2023-02-13
+
+compound 1
+    CST "Contributing Sensors With Local Tracknumbers"
+        definition
+            List of Sensors contributing to the system track and providing a
+            local track-number
+        repetitive 1
+            group
+                SAC "System Area Code"
+                    element 8
+                        raw
+                SIC "System Identification Code"
+                    element 8
+                        raw
+                spare 4
+                TYP ""
+                    element 4
+                        table
+                            0: No detection
+                            1: Single PSR detection
+                            2: Single SSR detection
+                            3: SSR+PSR detection
+                            4: Single Mode S All-Call
+                            5: Single Mode S Roll-Call
+                            6: Mode S All-Call + PSR
+                            7: Mode S Roll-Call + PSR
+                            8: ADS-B
+                            9: WAM
+                LTN "Local Track Number"
+                    element 16
+                        raw
+    CSN "Contributing Sensors No Local Tracknumbers"
+        definition
+            List of Sensors contributing to the system track and not providing
+            a local track-number
+        repetitive 1
+            group
+                SAC "System Area Code"
+                    element 8
+                        raw
+                SIC "System Identification Code"
+                    element 8
+                        raw
+                spare 4
+                TYP ""
+                    element 4
+                        table
+                            0: No detection
+                            1: Single PSR detection
+                            2: Single SSR detection
+                            3: SSR+PSR detection
+                            4: Single Mode S All-Call
+                            5: Single Mode S Roll-Call
+                            6: Mode S All-Call + PSR
+                            7: Mode S Roll-Call + PSR
+                            8: ADS-B
+                            9: WAM
+    TVS "Calculated Track Velocity Relative to System Reference Point"
+        definition
+            Calculated track velocity expressed in Cartesian co-ordinates
+            relative to the system reference point, in two’s complement form.
+        group
+            VX ""
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
+            VY ""
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
+        remark
+            Note:
+                The y-axis points to the Geographical North at the system reference
+                point as available in the Reserved Expansion Field of category 065.
+    STS "Supplementary Track Status"
+        definition
+            Track status information to be transmitted in addition to the
+            information available in data item I062/080 (Track Status).
+        extended
+            FDR "Flight Data Retained"
+                element 1
+                    table
+                        0: Flight plan data from active FDPS
+                        1: Flight plan data retained from no longer active FDPS
+            LNAV "Lateral Navigation Mode"
+                group
+                    EP "LNAV Element Populated"
+                        element 1
+                            table
+                                0: LNAV not populated
+                                1: LNAV populated
+                    VAL "LNAV Mode"
+                        element 1
+                            table
+                                0: LNAV Mode Engaged
+                                1: LNAV Mode not Engaged
+            spare 4
+            -
+        remark
+            Note:
+                The information of the Lateral Navigation Mode LNAV complements
+                the already existing Navigation Modes in Data Item I062/380/SF#7.
+    V3 "ADS-B Version 3 Data"
+        definition
+            Information transmitted by aircraft equipped with an ADS-B Version 3 System (See Note 1)
+            as defined in EUROCAE/RTCA documents ED-102B/DO-260C [ref. 5/6]. The ASTERIX implementation
+            of this data has been defined in the Category 021 Specification Edition 2.6 (or later) and
+            the Category 021 Reserved Expansion Field Edition 1.5 (or later).
+        compound
+            PS3 "Priority Status for Version 3 ADS-B Systems"
+                group
+                    EP "Priority Status for Version 3 ADS-B Systems Populated"
+                        element 1
+                            table
+                                0: PS3 Element not populated
+                                1: PS3 Element populated
+                    VAL "Priority Status for Version 3 ADS-B Systems"
+                        element 3
+                            table
+                                0: No emergency / not reported
+                                1: General emergency
+                                2: UAS/RPAS - Lost link
+                                3: Minimum fuel
+                                4: No communications
+                                5: Unlawful interference
+                                6: Aircraft in Distress Automatic Activation
+                                7: Aircraft in Distress Manual Activation
+                    spare 4
+                remark
+                    Notes:
+
+                        1. The ADS-B Version Number is contained in Data Item I062/380/SF#11/VN.
+                        2. Since in this edition of the REF I062/REF/PS3 is the only Element
+                           in this Item, the Element Populated Bit strictly would not be necessary.
+                           However, if in a future edition use is made of the Spare Bits, the Element
+                           Populated Bit becomes important.
+                        3. For ADS-B Version 3 systems as defined in ED-102B/DO-260C (Ref. [5],
+                           as defined in the core Specification of Category 062), the values have been
+                           re-defined. I062/REF/PS3 is to be used exclusively for Version 3 ADS-B systems
+                           as defined in I062/380/SF#11/VN. For ADS-B systems with a version number below 3,
+                           the PS shall be encoded in Data Item I062/380/SF#11/STAT.
+                           However, since values have been re-defined in ADS-B Version 3, mapping is required
+                           to ensure that information is not lost in systems not yet capable to decode this
+                           Edition of Category 062. This mapping shall be done according to the following table: ::
+
+                             ADS-B Version 3 (PS3)           ADS-Version < 3 (I062/380 - STAT)
+                             0 (No Emergency/not reported)   0 (No Emergency/not reported)
+                             1 (General emergency)           1 (General emergency)
+                             2 (UAS/RPAS Lost Link)          4 (No communication)
+                             3 (MInimum fuel)                3 (Minimum fuel)
+                             4 (No communication)            4 (No communication)
+                             5 (Unlawful interference)       5 (Unlawful interference)
+                             6 (Aircraft in distress -       1 (General emergency)
+                               automatic activation)
+                             7 (Aircraft in distress -       1 (General emergency)
+                               manual activation)
+            AS "Aircraft Status"
+                group
+                    RCE "Reduced Capability Equipment"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 2
+                                    table
+                                        0: Not RCE
+                                        1: TABS
+                                        2: Reserved for future use
+                                        3: Other RCE
+                    RRL "Reply Rate Limiting"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 1
+                                    table
+                                        0: Reply Rate Limiting is not active
+                                        1: Reply Rate Limiting is active
+                    TPW "Transmit Power"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 2
+                                    table
+                                        0: Unavailable, Unknown, or less than 70 W
+                                        1: 70 W
+                                        2: 125 W
+                                        3: 200 W
+                    TSI "Transponder Side Indication"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 2
+                                    table
+                                        0: Unknown
+                                        1: Transponder #1 (left/pilot side or single)
+                                        2: Transponder #2 (right/co-pilot side)
+                                        3: Transponder #3 (auxiliary or Back-up)
+                    TAO "Transponder Antenna Offset"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            RE "Range Exceeded"
+                                element 1
+                                    table
+                                        0: Value in defined range
+                                        1: Value exceeds defined range
+                            VAL "Value"
+                                element 6
+                                    raw
+                    spare 5
+        remark
+            Notes:
+
+                1. TABS is the “Traffic Awareness Beacon System” as defined by ETSO-C199 / TSO-C199.
+                2. PW contains the nearest minimum transmit power (in Watts) at the antenna port.
+                   The nearest minimum setting in this field would be rounded down from the actual
+                   design value. For example, if the avionics is designed to transmit at 100W out of
+                   the antenna port, the encoded value in this field would be for 70W (decimal 1).
+                3. Bit-12 shall be set to 1 when the aircraft transmits the maximum encodable value
+                   (i.e. 31 representing a TAO greater than 58m). In this case TAO#VAL shall be set
+                   to the maximum encodable TAO (i.e. 58m).
+                4. The TAO is measured along the longitudinal axis of the aircraft from the forward end.
+
+            UAS "UAS/RPAS Status"
+                group
+                    MUO "Manned / Unmanned Operation"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 1
+                                    table:
+                                        0: Manned Operation
+                                        1: Unmanned Operation
+                    DAA "Detect and Avoid Capabilities"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 2
+                                    table
+                                        0: No RWC Capability
+                                        1: RWC/RA/OCM Capability
+                                        2: RWC/OCM Capability
+                                        3: Invalid ASTERIX Value
+                    RWC "Remain Well Clear"
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 1
+                                    table
+                                        0: RWC Corrective Alert not active
+                                        1: RWC Corrective Alert active
+                    spare 1
+            CASS "Collision Avoidance System Status"
+                group
+                    SVH "Sense Vertical & Horizontal
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 2
+                                    table
+                                        0: Vertical Only
+                                        1: Horizontal Only
+                                        2: Blended
+                                        3: Vertical Only or Horizontal Only per intruder
+                    CATC "CAS Type & Capability
+                        group
+                            EP "Element Populated Bit"
+                                element 1
+                                    table
+                                        0: Element not populated
+                                        1: Element populated
+                            VAL "Value"
+                                element 3
+                                    table
+                                        0: Active CAS (TCAS II) or no CAS
+                                        1: Active CAS (not TCAS II)
+                                        2: Active CAS (not TCAS II) with OCM transmit capability
+                                        3: Active CAS of Junior Status
+                                        4: Passive CAS with 1030 TCAS Resolution Message receive capability
+                                        5: Passive CAS with only OCM receive capability
+                                        6: Reserved for future use
+                                        7: Reserved for future use
+                    spare 1
