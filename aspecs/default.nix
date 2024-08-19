@@ -11,7 +11,26 @@ let
     else packages;
 
   haskellPackages = with pkgs.haskell.lib; pkgs.haskellPackages.override {
-    overrides = self: super: {
+    overrides = self: super:
+      let
+        fixGHC = pkg:
+          if static == true
+          then
+            pkg.override {
+              enableRelocatedStaticLibs = true;
+              enableShared = false;
+              enableDwarf = false;
+            }
+          else
+            pkg;
+      in {
+        ghc = fixGHC super.ghc;
+        buildHaskellPackages = super.buildHaskellPackages.override (oldBuildHaskellPackages: {
+          ghc = fixGHC oldBuildHaskellPackages.ghc;
+        });
+        # haskellPackage1 = self.callPackage ./nix/myPackage1.nix { };
+        # haskellPackage2 = self.callPackage ./nix/myPackage2.nix { };
+        # ...
   };};
 
   drv1 = haskellPackages.callCabal2nix "aspecs" ./. { };
@@ -32,6 +51,10 @@ let
         "--extra-lib-dirs=${pkgs.gmp6.override { withStatic = true; }}/lib"
         "--extra-lib-dirs=${pkgs.zlib.static}/lib"
         "--extra-lib-dirs=${pkgs.libffi.overrideAttrs (old: { dontDisableStatic = true; })}/lib"
+        # double-conversion temporary patch
+        # This is required on nix-packages 24.05 until this patch is merged
+        # https://github.com/NixOS/nixpkgs/pull/322738
+        "--extra-lib-dirs=${pkgs.double-conversion.overrideAttrs(_: { cmakeFlags = [ ]; })}/lib"
         ] ++ pkgs.lib.optionals (!strip) [
           "--disable-executable-stripping"
         ];
@@ -56,4 +79,3 @@ in
   if inShell == false
     then drv
     else if pkgs.lib.inNixShell then env else drv
-
