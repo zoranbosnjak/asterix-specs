@@ -81,7 +81,7 @@ nix-shell
 perl -pi -e 's/\r\n/\n/g' {file_name}
 
 # validate selected file
-aspecs validate -f {file_name} --ast
+aspecs validate --input-ast {file_name}
 
 # prettify spec file
 aspecs prettify {file_name} --ast
@@ -98,7 +98,7 @@ git clean -xdf output/
 # validate all '.ast' files
 for i in $(find . -type f | grep "\.ast$")
 do
-    aspecs validate -f $i --ast
+    aspecs validate --input-ast $i
     if [ $? -ne 0 ]; then echo $i; break; fi
 done
 ```
