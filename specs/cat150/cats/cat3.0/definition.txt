@@ -1,0 +1,444 @@
+asterix 150 "MADAP Plan Server - Flight Data Message"
+edition 3.0
+date 2004-08-20
+preamble
+    The main purpose of I150 messages is to distribute Flight Plan data to clients. However, other data
+    items can be sent using I150 as well. I150 messages can be divided into the following sub-categories:
+
+    - Flight Plan (Short & Complete)
+    - Start/End of cycle
+    - Correlation/De-correlation
+    - Conflict Alert
+
+items
+
+    010 "Destination ID"
+        definition
+            Identification of the receiving centre.
+        group
+            CEN "Centre Identifier"
+                element 8
+                    raw
+            POS "Workstation Identifier"
+                element 8
+                    raw
+        remark
+            Translation:
+                See Annex 1 Centre ID definition
+            Note:
+                The Destination ID is irrelevant in CAT150 messages since the flight plan messages are sent to all 10 centres.
+                Hence, the centre identifier is set to broadcast.
+
+                The workstation identifier can be ignored.
+
+    020 "Source ID"
+        definition
+            Identification of the sending centre.
+        group
+            CEN "Centre Identifier"
+                element 8
+                    raw
+            POS "Workstation Identifier"
+                element 8
+                    raw
+        remark
+            Translation:
+                See Destination ID.
+            Note:
+                The Source ID centre identifier will define the flight plan source centre.
+
+                The workstation identifier can be ignored.
+
+    030 "Message Type"
+        definition
+            The event that triggered the message transmission.
+        element 8
+            table
+                1: Flight plan creation
+                2: Flight plan modification
+                3: Flight plan repetition
+                4: Manual flight plan deletion
+                5: Automatic flight plan deletion
+                6: Flight is beyond extraction area boundary
+                251: Short term conflict alert
+                252: Correlations
+                253: Decorrelations
+                254: Start of background loop
+                255: End of background loop
+
+    040 "Plan Reference Number"
+        definition
+            Identification of the flight plan.
+        element 16
+            raw
+        remark
+            Note:
+                See Plan and Track Numbers.
+
+                The currently defined range for plan reference numbers used in MADAP is 0 .. 1999. Client systems
+                should allow for a range of 0 .. 2047.
+
+    050 "Callsign"
+        definition
+            Flight identity.
+        element 56
+            string ascii
+
+    060 "Present Mode 3A"
+        definition
+            Actual transponder code mode 3A of the flight.
+        element 32
+            string ascii
+        remark
+            Translation:
+                Octal representation.
+
+                - zzzz: no code availlable/assigned
+                - dd00: code family
+                - other: discrete code
+
+                where:
+
+                - z :== 'z'
+                - 0 :== '0'
+                - d :== '0' .. '7'
+
+    070 "Next Mode 3A"
+        definition
+            Next transponder code mode 3A of the flight.
+        element 32
+            string ascii
+        remark
+            Translation:
+                See Present Mode 3A.
+
+    080 "Departure Aerodrome"
+        definition
+            Identification of the flight’s departure aerodrome.
+        element 32
+            string ascii
+        remark
+            Translation:
+                - zzzz: no standard ICAO location identifier
+                - other: unique ICAO location identifier
+
+                where:
+
+                - z :== 'z'
+
+    090 "Destination Aerodrome"
+        definition
+            Identification of the flight’s destination aerodrome. 
+        element 32
+            string ascii
+        remark
+            Translation:
+                See Departure Aerodrome.
+
+    100 "Type Flags"
+        definition
+            Type of flight and type of flight plan. 
+        group
+            GAT "General Air Traffic"
+                element 1
+                    raw
+            OAT "Operational Air Traffic"
+                element 1
+                    raw
+            spare 3
+            CPL "Complete Flight Plan"
+                element 1
+                    raw
+            SPN "Short Flight Plan"
+                element 1
+                    raw
+            spare 1
+
+    110 "Status Flags"
+        definition
+            Status of the flight. 
+        group
+            spare 1
+            HLD "Aircraft is in Hold State"
+                element 1
+                    raw
+            RVQ "Aircraft is RVSM Equipped"
+                element 1
+                    raw
+            RVC "Aircraft is RVSM Capable"
+                element 1
+                    raw
+            RVX "Aircraft is RVSM Exempted"
+                element 1
+                    raw
+            spare 3
+        remark
+            Note:
+                If an aircraft is set in hold status then the ETO values are increased with 3 hours. 
+
+                RVQ is set for:
+
+                - GAT or GAT SPN: never
+                - GAT or OAT CPL: if “W” filed in field 10a [Radio Communication, Navigation and Approach Aid Equipment] of the flightplan
+
+                RVC is set for:
+
+                - GAT or OAT SPN: on controller input or reception of ACT with “RVSM Capable”
+                - GAT or OAT CPL (in decreasing priority):
+                    - Controller input or reception of ABI or ACT with “RVSM Capable”
+                    - “W” filed in field 10a [Radio Communication, Navigation and Approach Aid Equipment] and “1” filed in field 9a [number of aircraft] in the flightplan.
+
+                RVX is set for:
+
+                - GAT SPN: on controller input “RVSM Exempted”
+                - OAT SPN: by default or on controller input “RVSM Exempted”
+                - GAT or OAT CPL: if “O”, “M” or “A” filed in field 8b [type of flight] of the flightplan 
+
+    120 "Aircraft Type"
+        definition
+            Flight formation details. 
+        group
+            NOA "Number of Aircraft"
+                element 16
+                    string ascii
+            TOA "Type of Aircraft"
+                element 32
+                    string ascii
+            WT "Wake Turbulence"
+                element 8
+                    string ascii
+
+    130 "Cleared Flight Level"
+        definition
+            Cleared flight level from the sector that has the aircraft under control. 
+        element 24
+            string ascii
+        remark
+            Translation:
+                Cleared Flight Level is listed in FLs (100ft).
+            Note:
+                The Cleared Flight Level corresponds to the “current Planned Flight Level”, valid for the sector which
+                is currently in communications with the aircraft.
+                
+                Intermediate flight levels, temporarily assigned by controllers, are not distributed by MADAP. 
+
+    140 "Route Points, Description"
+        definition
+            Route point descriptions. 
+        repetitive 1
+            group
+                T "Route Point Type"
+                    element 8
+                        table
+                            1: P, point
+                            2: B, point with bearing and distance
+                            3: LS, latitude/longitude position short format
+                            4: LL, latitude/longitude position long format
+                            5: X, x/y co-ordinate position
+                            6: G, georeference position
+                            14: E, airport
+                E "Route Point Description Element"
+                    element 88
+                        string ascii
+        remark
+            Translation:
+                See layout table in specification document.
+            Note:
+                For all route point items (140..180), present in a single message the count values are equal. Co4 ordinate (1), description (1), etc. form a single route point.
+                
+                The maximum number of route points is currently set to 28. 
+
+    150 "Route Points, Coordinates"
+        definition
+            Route point co-ordinates.
+        repetitive 1
+            group
+                X "X Co-ordinate"
+                    element 16
+                        signed quantity 1/2^6 "NM"
+                Y "Y Co-ordinate"
+                    element 16
+                        signed quantity 1/2^6 "NM"
+        remark
+            Translation:
+                Co-ordinate values are in [NM] as Cartesian offsets from 51°00’00”N, 008°00’00”E.
+
+    151 "Route Points, Geographic Position"
+        definition
+            Route point position in Lat. / Long. (WSG84).
+        repetitive 1
+            group
+                LAT "Latitude in WGS.84 in Two's Complement Form"
+                    element 24
+                        signed quantity 180/2^23 "°" >= -90 <= 90
+                LON "Longitude in WGS.84 in Two's Complement Form"
+                    element 24
+                        signed quantity 180/2^23 "°" >= -180 < 180
+        remark
+            Note:
+                This corresponds to an accuracy of at least 2.4 meters.
+
+    160 "Route Points, Time"
+        definition
+            Estimated times over route points.
+        repetitive 1
+            group
+                HH "Hours"
+                    element 16
+                        string ascii
+                MM "Minutes"
+                    element 16
+                        string ascii
+        remark
+            Translation:
+                Times are specified in 24-hour format. I.e. ranging from 00:00 to 23:59.
+
+    170 "Route Points, Flight Level"
+        definition
+            Planned flight level over route point.
+        repetitive 1
+            element 24
+                string ascii
+        remark
+            Translation:
+                The planned flight levels are given in FLs (100 ft).
+            Note:
+                All flight levels have the same value, equal to the “Current Planned Flight Level”. This is the Planned
+                Flight Level valid for the sector which is in communication with the aircraft.
+
+    171 "Route Points, Requested Flight Level"
+        definition
+            Requested flight level over route point.
+        repetitive 1
+            element 24
+                string ascii
+        remark
+            Translation:
+                The planned flight levels are given in FLs (100 ft).
+
+    180 "Route Points, Speed"
+        definition
+            Filed true air speed over route point.
+        repetitive 1
+            element 32
+                string ascii
+        remark
+            Translation:
+                The true airspeed is indicated in Knots [NM/h].
+
+    190 "Controller ID"
+        definition
+            Current control position in charge of the aircraft.
+        element 16
+            string ascii
+        remark
+            Translation:
+                Single character controller ids are sent with a leading space character. This can be interpreted as a
+                right aligned value.
+
+    200 "Field 18"
+        definition
+            Field 18 free text information. Contains subfields, each starting with a 3 or 4 letter keyword followed by
+            forward slash; e.g. RMK/free text.
+        repetitive 1
+            element 8
+                string ascii
+
+    210 "Correlated Track Number"
+        definition
+            The track number of the track that has been correlated to the flight plan.
+        element 16
+            raw
+        remark
+            Note:
+                See Plan and Track Numbers.
+
+    220 "Maximum Plan Count"
+        definition
+            Maximum plan count is the maximum number of possible active plans.
+        element 16
+            unsigned integer
+        remark
+            Note:
+                The maximum number of active plans is fixed and, at present, set to 302.
+
+    230 "Number of Plans"
+        definition
+            Number of plans that were sent during the last update cycle.
+        element 16
+            unsigned integer
+        remark
+            Note:
+                The number of extracted plans should be equal to the number of plans received between the start of
+                cycle and end of cycle messages.
+
+    240 "Newly Correlated Plans"
+        definition
+            Array of correlated plan/track combinations valid in the Maastricht UAC Area of Interest.
+        repetitive 1
+            group
+                PLAN "Plan Number"
+                    element 16
+                        raw
+                TRACK "Track Number"
+                    element 16
+                        raw
+        remark
+            Note:
+                See Plan and Track Numbers.
+
+    250 "Newly De-correlated Plans"
+        definition
+            Array of de-correlated plans.
+        repetitive 1
+            element 16
+                raw
+        remark
+            Note:
+                Contains an array of Plan Numbers.
+                See Plan and Track Numbers.
+
+    251 "Tracks in Conflict"
+        definition
+            Array of conflicting track/track combinations.
+        repetitive 1
+            group
+                TRACK1 "Track Number 1"
+                    element 16
+                        raw
+                TRACK2 "Track Number 2"
+                    element 16
+                        raw
+        remark
+            Note:
+                See Plan and Track Numbers.
+
+uap
+    010
+    020
+    030
+    040
+    050
+    060
+    070
+    080
+    090
+    100
+    110
+    120
+    130
+    140
+    150
+    160
+    170
+    180
+    190
+    200
+    210
+    220
+    230
+    240
+    250
+    251
+    171
+    151

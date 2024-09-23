@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix expansion 048 - Monoradar Target Reports Appendix A:
+Reserved Expansion Field</h1>
+<p><strong>category</strong>: 048</p>
+<p><strong>edition</strong>: 1.12</p>
+<p><strong>date</strong>: 2024-07-01</p>
+<p><strong>FSPEC byte size</strong>: 1</p>
+<h2>Items</h2>
+<p><strong>MD5 - Mode 5 Reports</strong></p>
+<blockquote>
+<p>definition: Mode 5 Data/Reports, Extended Mode 1 Code and X pulse.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>MD5/SUM - Mode 5 Summary</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MD5/SUM/M5</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 5 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 5 interrogation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/SUM/ID</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 ID reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 ID reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/SUM/DA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 Data reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 Data reply/report (i.e any valid Mode 5 reply type
+other than ID)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/SUM/M1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 1 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/SUM/M2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 2 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 2 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/SUM/M3</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 3 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 3 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/SUM/MC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode C altitude not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode C altitude from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>The flags M2, M3, MC refer to the contents of data items I048/050,
+I048/070 and I048/090 respectively. The flag M1 refers to the contents
+of data item I048/055, Mode 1 Code in Octal Representation, and to the
+contents of the Subitem #5 (Extended Mode 1 Code in Octal
+Representation).</li>
+<li>If an authenticated Mode 5 reply/report is received with the
+Emergency bit set, then the Military Emergency bit (ME) in Data Item
+I048/020, Target Report Descriptor, shall be set.</li>
+<li>If an authenticated Mode 5 reply/report is received with the
+Identification of Position bit set, then the Special Position
+Identification bit (SPI) in Data Item I048/020, Target Report
+Descriptor, shall be set.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>MD5/PMN - PIN/ National Origin/Mission Code</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MD5/PMN/PIN - PIN Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MD5/PMN/NAV - Validity of NAT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+National Origin is valid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+National Origin is invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/PMN/NAT - National Origin</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MD5/PMN/MIS - Mission Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 6</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>Bit 14 (NAV) is set to 1 if the value for National Origin is not
+known or invalid. Under certain conditions PIN is available but NAT is
+not available. NAV then indicates that the NAT field was not actively
+populated.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>MD5/POS - Mode 5 Reported Position</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MD5/POS/LAT - Latitude in WGS 84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>MD5/POS/LON - Longitude in WGS 84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<p>Latitude in WGS 84 is expressed as a 24-bit two’s complement number.
+Range -90° ≤ latitude ≤ 90°. Sign convention: North is positive. LSB =
+180/223 degrees = 2.145767*10-05 degrees.</p>
+<p>Longitude in WGS 84 is expressed as a 24-bit two’s complement number.
+Range -180° ≤ longitude &lt; 180°. Sign convention: East is positive.
+LSB = 180/223 degrees = 2.145767*10-05 degrees.</p>
+<p>The resolution implied by the LSB is better than the resolution with
+which Mode 5 position reports are transmitted from aircraft transponders
+using currently defined formats.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>MD5/GA - Mode 5 GNSS-derived Altitude</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MD5/GA/RES</strong></p>
+<blockquote>
+<p>description: &quot;Resolution with which the GNSS-derived Altitude (GA) is
+reported&quot;
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+GA reported in 100 ft increments
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+GA reported in 25 ft increments
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/GA/GA</strong></p>
+<blockquote>
+<p>description: &quot;GNSS-derived Altitude of target, expressed as height
+above WGS 84 ellipsoid&quot;
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MD5/EM1/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code not validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/EM1/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/EM1/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 Code derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 1 Code not extracted during the last scan
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MD5/EM1/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>If Subitem #1 is present, the M1 bit in Subitem #1 indicates whether
+the Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If
+Subitem #1 is not present, the Extended Mode 1 Code is from a Mode 1
+reply.</li>
+<li>For reasons of backwards compatibility the logic for the setting of
+the V-bit was inverted compared to other similar data items.</li>
+<li>The values of the bits for V, G, L, A4, A2, A1, B2 and B1 shall be
+identical to the values of the corresponding bits in data item
+I048/055.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>MD5/TOS - Time Offset for POS and GA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>TOS shall be assumed to be zero if Subitem #6 is not present.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>MD5/XP - X Pulse Presence</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MD5/XP/XP - X-pulse from Mode 5 PIN Reply/Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-Pulse not present
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse present
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/XP/X5 - X-pulse from Mode 5 Data Reply or
+Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no authenticated Data reply or Report received
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/XP/XC - X-pulse from Mode C Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode C reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/XP/X3 - X-pulse from Mode 3/A Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 3/A reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/XP/X2 - X-pulse from Mode 2 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 2 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MD5/XP/X1 - X-pulse from Mode 1 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 1 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>Within Mode 5 replies/reports, the X-Pulse can be set for the
+following cases: 1. In a combined Mode 1 and Mode 2 reply/report: in
+this case the X5 bit and the X2 bit shall be set; 2. In a combined Mode
+3 and Mode C reply/report: in this case the X5 bit and the X3 bit shall
+be set; 3. In a Mode 5 PIN data reply/report: in this case the X5 bit
+and the XP bit shall be set. The X1 bit and the XC bit are meaningless
+as in Mode 1 and Mode C replies/reports the X Pulse is not defined. They
+are kept for compatibility reasons.</p>
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>In 2011 NATO has modified the format of the National Origin
+information available in subitem 2 of the Mode 5 data item in this
+Reserved Expansion Field. The information for National Origin and
+Mission Code were combined into a 11-bit long field. In order to
+maintain backwards compatibility and to ease the use of the new layout,
+the original Mode 5 data item was copied and the layout of subitem #2
+adapted. The new layout is reflected in the data item M5N and shall be
+used by equipment prepared for the new National Origin system. Equipment
+certified to the previous encoding shall continue to use the data item
+MD5 corresponding to the 5-bit National Origin / 6-bit Mission Code.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M5N - Mode 5 Reports, New Format</strong></p>
+<blockquote>
+<p>definition: Mode 5 Data/Reports, Extended Mode 1 Code and X pulse
+following the updated NATO format for the National Origin code
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>M5N/SUM - Mode 5 Summary</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>M5N/SUM/M5</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 5 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 5 interrogation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/SUM/ID</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 ID reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 ID reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/SUM/DA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 Data reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 Data reply/report (i.e any valid Mode 5 reply type
+other than ID)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/SUM/M1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 1 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/SUM/M2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 2 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 2 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/SUM/M3</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 3 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 3 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/SUM/MC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode C altitude not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode C altitude from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol start="4" type="1">
+<li>The flags M2, M3, MC refer to the contents of data items I048/050,
+I048/070 and I048/090 respectively. The flag M1 refers to the contents
+of data item I048/055, Mode 1 Code in Octal Representation, and to the
+contents of the Subitem #5 (Extended Mode 1 Code in Octal
+Representation).</li>
+<li>If an authenticated Mode 5 reply/report is received with the
+Emergency bit set, then the Military Emergency bit (ME) in Data Item
+I048/020, Target Report Descriptor, shall be set.</li>
+<li>If an authenticated Mode 5 reply/report is received with the
+Identification of Position bit set, then the Special Position
+Identification bit (SPI) in Data Item I048/020, Target Report
+Descriptor, shall be set.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M5N/PMN - PIN/ National Origin/Mission Code</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>M5N/PMN/PIN - PIN Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+<p><strong>M5N/PMN/NOV - Validity of NO</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+National Origin is valid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+National Origin is invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/PMN/NO - National Origin</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 11</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>Bit 12 (NOV) is set to 1 if the value for National Origin is not
+known or invalid. Under certain conditions PIN is available but NO is
+not available. NOV then indicates that the NO field was not actively
+populated.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M5N/POS - Mode 5 Reported Position</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>M5N/POS/LAT - Latitude in WGS 84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>M5N/POS/LON - Longitude in WGS 84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<p>Latitude in WGS 84 is expressed as a 24-bit two’s complement number.
+Range -90° ≤ latitude ≤ 90°. Sign convention: North is positive. LSB =
+180/223 degrees = 2.145767*10-05 degrees</p>
+<p>Longitude in WGS 84 is expressed as a 24-bit two’s complement number.
+Range -180° ≤ longitude &lt; 180°. Sign convention: East is positive.
+LSB = 180/223 degrees = 2.145767*10-05 degrees</p>
+<p>The resolution implied by the LSB is better than the resolution with
+which Mode 5 position reports are transmitted from aircraft transponders
+using currently defined formats.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M5N/GA - Mode 5 GNSS-derived Altitude</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 1</p>
+<p><strong>M5N/GA/RES</strong></p>
+<blockquote>
+<p>description: Resolution with which the GNSS-derived Altitude (GA) is
+reported
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+GA reported in 100 ft increments
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+GA reported in 25 ft increments
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/GA/GA</strong></p>
+<blockquote>
+<p>description: GNSS-derived Altitude of target, expressed as height
+above WGS 84 ellipsoid
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>M5N/EM1/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code not validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/EM1/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/EM1/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 Code derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 1 Code not extracted during the last scan
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>M5N/EM1/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>If Subitem #1 is present, the M1 bit in Subitem #1 indicates whether
+the Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If
+Subitem #1 is not present, the Extended Mode 1 Code is from a Mode 1
+reply.</li>
+<li>For reasons of backwards compatibility the logic for the setting of
+the V-bit was inverted compared to other similar data items.</li>
+<li>The values of the bits for V, G, L, A4, A2, A1, B2 and B1 shall be
+identical to the values of the corresponding bits in data item
+I048/055.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M5N/TOS - Time Offset for POS and GA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>TOS shall be assumed to be zero if Subitem #6 is not present.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M5N/XP - X Pulse Presence</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>M5N/XP/XP - X-pulse from Mode 5 PIN Reply/Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-Pulse not present
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse present
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/XP/X5 - X-pulse from Mode 5 Data Reply or
+Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no authenticated Data reply or Report received
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/XP/XC - X-pulse from Mode C Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode C reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/XP/X3 - X-pulse from Mode 3/A Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 3/A reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/XP/X2 - X-pulse from Mode 2 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 2 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>M5N/XP/X1 - X-pulse from Mode 1 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 1 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>Within Mode 5 replies/reports, the X-Pulse can be set for the
+following cases: 1. In a combined Mode 1 and Mode 2 reply/report: in
+this case the X5 bit and the X2 bit shall be set; 2. In a combined Mode
+3 and Mode C reply/report: in this case the X5 bit and the X3 bit shall
+be set; 3. In a Mode 5 PIN data reply/report: in this case the X5 bit
+and the XP bit shall be set. The X1 bit and the XC bit are meaningless
+as in Mode 1 and Mode C replies/reports the X Pulse is not defined. They
+are kept for compatibility reasons.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M5N/FOM - Figure of Merit</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 3</p>
+<p><strong>M5N/FOM/FOM</strong></p>
+<blockquote>
+<p>description: Figure of Merit. Position Accuracy as extracted and
+provided by a Mode 5 transponder.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>In 2011 NATO has modified the format of the National Origin
+information available in subitem 2 of the Mode 5 data item in this
+Reserved Expansion Field. The information for National Origin and
+Mission Code were combined into a 11-bit long field. In order to
+maintain backwards compatibility and to ease the use of the new layout,
+the original Mode 5 data item was copied and the layout of subitem #2
+adapted. The new layout is reflected in the data item M5N and shall be
+used by equipment prepared for the new National Origin system. Equipment
+certified to the previous encoding shall continue to use the data item
+MD5 corresponding to the 5-bit National Origin / 6-bit Mission Code.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>M4E - Extended Mode 4 Report</strong></p>
+<blockquote>
+<p>definition: Extended encoding of the Mode 4 interrogation result
+</p>
+<p>Extended</p>
+<blockquote>
+<p>Spare bits: 5</p>
+<p><strong>M4E/FOEFRI - Indication Foe/Friend (Mode4)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 4 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Possibly friendly target
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Probably friendly target
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Friendly target
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>RPC - Radar Plot Characteristics</strong></p>
+<blockquote>
+<p>definition: Extension to data item I048/130 for primary reports
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>RPC/SCO - Score</strong></p>
+<blockquote>
+<p>description: The score describes the number of raw responses used to
+create the plot.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>RPC/SRC - Signal/Clutter Ratio</strong></p>
+<blockquote>
+<p>description: The Signal / Clutter Ratio describes the difference in
+signal strength between the
+signal constituting the raw plot and the signal of the clutter.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/10</span> dB ≈ <span class="math inline">0.1</span> dB</p>
+<p>unit: &quot;dB&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.1</span></p>
+<p><code>&lt;=</code> <span class="math inline">2550.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>RPC/RW - Range Width</strong></p>
+<blockquote>
+<p>description: The Range Width defines the difference in range between
+the closest proximity to the
+radar of the raw response and the point farthest away from the radar.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>RPC/AR - Ambiguous Range</strong></p>
+<blockquote>
+<p>description: The Ambiguous Range describes the Pulse Repetition
+Interval of the radar in range.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>ERR - Extended Range Report</strong></p>
+<blockquote>
+<p>definition: Adaptation of data item I048/040 to extended range radars
+for
+provision of the measured range of an aircraft in local polar
+coordinates when the range is equal to or greater than 256NM
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">65535.0</span></p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>For radars with an operational range beyond 256 NM data item
+I048/040 is insufficient. These radars may use this extension to provide
+the target position equal to or beyond 256 NM. In such cases, data item
+I048/040 shall be transmitted in addition to this extension. In this
+case it is recommended to set bits 32/17 in data item I048/040 to
+“1”.</li>
+<li>The Encoding Rule for data item I048/040 still applies.</li>
+<li>This item represents the measured target position of the plot, even
+if associated with a track, for the present antenna scan. It is
+expressed in polar co-ordinates in the local reference system, centred
+on the radar station.</li>
+<li>In case of combined detection by a PSR and an SSR, then the SSR
+position is sent.</li>
+<li>Before migrating an ASTERIX encoder to Edition 1.10 of this
+specification, care has to be taken that receiving decoders allow the
+presence of the value 256 NM in the record. Systems applying a range
+check may otherwise suppress the record.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>RTC - Radar Track Characteristics</strong></p>
+<blockquote>
+<p>definition: Additional Track Characteristics
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>RTC/PTL - Plot/Track Link</strong></p>
+<blockquote>
+<p>description: Providing link between a track and its associated plot.
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 3</p>
+<p><strong>RTC/PTL/SCN - Track / SCN Association</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Track is not associated with an SCN Plot
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Track is associated with an SCN Plot
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/PTL/RC - Roll Call Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Associated Plot does not contain a Roll Call component
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Associated Plot contains at least a Roll Call component
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/PTL/AC - All Call Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Associated Plot does not contain an All Call component
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Associated Plot contains at least an All Call component
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/PTL/SSR - SSR Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Associated Plot does not contain an SSR component
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Associated Plot contains at least an SSR component
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/PTL/PSR - PSR Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Associated Plot does not contain a PSR component
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Associated Plot contains at least a PSR component
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/PTL/PLOTNR</strong></p>
+<blockquote>
+<p>description: Unique reference to the associated plot record
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>(to bits-16/1): If SCN = 0, PLOTNR shall be set to 0.</li>
+<li>(to bit-21): If SCN = 1, I048/020/SCN#VAL – if implemented - shall
+be set to “1”.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>RTC/ATL - ADS-B/Track Link</strong></p>
+<blockquote>
+<p>description: Providing link between a track and its associated ADS-B
+Report.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The presence of this information shall be communicated in Data Item
+I048/020 by setting I048/020/ADSB#VAL – if implemented - = 1.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>RTC/TRN - Turn State</strong></p>
+<blockquote>
+<p>description: Turn State with probability with regards to track
+evolution hypothesis (Circular model).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> % ≈ <span class="math inline">1.0</span> %</p>
+<p>unit: &quot;%&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">100.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP - Next Predicted Position</strong></p>
+<blockquote>
+<p>description: Next predicted position for a track update at the next
+expected antenna rotation in
+reference to the current track update.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>RTC/NPP/PREDRHO - Predicted Range</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/PREDTHETA - Predicted Azimuth</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/EVOLRHOSTART - Predicted Closest Range</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/EVOLRHOEND - Predicted Largest Range</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/EVOLTHETASTART - Predicted Smallest
+Azimuth</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/EVOLTHETAEND - Predicted Largest Azimuth</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/NOISERHOSTART - Predicted Closest Range</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/NOISERHOEND - Predicted Largest Range</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/NOISETHETASTART - Predicted Smallest
+Azimuth</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/NOISETHETAEND - Predicted Largest
+Azimuth</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/NPP/PREDTIME - Predicted Detection Time</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>When the area crosses North, THETASTART is larger than
+THETAEND.</li>
+<li>Next detection = Time of Day of current track record +
+PREDTIME.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>RTC/DLK - Data Link Characteristics</strong></p>
+<blockquote>
+<p>description: Active message list for the aircraft for the current
+scan.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>RTC/DLK/TYPE</strong></p>
+<blockquote>
+<p>description: Type of Message Protocol
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Surveillance Mode A (alert bit or periodic)
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Comm-A
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Ground Initiated Comm-B
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Air Initiated Comm-B
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Broadcast Comm-B
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Comm-C
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Comm-D
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>14</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>15</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/DLK/ORIGIN</strong></p>
+<blockquote>
+<p>description: Frame Detection
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+From previous scan
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+New in current scan
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Requested in the beam by transponder
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid ASTERIX value
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/DLK/STATE</strong></p>
+<blockquote>
+<p>description: Frame state at aircraft release
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+In progress
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Completed
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Cancelled
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid ASTERIX value
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/LCK - Lockout Characteristics</strong></p>
+<blockquote>
+<p>description: Lockout State and remaining Lockout Time
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>RTC/LCK/LS - Lockout State</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Target not locked out by this radar
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Target locked out by this radar
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/LCK/LOCTIM - Lockout Time</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 15</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> ms ≈ <span class="math inline">1.0</span> ms</p>
+<p>unit: &quot;ms&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TC - Transition Code</strong></p>
+<blockquote>
+<p>description: Indication and Counter of Transition Codes for Modes 1,
+2, and 3
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 7</p>
+<p><strong>RTC/TC/TCOUNT1</strong></p>
+<blockquote>
+<p>description: Number of scans with transient Mode 1 Code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TC/TCODE1</strong></p>
+<blockquote>
+<p>description: Transient Mode 1 Code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TC/TCOUNT2</strong></p>
+<blockquote>
+<p>description: Number of scans with transient Mode 2 Code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TC/TCODE2</strong></p>
+<blockquote>
+<p>description: Transient Mode 2 Code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TC/TCOUNT3</strong></p>
+<blockquote>
+<p>description: Number of scans with transient Mode 3 Code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TC/TCODE3</strong></p>
+<blockquote>
+<p>description: Transient Mode 3 Code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>This item indicates a difference in the value for TCODEX between the
+code in the track file and the code from the latest plot updating the
+track.</li>
+<li>If TCOUNTX is set to 0 then TCODEX is meaningless and all bits shall
+be set to 0.</li>
+<li>The meaning of the individual bits in TCODEX is described in ICAO
+Annex 10 Volume 4 Chapter 3.1.1.6.2.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>RTC/TLC - Track Life Cycle</strong></p>
+<blockquote>
+<p>description: Acquisition Status of the Track and Track Life Cycle
+Counters
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>RTC/TLC/ACQI</strong></p>
+<blockquote>
+<p>description: Acquisition Status Indicator
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Tentative Track with One Plot
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Tentative Track with at least Two Plots
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Pre-Confirmed Track
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Confirmed Track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TLC/TRKUPDCTR</strong></p>
+<blockquote>
+<p>description: Track Update Counter
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TLC/LASTTRKUPD</strong></p>
+<blockquote>
+<p>description: Time since last Track Update
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> ms ≈ <span class="math inline">1.0</span> ms</p>
+<p>unit: &quot;ms&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>When Subitem #8 is included, each element shall be properly
+populated.</li>
+<li>The setting of bits 32/31 is implementation dependent and shall be
+described in the ICD of the system generating the ASTERIX record.</li>
+<li>The TRKUPDCTR is initiated with a value of 1 and it is incremented
+by 1 each time a track is updated.</li>
+<li>The LASTTRKUPD is set to 0 each time a track is updated.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>RTC/ASI - Adjacent Sensor Information</strong></p>
+<blockquote>
+<p>description: Adjacent Sensor information (received via SCN) for the
+respective Mode S address
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>RTC/ASI/SACADJS - SAC of the Adjacent Sensor</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/ASI/SICADJS - SIC of the Adjacent Sensor</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/ASI/TIMEOFDAYSCN - Absolute Timestamp in UTC Provided by
+the SCN</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>RTC/ASI/DATAUSE - Use of Adjacent Sensor Data</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Data used by Tracker
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Data not used by Tracker
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+2-127: Reserved for future use
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/ASI/DRNA - DRN Availability</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+DRN not available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+DRN available
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/ASI/DRN</strong></p>
+<blockquote>
+<p>description: Duplicate Address Reference Number uniquely identifying
+the aircraft in case of a duplicate Mode S Address
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/TES - Track Extrapolation Source</strong></p>
+<blockquote>
+<p>description: Source for the extrapolation of the track information
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Radar tracker calculation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Integrated ADS-B
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+External ADS-B
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+SCN
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/IR - Identity Requested</strong></p>
+<blockquote>
+<p>description: Information whether during latest scan the Mode 3/A Code
+was requested
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>RTC/IR/IR</strong></p>
+<blockquote>
+<p>description: Identity Requested during latest scan
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Identity not requested
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Identity requested
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>RTC/IR/M3A - Age of Mode 3/A Code (I048/070)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> s ≈ <span class="math inline">1.0</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>CPC - Common and Plot Characteristics</strong></p>
+<blockquote>
+<p>definition: Plot Characteristics and Common Characteristics for Plots
+and Tracks
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>CPC/PNB - Plot Number</strong></p>
+<blockquote>
+<p>description: Unique reference to a Plot Record
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/RPL - Replies/Plot Link</strong></p>
+<blockquote>
+<p>description: Link between a Plot and its Replies
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>CPC/RPL/TYPE - Reply Type</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+PSR Echo
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+SSR Reply
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+All Call Reply
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Roll Call Reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>CPC/RPL/REPLYNBR</strong></p>
+<blockquote>
+<p>description: Unique reference to a plot record
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>CPC/SNB - Scan Number</strong></p>
+<blockquote>
+<p>description: Scan Number
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The Scan Number ranges from 1 to 127 and is incremented when the
+radar passes North. Once SCANNBR reached 127 it will restarted at 1 with
+the next scan.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>CPC/DATE - Common and Plot Characteristics Date</strong></p>
+<blockquote>
+<p>description: Current Date in the form YYYYMMDD
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>CPC/DATE/Y1</strong></p>
+<blockquote>
+<p>description: First digit of year
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">10.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/DATE/Y2</strong></p>
+<blockquote>
+<p>description: Second digit of year
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">10.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/DATE/Y3</strong></p>
+<blockquote>
+<p>description: Third digit of year
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">10.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/DATE/Y4</strong></p>
+<blockquote>
+<p>description: Fourth digit of year
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">10.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/DATE/M1</strong></p>
+<blockquote>
+<p>description: First digit of month
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">1.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/DATE/M2</strong></p>
+<blockquote>
+<p>description: Second digit of month
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">10.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/DATE/D1</strong></p>
+<blockquote>
+<p>description: First digit of day
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">3.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>CPC/DATE/D2</strong></p>
+<blockquote>
+<p>description: Second digit of day
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">10.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The day is incremented at midnight UTC.</p>
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>GEN48 - Generic Category 048 Data</strong></p>
+<blockquote>
+<p>definition: Placeholder for the addition of information to Category
+048
+even if all bits of the Item Indicator are allocated
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>GEN48/ALTM2 - Alternative Mode 2 Code</strong></p>
+<blockquote>
+<p>description: Mode 2 Information in octal representation received via
+an
+alternative technology as compared to Data Item I048/050.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>GEN48/ALTM2/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>GEN48/ALTM2/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>GEN48/ALTM2/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode-2 code as derived from reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode-2 as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>GEN48/ALTM2/ALTM2 - Mode-2 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>For radar systems interrogating with various technologies (such as
+military radars interrogating in Mode S and Mode 5), this item provides
+the possibility to transmit an alternative Mode-2 value. The population
+of this item is implementation dependent and shall be described in the
+System ICD.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>GEN48/ALTM3 - Alternative Mode 3/A</strong></p>
+<blockquote>
+<p>description: Mode-3/A Code as received from the transponder via an
+alternative technology as compared to Data Item I048/070.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>GEN48/ALTM3/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>GEN48/ALTM3/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>GEN48/ALTM3/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode-3/A code as derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode-3/A code as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>GEN48/ALTM3/ALTM3 - Mode-3/A Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>For radar systems interrogating with various technologies (such as
+military radars interrogating in Mode S and Mode 5), this item provides
+the possibility to transmit an alternative Mode-3/A value. The
+population of this item is implementation dependent and shall be
+described in the System ICD.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>GEN48/ALTFL - Alternative Flight Level</strong></p>
+<blockquote>
+<p>description: Flight Level derived from an alternative technology as
+compared to
+Data Item I048/090, converted into binary representation.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>GEN48/ALTFL/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>GEN48/ALTFL/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>GEN48/ALTFL/ALTFL - Flight Level in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> ALTFL ≈ <span class="math inline">0.25</span> ALTFL</p>
+<p>unit: &quot;ALTFL&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>When Mode C code is present but not decodable, the “Undecodable Mode
+C code / Mode S altitude code” Warning/Error should be sent in
+I048/030.</li>
+<li>When local tracking is applied and the received Mode C code
+corresponds to an abnormal value (the variation with the previous plot
+is estimated too important by the tracker), the “Mode C code / Mode S
+altitude code abnormal value compared to the track“ Warning/Error should
+be sent in I048/030.</li>
+<li>The value shall be within the range described by ICAO Annex 10.</li>
+<li>For radar systems interrogating with various technologies (such as
+military radars interrogating in Mode S and Mode 5), this item provides
+the possibility to transmit an alternative Flight Level value. The
+population of this item is implementation dependent and shall be
+described in the System ICD.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</body>
+</html>

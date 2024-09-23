@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix expansion 021 - ADS-B Target Reports Expansion</h1>
+<p><strong>category</strong>: 021</p>
+<p><strong>edition</strong>: 1.5</p>
+<p><strong>date</strong>: 2021-12-22</p>
+<p><strong>FSPEC byte size</strong>: 1</p>
+<h2>Items</h2>
+<p><strong>BPS - Barometric Pressure Setting</strong></p>
+<blockquote>
+<p>definition: Barometric Pressure Setting
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>BPS/BPS - Barometric Pressure Setting</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/10</span> hPa ≈ <span class="math inline">0.1</span> hPa</p>
+<p>unit: &quot;hPa&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">409.5</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>BPS is the barometric pressure setting of the aircraft minus 800
+hPa</li>
+<li>A value of &quot;0&quot; indicates that in the aircraft a value of 800 hPa or
+less has been selected.</li>
+<li>A value of &quot;409.5&quot; indicates that in the aircraft a value of 1209.5
+hPa or more has been selected.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>SH - Selected Heading</strong></p>
+<blockquote>
+<p>definition: Selected Heading
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>SH/HDR - Horizontal Reference Direction</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+True North
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Magnetic North
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SH/STAT - Selected Heading Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Data is either unavailable or invalid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Data is available and valid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SH/SH - Selected Heading</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 10</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">45/2<sup>6</sup></span> ° ≈ <span class="math inline">0.703125</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>On many aircraft, the ADS-B Transmitting Subsystem receives Selected
+Heading from a Mode Control Panel / Flight Control Unit (MCP / FCU).
+Users of this data are cautioned that the Selected Heading value
+transmitted by the ADS-B Transmitting Subsystem does not necessarily
+reflect the true intention of the airplane during certain flight modes
+(e.g., during LNAV mode).</p>
+</blockquote>
+<p><strong>NAV - Navigation Mode</strong></p>
+<blockquote>
+<p>definition: Navigation Mode Settings
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>NAV/AP - Autopilot</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Autopilot not engaged
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Autopilot engaged
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/VN - Vertical Navigation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Vertical Navigation not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Vertical Navigation active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/AH - Altitude Hold</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Altitude Hold not engaged
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Altitude Hold engaged
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/AM - Approach Mode</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Approach Mode not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Approach Mode active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/MFM - Status of MCP/FCU Mode Bits</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>NAV/MFM/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/MFM/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+MCP/FCU Mode Bits not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+MCP/FCU Mode Bits populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+<p>NOTE: 1: The status of the LNAV indication is contained in Data Item
+I021/200, bit-7. Please also consider Note 2 to Data Item I021/200.</p>
+<p>NOTE: 2: MFM (Status of MCP/FCU Mode Bits) is contained in the Target
+State and Status Message (Register 62 16, Format Type Code 29, Subtype
+Code 1) as defined in EUROCAE ED-102B/RTCA DO-260C Ref. [11] chapter
+2.2.3.2.7.1.3.11. If set to “1”, MFM#VAL indicates that the bits for
+“AP”, “VN”, “AH”, “AM” (in I021/REF/NAV) and for LNAV (in I021/200) have
+been actively populated.</p>
+<p>NOTE: 3: If MFM#VAL = 0, AP, VN, AH, and AM (in I021/REF/NAV) shall
+be set to 0 and LNAV (in I021/200) shall be set to 1.</p>
+</blockquote>
+<p><strong>GAO - GPS Antenna Offset</strong></p>
+<blockquote>
+<p>definition: GPS Antenna Offset
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<p>The value of this field is copied from the respective bits 33-40 of
+Register 65 16 of Version 2 and Version 3 ADS-B Systems (as defined in
+I021/210) (Aircraft Operational Status - Surface). The detailed
+definition is contained in EUROCAE Document ED-102()/RTCA DO-260() Ref.
+[11]. Bit-8 indicates the direction of the offset with a value of 0
+indicating ‘left of centerline’ and a value of 1 indicating ‘right of
+centerline’.</p>
+</blockquote>
+<p><strong>SGV - Surface Ground Vector</strong></p>
+<blockquote>
+<p>definition: Ground Speed and Track Angle elements of the Surface
+Ground Vector.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>SGV/STP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Aircraft has not stopped
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft has stopped
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/HTS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Heading/Ground Track data is not valid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Heading/Ground Track data is valid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/HTT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Heading data provided
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Ground Track provided
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/HRD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+True North
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Magnetic North
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/GSS - Ground Speed</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 11</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>3</sup></span> kt ≈ <span class="math inline">0.125</span> kt</p>
+<p>unit: &quot;kt&quot;</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>SGV/HGT - Heading/Ground Track Information</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">45/2<sup>4</sup></span> ° ≈ <span class="math inline">2.8125</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>STA - Aircraft Status</strong></p>
+<blockquote>
+<p>definition: This item contains flags to convey information on the
+status
+of a target.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>STA/ES - ES IN Capability</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Target is not 1090 ES IN capable
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Target is 1090 ES IN capable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/UAT - UAT IN Capability</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Target is not UAT IN capable
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Target is UAT IN capable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/RCE - Reduced Capability Equipment</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/RCE/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/RCE/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not RCE
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+TABS (see Note 2)
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Other RCE
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/RRL - Reply Rate Limiting</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/RRL/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/RRL/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Reply Rate Limiting is not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Reply Rate Limiting is active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The RCE information is taken from the Capability Class field in the
+“Aircraft Operational Status Message (Register 65 16 )” as defined in
+EUROCAE ED-102B/RTCA DO-260C (Chapter A.1.4.10.3 in Ref.[11]).</li>
+<li>TABS is the “Traffic Awareness Beacon System” as defined by
+ETSO-C199 / TSO-C199.</li>
+<li>The RRL information is contained in the Operational Mode field in
+the Airborne Operational Status Message, (Register 65_16, Bit 29).</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>STA/PS3 - Priority Status for Version 3 ADS-B
+Systems</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/PS3/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/PS3/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No emergency / not reported
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+General emergency
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+UAS/RPAS - Lost link
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Minimum fuel
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+No communications
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Unlawful interference
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Aircraft in Distress
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Aircraft in Distress Manual Activation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/TPW - Transmit Power</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/TPW/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/TPW/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unavailable, Unknown, or less than 70 W
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+70 W
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+125 W
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+200 W
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li><p>For ADS-B Version 3 systems as defined in EUROCAE ED-102B/RTCA
+DO-260C (Ref. [11]) the values have been re-defined. PS3 shall be used
+exclusively for Version 3 ADS-B systems as defined in
+I021/210/VN.</p></li>
+<li><p>For ADS-B systems with a version number below 3, the PS shall be
+encoded in Data Item I021/200/PS. However, since values have been
+re-defined in ADS-B Version 3, mapping is required to ensure that
+information is not lost. This mapping shall be done according to the
+following table: :</p>
+<pre><code>ADS-B Version 3 (PS3)           ADS-Version &lt; 3 (I021/200 - PS)
+0 (No Emergency/not reported)   0 (No Emergency/not reported)
+1 (General emergency)           1 (General emergency)
+2 (UAS/RPAS Lost Link)          4 (No communication)
+3 (Minimum fuel)                3 (Minimum fuel)
+4 (No communication)            4 (No communication)
+5 (Unlawful interference)       5 (Unlawful interference)
+6 (Aircraft in distress -       1 (General emergency)
+  automatic activation)
+7 (Aircraft in distress -       1 (General emergency)
+  manual activation)</code></pre></li>
+<li><p>TPW#VAL is defined in EUROCAE ED-102B/DO-260C Ref. [11] “Aircraft
+Operational Status Message (Register 65 16 )” Bits 17-18 and indicates
+the nearest minimum transmit power (in Watts) at the antenna port. The
+nearest minimum setting in this field would be rounded down from the
+actual design value. For example, if the avionics is designed to
+transmit at 100W out of the antenna port, the encoded value in this
+field would be for 70W (decimal 1).</p></li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>STA/TSI - Transponder Side Indication</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/TSI/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/TSI/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Transponder #1 (left/pilot side or single)
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Transponder #2 (right/co-pilot side)
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Transponder #3 (auxiliary or Backup)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/MUO - Manned / Unmanned Operation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/MUO/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/MUO/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Manned Operation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Unmanned Operation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/RWC - Remain Well Clear Corrective Alert</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/RWC/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/RWC/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+RWC Corrective Alert not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+RWC Corrective Alert active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This information is taken from the “Extended Squitter Aircraft
+Status Message” Register 61 16 Bit 25 as defined in EUROCAE ED-102B/RTCA
+DO-260C Ref. [11]. It is available for Version 3 ADS-B Systems only
+(refer to I021/210/VN).</li>
+<li>This information is taken from the Operational Mode field in the
+“Aircraft Operational Status Message (Register 65 16 Bit 40)” as defined
+in EUROCAE ED-102B/RTCA DO-260C (Chapter A.1.4.10.4 in Ref. [11]). This
+information is available for Version 3 ADS-B systems only (refer to
+I021/210/VN).</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>STA/DAA - Detectand Avoid Capabilities</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/DAA/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/DAA/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No RWC Capability
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+RWC/RA/OCM Capability
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+RWC/OCM Capability
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid ASTERIX Value
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/DF17CA - Transponder Capability</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/DF17CA/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/DF17CA/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This information is taken from the Capability Class field in the
+“Aircraft Operational Status Message (Register 65 16 Bits 23-24)” as
+defined in EUROCAE ED-102B/RTCA DO-260C (Chapter A.1.4.10.3 in Ref.
+[11]). This information is available for Version 3 ADS-B systems only
+(refer to I021/210/VN).</li>
+<li>The meaning of the individual values in “DAA” are described in
+Chapter A.1.4.10.24 in EUROCAE ED-102B/RTCA DO-260C Ref.[11].</li>
+<li>CA is transmitted in Downlink Format 17 messages. CA is defined in
+EUROCAE ED-73F [14] chapter 3.18.4.5 and in RTCA DO-181F [14] chapter
+2.2.14.4.6 where further details on the meaning of this Element are
+provided. Category 021 provides this Element as a “store-and-forward”
+capability only.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>STA/SVH - Sense Vertical &amp; Horizontal</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/SVH/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/SVH/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Vertical Only
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Horizontal Only
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Blended
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Vertical Only or Horizontal Only per intruder
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/CATC - CAS Type &amp; Capability</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/CATC/EP - Element Population Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/CATC/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Active CAS (TCAS II) or no CAS
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Active CAS (not TCAS II)
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Active CAS (not TCAS II) with OCM transmit capability
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Active CAS of Junior Status
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Passive CAS with 1030TCAS Resolution Message receive capability
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Passive CAS with only OCM receive capability
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reserved for future use
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>SVH is part of the CCCB (Collision Avoidance Coordination Capability
+Bits) in the “Aircraft Operational Status Message” Register 65_16 Bits
+33-39 as defined in EUROCAE ED-102B/RTCA DO-260C Ref. [11], Chapter
+2.2.3.2.7.2.4.8.1. This information is available for Version 3 ADS-B
+systems only (refer to I021/210/VN).</li>
+<li>CATC is part of the CCCB (Collision Avoidance Coordination
+Capability Bits) in the “Aircraft Operational Status Message” Register
+65_16 Bits 33-39 as defined in EUROCAE ED-102B/RTCA DO-260C Ref. [11],
+Chapter 2.2.3.2.7.2.4.8.2. This information is available for Version 3
+ADS-B systems only (refer to I021/210/VN).</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>STA/TAO - Transponder Antenna Offset</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>STA/TAO/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element Not Populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element Populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/TAO/VAL - Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No data
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+0 ≤ TAO ≤ 1
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+1 &lt; TAO ≤ 2
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+2 &lt; TAO ≤ 4
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+4 &lt; TAO ≤ 6
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+6 &lt; TAO ≤ 8
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+8 &lt; TAO ≤ 10
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+10 &lt; TAO ≤ 12
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+12 &lt; TAO ≤ 14
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+14 &lt; TAO ≤ 16
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+16 &lt; TAO ≤ 18
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+18 &lt; TAO ≤ 20
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+20 &lt; TAO ≤ 22
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+22 &lt; TAO ≤ 24
+</dd>
+<dt><code>14</code>:</dt>
+<dd>
+24 &lt; TAO ≤ 26
+</dd>
+<dt><code>15</code>:</dt>
+<dd>
+26 &lt; TAO ≤ 28
+</dd>
+<dt><code>16</code>:</dt>
+<dd>
+28 &lt; TAO ≤ 30
+</dd>
+<dt><code>17</code>:</dt>
+<dd>
+30 &lt; TAO ≤ 32
+</dd>
+<dt><code>18</code>:</dt>
+<dd>
+32 &lt; TAO ≤ 34
+</dd>
+<dt><code>19</code>:</dt>
+<dd>
+34 &lt; TAO ≤ 36
+</dd>
+<dt><code>20</code>:</dt>
+<dd>
+36 &lt; TAO ≤ 38
+</dd>
+<dt><code>21</code>:</dt>
+<dd>
+38 &lt; TAO ≤ 40
+</dd>
+<dt><code>22</code>:</dt>
+<dd>
+40 &lt; TAO ≤ 42
+</dd>
+<dt><code>23</code>:</dt>
+<dd>
+42 &lt; TAO ≤ 44
+</dd>
+<dt><code>24</code>:</dt>
+<dd>
+44 &lt; TAO ≤ 46
+</dd>
+<dt><code>25</code>:</dt>
+<dd>
+46 &lt; TAO ≤ 48
+</dd>
+<dt><code>26</code>:</dt>
+<dd>
+48 &lt; TAO ≤ 50
+</dd>
+<dt><code>27</code>:</dt>
+<dd>
+50 &lt; TAO ≤ 52
+</dd>
+<dt><code>28</code>:</dt>
+<dd>
+52 &lt; TAO ≤ 54
+</dd>
+<dt><code>29</code>:</dt>
+<dd>
+54 &lt; TAO ≤ 56
+</dd>
+<dt><code>30</code>:</dt>
+<dd>
+56 &lt; TAO ≤ 58
+</dd>
+<dt><code>31</code>:</dt>
+<dd>
+TAO &gt; 58
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>TAO is a one-to-one copy of Message Bits 68 to 72 of the ”Aircraft
+Operational Status Message” (Register 65 16 ). The TAO is measured along
+the longitudinal axis of the aircraft from the forward end.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>TNH - True North Heading</strong></p>
+<blockquote>
+<p>definition: True North Heading (Element of Air Vector).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+<p>Magnetic Heading is defined in I021/152.</p>
+</blockquote>
+<p><strong>MES - Military Extended Squitter</strong></p>
+<blockquote>
+<p>definition: Contents of Extended Squitters transmitted by Military
+Aircraft
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>MES/SUM - Mode 5 Summary</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MES/SUM/M5</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 5 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 5 interrogation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/ID</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 ID reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 ID reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/DA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 Data reply or Report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply
+type other than ID)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/M1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 1 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/M2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 2 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 2 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/M3</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 3 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 3 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/MC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Flightlevel not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Flightlevel from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/PO</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Position not from Mode 5 report (ADS-B report)
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Position from Mode 5 report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The flag M2 refers to the contents of Subfield #6 below, M3, MC
+refer to the contents of data items I021/070 and I021/145 respectively.
+The flag M1 refers to the contents of Subfield #3 below (Extended Mode 1
+Code in Octal Representation).</li>
+<li>If a Mode 5 reply/report is received with the Emergency bit set,
+then the Military Emergency bit (ME) in Data Item I021/200, Target
+Status, shall be set.</li>
+<li>If a Mode 5 reply/report is received with the Identification of
+Position bit set, then the Special Position Identification bit (SPI) in
+Data Item I021/200, Target Status, shall be set.</li>
+<li>If a Mode 5 report (ID or Data) is received and fullfill the
+autentication criteria the corresponding authentication bit shall be
+set.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>MES/PNO - Mode 5 PIN / National Origin</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MES/PNO/PIN - PIN Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 5</p>
+<p><strong>MES/PNO/NO - National Origin Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 11</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MES/EM1/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/EM1/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 code as derived from the report of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode 1 code as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/EM1/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Subfield #1 is present, the M1 bit in Subfield #1 indicates whether
+the Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If
+Subfield #1 is not present, the Extended Mode 1 Code is from a Mode 1
+reply.</li>
+<li>If Subfield #3 is not present the Mode 1 Code was not reported or
+all Code Bits were equal to 0.</li>
+<li>The valid bit is set if the Code was only reported once for that
+target.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP - X Pulse Presence</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MES/XP/XP - X-pulse from Mode 5 PIN Reply/report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-Pulse not present
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse present
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X5 - X-pulse from Mode 5 Data Reply or
+Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no authenticated Data reply or Report received
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/XC - X-pulse from Mode C Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode C reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X3 - X-pulse from Mode 3/A Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 3/A reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X2 - X-pulse from Mode 2 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+0 X-pulse set to zero or no Mode 2 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X1 - X-pulse from Mode 1 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 1 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Within Mode 5 reports, the X-Pulse can be set for the following
+cases:</p>
+<p>1. In a combined Mode 1 and Mode 2 report: in this case the X5 bit
+and the X2 bit shall be set;</p>
+<p>2. In a combined Mode 3 and Mode C report: in this case the X5 bit
+and the X3 bit shall be set;</p>
+<p>3. In a Mode 5 PIN data report: in this case the X5 bit and the XP
+bit shall be set. The X1 bit and the XC bit are meaningless as in Mode 1
+and Mode C replies/reports the X Pulse is not defined. They are kept for
+compatibility reasons.</p>
+</blockquote>
+<p><strong>MES/FOM - Figure of Merit</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 3</p>
+<p><strong>MES/FOM/FOM - Figure of Merit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/M2 - Mode 2 Code in Octal Representation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MES/M2/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/M2/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode-2 code as derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode-2 code as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/M2/MODE2 - Mode 2 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>If Subfield 6 is not present the Mode 2 Code was no reported or all
+Code Bits were equal to 0.</p>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The Reserved Expansion Field is optional. When used to transmit MES,
+it shall be sent when the targets are represented by Mode 5 Level 2
+reports.</li>
+<li>The information contained in this data item is specific to 1090MHz
+Extended Squitter messages transmitted by military aircraft (Mode 5
+Level 2 squitter).</li>
+</ul>
+</blockquote>
+</blockquote>
+</body>
+</html>
