@@ -92,58 +92,40 @@ This is a one-time effort and pays off quickly by:
     * reusing all the [existing](/specs.html) definitions;
     * writing new definitions in a clutter free format.
 
+* This project tries to address most aspects of asterix specifications,
+including rare corner cases. For some projects this might not be nessary and
+it would make sense to simplify definitions before actual use. See example
+below.
+
 If you are creating new categories, consider [contributing](/source.html)
 definitions to the upstream repository.
 
-## Example: traversing specification with `python` script
+## Example: simplify specification with `python` script
 
-This example is using asterix category description in `json` format.
+This example converts asterix specification to a simpler form, with
+some nonessential information removed from the structure. Where the
+specification is context dependent, it is converted to a *default*
+value (this is not exactly according to the original specification,
+but it allows much simpler struture and the problem can be handled
+manually in the application code if required - that is: hardcoding
+the exceptional cases).
+
+Input and output are both in `json` format.
 
 ```python
+# -- convert.py script
+
 import sys
 import json
 
 def split(obj):
     return (obj['tag'], obj['contents'])
 
-def dump_rule(f, obj):
-    t, cont = split(obj)
-    if t == 'ContextFree':
-        f(cont)
-    elif t == 'Dependent':
-        f(cont['default'])
-    else:
-        raise Exception('unexpected', t)
-
-def dump_uap(obj):
-    t, cont = split(obj)
-    def f(i):
-        t, name = split(i)
-        if t == 'UapItem':
-            return name
-        elif t == 'UapItemRFS':
-            return 'RFS'
-        elif t == 'UapItemSpare':
-            return '-'
-        else:
-            raise Exception('unexpected', t)
-    if t == 'Uap':
-        print('Single uap... {}'.format([f(i) for i in cont]))
-    elif t == 'Uaps':
-        raise NotImplementedError
-    else:
-        raise Exception('unexpected', t)
-
-def handle_signedness(obj):
-    t, cont = split(obj)
-    if t == 'Signed':
-        return True
-    elif t == 'Unsigned':
-        return False
-    else:
-        raise Exception('unexpected', t)
+def unsplit(tag, contents):
+    return {'tag': tag, 'contents': contents}
 
 def handle_number(obj):
+    """Convert precise number structure to int or float"""
     t, cont = split(obj)
     if t == 'NumInt':
         return cont
@@ -156,105 +138,130 @@ def handle_number(obj):
     else:
         raise Exception('unexpected', t)
 
-def handle_constrain(obj):
+def handle_rule(handler, obj):
+    """Handle ContextFree/Dependent rule.
+    In this example, ignore dependency and use 'default' rule.
+    This handler requires another handler for the internal structure."""
     t, cont = split(obj)
-    if t == 'EqualTo': s = '=='
-    elif t == 'NotEqualTo': s = '/='
-    elif t == 'GreaterThan': s = '>'
-    elif t == 'GreaterThanOrEqualTo': s = '>='
-    elif t == 'LessThan': s = '<'
-    elif t == 'LessThanOrEqualTo': s = '<='
+    if t == 'ContextFree':
+        return handler(cont)
+    elif t == 'Dependent':
+        return handler(cont['default'])
     else:
         raise Exception('unexpected', t)
-    return {
-        'type': s,
-        'value': handle_number(cont),
-    }
 
-def dump_content(obj):
+def handle_signedness(obj):
     t, cont = split(obj)
-    if t == 'ContentRaw':
-        print('Raw content')
-    elif t == 'ContentTable':
-        print('Table content {}'.format(cont))
-    elif t == 'ContentString':
-        print('String content {}'.format(cont['tag']))
-    elif t == 'ContentInteger':
-        print({
-            'type': 'Integer',
-            'signed': handle_signedness(cont['signedness']),
-            'constraints': [handle_constrain(i) for i in cont['constraints']],
-        })
-    elif t == 'ContentQuantity':
-        print({
-            'type': 'Quantity',
-            'constraints': [handle_constrain(i) for i in cont['constraints']],
+    if t == 'Signed':
+        return True
+    elif t == 'Unsigned':
+        return False
+    else:
+        raise Exception('unexpected', t)
+
+def handle_content(obj):
+    t, cont = split(obj)
+    if t == 'ContentQuantity':
+        return unsplit('quantity', {
             'lsb': handle_number(cont['lsb']),
             'signed': handle_signedness(cont['signedness']),
-            'unit': cont['unit'],
         })
-    elif t == 'ContentBds':
-        print('BDS register...')
-    else:
-        raise Exception('unexpected', t)
+    return unsplit('other', None)
 
-def dump_variation(obj):
+def handle_variation(obj):
     t, cont = split(obj)
     if t == 'Element':
-        print('Element {} bit(s)'.format(cont['bitSize']))
-        dump_rule(dump_content, cont['rule'])
+        rv = {
+            'bits': cont['bitSize'],
+            'content': handle_rule(handle_content, cont['rule']),
+        }
     elif t == 'Group':
-        print('Group of items')
-        [dump_item(i) for i in cont]
+        rv = [handle_item(i) for i in cont]
     elif t == 'Extended':
-        print('Extended')
-        for i in cont:
-            if i is None:
-                print('FX')
-            else:
-                dump_item(i)
+        rv = [handle_item(i) if i else None for i in cont]
     elif t == 'Repetitive':
-        print('Repetitive item {}'.format(cont['type']))
-        dump_variation(cont['variation'])
+        rv = {
+            'type': cont['type'],
+            'variation': handle_variation(cont['variation']),
+        }
     elif t == 'Explicit':
-        print('Explicit item')
+        rv = None
     elif t == 'Compound':
-        print('Compound item')
-        [dump_nonspare(i) for i in cont if i is not None]
+        rv = [handle_nonspare(i) if i else None for i in cont]
     else:
         raise Exception('unexpected', t)
+    return unsplit(t, rv)
 
-def dump_item(obj):
+def handle_item(obj):
     t, cont = split(obj)
     if t == 'Spare':
-        print('spare item {} bit(s)'.format(cont))
+        rv = cont
     elif t == 'Item':
-        return dump_nonspare(cont)
+        rv = handle_nonspare(cont)
+    else:
+        raise Exception('unexpected', t)
+    return unsplit(t, rv)
+
+def handle_nonspare(obj):
+    return {
+        'name': obj['name'],
+        'variation': handle_rule(handle_variation, obj['rule']),
+    }
+
+def handle_uap_item(obj):
+    t, cont = split(obj)
+    if t == 'UapItem':
+        return cont
+    return None
+
+def handle_uap(obj):
+    t, cont = split(obj)
+    if t == 'Uap':
+        return unsplit(t, [handle_uap_item(i) for i in cont])
+    elif t == 'Uaps':
+        return unsplit(t, [(name,
+            [handle_uap_item(i) for i in lst]) for name, lst in cont['cases']])
     else:
         raise Exception('unexpected', t)
 
-def dump_nonspare(obj):
-    doc = obj['documentation'] # definition, description...
-    print('item {} - {}'.format(obj['name'], obj['title']))
-    dump_rule(dump_variation, obj['rule'])
-
-def dump_asterix(obj):
+def handle_asterix(obj):
     t, cont = split(obj)
     if t == 'AsterixBasic':
-        print('Basic asterix category {}, {}, {}'.format(
-            cont['category'], cont['edition'], cont['date']))
-        dump_uap(cont['uap'])
-        [dump_nonspare(i) for i in cont['catalogue']]
+        rv = {
+            'category': cont['category'],
+            'edition': cont['edition'],
+            'catalogue': [handle_nonspare(i) for i in cont['catalogue']],
+            'uap': handle_uap(cont['uap']),
+        }
     elif t == 'AsterixExpansion':
-        print('This is asterix expansion...')
+        rv = {
+            'category': cont['category'],
+            'edition': cont['edition'],
+            'fspecByteSize': cont['fspecByteSize'],
+            'items': [handle_nonspare(i) for i in cont['items']],
+        }
     else:
         raise Exception('unexpected', t)
+    return unsplit(t, rv)
 
 # main
 infile=sys.argv[1]
 with open(infile) as f:
-    obj = json.loads(f.read())
-dump_asterix(obj)
+    obj1 = json.loads(f.read())
+obj2 = handle_asterix(obj1)
+print(json.dumps(obj2, indent=4))
+```
+
+Download and convert one specification:
+
+```bash
+# download
+src=https://zoranbosnjak.github.io/asterix-specs/specs/
+curl $src/cat001/cats/cat1.4/definition.json > original.json
+
+# convert
+python3 convert.py original.json > simple.json
+ls -l original.json simple.json
 ```
 
 # Related projects

@@ -13,7 +13,7 @@ If you are a *github* user, the easiest way to contribute is via
 [project's web page](https://github.com/zoranbosnjak/asterix-specs).
 \
 Feel free to contact project maintainer
-[Zoran Bošnjak](mailto:zoran.bosnjak@sloveniacontrol.si)
+[Zoran Bošnjak](mailto:zoran.bosnjak@via.si)
 via email.
 
 ## Contributing new categories
