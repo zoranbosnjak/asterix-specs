@@ -1,5 +1,4 @@
-{ gitrev ? "devel"
-, sources ? import ../nix/sources.nix
+{ sources ? import ../nix/sources.nix
 , packages ? import sources.nixpkgs {}
 , catnumber
 , spectype
@@ -8,7 +7,6 @@
 
 let
   to-pdf = import ../to-pdf/default.nix { inherit packages; inShell = false; };
-  shortGitrev = builtins.substring 0 7 gitrev;
 
   name = "asterix-${catnumber}-${spectype}-${edition}";
   src = builtins.readFile

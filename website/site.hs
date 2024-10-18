@@ -36,6 +36,7 @@ main = do
     E.setLocaleEncoding E.utf8
 
     gitrev <- getEnvVariableExpr "SHORT_GITREV"
+    gitdate <- getEnvVariableExpr "GIT_DATE"
     specs <- getEnvVariableExpr "SPECS"
     Just (manifest :: [Cat]) <- decodeFileStrict (specs <> "/" <> "manifest.json")
     syntax <- getEnvVariableExpr "SYNTAX"
@@ -43,6 +44,11 @@ main = do
     aspecsVersion <- getEnvVariableExpr "ASPECS_VERSION"
     aspecsSha256Sum <- getEnvVariableExpr "ASPECS_SHA256"
     typesSimple <- readFile "types_simple.hs"
+
+    -- extend defaultContext
+    let ctx = defaultContext
+            <> constField "gitrev" gitrev
+            <> constField "gitdate" gitdate
 
     hakyllWith config $ do
         match "css/*" $ do
@@ -56,7 +62,7 @@ main = do
         match "*.md" $ do
             route   $ setExtension "html"
             compile $ pandocCompiler
-                >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                >>= loadAndApplyTemplate "templates/default.html" ctx
                 >>= relativizeUrls
 
         -- for all definitions
@@ -83,16 +89,15 @@ main = do
 
         -- templates
         let files =
-                [ ("specs", defaultContext
-                    <> constField "gitrev" gitrev
+                [ ("specs", ctx
                     <> listField "nums" catCtx (mapM makeItem manifest))
-                , ("struct", defaultContext
+                , ("struct", ctx
                     <> constField "typesSimple" typesSimple)
                 , ("syntax",
                     let imgCtx = field "img" (\(Item _ i) -> pure i)
-                    in defaultContext
+                    in ctx
                         <> listField "images" imgCtx (mapM makeItem syntaxImages))
-                , ("aspecs", defaultContext
+                , ("aspecs", ctx
                     <> constField "aspecsVersion" aspecsVersion
                     <> constField "aspecsSha256Sum" aspecsSha256Sum
                   )
@@ -110,7 +115,7 @@ main = do
                     load $ n "" ".md"
                     >>= renderPandoc
                     >>= (\(Item _a b) -> pure (Item (n "" ".html") b))
-                    >>= loadAndApplyTemplate "templates/default.html" defaultContext
+                    >>= loadAndApplyTemplate "templates/default.html" ctx
                     >>= relativizeUrls
 
         match "templates/*" $ compile templateBodyCompiler

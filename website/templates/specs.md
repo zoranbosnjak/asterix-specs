@@ -5,7 +5,7 @@ title: Specifications
 # Asterix specifications
 
 Content is generated from [repository](https://github.com/zoranbosnjak/asterix-specs),
-git revision `#$gitrev$`.
+git revision `#$gitrev$`, date `$gitdate$`.
 
 Category listing: [manifest.json](/manifest.json).
 

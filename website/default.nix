@@ -1,4 +1,5 @@
 { gitrev ? "devel"
+, gitdate ? "YYYY-MM-DD"
 , sources ? import ../nix/sources.nix
 , packages ? import sources.nixpkgs {}
 , inShell ? null
@@ -14,16 +15,17 @@ let
 
   to-pdf  = import ../to-pdf/default.nix { inherit packages; inShell = false; };
 
-  specs = import ../specs/default.nix { inherit gitrev; inherit packages;};
+  specs = import ../specs/default.nix { inherit packages;};
 
   site = haskellPackages.callCabal2nix "website" ./. { };
 
-  syntax = import ../syntax/default.nix { inherit gitrev; inherit packages; inShell = false; };
+  syntax = import ../syntax/default.nix { inherit packages; inShell = false; };
 
   style = ../style;
 
   envVars = ''
     export SHORT_GITREV=${shortGitrev}
+    export GIT_DATE=${gitdate}
     export SPECS=${specs}
     export SYNTAX=${syntax}
     export ASPECS_VERSION=${aspecsStatic.version}

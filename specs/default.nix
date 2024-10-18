@@ -1,5 +1,4 @@
-{ gitrev ? "devel"
-, sources ? import ../nix/sources.nix
+{ sources ? import ../nix/sources.nix
 , packages ? import sources.nixpkgs {}
 }:
 
@@ -52,7 +51,7 @@ let
   level1 = catnum:
     let
       asterix-spec = catnumber: spectype: edition:
-        import ./spec.nix { inherit gitrev; inherit packages; inherit catnumber spectype edition;};
+        import ./spec.nix { inherit packages; inherit catnumber spectype edition;};
 
       linkCats =
         let linkCat = ed: "\"" + ed + " " + asterix-spec catnum "cat" ed + "\"";

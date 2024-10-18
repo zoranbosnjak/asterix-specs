@@ -14,7 +14,8 @@ jobs:
                 signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
             - name: rebuild
               run: |
-                nix-build --argstr gitrev $GITHUB_SHA
+                revDate=$(git show -s --format=%as ${{ github.sha }})
+                nix-build --argstr gitrev ${{ github.sha }} --argstr gitdate $revDate
                 rsync -r -L --delete result/ output/
                 find output -type d | xargs chmod 755
                 find output -type f | xargs chmod 644

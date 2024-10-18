@@ -1,5 +1,4 @@
-{ gitrev ? "devel"
-, sources ? import ../nix/sources.nix
+{ sources ? import ../nix/sources.nix
 , packages ? import sources.nixpkgs {}
 , inShell ? null
 }:
