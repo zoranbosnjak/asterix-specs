@@ -1738,21 +1738,14 @@ items
     510 "Composed Track Number"
         definition
             Identification of a system track.
-        extended
-            MIDENT "Master System Unit Identification"
-                element 8
-                    raw
-            MTRACK "Master System Track Number"
-                element 15
-                    raw
-            -
-            SIDENT "Slave System Unit Identification"
-                element 8
-                    raw
-            STRACK "Slave System Track Number"
-                element 15
-                    raw
-            -
+        repetitive fx
+            group
+                IDENT "System Unit Identification"
+                    element 8
+                        raw
+                TRACK "System Track Number"
+                    element 15
+                        raw
         remark
             Notes:
 
@@ -1761,6 +1754,9 @@ items
                   track number for each unit involved in the co-operation. The first
                   unit identification identifies the unit that is responsible for the
                   track amalgamation.
+
+                - The fist element represents Master track, the remaining elements
+                  represent Slave tracks.
 
     RE "Reserved Expansion Field"
         definition
