@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 001 - Transmission of Monoradar Data Target
+Reports</h1>
+<p><strong>category</strong>: 001</p>
+<p><strong>edition</strong>: 1.2</p>
+<p><strong>date</strong>: 2011-08-01</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I001/010 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the radar station from which the data
+are received.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I001/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>1 The defined SACs are listed in Part 1, Table 2. [Ref.2 ] 2 The
+defined SICs are listed in Part 1, Annex B. [Ref.2 ]</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I001/020 - Target Report Descriptor</strong></p>
+<blockquote>
+<p>definition: Type and characteristics of the radar data as transmitted
+by a radar station.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I001/020/TYP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Plot
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/SIM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Actual plot or track
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Simulated plot or track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/SSRPSR - Radar Detection in Last Antenna
+Scan</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No detection
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Sole primary detection
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Sole secondary detection
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Combined primary and secondary detection
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/ANT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Target report from antenna 1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Target report from antenna 2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/SPI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Special Position Identification
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/RAB</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Plot or track from a fixed transponder
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I001/020/TST</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Test target indicator
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/DS1DS2 - Radar Detection in Last Antenna
+Scan</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Unlawful interference (code 7500)
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Radio-communication failure (code 7600)
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Emergency (code 7700)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/ME</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Military emergency
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/020/MI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Military identification
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<p>Note:</p>
+<blockquote>
+<ul>
+<li>Bit-7 (SIM) is used to identify a simulated target report as
+produced by a traffic simulator.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I001/030 - Warning/Error Conditions</strong></p>
+<blockquote>
+<p>definition: Warning/error conditions detected by a radar station for
+the target
+report involved.
+</p>
+<p>Repetitive</p>
+<p>With FX extension bit.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No warning nor error condition
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled reply
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reflection
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Sidelobe reply
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Split plot
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Second time around reply
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Angels
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Terrestrial vehicles
+</dd>
+<dt><code>64</code>:</dt>
+<dd>
+Possible wrong code in Mode-3/A
+</dd>
+<dt><code>65</code>:</dt>
+<dd>
+Possible wrong altitude information, transmitted when the Code C
+credibility check fails together with the Mode-C code in binary notation
+</dd>
+<dt><code>66</code>:</dt>
+<dd>
+Possible phantom MSSR plot
+</dd>
+<dt><code>80</code>:</dt>
+<dd>
+Fixed PSR plot
+</dd>
+<dt><code>81</code>:</dt>
+<dd>
+Slow PSR plot
+</dd>
+<dt><code>82</code>:</dt>
+<dd>
+Low quality PSR plot
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Warning/error condition values 0-63 are reserved for common standard
+use, whereas the values 64-127 are application dependent.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/040 - Measured Position in Polar
+Co-ordinates</strong></p>
+<blockquote>
+<p>definition: Measured position of an aircraft in local polar
+co-ordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/040/RHO</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">512.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I001/040/THETA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Note:</p>
+<blockquote>
+<ul>
+<li>When expressed in 16 bits, signed or unsigned azimuths have the same
+value.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I001/042 - Calculated Position in Cartesian
+Co-ordinates</strong></p>
+<blockquote>
+<p>definition: Calculated position of an aircraft in Cartesian
+co-ordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/042/X - X-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>6</sup></span> NM ≈ <span class="math inline">1.5625<em>e</em> − 2</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−512.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">512.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I001/042/Y - Y-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>6</sup></span> NM ≈ <span class="math inline">1.5625<em>e</em> − 2</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−512.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">512.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>LSB is calculated as <span class="math inline">2<sup>−6 + <em>f</em></sup></span>.</li>
+<li>A default quantisation unit of 1/64 NM is obtained for a value of f
+= 0.</li>
+<li>Negative values are expressed in 2&#39;s complement form, bit-32 and
+bit-16 shall be set to 0 for positive values and 1 for negative
+values.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/050 - Mode-2 Code in Octal Representation</strong></p>
+<blockquote>
+<p>definition: Reply to Mode-2 interrogation.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/050/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/050/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/050/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode-2 code as derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode-2 code as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I001/050/MODE2 - Mode-2 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Smoothed Mode-2 data (bit-14 set to one) is used when the plot
+contains no Mode-2 code or the Mode-2 codes of the plot and track are
+different.</li>
+<li>Bits-16/15 have no meaning in the case of a smoothed Mode-2 and are
+set to 0 for a calculated track.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/060 - Mode-2 Code Confidence Indicator</strong></p>
+<blockquote>
+<p>definition: Confidence level for each bit of a Mode-2 reply as
+provided by a monopulse SSR station.
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I001/060/QA4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QA2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QA1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QB4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QB2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QB1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QC4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QC2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QC1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QD4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QD2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/060/QD1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>This Data Item is only transmitted if at least one pulse is of low
+quality.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I001/070 - Mode-3/A Code in Octal Representation</strong></p>
+<blockquote>
+<p>definition: Mode-3/A code converted into octal representation.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/070/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/070/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/070/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode-3/A code derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode-3/A code as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I001/070/MODE3A - Mode-3/A Reply in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The detector signals a garbled code (bit-15 set to one) when at
+least two replies are overlapping.</li>
+<li>Smoothed Mode-3/A data (bit-14 set to a one) are used in the case of
+the absence of Mode-3/A code information in the plot, or in the case of
+a difference between the plot and track Mode-3/A code information.</li>
+<li>Bits-16/15 have no meaning in the case of a smoothed Mode-3/A and
+are set to 0 for a calculated track.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/080 - Mode-3/A Code Confidence Indicator</strong></p>
+<blockquote>
+<p>definition: Confidence level for each bit of a Mode-3/A reply as
+provided by a monopulse SSR station.
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I001/080/QA4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QA2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QA1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QB4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QB2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QB1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QC4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QC2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QC1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QD4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QD2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/080/QD1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/090 - Mode-C Code in Binary Representation</strong></p>
+<blockquote>
+<p>definition: Mode-C height converted into binary representation.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/090/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/090/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/090/HGT - Mode-C HEIGHT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The detector signals a garbled code when at least two replies are
+overlapping.</li>
+<li>The maximum height which can be represented is 204 775 ft.
+Practically the maximum valid value is 126 750 ft (refer to ICAO Annex
+10).</li>
+<li>Negative values are expressed in 2&#39;s complement form, bit-14 is set
+to 0 for positive values and 1 for negative values.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/100 - Mode-C Code and Code Confidence
+Indicator</strong></p>
+<blockquote>
+<p>definition: Mode-C height in Gray notation as received from the
+transponder together
+with the confidence level for each reply bit as provided by a monopulse
+SSR station.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/100/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I001/100/MODEC - Mode-C Reply in Gray Notation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I001/100/QC1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QA1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QC2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QA2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QC4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse C4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse C4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QA4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse A4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse A4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QB1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QD1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D1
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QB2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QD2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D2
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QB4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse B4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse B4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/100/QD4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+High quality pulse D4
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Low quality pulse D4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This Data Item is only transmitted if at least one pulse is of low
+quality.</li>
+<li>The detector signals a garbled code when at least two replies are
+overlapping.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/120 - Measured Radial Doppler Speed</strong></p>
+<blockquote>
+<p>definition: Radial component of the ground speed as measured by means
+of Doppler filter banks in radar signal processors.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM/s ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM/s</p>
+<p>unit: &quot;NM/s&quot;</p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>LSB is calculated as <span class="math inline">2<sup>−14 + <em>f</em></sup></span>.</li>
+<li>A default quantisation unit of 14.0625 kt and a maximum of +/- 1 800
+kt is obtained for a value of f = 6.</li>
+<li>Negative values are expressed in 2&#39;s complement form, bit-8 is set
+to 0 for positive values and 1 for negative values.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I001/130 - Radar Plot Characteristics</strong></p>
+<blockquote>
+<p>definition: Additional information on the quality of the target
+report.
+</p>
+<p>Repetitive</p>
+<p>With FX extension bit.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ul>
+<li>The actual meaning of the bits is application dependent.&quot;</li>
+<li>This Data Item may contain parameters such as plot runlength
+(primary and secondary), difference between primary and secondary
+derived azimuth, pulse amplitude, etc.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I001/131 - Received Power</strong></p>
+<blockquote>
+<p>definition: Measurement of the received power.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1</span> dBm ≈ <span class="math inline">1.0</span> dBm</p>
+<p>unit: &quot;dBm&quot;</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>POWER is the measured value of the power received on the sum pattern
+for a plot.</li>
+<li>Negative values are expressed in 2&#39;s complement form, bit-8 is set
+to 0 for positive values and 1 for negative values.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/141 - Truncated Time of Day</strong></p>
+<blockquote>
+<p>definition: Absolute time stamping expressed as Coordinated Universal
+Time (UTC) time.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The exchange of this Data Item allows the easy derivation of the
+correct UTC time value, provided that the clocks at the data source and
+sink(s) are less than 512 seconds out of synchronisation. Special care
+has to be taken at the transition of an &quot;all ones&quot; value to an &quot;all
+zeros&quot; value (every 512 seconds).</li>
+<li>The time of day value is reset to 0 each day at midnight.</li>
+<li>For time management in radar transmission applications, refer to
+Part 1, paragraph 5.4 [Ref. 2].</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/150 - Presence of X-Pulse</strong></p>
+<blockquote>
+<p>definition: Presence of the X-Pulse for the various modes applied in
+the interrogation interlace pattern.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/150/XA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse received in Mode-3/A reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I001/150/XC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse received in Mode-C reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I001/150/X2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse received in Mode-2 reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+<p>Note:</p>
+<blockquote>
+<ul>
+<li>This Data Item is transmitted only if at least one X-pulse has been
+received in a Mode-A, Mode-2 or Mode-C reply.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I001/161 - Track Plot Number</strong></p>
+<blockquote>
+<p>definition: An integer value representing a unique reference to a
+track/plot record within a particular track/plot file.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<p>Note:</p>
+<blockquote>
+<ul>
+<li>The differentiation between track and plot number is either implicit
+or is made via the Target Report Descriptor (Data Item I001/020).</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I001/170 - Track Status</strong></p>
+<blockquote>
+<p>definition: Status of track derived either from primary and/or
+secondary radar information.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I001/170/CON</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Confirmed Track
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Track in initialisation phase
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/170/RAD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Primary track
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+SSR/Combined track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/170/MAN</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft manoeuvring
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/170/DOU</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Doubtful plot to track association
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/170/RDPC - Radar Data Processing Chain</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+RDP Chain 1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+RDP Chain 2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I001/170/GHO</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Ghost track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I001/170/TRE</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Last report for a track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 6</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Bit-2 (GHO) is used to signal that the track is suspected to have
+been generated by a fake target.</li>
+<li>Bit-4 (RDPC) is used to signal the discontinuity of the track
+numbers.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I001/200 - Calculated Track Velocity in Polar
+Co-ordinates</strong></p>
+<blockquote>
+<p>definition: Calculated track velocity expressed in polar
+co-ordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I001/200/GSP - Calculated Groundspeed</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s ≈ <span class="math inline">6.103515625<em>e</em> − 5</span> NM/s</p>
+<p>unit: &quot;NM/s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I001/200/HDG - Calculated Heading</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I001/210 - Track Quality</strong></p>
+<blockquote>
+<p>definition: Relative track quality.
+</p>
+<p>Repetitive</p>
+<p>With FX extension bit.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Raw Content</p>
+</blockquote>
+<p>Note:</p>
+<blockquote>
+<ul>
+<li>Actual bit signification is application dependent.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I001/SP - Special Purpose Field</strong></p>
+<blockquote>
+<p>definition: Special Purpose Field
+</p>
+<p>Explicit (SpecialPurpose)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<p>This category has multiple UAPs.</p>
+<p>UAP selection is based on the value of: <code>020/TYP</code></p>
+<ul>
+<li><code>0</code>
+plot</li>
+<li><code>1</code>
+track</li>
+</ul>
+<h3>plot</h3>
+<ul>
+<li>1: <code>I001/010</code> - Data Source Identifier</li>
+<li>2: <code>I001/020</code> - Target Report Descriptor</li>
+<li>3: <code>I001/040</code> - Measured Position in Polar
+Co-ordinates</li>
+<li>4: <code>I001/070</code> - Mode-3/A Code in Octal
+Representation</li>
+<li>5: <code>I001/090</code> - Mode-C Code in Binary Representation</li>
+<li>6: <code>I001/130</code> - Radar Plot Characteristics</li>
+<li>7: <code>I001/141</code> - Truncated Time of Day</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I001/050</code> - Mode-2 Code in Octal Representation</li>
+<li>9: <code>I001/120</code> - Measured Radial Doppler Speed</li>
+<li>10: <code>I001/131</code> - Received Power</li>
+<li>11: <code>I001/080</code> - Mode-3/A Code Confidence Indicator</li>
+<li>12: <code>I001/100</code> - Mode-C Code and Code Confidence
+Indicator</li>
+<li>13: <code>I001/060</code> - Mode-2 Code Confidence Indicator</li>
+<li>14: <code>I001/030</code> - Warning/Error Conditions</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I001/150</code> - Presence of X-Pulse</li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li>20: <code>I001/SP</code> - Special Purpose Field</li>
+<li><em>RFS indicator</em></li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+<h3>track</h3>
+<ul>
+<li>1: <code>I001/010</code> - Data Source Identifier</li>
+<li>2: <code>I001/020</code> - Target Report Descriptor</li>
+<li>3: <code>I001/161</code> - Track Plot Number</li>
+<li>4: <code>I001/040</code> - Measured Position in Polar
+Co-ordinates</li>
+<li>5: <code>I001/042</code> - Calculated Position in Cartesian
+Co-ordinates</li>
+<li>6: <code>I001/200</code> - Calculated Track Velocity in Polar
+Co-ordinates</li>
+<li>7: <code>I001/070</code> - Mode-3/A Code in Octal
+Representation</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I001/090</code> - Mode-C Code in Binary Representation</li>
+<li>9: <code>I001/141</code> - Truncated Time of Day</li>
+<li>10: <code>I001/130</code> - Radar Plot Characteristics</li>
+<li>11: <code>I001/131</code> - Received Power</li>
+<li>12: <code>I001/120</code> - Measured Radial Doppler Speed</li>
+<li>13: <code>I001/170</code> - Track Status</li>
+<li>14: <code>I001/210</code> - Track Quality</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I001/050</code> - Mode-2 Code in Octal Representation</li>
+<li>16: <code>I001/080</code> - Mode-3/A Code Confidence Indicator</li>
+<li>17: <code>I001/100</code> - Mode-C Code and Code Confidence
+Indicator</li>
+<li>18: <code>I001/060</code> - Mode-2 Code Confidence Indicator</li>
+<li>19: <code>I001/030</code> - Warning/Error Conditions</li>
+<li>20: <code>I001/SP</code> - Special Purpose Field</li>
+<li><em>RFS indicator</em></li>
+<li>(FX) - Field extension indicator</li>
+<li>22: <code>I001/150</code> - Presence of X-Pulse</li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,1898 @@
+asterix 062 "SDPS Track Messages"
+edition 1.20
+date 2023-02-13
+preamble
+    Surveillance data exchange.
+
+items
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the system sending the data.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+
+    040 "Track Number"
+        definition
+            Identification of a track.
+        element 16
+            raw
+
+    060 "Track Mode 3/A Code"
+        definition
+            Mode-3/A code converted into octal representation.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            CH "Change in Mode 3/A"
+                element 1
+                    table
+                        0: No change
+                        1: Mode 3/A has changed
+            spare 1
+            MODE3A "Mode-3/A Reply in Octal Representation"
+                element 12
+                    string octal
+
+    070 "Time Of Track Information"
+        definition
+            Absolute time stamping of the information provided
+            in the track message, in the form of elapsed time since
+            last mid night, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                1. This is the time of the track state vector.
+                2. The time is reset to zero at every midnight.
+
+    080 "Track Status"
+        definition
+            Status of a track.
+        extended
+            MON ""
+                element 1
+                    table
+                        0: Multisensor track
+                        1: Monosensor track
+            SPI ""
+                element 1
+                    table
+                        0: Default value
+                        1: SPI present in the last report received from a sensor capable of decoding this data
+            MRH "Most Reliable Height"
+                element 1
+                    table
+                        0: Barometric altitude (Mode C) more reliable
+                        1: Geometric altitude more reliable
+            SRC "Source of Calculated Track Altitude for I062/130"
+                element 3
+                    table
+                        0: No source
+                        1: GNSS
+                        2: 3D radar
+                        3: Triangulation
+                        4: Height from coverage
+                        5: Speed look-up table
+                        6: Default height
+                        7: Multilateration
+            CNF ""
+                element 1
+                    table
+                        0: Confirmed track
+                        1: Tentative track
+            -
+            SIM ""
+                element 1
+                    table
+                        0: Actual track
+                        1: Simulated track
+            TSE ""
+                element 1
+                    table
+                        0: Default value
+                        1: Last message transmitted to the user for the track
+            TSB ""
+                element 1
+                    table
+                        0: Default value
+                        1: First message transmitted to the user for the track
+            FPC ""
+                element 1
+                    table
+                        0: Not flight-plan correlated
+                        1: Flight plan correlated
+            AFF ""
+                element 1
+                    table
+                        0: Default value
+                        1: ADS-B data inconsistent with other surveillance information
+            STP ""
+                element 1
+                    table
+                        0: Default value
+                        1: Slave Track Promotion
+            KOS ""
+                element 1
+                    table
+                        0: Complementary service used
+                        1: Background service used
+            -
+            AMA ""
+                element 1
+                    table
+                        0: Track not resulting from amalgamation process
+                        1: Track resulting from amalgamation process
+            MD4 ""
+                element 2
+                    table
+                        0: No Mode 4 interrogation
+                        1: Friendly target
+                        2: Unknown target
+                        3: No reply
+            ME ""
+                element 1
+                    table
+                        0: Default value
+                        1: Military Emergency present in the last report received from a sensor capable of decoding this data
+            MI ""
+                element 1
+                    table
+                        0: Default value
+                        1: Military Identification present in the last report received from a sensor capable of decoding this data
+            MD5 ""
+                element 2
+                    table
+                        0: No Mode 5 interrogation
+                        1: Friendly target
+                        2: Unknown target
+                        3: No reply
+            -
+            CST ""
+                element 1
+                    table
+                        0: Default value
+                        1: Age of the last received track update is higher than system dependent threshold (coasting)
+            PSR ""
+                element 1
+                    table
+                        0: Default value
+                        1: Age of the last received PSR track update is higher than system dependent threshold
+            SSR ""
+                element 1
+                    table
+                        0: Default value
+                        1: Age of the last received SSR track update is higher than system dependent threshold
+            MDS ""
+                element 1
+                    table
+                        0: Default value
+                        1: Age of the last received Mode S track update is higher than system dependent threshold
+            ADS ""
+                element 1
+                    table
+                        0: Default value
+                        1: Age of the last received ADS-B track update is higher than system dependent threshold
+            SUC ""
+                element 1
+                    table
+                        0: Default value
+                        1: Special Used Code (Mode A codes to be defined in the system to mark a track with special interest)
+            AAC ""
+                element 1
+                    table
+                        0: Default value
+                        1: Assigned Mode A Code Conflict (same discrete Mode A Code assigned to another track)
+            -
+            SDS ""
+                element 2
+                    table
+                        0: Combined
+                        1: Co-operative only
+                        2: Non-Cooperative only
+                        3: Not defined
+            EMS ""
+                element 3
+                    table
+                        0: No emergency
+                        1: General emergency
+                        2: Lifeguard / medical
+                        3: Minimum fuel
+                        4: No communications
+                        5: Unlawful interference
+                        6: Downed Aircraft
+                        7: Undefined
+            PFT ""
+                element 1
+                    table
+                        0: No indication
+                        1: Potential False Track Indication
+            FPLT ""
+                element 1
+                    table
+                        0: Default value
+                        1: Track created / updated with FPL data
+            -
+            DUPT ""
+                element 1
+                    table
+                        0: Default value
+                        1: Duplicate Mode 3/A Code
+            DUPF ""
+                element 1
+                    table
+                        0: Default value
+                        1: Duplicate Flight Plan
+            DUPM ""
+                element 1
+                    table
+                        0: Default value
+                        1: Duplicate Flight Plan due to manual correlation
+            SFC ""
+                element 1
+                    table
+                        0: Default value
+                        1: Surface target
+            IDD ""
+                element 1
+                    table
+                        0: No indication
+                        1: Duplicate Flight-ID
+            IEC ""
+                element 1
+                    table
+                        0: Default value
+                        1: Inconsistent Emergency Code
+            MLAT ""
+                element 1
+                    table
+                        0: Default value
+                        1: Age of the last received MLAT track updateis higher than system dependent threshold
+            -
+        remark
+            Notes:
+
+                1. Track type and coasting can also be derived from I062/290 System Track Update Ages
+                2. If the system supports the technology, default value (0) means that the technology was used to produce the report
+                3. If the system does not support the technology, default value is meaningless.
+                4. Bits 6/4 (EMS): other than subfield #11 of data item I062/380, these
+                   bits allow the SDPS to set the emergency indication as derived from
+                   other sources than ADS-B (e.g. based on the Mode 3/A code).
+                5. Bits 6/4 (EMS): if EMS is populated from ADS-B information the following shall apply:
+                   In ADS-B Version 3 (as defined in I021/210/VN) some values of EMS
+                   have been redefined. In order to provide the information also in Data
+                   Item I062/080/EMS, mapping is required to ensure that information is
+                   not lost in systems not yet capable to decode this Edition of Category
+                   062. If I021/210/VN = 3, the values contained in I062/REF/PS3 shall
+                   be mapped to I062/380/EMS in line with the following table: ::
+
+                     ADS-B Version 3 (I062/REF/PS3)  ADS-B Version < 3 (I062/080/EMS)
+                     0 (No Emergency/not reported)   0 (No emergency/not reported)
+                     1 (General emergency)           1 (General emergency)
+                     2 (UAS/RPAS Lost Link)          4 (No communication)
+                     3 (Minimum fuel)                3 (Minimum fuel)
+                     4 (No communication)            4 (No communication)
+                     5 (Unlawful interference)       5 (Unlawful interference)
+                     6 (Aircraft in distress -       1 (General emergency)
+                       automatic activation)
+                     7 (Aircraft in distress -       1 (General emergency)
+                       manual activation)
+
+                6. Bit 3 (PFT): with this flag an SDPS can indicate that internal processing
+                   points to the track being potentially false. Details on the internal
+                   processing are system dependent. In order to improve security on
+                   targets provided by ADS-B numerous validation functions have been
+                   developed in the ADS-B ground domain. If any of these validation
+                   functions show a potentially spoofed target, the PFT bit will be used to
+                   convey this information to the CWP. If and how this information is
+                   processed and displayed on the CWP is a local matter and not subject
+                   to the category 062 specification.
+                7. Bit 2 (FPLT): this bit - if set - indicates that the information contained
+                   in the target report has been updated by flight plan related data
+                   because no surveillance data was available for the target, or was
+                   created based on flight plan related data in areas with no
+                   surveillance.
+                8. Bit 8 (DUPT) is set to 1 if the correlation between the target report and a flight
+                   plan is not possible because the Mode 3/A code stated in the flight plan exists
+                   more than once in the surveillance data.
+                9. Bit 7 (DUPF) - if set to 1 - indicates that for a specific surveillance target more
+                   than one flight plan exists which makes correlation impossible.
+                10. Bit 6 (DUPM) is set to 1 if a target was correlated manually but also a regular
+                   flight plan exists.
+                11. All tracks for which bits 8, 7 or 6 are set to 1 are marked on the CWP.
+                12. Bit 5 (SFC) is set to 1 when the SDPS considers the target to be on the Surface
+                    (the actual meaning is implementation dependent – please refer to chapter 4.8
+                    above).
+                13. Bit 4 (IDD) is set to 1 when the Flight ID is present more than once in the
+                    surveillance area.
+                14. Bit 3 (IEC) is set to 1 when the comparison between various sources has
+                    revealed an inconsistency in the information contained about emergency codes.
+                15. If I062/080 (MRH) indicates "Barometric altitude (Mode C) more
+                    reliable", and a calculated altitude is transmitted, it shall be transmitted
+                    using data item I062/135 “Calculated Track Barometric Altitude”.
+                16. If I062/080 (MRH) indicates "Geometric altitude more reliable", and a
+                    calculated altitude is transmitted, it shall be transmitted using data item
+                    I062/130 “Calculated Track Geometric Altitude”. In this case the source
+                    for I062/130 is indicated by I062/080 (SRC).
+                17. Data Items I062/130, I062/135, and I062/136 may be transmitted in
+                    parallel whenever the respective information is available. This is
+                    independent from the value transmitted on I062/080 (MRH).
+
+    100 "Calculated Track Position (Cartesian)"
+        definition
+            Calculated position in Cartesian co-ordinates with a resolution of
+            0.5m, in two's complement form.
+        group
+            X "X Coordinate"
+                element 24
+                    signed quantity 1/2 "m"
+            Y "Y Coordinate"
+                element 24
+                    signed quantity 1/2 "m"
+
+    105 "Calculated Position In WGS-84 Co-ordinates"
+        definition
+            Calculated Position in WGS-84 Co-ordinates with a resolution of
+            :math:`180/2^{25}` degrees.
+        group
+            LAT "Latitude"
+                element 32
+                    signed quantity 180/2^25 "°" >= -90 <= 90
+            LON "Longitude"
+                element 32
+                    signed quantity 180/2^25 "°" >= -180 < 180
+        remark
+            Notes:
+
+                - The LSB provides a resolution at least better than 0.6m.
+
+    110 "Mode 5 Data Reports and Extended Mode 1 Code"
+        definition
+            Mode 5 Data reports and Extended Mode 1 Code.
+        compound
+            SUM "Mode 5 Summary"
+                group
+                    M5 ""
+                        element 1
+                            table
+                                0: No Mode 5 interrogation
+                                1: Mode 5 interrogation
+                    ID ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 ID reply
+                                1: Authenticated Mode 5 ID reply
+                    DA ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 Data reply or Report
+                                1: Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply type other than ID)
+                    M1 ""
+                        element 1
+                            table
+                                0: Mode 1 code not present or not from Mode 5 reply
+                                1: Mode 1 code from Mode 5 reply
+                    M2 ""
+                        element 1
+                            table
+                                0: Mode 2 code not present or not from Mode 5 reply
+                                1: Mode 2 code from Mode 5 reply
+                    M3 ""
+                        element 1
+                            table
+                                0: Mode 3 code not present or not from Mode 5 reply
+                                1: Mode 3 code from Mode 5 reply
+                    MC ""
+                        element 1
+                            table
+                                0: Mode C altitude code not present or not from Mode 5 reply
+                                1: Mode C altitude from Mode 5 reply
+                    X "X-pulse from Mode 5 Data Reply or Report"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no authenticated Data reply or Report received
+                                1: X-pulse set to one
+            PMN "Mode 5 PIN/ National Origin/Mission Code"
+                group
+                    spare 2
+                    PIN "PIN Code"
+                        element 14
+                            raw
+                    spare 3
+                    NAT "National Origin"
+                        element 5
+                            raw
+                    spare 2
+                    MIS "Mission Code"
+                        element 6
+                            raw
+            POS "Mode 5 Reported Position"
+                group
+                    LAT "Latitude"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -90 <= 90
+                    LON "Longitude"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -180 < 180
+            GA "Mode 5 GNSS-derived Altitude"
+                group
+                    spare 1
+                    RES "Resolution with which the GNSS-derived Altitude (GA) is Reported"
+                        element 1
+                            table
+                                0: GA reported in 100 ft increments
+                                1: GA reported in 25 ft increments
+                    GA "GNSS-derived Altitude of Target, Expressed as Height Above WGS 84 Ellipsoid"
+                        element 14
+                            signed quantity 25 "ft" >= -1000
+            EM1 "Extended Mode 1 Code in Octal Representation"
+                group
+                    spare 4
+                    EM1 "Extended Mode 1 Reply in Octal Representation"
+                        element 12
+                            string octal
+            TOS "Time Offset for POS and GA"
+                description
+                    Time Offset coded as a twos complement number with an LSB of 1/128 s.
+                    The time at which the Mode 5 Reported Position (Subfield #3)
+                    and Mode 5 GNSS-derived Altitude (Subfield #4) are valid is given
+                    by Time of Day (I048/140) plus Time Offset.
+                element 8
+                    signed quantity 1/2^7 "s"
+            XP "X Pulse Presence"
+                group
+                    spare 3
+                    X5 "X-pulse from Mode 5 Data Reply or Report"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no authenticated Data reply or Report received
+                                1: X-pulse set to one (present)
+                    XC "X-pulse from Mode C Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode C reply
+                                1: X-pulse set to one (present)
+                    X3 "X-pulse from Mode 3/A Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 3/A reply
+                                1: X-pulse set to one (present)
+                    X2 "X-pulse from Mode 2 Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 2 reply
+                                1: X-pulse set to one (present)
+                    X1 "X-pulse from Mode 1 Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 1 reply
+                                1: X-pulse set to one (present)
+        remark
+            Notes:
+
+                1. The flags M2, M3, MC refer to the contents of data subitems I062/120,
+                   I062/060 and I062/135 respectively. The flag M1 refers to the contents
+                   of the Subfield #5 (Extended Mode 1 Code in Octal Representation).
+                2. If an authenticated Mode 5 reply is received with the Emergency
+                   bit set, then the Military Emergency bit (ME) in Data Item I062/080,
+                   Track Status, shall be set.
+                3. If an authenticated Mode 5 reply is received with the Identification
+                   of Position bit set, then the Special Position Identification
+                   bit (SPI) in Data Item I062/080, Track Status, shall be set.
+                4. The resolution implied by the LSB is better than the resolution
+                   with which Mode 5 position reports are transmitted from aircraft
+                   transponders using currently defined formats.
+                5. GA is coded as a 14-bit two's complement binary number with
+                   an LSB of 25 ft. irrespective of the setting of RES.
+                6. The minimum value of GA that can be reported is -1000 ft.
+                7. If Subfield #1 is present, the M1 bit in Subfield #1 indicates
+                   whether the Extended Mode 1 Code is from a Mode 5 reply or
+                   a Mode 1 reply. If Subfield #1 is not present, the Extended
+                   Mode 1 Code is from a Mode 1 reply.
+                8. TOS shall be assumed to be zero if Subfield #6 is not present.
+
+    120 "Track Mode 2 Code"
+        definition
+            Mode 2 code associated to the track
+        group
+            spare 4
+            MODE2 "Mode-2 Code in Octal Representation"
+                element 12
+                    string octal
+
+    130 "Calculated Track Geometric Altitude"
+        definition
+            Vertical distance between the target and the projection of its position
+            on the earth's ellipsoid, as defined by WGS84, in two's complement form.
+        element 16
+            signed quantity 25/2^2 "ft" >= -1500 <= 150000
+        remark
+            Notes:
+
+                1. LSB is required to be less than 10 ft by ICAO
+                2. The source of altitude is identified in bits (SRC) of item
+                   I062/080 Track Status.
+
+    135 "Calculated Track Barometric Altitude"
+        definition
+            Calculated barometric altitude of the track, in two's complement form.
+        group
+            QNH ""
+                element 1
+                    table
+                        0: No QNH correction applied
+                        1: QNH correction applied
+            CTB "Calculated Track Barometric Altitude"
+                element 15
+                    signed quantity 1/2^2 "FL" >= -15 <= 1500
+        remark
+            Notes:
+
+                1) ICAO specifies a range between -10 FL and 1267 FL for Mode C
+
+    136 "Measured Flight Level"
+        definition
+            Last valid and credible flight level used to update the track, in two's
+            complement form.
+        element 16
+            signed quantity 1/2^2 "FL" >= -15 <= 1500
+        remark
+            Notes:
+
+                1. The criteria to determine the credibility of the flight level
+                   are Tracker dependent.
+                2. Credible means: within reasonable range of change with respect
+                   to the previous detection.
+                3. ICAO specifies a range between -10 FL and 1267 FL for Mode C.
+                4. This item includes the barometric altitude received from ADS-B.
+
+    185 "Calculated Track Velocity (Cartesian)"
+        definition
+            Calculated track velocity expressed in Cartesian co-ordinates,in
+            two's complement form.
+        group
+            VX "Velocity (X-component)"
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
+            VY "Velocity (Y-component)"
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
+        remark
+            Notes:
+
+                - The y-axis points to the Geographical North at the location of
+                  the target.
+
+    200 "Mode of Movement"
+        definition
+            Calculated Mode of Movement of a target.
+        group
+            TRANS "Transversal Acceleration"
+                element 2
+                    table
+                        0: Constant course
+                        1: Right turn
+                        2: Left turn
+                        3: Undetermined
+            LONG "Longitudinal Acceleration"
+                element 2
+                    table
+                        0: Constant groundspeed
+                        1: Increasing groundspeed
+                        2: Decreasing groundspeed
+                        3: Undetermined
+            VERT "Transversal Acceleration"
+                element 2
+                    table
+                        0: Level
+                        1: Climb
+                        2: Descent
+                        3: Undetermined
+            ADF "Altitude Discrepancy Flag"
+                element 1
+                    table
+                        0: No altitude discrepancy
+                        1: Altitude discrepancy
+            spare 1
+        remark
+            Notes:
+
+                - The ADF, if set, indicates that a difference has been detected
+                  in the altitude information derived from radar as compared to
+                  other technologies (such as ADS-B).
+
+    210 "Calculated Acceleration (Cartesian)"
+        definition
+            Calculated Acceleration of the target expressed in Cartesian co-ordinates,
+            in two's complement form.
+        group
+            AX ""
+                element 8
+                    signed quantity 1/2^2 "m/s²"
+            AY ""
+                element 8
+                    signed quantity 1/2^2 "m/s²"
+        remark
+            Notes:
+
+                1. The y-axis points to the Geographical North at the location of the target.
+                2. Maximum value means maximum value or above.
+
+    220 "Calculated Rate of Climb/Descent"
+        definition
+            Calculated rate of climb/descent of an aircraft in two's complement form.
+        element 16
+            signed quantity 25/2^2 "ft/min"
+        remark
+            Notes:
+
+                1. A positive value indicates a climb, whereas a negative value
+                   indicates a descent.
+
+    245 "Target Identification"
+        definition
+            Target (aircraft or vehicle) identification in 8 characters.
+        group
+            STI ""
+                element 2
+                    table
+                        0: Callsign or registration downlinked from target
+                        1: Callsign not downlinked from target
+                        2: Registration not downlinked from target
+                        3: Invalid
+            spare 6
+            CHR "Characters 1-8 (Coded on 6 Bits Each) Defining Target Identification"
+                element 48
+                    string icao
+        remark
+            Notes:
+
+                1. For coding, see section 3.1.2.9 of [Ref.3]
+                2. As the Callsign of the target can already be transmitted
+                   (thanks to I062/380 Subfield #2 if downlinked from the
+                   aircraft or thanks to I062/390 Subfield #2 if the target
+                   is correlated to a flight plan), and in order to avoid
+                   confusion at end user's side, this item SHALL not be used.
+
+    270 "Target Size and Orientation"
+        definition
+            Target size defined as length and width of the detected target, and orientation.
+        extended
+            LENGTH "Length"
+                element 7
+                    unsigned quantity 1 "m"
+            -
+            ORIENTATION "Orientation"
+                element 7
+                    unsigned quantity 360/2^7 "°"
+            -
+            WIDTH "Width"
+                element 7
+                    unsigned quantity 1 "m"
+            -
+        remark
+            Notes:
+
+                1. The orientation gives the direction which the target nose is
+                   pointing to,relative to the Geographical North.
+                2. When the length only is sent, the largest dimension is provided.
+
+    290 "System Track Update Ages"
+        definition
+            Ages of the last plot/local track/target report update for each sensor type.
+        compound
+            TRK "Track Age"
+                description
+                    Actual track age since occurence
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            PSR "PSR Age"
+                description
+                    Age of the last primary detection used to update the track
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            SSR "SSR Age"
+                description
+                    Age of the last secondary detection used to update the track
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MDS "Mode S Age"
+                description
+                    Age of the last Mode S detection used to update the track
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            ADS "ADS-C Age"
+                description
+                    Age of the last ADS-C report used to update the track
+                element 16
+                    unsigned quantity 1/2^2 "s" <= 65535/4
+            ES "ADS-B Extended Squitter Age"
+                description
+                    Age of the last 1090 Extended Squitter ADS-B report used to update the track
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            VDL "ADS-B VDL Mode 4 Age"
+                description
+                    Age of the last VDL Mode 4 ADS-B report used to update the track
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            UAT "ADS-B UAT Age"
+                description
+                    Age of the last UAT ADS-B report used to update the track
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            LOP "Loop Age"
+                description
+                    Age of the last magnetic loop detection
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MLT "Multilateration Age"
+                description
+                    Age of the last MLT detection
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+        remark
+            Notes:
+
+                1. Except for Track Age, the ages are counted from Data Item I062/070,
+                   Time Of Track Information, using the following formula:
+                   Age = Time of track information - Time of last detection used
+                   to update the track
+                2. The time of last detection is derived from monosensor category time of day
+                3. If the data has never been received, then the corresponding
+                   subfield is not sent.
+                4. Maximum value means maximum value or above.
+
+    295 "Track Data Ages"
+        definition
+            Ages of the data provided.
+        compound
+            MFL "Measured Flight Level Age"
+                description
+                    Age of the last valid and credible Mode C code or barometric altitude
+                    from ADS-B used to update the track (I062/136).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MD1 "Mode 1 Age"
+                description
+                    Age of the last valid and credible Mode 1 code used to update the
+                    track (I062/110).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MD2 "Mode 2 Age"
+                description
+                    Age of the last valid and credible Mode 2 code used to update the
+                    track (I062/120).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MDA "Mode 3/A Age"
+                description
+                    Age of the last valid and credible Mode 3/A code used to update the
+                    track (I062/060).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MD4 "Mode 4 Age"
+                description
+                    Age of the last valid and credible Mode 4 code used to update the
+                    track.
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MD5 "Mode 5 Age"
+                description
+                    Age of the last valid and credible Mode 5 code used to update the
+                    track (I062/110).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MHG "Magnetic Heading Age"
+                description
+                    Age of the DAP "Magnetic Heading"
+                    in item 062/380 (Subfield #3).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            IAS "Indicated Airspeed / Mach Nb Age"
+                description
+                    Age of the DAP "Indicated Airspeed/Mach Number"
+                    in item 062/380 (Subfield #4).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            TAS "True Airspeed Age"
+                description
+                    Age of the DAP "True Airspeed"
+                    in item 062/380 (Subfield #5).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            SAL "Selected Altitude Age"
+                description
+                    Age of the DAP "Selected Altitude"
+                    in item 062/380 (Subfield #6).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            FSS "Final State Selected Altitude Age"
+                description
+                    Age of the DAP "Final State Selected Altitude Age"
+                    in item 062/380 (Subfield #7).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            TID "Trajectory Intent Age"
+                description
+                    Age of the DAP "Trajectory Intent"
+                    in item 062/380 (Subfield #8).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            COM "Communication/ACAS Capability and Flight Status Age"
+                description
+                    Age of the DAP
+                    "Communication/ACAS
+                    Capability and Flight Status"
+                    in item 062/380 (Subfield #10).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            SAB "Status Reported by ADS-B Age"
+                description
+                    Age of the DAP "Status Reported
+                    by ADS-B"
+                    in item 062/380 (Subfield #11).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            ACS "ACAS Resolution Advisory Report Age"
+                description
+                    Age of the DAP "ACAS Resolution
+                    Advisory Report"
+                    in item 062/380 (Subfield #12).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            BVR "Barometric Vertical Rate Age"
+                description
+                    Age of the DAP "Barometric
+                    Vertical Rate"
+                    in item 062/380 (Subfield #13).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            GVR "Geometrical Vertical Rate Age"
+                description
+                    Age of the DAP "Geometrical
+                    Vertical Rate"
+                    in item 062/380 (Subfield #14).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            RAN "Roll Angle Age"
+                description
+                    Age of the DAP "Roll Angle"
+                    in item 062/380 (Subfield #15).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            TAR "Track Angle Rate Age"
+                description
+                    Age of the DAP "Track Angle
+                    Rate" in item 062/380 (Subfield #16).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            TAN "Track Angle Age"
+                description
+                    Age of the DAP "Track Angle"
+                    in item 062/380 (Subfield #17).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            GSP "Ground Speed Age"
+                description
+                    Age of the DAP "Ground Speed" in item 062/380 (Subfield #18).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            VUN "Velocity Uncertainty Age"
+                description
+                    Age of the DAP "Velocity
+                    Uncertainty" in item 062/380 (Subfield #19).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MET "Meteorological Data Age"
+                description
+                    Age of the DAP "Meteorological
+                    Data" in item 062/380 (Subfield #20).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            EMC "Emitter Category Age"
+                description
+                    Age of the DAP "Emitter Category"
+                    in item 062/380 (Subfield #21).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            POS "Position Age"
+                description
+                    Age of the DAP "Position"
+                    in item 062/380 (Subfield #23).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            GAL "Geometric Altitude Age"
+                description
+                    Age of the DAP "Geometric
+                    Altitude" in item 062/380 (Subfield #24).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            PUN "Position Uncertainty Age"
+                description
+                    Age of the DAP "Position
+                    Uncertainty" in item 062/380 (Subfield #25).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MB "Mode S MB Data Age"
+                description
+                    Age of the DAP "Mode S MB
+                    Data" in item 062/380 (Subfield #22).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            IAR "Indicated Airspeed Data Age"
+                description
+                    Age of the DAP "Indicated
+                    Airspeed" in item 062/380 (Subfield #26).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            MAC "Mach Number Data Age"
+                description
+                    Age of the DAP "Mach Number"
+                    in item 062/380 (Subfield #27).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+            BPS "Barometric Pressure Setting Data Age"
+                description
+                    Age of the DAP "Barometric
+                    Pressure Setting" in item 062/380
+                    (Subfield #28).
+                element 8
+                    unsigned quantity 1/2^2 "s" <= 255/4
+        remark
+            Notes:
+
+                1. Despite there are now two subfields (#29 and #30) reporting the ages
+                   of, respectively, the Indicated Airspeed track data and the Mach
+                   Number track data, the subfield #8 (and so its presence bit , bit-32) is
+                   kept free in order to prevent a full incompatibility with previous
+                   releases of ASTERIX Cat. 062 already implemented.
+                2. In all the subfields, the age is the time delay since the value was
+                   measured
+
+    300 "Vehicle Fleet Identification"
+        definition
+            Vehicle fleet identification number.
+        element 8
+            table
+                0: Unknown
+                1: ATC equipment maintenance
+                2: Airport maintenance
+                3: Fire
+                4: Bird scarer
+                5: Snow plough
+                6: Runway sweeper
+                7: Emergency
+                8: Police
+                9: Bus
+                10: Tug (push/tow)
+                11: Grass cutter
+                12: Fuel
+                13: Baggage
+                14: Catering
+                15: Aircraft maintenance
+                16: Flyco (follow me)
+
+    340 "Measured Information"
+        definition
+            All measured data related to the last report used to update the track.
+            These data are not used for ADS-B.
+        compound
+            SID "Sensor Identification"
+                group
+                    SAC "System Area Code"
+                        element 8
+                            raw
+                    SIC "System Identification Code"
+                        element 8
+                            raw
+            POS "Measured Position"
+                group
+                    RHO "Measured Distance"
+                        element 16
+                            unsigned quantity 1/2^8 "NM" <= 256
+                    THETA "Measured Azimuth"
+                        element 16
+                            unsigned quantity 360/2^16 "°"
+            HEIGHT "Measured 3-D Height"
+                element 16
+                    signed quantity 25 "ft"
+                remark
+                    The reference level for this height information is the same
+                    as the reference level applied by the sensor system
+                    providing this information.
+            MDC ""
+                group
+                    V "Validated"
+                        element 1
+                            table
+                                0: Code validated
+                                1: Code not validated
+                    G "Garbled"
+                        element 1
+                            table
+                                0: Default
+                                1: Garbled code
+                    LMC "Last Measured Mode C Code"
+                        description
+                            Last Measured Mode C Code, in two's complement form
+                        element 14
+                            signed quantity 1/2^2 "FL" >= -12 <= 1270
+            MDA ""
+                group
+                    V "Validated"
+                        element 1
+                            table
+                                0: Code validated
+                                1: Code not validated
+                    G "Garbled"
+                        element 1
+                            table
+                                0: Default
+                                1: Garbled code
+                    L ""
+                        element 1
+                            table
+                                0: Mode 3/A code as derived from the reply of the transponder
+                                1: Mode 3/A code as provided by a sensor local tracker
+                    spare 1
+                    MODE3A "Mode-3/A Reply in Octal Representation"
+                        element 12
+                            string octal
+            TYP ""
+                group
+                    TYP "Report Type"
+                        element 3
+                            table
+                                0: No detection
+                                1: Single PSR detection
+                                2: Single SSR detection
+                                3: SSR + PSR detection
+                                4: Single ModeS All-Call
+                                5: Single ModeS Roll-Call
+                                6: ModeS All-Call + PSR
+                                7: ModeS Roll-Call + PSR
+                    SIM ""
+                        element 1
+                            table
+                                0: Actual target report
+                                1: Simulated target report
+                    RAB ""
+                        element 1
+                            table
+                                0: Report from target transponder
+                                1: Report from field monitor (item transponder)
+                    TST ""
+                        element 1
+                            table
+                                0: Real target report
+                                1: Test target report
+                    spare 2
+        remark
+            Notes:
+
+                1. In case of a plot, the measured bias-corrected polar co-ordinates;
+                2. In case of a sensor local track, the measured bias-corrected
+                   polar co-ordinates of the plot associated to the track;
+                3. In case of a local track without detection, the extrapolated
+                   bias-corrected polar co-ordinates.
+                4. Smoothed MODE 3/A data (L = 1) will be used in case of absence of
+                   MODE 3/A code information in the plot or in case of difference
+                   between plot and sensor local track MODE 3/A code information.
+
+    380 "Aircraft Derived Data"
+        definition
+            Data derived directly by the aircraft.
+        compound
+            ADR "Target Address"
+                element 24
+                    raw
+            ID "Target Identification"
+                description
+                    Characters 1-8 (coded on 6 bits each) defining a target
+                    identification when flight plan is available or the registration
+                    marking when no flight plan is available. Coding rules are
+                    provided in [3] Section 3.1.2.9.1.2 and Table 3-9"
+                element 48
+                    string icao
+            MHG "Magnetic Heading"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+            IAS "Indicated Airspeed/Mach No"
+                group
+                    IM ""
+                        element 1
+                            table
+                                0: Air Speed = IAS, LSB (Bit-1) = 2^-14 NM/s
+                                1: Air Speed = Mach, LSB (Bit-1) = 0.001
+                    IAS ""
+                        element 15
+                            case 380/IAS/IM
+                                0:
+                                    unsigned quantity 1/2^14 "NM/s"
+                                1:
+                                    unsigned quantity 1/1000 "Mach"
+                                default:
+                                    raw
+            TAS "True Airspeed"
+                element 16
+                    unsigned quantity 1 "kt" >= 0 <= 2046
+            SAL "Selected Altitude"
+                group
+                    SAS ""
+                        element 1
+                            table
+                                0: No source information provided
+                                1: Source information provided
+                    SRC ""
+                        element 2
+                            table
+                                0: Unknown
+                                1: Aircraft altitude
+                                2: FCU/MCP selected altitude
+                                3: FMS selected altitude
+                    ALT "Altitude in Two's Complement Form"
+                        element 13
+                            signed quantity 25 "ft" >= -1300 <= 100000
+            FSS "Final State Selected Altitude"
+                group
+                    MV "Manage Vertical Mode"
+                        description
+                            Manage Vertical Mode
+                        element 1
+                            table
+                                0: Not active
+                                1: Active
+                    AH "Altitude Hold"
+                        description
+                            Altitude Hold
+                        element 1
+                            table
+                                0: Not active
+                                1: Active
+                    AM "Approach Mode"
+                        description
+                            Approach Mode
+                        element 1
+                            table
+                                0: Not active
+                                1: Active
+                    ALT "Altitude in Two's Complement Form"
+                        element 13
+                            signed quantity 25 "ft" >= -1300 <= 100000
+            TIS "Trajectory Intent Status"
+                extended
+                    NAV "TID Available"
+                        element 1
+                            table
+                                0: Trajectory intent data is available for this aircraft
+                                1: Trajectory intent data is not available for this aircraft
+                    NVB "TID Valid"
+                        element 1
+                            table
+                                0: Trajectory intent data is valid
+                                1: Trajectory intent data is not valid
+                    spare 5
+                    -
+            TID "Trajectory Intent Data"
+                repetitive 1
+                    group
+                        TCA "TCP Number Availability"
+                            element 1
+                                table
+                                    0: TCP number available
+                                    1: TCP number not available
+                        NC "TCP Compliance"
+                            element 1
+                                table
+                                    0: TCP compliance
+                                    1: TCP non-compliance
+                        TCPN "Trajectory Change Point Number"
+                            description
+                                Trajectory change point number
+                            element 6
+                                raw
+                        ALT "Altitude in Two's Complement Form"
+                            element 16
+                                signed quantity 10 "ft" >= -1500 <= 150000
+                        LAT "Latitude in WGS.84 in Two's Complement"
+                            element 24
+                                signed quantity 180/2^23 "°" >= -90 <= 90
+                        LON "Longitude in WGS.84 in Two's Complement"
+                            element 24
+                                signed quantity 180/2^23 "°" >= -180 < 180
+                        PT "Point Type"
+                            element 4
+                                table
+                                    0: Unknown
+                                    1: Fly by waypoint (LT)
+                                    2: Fly over waypoint (LT)
+                                    3: Hold pattern (LT)
+                                    4: Procedure hold (LT)
+                                    5: Procedure turn (LT)
+                                    6: RF leg (LT)
+                                    7: Top of climb (VT)
+                                    8: Top of descent (VT)
+                                    9: Start of level (VT)
+                                    10: Cross-over altitude (VT)
+                                    11: Transition altitude (VT)
+                        TD "Turn Direction"
+                            element 2
+                                table
+                                    0: N/A
+                                    1: Turn right
+                                    2: Turn left
+                                    3: No turn
+                        TRA "Turn Radius Availability"
+                            description
+                                Turn Radius Availability
+                            element 1
+                                table
+                                    0: TTR not available
+                                    1: TTR available
+                        TOA "TOV Available"
+                            element 1
+                                table
+                                    0: TOV available
+                                    1: TOV not available
+                        TOV "Time Over Point"
+                            element 24
+                                unsigned quantity 1 "s"
+                        TTR "TCP Turn Radius"
+                            element 16
+                                unsigned quantity 1/100 "NM" >= 0 <= 13107/20
+            COM "Communications/ACAS Capability and Flight Status"
+                group
+                    COM "Communications Capability of the Transponder"
+                        element 3
+                            table
+                                0: No communications capability (surveillance only)
+                                1: Comm. A and Comm. B capability
+                                2: Comm. A, Comm. B and Uplink ELM
+                                3: Comm. A, Comm. B, Uplink ELM and Downlink ELM
+                                4: Level 5 Transponder capability
+                                5: Not assigned
+                                6: Not assigned
+                                7: Not assigned
+                    STAT "Flight Status"
+                        element 3
+                            table
+                                0: No alert, no SPI, aircraft airborne
+                                1: No alert, no SPI, aircraft on ground
+                                2: Alert, no SPI, aircraft airborne
+                                3: Alert, no SPI, aircraft on ground
+                                4: Alert, SPI, aircraft airborne or on ground
+                                5: No alert, SPI, aircraft airborne or on ground
+                                6: Not defined
+                                7: Unknown or not yet extracted
+                    spare 2
+                    SSC "Specific Service Capability"
+                        element 1
+                            table
+                                0: No
+                                1: Yes
+                    ARC "Altitude Reporting Capability"
+                        element 1
+                            table
+                                0: 100 ft resolution
+                                1: 25 ft resolution
+                    AIC "Aircraft Identification Capability"
+                        element 1
+                            table
+                                0: No
+                                1: Yes
+                    B1A "BDS 1,0 Bit 16"
+                        element 1
+                            raw
+                    B1B "BDS BDS 1,0 Bits 37/40"
+                        element 4
+                            raw
+            SAB "Status Reported by ADS-B"
+                group
+                    AC "ACAS Status"
+                        element 2
+                            table
+                                0: Unknown
+                                1: ACAS not operational
+                                2: ACAS operational
+                                3: Invalid
+                    MN "Multiple Navigational Aids Status"
+                        element 2
+                            table
+                                0: Unknown
+                                1: Multiple navigational aids not operating
+                                2: Multiple navigational aids operating
+                                3: Invalid
+                    DC "Differential Correction Status"
+                        element 2
+                            table
+                                0: Unknown
+                                1: Differential correction
+                                2: No differential correction
+                                3: Invalid
+                    GBS "Ground Bit Set"
+                        element 1
+                            table
+                                0: Transponder ground bit not set or unknown
+                                1: Transponder Ground Bit set
+                    spare 6
+                    STAT "Flight Status"
+                        element 3
+                            table
+                                0: No emergency
+                                1: General emergency
+                                2: Lifeguard / medical
+                                3: Minimum fuel
+                                4: No communications
+                                5: Unlawful interference
+                                6: Downed Aircraft
+                                7: Unknown
+            ACS "ACAS Resolution Advisory Report"
+                description
+                    Currently active Resolution Advisory (RA), if any, generated
+                    by the ACAS associated with the transponder transmitting the
+                    report and threat identity data.
+                    (MB Data) 56-bit message
+                    conveying Mode S Comm B message data of BDS Register 3,0
+                element 56
+                    bds 30
+            BVR "Barometric Vertical Rate"
+                description
+                    Barometric Vertical Rate in two's complement form
+                element 16
+                    signed quantity 25/2^2 "ft/min"
+            GVR "Geometric Vertical Rate"
+                description
+                    Geometric Vertical Rate in two's complement form
+                element 16
+                    signed quantity 25/2^2 "ft/min"
+            RAN "Roll Angle"
+                description
+                    Roll Angle in two's complement form
+                element 16
+                    signed quantity 1/100 "°" >= -180 <= 180
+            TAR "Track Angle Rate"
+                group
+                    TI "Turn Indicator"
+                        element 2
+                            table
+                                0: Not available
+                                1: Left
+                                2: Right
+                                3: Straight
+                    spare 6
+                    ROT "Rate of Turn in Two's Complement Form"
+                        element 7
+                            signed quantity 1/2^2 "°/s" >= -15 <= 15
+                    spare 1
+            TAN "Track Angle"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+            GS "Ground Speed"
+                description
+                    Ground Speed in Two's Complement Form Referenced to WGS84
+                element 16
+                    signed quantity 1/2^14 "NM/s" >= -2 < 2
+            VUN "Velocity Uncertainty"
+                element 8
+                    raw
+            MET "Meteorological Data"
+                group
+                    WS "Wind Speed Valid Flag"
+                        element 1
+                            table
+                                0: Not valid Wind Speed
+                                1: Valid Wind Speed
+                    WD "Wind Direction Valid Flag"
+                        element 1
+                            table
+                                0: Not valid Wind Direction
+                                1: Valid Wind Direction
+                    TMP "Temperature Valid Flag"
+                        element 1
+                            table
+                                0: Not valid Temperature
+                                1: Valid Temperature
+                    TRB "Turbulence Valid Flag"
+                        element 1
+                            table
+                                0: Not valid Turbulence
+                                1: Valid Turbulence
+                    spare 4
+                    WSD "Wind Speed"
+                        element 16
+                            unsigned quantity 1 "kt" >= 0 <= 300
+                    WDD "Wind Direction"
+                        element 16
+                            unsigned quantity 1 "°" >= 1 <= 360
+                    TMPD "Temperature in Degrees Celsius"
+                        element 16
+                            signed quantity 1/2^2 "°C" >= -100 <= 100
+                    TRBD "Turbulence"
+                        element 8
+                            unsigned integer >= 0 <= 15
+            EMC "Emitter Category"
+                element 8
+                    table
+                        1: Light aircraft =< 7000 kg
+                        2: Reserved
+                        3: 7000 kg < medium aircraft < 136000 kg
+                        4: Reserved
+                        5: 136000 kg <= heavy aircraft
+                        6: Highly manoeuvrable (5g acceleration capability) and high speed (>400 knots cruise)
+                        7: Reserved
+                        8: Reserved
+                        9: Reserved
+                        10: Rotocraft
+                        11: Glider / sailplane
+                        12: Lighter-than-air
+                        13: Unmanned aerial vehicle
+                        14: Space / transatmospheric vehicle
+                        15: Ultralight / handglider / paraglider
+                        16: Parachutist / skydiver
+                        17: Reserved
+                        18: Reserved
+                        19: Reserved
+                        20: Surface emergency vehicle
+                        21: Surface service vehicle
+                        22: Fixed ground or tethered obstruction
+                        23: Reserved
+                        24: Reserved
+            POS "Position"
+                group
+                    LAT "Latitude in WGS.84 in Two's Complement Form"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -90 <= 90
+                    LON "Longitude in WGS.84 in Two's Complement Form"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -180 < 180
+                remark
+                    This corresponds to a resolution of at least 2.4 meters.
+            GAL "Geometric Altitude"
+                element 16
+                    signed quantity 25/2^2 "ft" >= -1500 <= 150000
+            PUN "Position Uncertainty"
+                group
+                    spare 4
+                    PUN "Position Uncertainty"
+                        element 4
+                            raw
+            BDSDATA "BDS Register DATA"
+                repetitive 1
+                    element 64
+                        bds
+            IAR "Indicated Airspeed"
+                element 16
+                    unsigned quantity 1 "kt" >= 0 <= 1100
+            MAC "Mach Number"
+                element 16
+                    unsigned quantity 1/125 "Mach" >= 0 <= 512/125
+            BPS "Barometric Pressure Setting"
+                group
+                    spare 4
+                    BPS ""
+                        element 12
+                            unsigned quantity 1/10 "mb" >= 0 <= 819/2
+        remark
+            Notes:
+
+                1. NC is set to one when the aircraft will not fly the path described
+                   by the TCP data.
+                2. TCP numbers start from zero.
+                3. LT = Lateral Type
+                4. VT = Vertical Type
+                5. TOV gives the estimated time before reaching the point. It is
+                   defined as the absolute time from midnight.
+                6. TOV is meaningful only if TOA is set to 0
+                7. To bits 3/1 (STAT): For ADS-B Version 3 systems as defined in ED-102B/DO-260C (Ref. [11])
+                   the values have been re-defined.
+                8. I062/REF/PS3 is to be used exclusively for Version 3 ADS-B systems
+                   as defined in I062/380/SF#11/VN. For ADS-B systems with a version
+                   number below 3, the PS shall be encoded in Data Item I062/380 SF#11/STAT.
+                9. In case of an ADS-B Version 3 system as defined in ED-102B/DO-260C (Ref. [11])
+                   in order to maintain backwards compatibility also I062/380/SF#11/STAT shall be populated.
+                   However, since values have been re-defined in ADS-B Version 3, mapping is required to
+                   ensure that information is not lost. This mapping shall be done according to the following table: ::
+
+                     ADS-B Version 3 (I062/REF/PS3)  ADS-Version < 3 (I062/380/SF#11/STAT)
+                     0 (No Emergency/not reported)   0 (No Emergency/not reported)
+                     1 (General emergency)           1 (General emergency)
+                     2 (UAS/RPAS Lost Link)          4 (No communication)
+                     3 (Minimum fuel)                3 (Minimum fuel)
+                     4 (No communication)            4 (No communication)
+                     5 (Unlawful interference)       5 (Unlawful interference)
+                     6 (Aircraft in distress -       1 (General emergency)
+                       automatic activation)
+                     7 (Aircraft in distress -       1 (General emergency)
+                       manual activation)
+
+                10. Refer to ICAO Draft SARPs for ACAS for detailed explanations.
+                11. A positive value represents a right turn, whereas a negative value
+                    represents a left turn.
+                12. Value 15 means 15 degrees/s or above.
+                13. Velocity uncertainty category of the least accurate velocity component
+                14. Positive longitude indicates East. Positive latitude indicates North.
+                15. LSB is required to be thinner than 10 ft by ICAO
+                16. Only DAPs that can not be encoded into other subfields of this item
+                    should be sent using subfield #25
+                17. BPS is the barometric pressure setting of the aircraft minus 800 mb.
+                18. As of Edition 1.19 the note "(derived from Mode S BDS 4,0)" has been
+                    removed to allow transmission of BPS received via ADS-B.
+
+    390 "Flight Plan Related Data"
+        definition
+            All flight plan related information, provided by ground-based systems.
+        compound
+            TAG "FPPS Identification Tag"
+                group
+                    SAC "System Area Code"
+                        element 8
+                            raw
+                    SIC "System Identification Code"
+                        element 8
+                            raw
+            CS "Callsign"
+                element 56
+                    string ascii
+            IFI "IFPS_FLIGHT_ID"
+                group
+                    TYP ""
+                        element 2
+                            table
+                                0: Plan Number
+                                1: Unit 1 internal flight number
+                                2: Unit 2 internal flight number
+                                3: Unit 3 internal flight number
+                    spare 3
+                    NBR "Number from 0 to 99 999 999"
+                        element 27
+                            unsigned integer >= 0 <= 99999999
+            FCT "Flight Category"
+                group
+                    GATOAT ""
+                        element 2
+                            table
+                                0: Unknown
+                                1: General Air Traffic
+                                2: Operational Air Traffic
+                                3: Not applicable
+                    FR1FR2 ""
+                        element 2
+                            table
+                                0: Instrument Flight Rules
+                                1: Visual Flight Rules
+                                2: Not applicable
+                                3: Controlled Visual Flight Rules
+                    RVSM ""
+                        element 2
+                            table
+                                0: Unknown
+                                1: Approved
+                                2: Exempt
+                                3: Not Approved
+                    HPR ""
+                        element 1
+                            table
+                                0: Normal Priority Flight
+                                1: High Priority Flight
+                    spare 1
+            TAC "Type of Aircraft"
+                element 32
+                    string ascii
+            WTC "Wake Turbulence Category"
+                element 8
+                    string ascii
+            DEP "Departure Airport"
+                element 32
+                    string ascii
+            DST "Destination Airport"
+                element 32
+                    string ascii
+            RDS "Runway Designation"
+                group
+                    NU1 "First Number"
+                        element 8
+                            string ascii
+                    NU2 "Second Number"
+                        element 8
+                            string ascii
+                    LTR "Letter"
+                        element 8
+                            string ascii
+            CFL "Current Cleared Flight Level"
+                element 16
+                    unsigned quantity 1/2^2 "FL" < 1500
+            CTL "Current Control Position"
+                group
+                    CENTRE "8-bit Group Identification Code"
+                        element 8
+                            raw
+                    POSITION "8-bit Control Position Identification Code"
+                        element 8
+                            raw
+            TOD "Time of Departure / Arrival"
+                repetitive 1
+                    group
+                        TYP ""
+                            element 5
+                                table
+                                    0: Scheduled off-block time
+                                    1: Estimated off-block time
+                                    2: Estimated take-off time
+                                    3: Actual off-block time
+                                    4: Predicted time at runway hold
+                                    5: Actual time at runway hold
+                                    6: Actual line-up time
+                                    7: Actual take-off time
+                                    8: Estimated time of arrival
+                                    9: Predicted landing time
+                                    10: Actual landing time
+                                    11: Actual time off runway
+                                    12: Predicted time to gate
+                                    13: Actual on-block time
+                        DAY ""
+                            element 2
+                                table
+                                    0: Today
+                                    1: Yesterday
+                                    2: Tomorrow
+                                    3: Invalid
+                        spare 4
+                        HOR "Hours"
+                            element 5
+                                unsigned integer >= 0 <= 23
+                        spare 2
+                        MIN "Minutes"
+                            element 6
+                                unsigned integer >= 0 <= 59
+                        AVS "Seconds Available Flag"
+                            element 1
+                                table
+                                    0: Seconds available
+                                    1: Seconds not available
+                        spare 1
+                        SEC "Seconds"
+                            element 6
+                                unsigned integer >= 0 <= 59
+            AST "Aircraft Stand"
+                element 48
+                    string ascii
+            STS "Stand Status"
+                group
+                    EMP ""
+                        element 2
+                            table
+                                0: Empty
+                                1: Occupied
+                                2: Unknown
+                                3: Invalid
+                    AVL ""
+                        element 2
+                            table
+                                0: Available
+                                1: Not available
+                                2: Unknown
+                                3: Invalid
+                    spare 4
+            STD "Standard Instrument Departure"
+                element 56
+                    string ascii
+            STA "Standard Instrument Arrival"
+                element 56
+                    string ascii
+            PEM "Pre-Emergency Mode 3/A"
+                group
+                    spare 3
+                    VA ""
+                        element 1
+                            table
+                                0: No valid Mode 3/A available
+                                1: Valid Mode 3/A available
+                    MODE3A "Mode-3/A Reply in Octal Representation"
+                        element 12
+                            string octal
+            PEC "Pre-Emergency Callsign"
+                element 56
+                    string ascii
+        remark
+            Notes:
+
+                1. The up-to-date list of SACs is published on the Eurocontrol Web Site
+                   (http://www.eurocontrol.int).
+                2. Each one of the seven Octets contains an ASCII Character.
+                   TheCallsign is always left adjusted. It contains up to seven
+                   upper-case alphanumeric characters, the remaining character
+                   positions (if any)are padded with space characters.
+                3. Each one of the four Octets composing the type of an aircraft
+                   contains an ASCII Character (upper-case alphanumeric characters
+                   with trailing spaces).
+                4. The types of aircraft are defined in [Ref.4]
+                5. Each one of the four Octets composing the name of an airport
+                   contains an ASCII Character (upper case alphabetic).
+                6. The Airport Names are indicated in the ICAO Location Indicators book.
+                7. Each one of the four Octets composing the name of an airport
+                   contains an ASCII Character (upper case alphabetic).
+                8. The Airport Names are indicated in the ICAO Location Indicators book.
+                9. NU1, NU2 and LTR each contain an ASCII character
+                10. For details refer to.[5] Section 5
+                11. The centre and the control position identification codes have to be
+                    defined between communication partners.
+                12. Estimated times are derived from flight plan systems. Predicted
+                    times are derived by the fusion system, based on surveillance
+                    data. For definitions, see [Ref.4]
+                13. Each one of the six Octets contains an ASCII Character. The Aircraft
+                    Stand identification is always left adjusted. It contains up
+                    to six upper-case alphanumeric characters, the remaining character
+                    positions (if any) are padded with space characters.
+                14. Each one of the seven Octets contains an ASCII Character.
+                    The SID is always left adjusted. It contains up to seven
+                    alphanumeric characters, the remaining character positions
+                    (if any) are padded with space characters.
+                15. Each one of the seven Octets contains an ASCII Character.
+                    The STAR is always left adjusted. It contains up to seven
+                    alphanumeric characters, the remaining character positions
+                    (if any) are padded with space characters.
+                16. This subfield is used only when the aircraft is transmitting
+                    an emergency Mode 3/A code
+                17. If VA = 0, the content of bits 12/1 is meaningless
+                18. Each one of the seven Octets contains an ASCII Character.
+                    The Callsign is always left adjusted. It contains up to seven
+                    upper-case alphanumeric characters, the remaining character
+                    positions (if any) are padded with space characters
+                19. This subfield is used only when an emergency Mode 3/A is associated
+                    with the track (I062/390 Subfield #17)
+
+    500 "Estimated Accuracies"
+        definition
+            Overview of all important accuracies.
+        compound
+            APC "Estimated Accuracy Of Track Position (Cartesian)"
+                group
+                    X "APC (X-Component)"
+                        element 16
+                            unsigned quantity 1/2 "m"
+                    Y "APC (Y-Component)"
+                        element 16
+                            unsigned quantity 1/2 "m"
+            COV "XY Covariance Component"
+                element 16
+                    signed quantity 1/2 "m"
+            APW "Estimated Accuracy Of Track Position (WGS-84)"
+                group
+                    LAT "APW (Latitude Component)"
+                        element 16
+                            unsigned quantity 180/2^25 "°"
+                    LON "APW (Longitude Component)"
+                        element 16
+                            unsigned quantity 180/2^25 "°"
+            AGA "Estimated Accuracy Of Calculated Track Geometric Altitude"
+                element 8
+                    unsigned quantity 25/2^2 "ft"
+            ABA "Estimated Accuracy Of Calculated Track Barometric Altitude"
+                element 8
+                    unsigned quantity 1/2^2 "FL"
+            ATV "Estimated Accuracy Of Track Velocity (Cartesian)"
+                group
+                    X "ATV (X-Component)"
+                        element 8
+                            unsigned quantity 1/2^2 "m/s"
+                    Y "ATV (Y-Component)"
+                        element 8
+                            unsigned quantity 1/2^2 "m/s"
+            AA "Estimated Accuracy Of Acceleration (Cartesian)"
+                group
+                    X "AA (X-Component)"
+                        element 8
+                            unsigned quantity 1/2^2 "m/s²"
+                    Y "AA (Y-Component)"
+                        element 8
+                            unsigned quantity 1/2^2 "m/s²"
+            ARC "Estimated Accuracy Of Rate Of Climb/Descent"
+                element 8
+                    unsigned quantity 25/2^2 "ft/min"
+        remark
+            Notes:
+
+                1. Maximum value means maximum value or above.
+                2. XY covariance component = sign {Cov(X,Y)} * sqrt {abs [Cov (X,Y)]}
+                3. The maximum value for the (unsigned) XY covariance component is 16.383 km
+                4. Maximum value means maximum value or above.
+                5. Maximum value means maximum value or above.
+                6. Maximum value means maximum value or above.
+                7. Maximum value means maximum value or above.
+                8. Maximum value means maximum value or above.
+                9. Maximum value means maximum value or above.
+
+    510 "Composed Track Number"
+        definition
+            Identification of a system track.
+        repetitive fx
+            group
+                IDENT "System Unit Identification"
+                    element 8
+                        raw
+                TRACK "System Track Number"
+                    element 15
+                        raw
+        remark
+            Notes:
+
+                - The composed track number is used by co-operating units to uniquely
+                  identify a track. It consists of the unit identifier and system
+                  track number for each unit involved in the co-operation. The first
+                  unit identification identifies the unit that is responsible for the
+                  track amalgamation.
+
+                - The fist element represents Master track, the remaining elements
+                  represent Slave tracks.
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    -
+    015
+    070
+    105
+    100
+    185
+    210
+    060
+    245
+    380
+    040
+    080
+    290
+    200
+    295
+    136
+    130
+    135
+    220
+    390
+    270
+    300
+    110
+    120
+    510
+    500
+    340
+    -
+    -
+    -
+    -
+    -
+    RE
+    SP
