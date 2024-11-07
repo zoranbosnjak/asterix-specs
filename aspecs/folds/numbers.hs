@@ -1,10 +1,10 @@
 -- What kind of numbers do we have in scaling factor?
 
-import           Options.Applicative as Opt
-import           Data.List (sort, nub)
-import           Main.Utf8 (withUtf8)
 import           Control.Monad
-import qualified Data.Text.IO as T
+import           Data.List           (nub, sort)
+import qualified Data.Text.IO        as T
+import           Main.Utf8           (withUtf8)
+import           Options.Applicative as Opt
 
 import           Folds
 

@@ -1,18 +1,19 @@
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE PackageImports    #-}
 
 module Main where
 
 import           Control.Monad
-import           Crypto.Hash
+import           "cryptonite" Crypto.Hash
 import qualified Data.ByteString          as BS
-import qualified Data.ByteString.Lazy     as BSL
 import qualified Data.ByteString.Char8    as BS8
+import qualified Data.ByteString.Lazy     as BSL
 import           Data.IORef
 import qualified Data.Text                as T
 import qualified Data.Text.IO             as T
-import qualified Data.Text.Lazy.Encoding  as T
 import qualified Data.Text.Lazy.Builder   as T
+import qualified Data.Text.Lazy.Encoding  as T
 import           Main.Utf8                (withUtf8)
 import           Options.Applicative      as Opt
 import           System.Exit              (die)

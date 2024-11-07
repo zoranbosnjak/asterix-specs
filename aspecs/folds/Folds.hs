@@ -1,13 +1,13 @@
-{-# LANGUAGE LambdaCase        #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Folds
 ( module Folds
 , module Asterix.Specs
 ) where
 
-import           Data.Text
-import           Data.Maybe
 import           Data.Either
+import           Data.Maybe
+import           Data.Text
 
 import           Asterix.Specs
 import           Asterix.Specs.Syntaxes
