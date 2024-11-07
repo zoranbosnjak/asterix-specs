@@ -163,6 +163,14 @@ for exact definition.
 
 ## Non-backward compatible changes
 
+### 2024-11-07 - expansion fspec size
+
+Parent git release: `#f61aad7`
+
+Field `expFspecSize` in the `Expansion` data type is now optional. This is
+required to support REFs where fspec byte size is not fixed, but is using
+`FX` mechanism. An example is ref004, edition 1.4.
+
 ### 2024-07-09 - cleanup
 
 Parent git release: `#d3cccd1`

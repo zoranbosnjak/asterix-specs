@@ -150,7 +150,7 @@ data Expansion = Expansion
     , expTitle     :: Title
     , expEdition   :: Edition
     , expDate      :: Date
-    , expFspecSize :: ByteSize
+    , expFspecSize :: Maybe ByteSize
     , expItems     :: [Maybe (NonSpare ())]
     }
 

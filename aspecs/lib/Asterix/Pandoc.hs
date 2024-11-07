@@ -261,12 +261,14 @@ toPandoc = \case
         <> mkCategory cat
         <> mkEdition ed
         <> mkDate date
-        <> para (strong "FSPEC byte size" <> ": " <>
-                str (sformat int (coerce fspecSize :: Int)))
+        <> para (strong "FSPEC byte size" <> ": " <> fspecSize mn)
         <> header 2 "Items"
         <> mconcat (fmap mkItem items)
       where
-        Expansion cat' title ed date fspecSize items = val
+        Expansion cat' title ed date mn items = val
+        fspecSize = \case
+            Just n -> str (sformat int (coerce n :: Int))
+            Nothing -> str "fx"
         cat = mkCat cat'
         mkItem = \case
             Nothing -> para $ emph "Spare"

@@ -160,12 +160,15 @@ you some time when implementing asterix encoder/decoder.
 * Compound item might contain some "always zero" bits in the first part,
   or the so called "empty slots". Example: I011/380 (the third slot).
 
-* The mechanism in expansion field (example cat021, expansion edition 1.4)
-  is similar to 'compound' with the difference that "fspec" size is
-  a priori known (no FX bits in fspec).
-  In this project, this difference is encoded as `Compound`, when
-  FX mechanism is in use or `Compound 8`, when fspec is for example
-  8-bits long. In *json* it is encoded in `variation/fspec` field.
+* Item presence mechanism in expansion field is similar to
+  `compound` variation, with the following cases:
+
+  - Fspec byte size is a priori known, such as ref021, edition 1.4,
+    (fspec size is 1-byte long). This is ecoded as `compound 1`.
+
+  - Fspec uses `FX` bit, which makes it exactly like `compound` variation,
+    such as ref004, edition 1.4. This is ecoded as `compound fx`. In the
+    *json*, the byte size value will be `null` in such case.
 
 * Some items definitions are not "context free", for example
   item `I062/380/IAS`. In this case, the interpretation of some bits depends

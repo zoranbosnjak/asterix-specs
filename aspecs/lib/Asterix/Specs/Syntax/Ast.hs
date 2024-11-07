@@ -445,12 +445,14 @@ pBasic = Basic
     <*> (scn >> (pUap <* scn))
 
 -- | Parse 'compound' item for expansion
-pCompoundExp :: Parser (ByteSize, [Maybe (NonSpare ())])
+pCompoundExp :: Parser (Maybe ByteSize, [Maybe (NonSpare ())])
 pCompoundExp = parseList pHeader pListElement
   where
-    pHeader = MC.string "compound" >> sc >> fmap ByteSize L.decimal
+    pHeader = try pFx
+        <|> (MC.string "compound" >> sc >> fmap (Just . ByteSize) L.decimal)
     pListElement sc' = try pDash <|> (Just <$> pNonSpare sc')
     pDash = MC.char '-' >> pure Nothing
+    pFx = MC.string "compound fx" >> pure Nothing
 
 -- | Parse expansion
 pExpansion :: Parser Expansion
@@ -635,12 +637,14 @@ instance MkBlock Basic where
         (Date year month day) = basDate basic
 
 instance MkBlock Expansion where
-    mkBlock (Expansion (CatNum cat) (Title title) edition date (ByteSize fspecBytes) items) = do
+    mkBlock (Expansion (CatNum cat) (Title title) edition date mn items) = do
         fmt ("ref " % left 3 '0' % " \"" % stext % "\"") cat title
         fmt ("edition " % int % "." % int) ed1 ed2
         fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
         ""
-        fmt ("compound " % int) fspecBytes
+        case mn of
+            Nothing -> "compound fx"
+            Just (ByteSize fspecBytes) -> fmt ("compound " % int) fspecBytes
         indent $ forM_ items $ \case
             Nothing -> "-"
             Just item -> mkBlock item

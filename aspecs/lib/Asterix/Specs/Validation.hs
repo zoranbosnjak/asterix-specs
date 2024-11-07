@@ -307,11 +307,14 @@ instance Validate Basic where
             Compound lst -> mapM_ validateDepItem (catMaybes lst)
 
 instance Validate Expansion where
-    validate (Expansion cat _title edition date (ByteSize n) items) = do
+    validate (Expansion cat _title edition date mn items) = do
         validate cat
         validate edition
         validate date
-        when (length items > n*8) "insufficient fspec length"
+        case mn of
+            Nothing -> pure ()
+            Just (ByteSize n) -> do
+                when (length items > n*8) "insufficient fspec length"
         forM_ (catMaybes items) $ \item -> do
             when (offset item /= mempty) "top level alignment error"
             validate item
