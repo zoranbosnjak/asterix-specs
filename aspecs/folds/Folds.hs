@@ -34,29 +34,29 @@ fRuleX = \case
     ContextFree val -> [val]
     Dependent _p dv cases -> [dv] <> fmap snd cases
 
-fVarRuleContent :: Variation () -> [Rule Content]
-fVarRuleContent = \case
-    Element _ _ val -> [val]
-    Group _ lst -> lst >>= fItemRuleContent
-    Extended lst -> catMaybes lst >>= fItemRuleContent
-    Repetitive _ var -> [var] >>= fVarRuleContent
+fVarSizeRuleContent :: Variation () -> [(BitSize, Rule Content)]
+fVarSizeRuleContent = \case
+    Element _ n val -> [(n, val)]
+    Group _ lst -> lst >>= fItemSizeRuleContent
+    Extended lst -> catMaybes lst >>= fItemSizeRuleContent
+    Repetitive _ var -> [var] >>= fVarSizeRuleContent
     Explicit _ -> []
     Compound lst -> catMaybes lst
         >>= fNspRuleVar
         >>= fRuleX
-        >>= fVarRuleContent
+        >>= fVarSizeRuleContent
+  where
+    fItemSizeRuleContent :: Item () -> [(BitSize, Rule Content)]
+    fItemSizeRuleContent item = [item]
+        >>= fItemNsp
+        >>= fNspRuleVar
+        >>= fRuleX
+        >>= fVarSizeRuleContent
 
 fItemNsp :: Item a -> [NonSpare a]
 fItemNsp = \case
     Spare _ _ -> []
     Item nsp -> [nsp]
-
-fItemRuleContent :: Item () -> [Rule Content]
-fItemRuleContent item = [item]
-    >>= fItemNsp
-    >>= fNspRuleVar
-    >>= fRuleX
-    >>= fVarRuleContent
 
 fContentUnit :: Content -> [Unit]
 fContentUnit = \case
@@ -66,4 +66,9 @@ fContentUnit = \case
 fContentLsb :: Content -> [Number]
 fContentLsb = \case
     ContentQuantity _sig lsb _unit _cstr -> [lsb]
+    _ -> []
+
+fContentString :: Content -> [StringType]
+fContentString = \case
+    ContentString st -> [st]
     _ -> []

@@ -1,4 +1,4 @@
--- What kind of numbers do we have in scaling factor?
+-- What are the string sizes?
 
 import           Control.Monad
 import           Data.List           (nub, sort)
@@ -29,9 +29,7 @@ main = withUtf8 $ do
             >>= fAstNsp
             >>= fNspRuleVar
             >>= fRuleX
-            >>= fmap (fmap snd) fVarSizeRuleContent
-            >>= fRuleX
-            >>= fContentLsb
-
+            >>= fVarSizeRuleContent
+            >>= (\(a,b) -> fRuleX b >>= fContentString >>= \x -> pure (x, a))
     forM_ (sort $ nub result) $ \x -> do
         print x

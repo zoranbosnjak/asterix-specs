@@ -32,7 +32,7 @@ main = withUtf8 $ do
             >>= fAstNsp
             >>= fNspRuleVar
             >>= fRuleX
-            >>= fVarRuleContent
+            >>= fmap (fmap snd) fVarSizeRuleContent
             >>= fRuleX
             >>= fContentUnit
 
