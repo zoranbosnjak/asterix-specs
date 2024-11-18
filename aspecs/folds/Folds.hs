@@ -21,6 +21,12 @@ loadSpec fmt path getS = do
         ast = fromRight (error "unexpected") $ decoder path s
     return ast
 
+augment :: (a -> b) -> (a -> [c]) -> a -> [(b, [c])]
+augment f1 f2 x = do
+    let b = f1 x
+    c <- f2 x
+    pure (b, pure c)
+
 fAstNsp :: Asterix -> [NonSpare ()]
 fAstNsp = \case
     AsterixBasic val -> basCatalogue val
