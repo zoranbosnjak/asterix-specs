@@ -1,6 +1,6 @@
 asterix 004 "Safety Net Messages"
-edition 1.12
-date 2020-10-28
+edition 1.13
+date 2024-06-04
 preamble
     Surveillance data exchange.
 
@@ -56,6 +56,7 @@ items
                 42: Wrong Runway or Taxiway Type (WRTY)
                 43: Stand Occupied (STOCC)
                 44: Ongoing Alert (ONGOING)
+                45: Non-Transgression Zone Violation (NTZ)
                 97: Lost Track Warning (LTW)
                 98: Holding Volume Infringement (HVI)
                 99: Airspace Infringement Warning (AIW)
@@ -180,26 +181,26 @@ items
                     I004/171 M M M X M O X X
                     I004/RE O O M O O O O O
 
-                    item 041 042 043 044 097 098 099
-                    I004/000 M M M M M M M
-                    I004/010 M M M M M M M
-                    I004/015 O O O O O O O
-                    I004/020 M M M M M M M
-                    I004/030 M M M M M M M
-                    I004/035 X X X O X X X
-                    I004/040 M M M M M M M
-                    I004/045 O O O O O O O
-                    I004/060 X X X X X X X
-                    I004/070 X X X X O O O
-                    I004/074 X X X X X X X
-                    I004/075 X X X X X X X
-                    I004/076 X X X X X X X
-                    I004/100 O M M M O O O
-                    I004/110 O O O O O O O
-                    I004/120 M O X X O O O
-                    I004/170 O O O O O O O
-                    I004/171 X X X X X X X
-                    I004/RE O O O O M O O
+                    item 041 042 043 044 045 097 098 099
+                    I004/000 M M M M M M M M
+                    I004/010 M M M M M M M M
+                    I004/015 O O O O O O O O
+                    I004/020 M M M M M M M M
+                    I004/030 M M M M M M M M
+                    I004/035 X X X O X X X X
+                    I004/040 M M M M M M M M
+                    I004/045 O O O O O O O O
+                    I004/060 X X X X X X X X
+                    I004/070 X X X X O O O O
+                    I004/074 X X X X X X X X
+                    I004/075 X X X X X X X X
+                    I004/076 X X X X X X X X
+                    I004/100 O M M M O O O O
+                    I004/110 O O O O O O O O
+                    I004/120 M O X X M O O O
+                    I004/170 O O O O O O O O
+                    I004/171 X X X X X X X X
+                    I004/RE O O O O O M O O
 
     010 "Data Source Identifier"
         definition
@@ -239,9 +240,12 @@ items
         element 24
             unsigned quantity 1/2^7 "s"
         remark
-            This time is given at an application level (e.g. time at which a message
-            is filled), and not at the communication level (i.e. not the time at which
-            the data-block containing the message is sent).
+            Notes:
+                - This time is given at an application level (e.g. time at which a message
+                  is filled), and not at the communication level (i.e. not the time at which
+                  the data-block containing the message is sent).
+
+                - The time is reset to zero at every midnight.
 
     030 "Track Number 1"
         definition
@@ -306,11 +310,28 @@ items
                    incrementally to every new alert and restart on zero after reaching
                    the maximum value (65535)
 
-    045 "Alert Status"
+    045 "Area and Alert Status"
         definition
             Information concerning status of the alert
         group
-            spare 4
+            AREA "Area Status"
+                group
+                    EP "Element Populated Bit"
+                        element 1
+                            table
+                                0: Element not populated
+                                1: Element populated
+                    VAL "Area Status Value"
+                        element 3
+                            table
+                                0: Inactive
+                                1: Active
+                                2: Pre-active
+                                3: Reserved for Future Use
+                                4: Reserved for Future Use
+                                5: Reserved for Future Use
+                                6: Reserved for Future Use
+                                7: Reserved for Future Use
             STAT "Status of the Alert"
                 element 3
                     raw
@@ -571,6 +592,13 @@ items
                     table
                         0: Default
                         1: ONGOING function
+            -
+            NTZ ""
+                element 1
+                    table
+                        0: Default
+                        1: Non-Transgression Zone Function
+            spare 6
             -
         remark
             Notes:
@@ -1089,6 +1117,19 @@ items
                                     table
                                         0: No contact (receiving ATSU)
                                         1: No transfer (leaving ATSU)
+                            (45, 1):
+                                group
+                                    LFP "Linear Prediction Filter"
+                                        element 1
+                                            table
+                                                0: Filter not set
+                                                1: Filter set
+                                    spare 1
+                                    MSM "Mode S Manoeuvre/Prediction Filter"
+                                        element 1
+                                            table
+                                                0: Filter not set
+                                                1: Filter set
                             default:
                                 element 3
                                     raw
