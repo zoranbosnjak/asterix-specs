@@ -1,0 +1,5347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 062 - SDPS Track Messages</h1>
+<p><strong>category</strong>: 062</p>
+<p><strong>edition</strong>: 1.19</p>
+<p><strong>date</strong>: 2020-11-04</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I062/010 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the system sending the data.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site
+(<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I062/015 - Service Identification</strong></p>
+<blockquote>
+<p>definition: Identification of the service provided to one or more
+users.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/040 - Track Number</strong></p>
+<blockquote>
+<p>definition: Identification of a track.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/060 - Track Mode 3/A Code</strong></p>
+<blockquote>
+<p>definition: Mode-3/A code converted into octal representation.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/060/V - Validated</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/060/G - Garbled</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/060/CH - Change in Mode 3/A</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No change
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 3/A has changed
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I062/060/MODE3A - Mode-3/A Reply in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/070 - Time Of Track Information</strong></p>
+<blockquote>
+<p>definition: Absolute time stamping of the information provided
+in the track message, in the form of elapsed time since
+last mid night, expressed as UTC.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This is the time of the track state vector.</li>
+<li>The time is reset to zero at every midnight.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/080 - Track Status</strong></p>
+<blockquote>
+<p>definition: Status of a track.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I062/080/MON</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Multisensor track
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Monosensor track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/SPI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+SPI present in the last report received from a sensor capable of
+decoding this data
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/MRH - Most Reliable Height</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Barometric altitude (Mode C) more reliable
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Geometric altitude more reliable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/SRC - Source of Calculated Track Altitude for
+I062/130</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No source
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+GNSS
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+3D radar
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Triangulation
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Height from coverage
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Speed look-up table
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Default height
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Multilateration
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/CNF</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Confirmed track
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Tentative track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I062/080/SIM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Actual track
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Simulated track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/TSE</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Last message transmitted to the user for the track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/TSB</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+First message transmitted to the user for the track
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/FPC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not flight-plan correlated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Flight plan correlated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/AFF</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+ADS-B data inconsistent with other surveillance information
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/STP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Slave Track Promotion
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/KOS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Complementary service used
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Background service used
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I062/080/AMA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Track not resulting from amalgamation process
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Track resulting from amalgamation process
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/MD4</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 4 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Friendly target
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unknown target
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+No reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/ME</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Military Emergency present in the last report received from a sensor
+capable of decoding this data
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/MI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Military Identification present in the last report received from a
+sensor capable of decoding this data
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/MD5</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 5 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Friendly target
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unknown target
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+No reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I062/080/CST</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Age of the last received track update is higher than system dependent
+threshold (coasting)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/PSR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Age of the last received PSR track update is higher than system
+dependent threshold
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/SSR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Age of the last received SSR track update is higher than system
+dependent threshold
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/MDS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Age of the last received Mode S track update is higher than system
+dependent threshold
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/ADS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Age of the last received ADS-B track update is higher than system
+dependent threshold
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/SUC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Special Used Code (Mode A codes to be defined in the system to mark a
+track with special interest)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/AAC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Assigned Mode A Code Conflict (same discrete Mode A Code assigned to
+another track)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I062/080/SDS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Combined
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Co-operative only
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Non-Cooperative only
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not defined
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/EMS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No emergency
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+General emergency
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Lifeguard / medical
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Minimum fuel
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+No communications
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Unlawful interference
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Downed Aircraft
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Undefined
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/PFT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No indication
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Potential False Track Indication
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/FPLT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Track created / updated with FPL data
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I062/080/DUPT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Duplicate Mode 3/A Code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/DUPF</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Duplicate Flight Plan
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/DUPM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Duplicate Flight Plan due to manual correlation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/SFC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Surface target
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/IDD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No indication
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Duplicate Flight-ID
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/080/IEC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Inconsistent Emergency Code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Track type and coasting can also be derived from I062/290 System
+Track Update Ages</li>
+<li>If the system supports the technology, default value (0) means that
+the technology was used to produce the report</li>
+<li>If the system does not support the technology, default value is
+meaningless.</li>
+<li>Bits (EMS): other than subfield #11 of data item I062/380, these
+bits allow the SDPS to set the emergency indication as derived from
+other sources than ADS-B (e.g. based on the Mode 3/A code).</li>
+<li>Bit 3 (PFT): with this flag an SDPS can indicate that internal
+processing points to the track being potentially false. Details on the
+internal processing are system dependent. In order to improve security
+on targets provided by ADS-B numerous validation functions have been
+developed in the ADS-B ground domain. If any of these validation
+functions show a potentially spoofed target, the PFT bit will be used to
+convey this information to the CWP. If and how this information is
+processed and displayed on the CWP is a local matter and not subject to
+the category 062 specification.</li>
+<li>Bit (FPLT): this bit - if set - indicates that the information
+contained in the target report has been updated by flight plan related
+data because no surveillance data was available for the target, or was
+created based on flight plan related data in areas with no
+surveillance.</li>
+<li>Bit (DUPT) is set to 1 if the correlation between the target report
+and a flight plan is not possible because the Mode 3/A code stated in
+the flight plan exists more than once in the surveillance data.</li>
+<li>Bit (DUPF) - if set to 1 - indicates that for a specific
+surveillance target more than one flight plan exists which makes
+correlation impossible.</li>
+<li>Bit (DUPM) is set to 1 if a target was correlated manually but also
+a regular flight plan exists.</li>
+<li>All tracks for which bits 8, 7 or 6 are set to 1 are marked on the
+CWP.</li>
+<li>Bit 5 (SFC) is set to 1 when the SDPS considers the target to be on
+the Surface (the actual meaning is implementation dependent – please
+refer to chapter 4.8 above).</li>
+<li>Bit 4 (IDD) is set to 1 when the Flight ID is present more than once
+in the surveillance area.</li>
+<li>Bit 3 (IEC) is set to 1 when the comparison between various sources
+has revealed an inconsistency in the information contained about
+emergency codes.</li>
+<li>If I062/080 (MRH) indicates &quot;Barometric altitude (Mode C) more
+reliable&quot;, and a calculated altitude is transmitted, it shall be
+transmitted using data item I062/135 “Calculated Track Barometric
+Altitude”.</li>
+<li>If I062/080 (MRH) indicates &quot;Geometric altitude more reliable&quot;, and
+a calculated altitude is transmitted, it shall be transmitted using data
+item I062/130 “Calculated Track Geometric Altitude”. In this case the
+source for I062/130 is indicated by I062/080 (SRC).</li>
+<li>Data Items I062/130, I062/135, and I062/136 may be transmitted in
+parallel whenever the respective information is available. This is
+independent from the value transmitted on I062/080 (MRH).</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/100 - Calculated Track Position (Cartesian)</strong></p>
+<blockquote>
+<p>definition: Calculated position in Cartesian co-ordinates with a
+resolution of
+0.5m, in two&#39;s complement form.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/100/X - X Coordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/100/Y - Y Coordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/105 - Calculated Position In WGS-84
+Co-ordinates</strong></p>
+<blockquote>
+<p>definition: Calculated Position in WGS-84 Co-ordinates with a
+resolution of
+:math:`180/2^{25}` degrees.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/105/LAT - Latitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/105/LON - Longitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The LSB provides a resolution at least better than 0.6m.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I062/110 - Mode 5 Data Reports and Extended Mode 1
+Code</strong></p>
+<blockquote>
+<p>definition: Mode 5 Data reports and Extended Mode 1 Code.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I062/110/SUM - Mode 5 Summary</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/110/SUM/M5</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 5 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 5 interrogation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/SUM/ID</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 ID reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 ID reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/SUM/DA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 Data reply or Report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply
+type other than ID)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/SUM/M1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 code not present or not from Mode 5 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 1 code from Mode 5 reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/SUM/M2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 2 code not present or not from Mode 5 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 2 code from Mode 5 reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/SUM/M3</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 3 code not present or not from Mode 5 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 3 code from Mode 5 reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/SUM/MC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode C altitude code not present or not from Mode 5 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode C altitude from Mode 5 reply
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/SUM/X - X-pulse from Mode 5 Data Reply or
+Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no authenticated Data reply or Report received
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/PMN - Mode 5 PIN/ National Origin/Mission
+Code</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I062/110/PMN/PIN - PIN Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+<p><strong>I062/110/PMN/NAT - National Origin</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I062/110/PMN/MIS - Mission Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 6</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/POS - Mode 5 Reported Position</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/110/POS/LAT - Latitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/POS/LON - Longitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/GA - Mode 5 GNSS-derived Altitude</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I062/110/GA/RES - Resolution with which the GNSS-derived
+Altitude (GA) is Reported</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+GA reported in 100 ft increments
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+GA reported in 25 ft increments
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/GA/GA - GNSS-derived Altitude of Target, Expressed
+as Height Above WGS 84 Ellipsoid</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I062/110/EM1/EM1 - Extended Mode 1 Reply in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/TOS - Time Offset for POS and GA</strong></p>
+<blockquote>
+<p>description: Time Offset coded as a twos complement number with an
+LSB of 1/128 s.
+The time at which the Mode 5 Reported Position (Subfield #3)
+and Mode 5 GNSS-derived Altitude (Subfield #4) are valid is given
+by Time of Day (I048/140) plus Time Offset.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/XP - X Pulse Presence</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 3</p>
+<p><strong>I062/110/XP/X5 - X-pulse from Mode 5 Data Reply or
+Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no authenticated Data reply or Report received
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/XP/XC - X-pulse from Mode C Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode C reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/XP/X3 - X-pulse from Mode 3/A Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 3/A reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/XP/X2 - X-pulse from Mode 2 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 2 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/110/XP/X1 - X-pulse from Mode 1 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 1 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The flags M2, M3, MC refer to the contents of data subitems
+I062/120, I062/060 and I062/135 respectively. The flag M1 refers to the
+contents of the Subfield #5 (Extended Mode 1 Code in Octal
+Representation).</li>
+<li>If an authenticated Mode 5 reply is received with the Emergency bit
+set, then the Military Emergency bit (ME) in Data Item I062/080, Track
+Status, shall be set.</li>
+<li>If an authenticated Mode 5 reply is received with the Identification
+of Position bit set, then the Special Position Identification bit (SPI)
+in Data Item I062/080, Track Status, shall be set.</li>
+<li>The resolution implied by the LSB is better than the resolution with
+which Mode 5 position reports are transmitted from aircraft transponders
+using currently defined formats.</li>
+<li>GA is coded as a 14-bit two&#39;s complement binary number with an LSB
+of 25 ft. irrespective of the setting of RES.</li>
+<li>The minimum value of GA that can be reported is -1000 ft.</li>
+<li>If Subfield #1 is present, the M1 bit in Subfield #1 indicates
+whether the Extended Mode 1 Code is from a Mode 5 reply or a Mode 1
+reply. If Subfield #1 is not present, the Extended Mode 1 Code is from a
+Mode 1 reply.</li>
+<li>TOS shall be assumed to be zero if Subfield #6 is not present.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/120 - Track Mode 2 Code</strong></p>
+<blockquote>
+<p>definition: Mode 2 code associated to the track
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I062/120/MODE2 - Mode-2 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/130 - Calculated Track Geometric Altitude</strong></p>
+<blockquote>
+<p>definition: Vertical distance between the target and the projection
+of its position
+on the earth&#39;s ellipsoid, as defined by WGS84, in two&#39;s complement form.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25/2<sup>2</sup></span> ft ≈ <span class="math inline">6.25</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1500.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">150000.0</span></p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>LSB is required to be less than 10 ft by ICAO</li>
+<li>The source of altitude is identified in bits (SRC) of item I062/080
+Track Status.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/135 - Calculated Track Barometric Altitude</strong></p>
+<blockquote>
+<p>definition: Calculated barometric altitude of the track, in two&#39;s
+complement form.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/135/QNH</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No QNH correction applied
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+QNH correction applied
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/135/CTB - Calculated Track Barometric
+Altitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 15</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−15.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">1500.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>ICAO specifies a range between -10 FL and 1267 FL for Mode C</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/136 - Measured Flight Level</strong></p>
+<blockquote>
+<p>definition: Last valid and credible flight level used to update the
+track, in two&#39;s
+complement form.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−15.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">1500.0</span></p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The criteria to determine the credibility of the flight level are
+Tracker dependent.</li>
+<li>Credible means: within reasonable range of change with respect to
+the previous detection.</li>
+<li>ICAO specifies a range between -10 FL and 1267 FL for Mode C.</li>
+<li>This item includes the barometric altitude received from ADS-B.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/185 - Calculated Track Velocity (Cartesian)</strong></p>
+<blockquote>
+<p>definition: Calculated track velocity expressed in Cartesian
+co-ordinates,in
+two&#39;s complement form.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/185/VX - Velocity (X-component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s ≈ <span class="math inline">0.25</span> m/s</p>
+<p>unit: &quot;m/s&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−8192.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">8191.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/185/VY - Velocity (Y-component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s ≈ <span class="math inline">0.25</span> m/s</p>
+<p>unit: &quot;m/s&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−8192.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">8191.75</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The y-axis points to the Geographical North at the location of the
+target.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I062/200 - Mode of Movement</strong></p>
+<blockquote>
+<p>definition: Calculated Mode of Movement of a target.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/200/TRANS - Transversal Acceleration</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Constant course
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Right turn
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Left turn
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Undetermined
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/200/LONG - Longitudinal Acceleration</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Constant groundspeed
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Increasing groundspeed
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Decreasing groundspeed
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Undetermined
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/200/VERT - Transversal Acceleration</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Level
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Climb
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Descent
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Undetermined
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/200/ADF - Altitude Discrepancy Flag</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No altitude discrepancy
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Altitude discrepancy
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The ADF, if set, indicates that a difference has been detected in
+the altitude information derived from radar as compared to other
+technologies (such as ADS-B).</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I062/210 - Calculated Acceleration (Cartesian)</strong></p>
+<blockquote>
+<p>definition: Calculated Acceleration of the target expressed in
+Cartesian co-ordinates,
+in two&#39;s complement form.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/210/AX</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s² ≈ <span class="math inline">0.25</span> m/s²</p>
+<p>unit: &quot;m/s²&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/210/AY</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s² ≈ <span class="math inline">0.25</span> m/s²</p>
+<p>unit: &quot;m/s²&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The y-axis points to the Geographical North at the location of the
+target.</li>
+<li>Maximum value means maximum value or above.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/220 - Calculated Rate of Climb/Descent</strong></p>
+<blockquote>
+<p>definition: Calculated rate of climb/descent of an aircraft in two&#39;s
+complement form.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25/2<sup>2</sup></span> ft/min ≈
+<span class="math inline">6.25</span> ft/min</p>
+<p>unit: &quot;ft/min&quot;</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>A positive value indicates a climb, whereas a negative value
+indicates a descent.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/245 - Target Identification</strong></p>
+<blockquote>
+<p>definition: Target (aircraft or vehicle) identification in 8
+characters.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/245/STI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Callsign or registration downlinked from target
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Callsign not downlinked from target
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Registration not downlinked from target
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 6</p>
+<p><strong>I062/245/CHR - Characters 1-8 (Coded on 6 Bits Each) Defining
+Target Identification</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>ICAO string (6-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>For coding, see section 3.1.2.9 of [Ref.3]</li>
+<li>As the Callsign of the target can already be transmitted (thanks to
+I062/380 Subfield #2 if downlinked from the aircraft or thanks to
+I062/390 Subfield #2 if the target is correlated to a flight plan), and
+in order to avoid confusion at end user&#39;s side, this item SHALL not be
+used.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/270 - Target Size and Orientation</strong></p>
+<blockquote>
+<p>definition: Target size defined as length and width of the detected
+target, and orientation.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I062/270/LENGTH - Length</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> m ≈ <span class="math inline">1.0</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I062/270/ORIENTATION - Orientation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>7</sup></span> ° ≈ <span class="math inline">2.8125</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I062/270/WIDTH - Width</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> m ≈ <span class="math inline">1.0</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The orientation gives the direction which the target nose is
+pointing to,relative to the Geographical North.</li>
+<li>When the length only is sent, the largest dimension is
+provided.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/290 - System Track Update Ages</strong></p>
+<blockquote>
+<p>definition: Ages of the last plot/local track/target report update
+for each sensor type.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I062/290/TRK - Track Age</strong></p>
+<blockquote>
+<p>description: Actual track age since occurence
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/PSR - PSR Age</strong></p>
+<blockquote>
+<p>description: Age of the last primary detection used to update the
+track
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/SSR - SSR Age</strong></p>
+<blockquote>
+<p>description: Age of the last secondary detection used to update the
+track
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/MDS - Mode S Age</strong></p>
+<blockquote>
+<p>description: Age of the last Mode S detection used to update the
+track
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/ADS - ADS-C Age</strong></p>
+<blockquote>
+<p>description: Age of the last ADS-C report used to update the track
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">16383.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/ES - ADS-B Extended Squitter Age</strong></p>
+<blockquote>
+<p>description: Age of the last 1090 Extended Squitter ADS-B report used
+to update the track
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/VDL - ADS-B VDL Mode 4 Age</strong></p>
+<blockquote>
+<p>description: Age of the last VDL Mode 4 ADS-B report used to update
+the track
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/UAT - ADS-B UAT Age</strong></p>
+<blockquote>
+<p>description: Age of the last UAT ADS-B report used to update the
+track
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/LOP - Loop Age</strong></p>
+<blockquote>
+<p>description: Age of the last magnetic loop detection
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/290/MLT - Multilateration Age</strong></p>
+<blockquote>
+<p>description: Age of the last MLT detection
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Except for Track Age, the ages are counted from Data Item I062/070,
+Time Of Track Information, using the following formula: Age = Time of
+track information - Time of last detection used to update the track</li>
+<li>The time of last detection is derived from monosensor category time
+of day</li>
+<li>If the data has never been received, then the corresponding subfield
+is not sent.</li>
+<li>Maximum value means maximum value or above.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/295 - Track Data Ages</strong></p>
+<blockquote>
+<p>definition: Ages of the data provided.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I062/295/MFL - Measured Flight Level Age</strong></p>
+<blockquote>
+<p>description: Age of the last valid and credible Mode C code or
+barometric altitude
+from ADS-B used to update the track (I062/136).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MD1 - Mode 1 Age</strong></p>
+<blockquote>
+<p>description: Age of the last valid and credible Mode 1 code used to
+update the
+track (I062/110).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MD2 - Mode 2 Age</strong></p>
+<blockquote>
+<p>description: Age of the last valid and credible Mode 2 code used to
+update the
+track (I062/120).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MDA - Mode 3/A Age</strong></p>
+<blockquote>
+<p>description: Age of the last valid and credible Mode 3/A code used to
+update the
+track (I062/060).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MD4 - Mode 4 Age</strong></p>
+<blockquote>
+<p>description: Age of the last valid and credible Mode 4 code used to
+update the
+track.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MD5 - Mode 5 Age</strong></p>
+<blockquote>
+<p>description: Age of the last valid and credible Mode 5 code used to
+update the
+track (I062/110).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MHG - Magnetic Heading Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Magnetic Heading&quot;
+in item 062/380 (Subfield #3).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/IAS - Indicated Airspeed / Mach Nb Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Indicated Airspeed/Mach Number&quot;
+in item 062/380 (Subfield #4).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/TAS - True Airspeed Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;True Airspeed&quot;
+in item 062/380 (Subfield #5).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/SAL - Selected Altitude Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Selected Altitude&quot;
+in item 062/380 (Subfield #6).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/FSS - Final State Selected Altitude Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Final State Selected Altitude Age&quot;
+in item 062/380 (Subfield #7).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/TID - Trajectory Intent Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Trajectory Intent&quot;
+in item 062/380 (Subfield #8).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/COM - Communication/ACAS Capability and Flight
+Status Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP
+&quot;Communication/ACAS
+Capability and Flight Status&quot;
+in item 062/380 (Subfield #10).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/SAB - Status Reported by ADS-B Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Status Reported
+by ADS-B&quot;
+in item 062/380 (Subfield #11).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/ACS - ACAS Resolution Advisory Report
+Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;ACAS Resolution
+Advisory Report&quot;
+in item 062/380 (Subfield #12).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/BVR - Barometric Vertical Rate Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Barometric
+Vertical Rate&quot;
+in item 062/380 (Subfield #13).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/GVR - Geometrical Vertical Rate Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Geometrical
+Vertical Rate&quot;
+in item 062/380 (Subfield #14).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/RAN - Roll Angle Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Roll Angle&quot;
+in item 062/380 (Subfield #15).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/TAR - Track Angle Rate Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Track Angle
+Rate&quot; in item 062/380 (Subfield #16).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/TAN - Track Angle Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Track Angle&quot;
+in item 062/380 (Subfield #17).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/GSP - Ground Speed Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Ground Speed&quot; in item 062/380 (Subfield
+#18).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/VUN - Velocity Uncertainty Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Velocity
+Uncertainty&quot; in item 062/380 (Subfield #19).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MET - Meteorological Data Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Meteorological
+Data&quot; in item 062/380 (Subfield #20).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/EMC - Emitter Category Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Emitter Category&quot;
+in item 062/380 (Subfield #21).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/POS - Position Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Position&quot;
+in item 062/380 (Subfield #23).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/GAL - Geometric Altitude Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Geometric
+Altitude&quot; in item 062/380 (Subfield #24).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/PUN - Position Uncertainty Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Position
+Uncertainty&quot; in item 062/380 (Subfield #25).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MB - Mode S MB Data Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Mode S MB
+Data&quot; in item 062/380 (Subfield #22).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/IAR - Indicated Airspeed Data Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Indicated
+Airspeed&quot; in item 062/380 (Subfield #26).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/MAC - Mach Number Data Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Mach Number&quot;
+in item 062/380 (Subfield #27).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/295/BPS - Barometric Pressure Setting Data
+Age</strong></p>
+<blockquote>
+<p>description: Age of the DAP &quot;Barometric
+Pressure Setting&quot; in item 062/380
+(Subfield #28).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> s ≈ <span class="math inline">0.25</span> s</p>
+<p>unit: &quot;s&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">63.75</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Despite there are now two subfields (#29 and #30) reporting the ages
+of, respectively, the Indicated Airspeed track data and the Mach Number
+track data, the subfield #8 (and so its presence bit , bit-32) is kept
+free in order to prevent a full incompatibility with previous releases
+of ASTERIX Cat. 062 already implemented.</li>
+<li>In all the subfields, the age is the time delay since the value was
+measured</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/300 - Vehicle Fleet Identification</strong></p>
+<blockquote>
+<p>definition: Vehicle fleet identification number.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+ATC equipment maintenance
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Airport maintenance
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Fire
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Bird scarer
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Snow plough
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Runway sweeper
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Emergency
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Police
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Bus
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Tug (push/tow)
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+Grass cutter
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+Fuel
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+Baggage
+</dd>
+<dt><code>14</code>:</dt>
+<dd>
+Catering
+</dd>
+<dt><code>15</code>:</dt>
+<dd>
+Aircraft maintenance
+</dd>
+<dt><code>16</code>:</dt>
+<dd>
+Flyco (follow me)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340 - Measured Information</strong></p>
+<blockquote>
+<p>definition: All measured data related to the last report used to
+update the track.
+These data are not used for ADS-B.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I062/340/SID - Sensor Identification</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/340/SID/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/SID/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/POS - Measured Position</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/340/POS/RHO - Measured Distance</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/POS/THETA - Measured Azimuth</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/HEIGHT - Measured 3-D Height</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+</blockquote>
+<p>The reference level for this height information is the same as the
+reference level applied by the sensor system providing this
+information.</p>
+</blockquote>
+<p><strong>I062/340/MDC</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/340/MDC/V - Validated</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/MDC/G - Garbled</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/MDC/LMC - Last Measured Mode C Code</strong></p>
+<blockquote>
+<p>description: Last Measured Mode C Code, in two&#39;s complement form
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−12.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">1270.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/MDA</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/340/MDA/V - Validated</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/MDA/G - Garbled</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/MDA/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 3/A code as derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 3/A code as provided by a sensor local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I062/340/MDA/MODE3A - Mode-3/A Reply in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/TYP</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/340/TYP/TYP - Report Type</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No detection
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Single PSR detection
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Single SSR detection
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+SSR + PSR detection
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Single ModeS All-Call
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Single ModeS Roll-Call
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+ModeS All-Call + PSR
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+ModeS Roll-Call + PSR
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/TYP/SIM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Actual target report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Simulated target report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/TYP/RAB</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Report from target transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Report from field monitor (item transponder)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/340/TYP/TST</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Real target report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Test target report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>In case of a plot, the measured bias-corrected polar
+co-ordinates;</li>
+<li>In case of a sensor local track, the measured bias-corrected polar
+co-ordinates of the plot associated to the track;</li>
+<li>In case of a local track without detection, the extrapolated
+bias-corrected polar co-ordinates.</li>
+<li>Smoothed MODE 3/A data (L = 1) will be used in case of absence of
+MODE 3/A code information in the plot or in case of difference between
+plot and sensor local track MODE 3/A code information.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/380 - Aircraft Derived Data</strong></p>
+<blockquote>
+<p>definition: Data derived directly by the aircraft.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I062/380/ADR - Target Address</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/ID - Target Identification</strong></p>
+<blockquote>
+<p>description: Characters 1-8 (coded on 6 bits each) defining a target
+identification when flight plan is available or the registration
+marking when no flight plan is available. Coding rules are
+provided in [3] Section 3.1.2.9.1.2 and Table 3-9&quot;
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>ICAO string (6-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MHG - Magnetic Heading</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/IAS - Indicated Airspeed/Mach No</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/IAS/IM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Air Speed = IAS, LSB (Bit-1) = 2^-14 NM/s
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Air Speed = Mach, LSB (Bit-1) = 0.001
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/IAS/IAS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 15</p>
+<p>Depending on: (<code>380/IAS/IM</code>)</p>
+<blockquote>
+<dl>
+<dt>(<code>0</code>):</dt>
+<dd>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s ≈ <span class="math inline">6.103515625<em>e</em> − 5</span> NM/s</p>
+<p>unit: &quot;NM/s&quot;</p>
+</dd>
+<dt>(<code>1</code>):</dt>
+<dd>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/1000</span> Mach ≈ <span class="math inline">1.0<em>e</em> − 3</span> Mach</p>
+<p>unit: &quot;Mach&quot;</p>
+</dd>
+</dl>
+<p>Default:</p>
+<blockquote>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TAS - True Airspeed</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> kt ≈ <span class="math inline">1.0</span> kt</p>
+<p>unit: &quot;kt&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">2046.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/SAL - Selected Altitude</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/SAL/SAS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No source information provided
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Source information provided
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/SAL/SRC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft altitude
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+FCU/MCP selected altitude
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+FMS selected altitude
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/SAL/ALT - Altitude in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 13</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1300.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">100000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/FSS - Final State Selected Altitude</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/FSS/MV - Manage Vertical Mode</strong></p>
+<blockquote>
+<p>description: Manage Vertical Mode
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/FSS/AH - Altitude Hold</strong></p>
+<blockquote>
+<p>description: Altitude Hold
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/FSS/AM - Approach Mode</strong></p>
+<blockquote>
+<p>description: Approach Mode
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/FSS/ALT - Altitude in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 13</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1300.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">100000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TIS - Trajectory Intent Status</strong></p>
+<blockquote>
+<p>Extended</p>
+<blockquote>
+<p><strong>I062/380/TIS/NAV - TID Available</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Trajectory intent data is available for this aircraft
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Trajectory intent data is not available for this aircraft
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TIS/NVB - TID Valid</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Trajectory intent data is valid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Trajectory intent data is not valid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 5</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID - Trajectory Intent Data</strong></p>
+<blockquote>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/TID/TCA - TCP Number Availability</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+TCP number available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+TCP number not available
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/NC - TCP Compliance</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+TCP compliance
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+TCP non-compliance
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/TCPN - Trajectory Change Point
+Number</strong></p>
+<blockquote>
+<p>description: Trajectory change point number
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 6</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/ALT - Altitude in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">10</span> ft ≈ <span class="math inline">10.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1500.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">150000.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/LAT - Latitude in WGS.84 in Two&#39;s
+Complement</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/LON - Longitude in WGS.84 in Two&#39;s
+Complement</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/PT - Point Type</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Fly by waypoint (LT)
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Fly over waypoint (LT)
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Hold pattern (LT)
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Procedure hold (LT)
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Procedure turn (LT)
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+RF leg (LT)
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Top of climb (VT)
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Top of descent (VT)
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Start of level (VT)
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Cross-over altitude (VT)
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+Transition altitude (VT)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/TD - Turn Direction</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+N/A
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Turn right
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Turn left
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+No turn
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/TRA - Turn Radius Availability</strong></p>
+<blockquote>
+<p>description: Turn Radius Availability
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+TTR not available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+TTR available
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/TOA - TOV Available</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+TOV available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+TOV not available
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/TOV - Time Over Point</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> s ≈ <span class="math inline">1.0</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TID/TTR - TCP Turn Radius</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/100</span> NM ≈ <span class="math inline">1.0<em>e</em> − 2</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">655.35</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/COM - Communications/ACAS Capability and Flight
+Status</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/COM/COM - Communications Capability of the
+Transponder</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No communications capability (surveillance only)
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Comm. A and Comm. B capability
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Comm. A, Comm. B and Uplink ELM
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Comm. A, Comm. B, Uplink ELM and Downlink ELM
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Level 5 Transponder capability
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Not assigned
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Not assigned
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Not assigned
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/COM/STAT - Flight Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No alert, no SPI, aircraft airborne
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+No alert, no SPI, aircraft on ground
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Alert, no SPI, aircraft airborne
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Alert, no SPI, aircraft on ground
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Alert, SPI, aircraft airborne or on ground
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+No alert, SPI, aircraft airborne or on ground
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Not defined
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Unknown or not yet extracted
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I062/380/COM/SSC - Specific Service Capability</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Yes
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/COM/ARC - Altitude Reporting Capability</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+100 ft resolution
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+25 ft resolution
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/COM/AIC - Aircraft Identification
+Capability</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Yes
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/COM/B1A - BDS 1,0 Bit 16</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/COM/B1B - BDS BDS 1,0 Bits 37/40</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/SAB - Status Reported by ADS-B</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/SAB/AC - ACAS Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+ACAS not operational
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+ACAS operational
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/SAB/MN - Multiple Navigational Aids
+Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Multiple navigational aids not operating
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Multiple navigational aids operating
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/SAB/DC - Differential Correction Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Differential correction
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+No differential correction
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/SAB/GBS - Ground Bit Set</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Transponder ground bit not set or unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Transponder Ground Bit set
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 6</p>
+<p><strong>I062/380/SAB/STAT - Flight Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No emergency
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+General emergency
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Lifeguard / medical
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Minimum fuel
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+No communications
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Unlawful interference
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Downed Aircraft
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Unknown
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/ACS - ACAS Resolution Advisory Report</strong></p>
+<blockquote>
+<p>description: Currently active Resolution Advisory (RA), if any,
+generated
+by the ACAS associated with the transponder transmitting the
+report and threat identity data.
+(MB Data) 56-bit message
+conveying Mode S Comm B message data of BDS Register 3,0
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>BDS register at address 48</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/BVR - Barometric Vertical Rate</strong></p>
+<blockquote>
+<p>description: Barometric Vertical Rate in two&#39;s complement form
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25/2<sup>2</sup></span> ft/min ≈
+<span class="math inline">6.25</span> ft/min</p>
+<p>unit: &quot;ft/min&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/GVR - Geometric Vertical Rate</strong></p>
+<blockquote>
+<p>description: Geometric Vertical Rate in two&#39;s complement form
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25/2<sup>2</sup></span> ft/min ≈
+<span class="math inline">6.25</span> ft/min</p>
+<p>unit: &quot;ft/min&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/RAN - Roll Angle</strong></p>
+<blockquote>
+<p>description: Roll Angle in two&#39;s complement form
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/100</span> ° ≈ <span class="math inline">1.0<em>e</em> − 2</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TAR - Track Angle Rate</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/TAR/TI - Turn Indicator</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Left
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Right
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Straight
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 6</p>
+<p><strong>I062/380/TAR/ROT - Rate of Turn in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> °/s ≈ <span class="math inline">0.25</span> °/s</p>
+<p>unit: &quot;°/s&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−15.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">15.0</span></p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/TAN - Track Angle</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/GS - Ground Speed</strong></p>
+<blockquote>
+<p>description: Ground Speed in Two&#39;s Complement Form Referenced to
+WGS84
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s ≈ <span class="math inline">6.103515625<em>e</em> − 5</span> NM/s</p>
+<p>unit: &quot;NM/s&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−2.0</span></p>
+<p><code>&lt;</code> <span class="math inline">2.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/VUN - Velocity Uncertainty</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MET - Meteorological Data</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/MET/WS - Wind Speed Valid Flag</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not valid Wind Speed
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Valid Wind Speed
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MET/WD - Wind Direction Valid Flag</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not valid Wind Direction
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Valid Wind Direction
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MET/TMP - Temperature Valid Flag</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not valid Temperature
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Valid Temperature
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MET/TRB - Turbulence Valid Flag</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Not valid Turbulence
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Valid Turbulence
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I062/380/MET/WSD - Wind Speed</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> kt ≈ <span class="math inline">1.0</span> kt</p>
+<p>unit: &quot;kt&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">300.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MET/WDD - Wind Direction</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> ° ≈ <span class="math inline">1.0</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">1.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">360.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MET/TMPD - Temperature in Degrees
+Celsius</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> °C ≈ <span class="math inline">0.25</span> °C</p>
+<p>unit: &quot;°C&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−100.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">100.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MET/TRBD - Turbulence</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">15.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/EMC - Emitter Category</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+Light aircraft =&lt; 7000 kg
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+7000 kg &lt; medium aircraft &lt; 136000 kg
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+136000 kg &lt;= heavy aircraft
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Highly manoeuvrable (5g acceleration capability) and high speed (&gt;400
+knots cruise)
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Rotocraft
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+Glider / sailplane
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+Lighter-than-air
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+Unmanned aerial vehicle
+</dd>
+<dt><code>14</code>:</dt>
+<dd>
+Space / transatmospheric vehicle
+</dd>
+<dt><code>15</code>:</dt>
+<dd>
+Ultralight / handglider / paraglider
+</dd>
+<dt><code>16</code>:</dt>
+<dd>
+Parachutist / skydiver
+</dd>
+<dt><code>17</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>18</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>19</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>20</code>:</dt>
+<dd>
+Surface emergency vehicle
+</dd>
+<dt><code>21</code>:</dt>
+<dd>
+Surface service vehicle
+</dd>
+<dt><code>22</code>:</dt>
+<dd>
+Fixed ground or tethered obstruction
+</dd>
+<dt><code>23</code>:</dt>
+<dd>
+Reserved
+</dd>
+<dt><code>24</code>:</dt>
+<dd>
+Reserved
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/POS - Position</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/380/POS/LAT - Latitude in WGS.84 in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/POS/LON - Longitude in WGS.84 in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>This corresponds to a resolution of at least 2.4 meters.</p>
+</blockquote>
+<p><strong>I062/380/GAL - Geometric Altitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25/2<sup>2</sup></span> ft ≈ <span class="math inline">6.25</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1500.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">150000.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/PUN - Position Uncertainty</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I062/380/PUN/PUN - Position Uncertainty</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MB - MODE S MB DATA</strong></p>
+<blockquote>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 64</p>
+<p>BDS register with address</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/IAR - Indicated Airspeed</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> kt ≈ <span class="math inline">1.0</span> kt</p>
+<p>unit: &quot;kt&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">1100.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/MAC - Mach Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/125</span> Mach ≈ <span class="math inline">8.0<em>e</em> − 3</span> Mach</p>
+<p>unit: &quot;Mach&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">4.096</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/380/BPS - Barometric Pressure Setting</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I062/380/BPS/BPS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/10</span> mb ≈ <span class="math inline">0.1</span> mb</p>
+<p>unit: &quot;mb&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">409.5</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>NC is set to one when the aircraft will not fly the path described
+by the TCP data.</li>
+<li>TCP numbers start from zero.</li>
+<li>LT = Lateral Type</li>
+<li>VT = Vertical Type</li>
+<li>TOV gives the estimated time before reaching the point. It is
+defined as the absolute time from midnight.</li>
+<li>TOV is meaningful only if TOA is set to 0</li>
+<li>Refer to ICAO Draft SARPs for ACAS for detailed explanations.</li>
+<li>A positive value represents a right turn, whereas a negative value
+represents a left turn.</li>
+<li>Value 15 means 15 degrees/s or above.</li>
+<li>Velocity uncertainty category of the least accurate velocity
+component</li>
+<li>Positive longitude indicates East. Positive latitude indicates
+North.</li>
+<li>LSB is required to be thinner than 10 ft by ICAO</li>
+<li>Only DAPs that can not be encoded into other subfields of this item
+should be sent using subfield #25</li>
+<li>BPS is the barometric pressure setting of the aircraft minus 800
+mb.</li>
+<li>As of Edition 1.19 the note &quot;(derived from Mode S BDS 4,0)&quot; has been
+removed to allow transmission of BPS received via ADS-B.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/390 - Flight Plan Related Data</strong></p>
+<blockquote>
+<p>definition: All flight plan related information, provided by
+ground-based systems.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I062/390/TAG - FPPS Identification Tag</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/390/TAG/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/TAG/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/CS - Callsign</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/IFI - IFPS_FLIGHT_ID</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/390/IFI/TYP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Plan Number
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Unit 1 internal flight number
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unit 2 internal flight number
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Unit 3 internal flight number
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+<p><strong>I062/390/IFI/NBR - Number from 0 to 99 999 999</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 27</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">9.9999999<em>e</em>7</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/FCT - Flight Category</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/390/FCT/GATOAT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+General Air Traffic
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Operational Air Traffic
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not applicable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/FCT/FR1FR2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Instrument Flight Rules
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Visual Flight Rules
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Not applicable
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Controlled Visual Flight Rules
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/FCT/RVSM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Approved
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Exempt
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not Approved
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/FCT/HPR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Normal Priority Flight
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+High Priority Flight
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/TAC - Type of Aircraft</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/WTC - Wake Turbulence Category</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/DEP - Departure Airport</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/DST - Destination Airport</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/RDS - Runway Designation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/390/RDS/NU1 - First Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/RDS/NU2 - Second Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/RDS/LTR - Letter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/CFL - Current Cleared Flight Level</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+<p><code>&lt;</code> <span class="math inline">1500.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/CTL - Current Control Position</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/390/CTL/CENTRE - 8-bit Group Identification
+Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/CTL/POSITION - 8-bit Control Position Identification
+Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/TOD - Time of Departure / Arrival</strong></p>
+<blockquote>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/390/TOD/TYP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Scheduled off-block time
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Estimated off-block time
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Estimated take-off time
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Actual off-block time
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Predicted time at runway hold
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Actual time at runway hold
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Actual line-up time
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Actual take-off time
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Estimated time of arrival
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Predicted landing time
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Actual landing time
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+Actual time off runway
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+Predicted time to gate
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+Actual on-block time
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/TOD/DAY</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Today
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Yesterday
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Tomorrow
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I062/390/TOD/HOR - Hours</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">23.0</span></p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I062/390/TOD/MIN - Minutes</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 6</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">59.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/TOD/AVS - Seconds Available Flag</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Seconds available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Seconds not available
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I062/390/TOD/SEC - Seconds</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 6</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">59.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/AST - Aircraft Stand</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/STS - Stand Status</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/390/STS/EMP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Empty
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Occupied
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/STS/AVL</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Not available
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/STD - Standard Instrument Departure</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/STA - Standard Instrument Arrival</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/PEM - Pre-Emergency Mode 3/A</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 3</p>
+<p><strong>I062/390/PEM/VA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No valid Mode 3/A available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Valid Mode 3/A available
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/PEM/MODE3A - Mode-3/A Reply in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/390/PEC - Pre-Emergency Callsign</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The up-to-date list of SACs is published on the Eurocontrol Web Site
+(<a href="http://www.eurocontrol.int">http://www.eurocontrol.int</a>).</li>
+<li>Each one of the seven Octets contains an ASCII Character.
+TheCallsign is always left adjusted. It contains up to seven upper-case
+alphanumeric characters, the remaining character positions (if any)are
+padded with space characters.</li>
+<li>Each one of the four Octets composing the type of an aircraft
+contains an ASCII Character (upper-case alphanumeric characters with
+trailing spaces).</li>
+<li>The types of aircraft are defined in [Ref.4]</li>
+<li>Each one of the four Octets composing the name of an airport
+contains an ASCII Character (upper case alphabetic).</li>
+<li>The Airport Names are indicated in the ICAO Location Indicators
+book.</li>
+<li>Each one of the four Octets composing the name of an airport
+contains an ASCII Character (upper case alphabetic).</li>
+<li>The Airport Names are indicated in the ICAO Location Indicators
+book.</li>
+<li>NU1, NU2 and LTR each contain an ASCII character</li>
+<li>For details refer to.[5] Section 5</li>
+<li>The centre and the control position identification codes have to be
+defined between communication partners.</li>
+<li>Estimated times are derived from flight plan systems. Predicted
+times are derived by the fusion system, based on surveillance data. For
+definitions, see [Ref.4]</li>
+<li>Each one of the six Octets contains an ASCII Character. The Aircraft
+Stand identification is always left adjusted. It contains up to six
+upper-case alphanumeric characters, the remaining character positions
+(if any) are padded with space characters.</li>
+<li>Each one of the seven Octets contains an ASCII Character. The SID is
+always left adjusted. It contains up to seven alphanumeric characters,
+the remaining character positions (if any) are padded with space
+characters.</li>
+<li>Each one of the seven Octets contains an ASCII Character. The STAR
+is always left adjusted. It contains up to seven alphanumeric
+characters, the remaining character positions (if any) are padded with
+space characters.</li>
+<li>This subfield is used only when the aircraft is transmitting an
+emergency Mode 3/A code</li>
+<li>If VA = 0, the content of bits 12/1 is meaningless</li>
+<li>Each one of the seven Octets contains an ASCII Character. The
+Callsign is always left adjusted. It contains up to seven upper-case
+alphanumeric characters, the remaining character positions (if any) are
+padded with space characters</li>
+<li>This subfield is used only when an emergency Mode 3/A is associated
+with the track (I062/390 Subfield #17)</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/500 - Estimated Accuracies</strong></p>
+<blockquote>
+<p>definition: Overview of all important accuracies.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I062/500/APC - Estimated Accuracy Of Track Position
+(Cartesian)</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/500/APC/X - APC (X-Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/APC/Y - APC (Y-Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/COV - XY Covariance Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/APW - Estimated Accuracy Of Track Position
+(WGS-84)</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/500/APW/LAT - APW (Latitude Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/APW/LON - APW (Longitude Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/AGA - Estimated Accuracy Of Calculated Track
+Geometric Altitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">25/2<sup>2</sup></span> ft ≈ <span class="math inline">6.25</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/ABA - Estimated Accuracy Of Calculated Track
+Barometric Altitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/ATV - Estimated Accuracy Of Track Velocity
+(Cartesian)</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/500/ATV/X - ATV (X-Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s ≈ <span class="math inline">0.25</span> m/s</p>
+<p>unit: &quot;m/s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/ATV/Y - ATV (Y-Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s ≈ <span class="math inline">0.25</span> m/s</p>
+<p>unit: &quot;m/s&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/AA - Estimated Accuracy Of Acceleration
+(Cartesian)</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/500/AA/X - AA (X-Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s² ≈ <span class="math inline">0.25</span> m/s²</p>
+<p>unit: &quot;m/s²&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/AA/Y - AA (Y-Component)</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> m/s² ≈ <span class="math inline">0.25</span> m/s²</p>
+<p>unit: &quot;m/s²&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I062/500/ARC - Estimated Accuracy Of Rate Of
+Climb/Descent</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">25/2<sup>2</sup></span> ft/min ≈
+<span class="math inline">6.25</span> ft/min</p>
+<p>unit: &quot;ft/min&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Maximum value means maximum value or above.</li>
+<li>XY covariance component = sign {Cov(X,Y)} * sqrt {abs [Cov
+(X,Y)]}</li>
+<li>The maximum value for the (unsigned) XY covariance component is
+16.383 km</li>
+<li>Maximum value means maximum value or above.</li>
+<li>Maximum value means maximum value or above.</li>
+<li>Maximum value means maximum value or above.</li>
+<li>Maximum value means maximum value or above.</li>
+<li>Maximum value means maximum value or above.</li>
+<li>Maximum value means maximum value or above.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I062/510 - Composed Track Number</strong></p>
+<blockquote>
+<p>definition: Identification of a system track.
+</p>
+<p>Repetitive</p>
+<p>With FX extension bit.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I062/510/IDENT - System Unit Identification</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I062/510/TRACK - System Track Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 15</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The composed track number is used by co-operating units to uniquely
+identify a track. It consists of the unit identifier and system track
+number for each unit involved in the co-operation. The first unit
+identification identifies the unit that is responsible for the track
+amalgamation.</li>
+<li>The fist element represents Master track, the remaining elements
+represent Slave tracks.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I062/RE - Reserved Expansion Field</strong></p>
+<blockquote>
+<p>definition: Expansion
+</p>
+<p>Explicit (ReservedExpansion)</p>
+</blockquote>
+<p><strong>I062/SP - Special Purpose Field</strong></p>
+<blockquote>
+<p>definition: Special Purpose Field
+</p>
+<p>Explicit (SpecialPurpose)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I062/010</code> - Data Source Identifier</li>
+<li><em>Spare</em></li>
+<li>3: <code>I062/015</code> - Service Identification</li>
+<li>4: <code>I062/070</code> - Time Of Track Information</li>
+<li>5: <code>I062/105</code> - Calculated Position In WGS-84
+Co-ordinates</li>
+<li>6: <code>I062/100</code> - Calculated Track Position
+(Cartesian)</li>
+<li>7: <code>I062/185</code> - Calculated Track Velocity
+(Cartesian)</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I062/210</code> - Calculated Acceleration (Cartesian)</li>
+<li>9: <code>I062/060</code> - Track Mode 3/A Code</li>
+<li>10: <code>I062/245</code> - Target Identification</li>
+<li>11: <code>I062/380</code> - Aircraft Derived Data</li>
+<li>12: <code>I062/040</code> - Track Number</li>
+<li>13: <code>I062/080</code> - Track Status</li>
+<li>14: <code>I062/290</code> - System Track Update Ages</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I062/200</code> - Mode of Movement</li>
+<li>16: <code>I062/295</code> - Track Data Ages</li>
+<li>17: <code>I062/136</code> - Measured Flight Level</li>
+<li>18: <code>I062/130</code> - Calculated Track Geometric Altitude</li>
+<li>19: <code>I062/135</code> - Calculated Track Barometric
+Altitude</li>
+<li>20: <code>I062/220</code> - Calculated Rate of Climb/Descent</li>
+<li>21: <code>I062/390</code> - Flight Plan Related Data</li>
+<li>(FX) - Field extension indicator</li>
+<li>22: <code>I062/270</code> - Target Size and Orientation</li>
+<li>23: <code>I062/300</code> - Vehicle Fleet Identification</li>
+<li>24: <code>I062/110</code> - Mode 5 Data Reports and Extended Mode 1
+Code</li>
+<li>25: <code>I062/120</code> - Track Mode 2 Code</li>
+<li>26: <code>I062/510</code> - Composed Track Number</li>
+<li>27: <code>I062/500</code> - Estimated Accuracies</li>
+<li>28: <code>I062/340</code> - Measured Information</li>
+<li>(FX) - Field extension indicator</li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li>34: <code>I062/RE</code> - Reserved Expansion Field</li>
+<li>35: <code>I062/SP</code> - Special Purpose Field</li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>

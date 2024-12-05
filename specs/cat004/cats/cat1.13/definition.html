@@ -1,0 +1,4343 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 004 - Safety Net Messages</h1>
+<p><strong>category</strong>: 004</p>
+<p><strong>edition</strong>: 1.13</p>
+<p><strong>date</strong>: 2024-06-04</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I004/000 - Message Type</strong></p>
+<blockquote>
+<p>definition: This Data Item allows for a more convenient handling of
+the messages
+at the receiver side by further defining the type of transaction.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+Alive Message (AM)
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Route Adherence Monitor Longitudinal Deviation (RAMLD)
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Route Adherence Monitor Heading Deviation (RAMHD)
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Minimum Safe Altitude Warning (MSAW)
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Area Proximity Warning (APW)
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Clearance Level Adherence Monitor (CLAM)
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Short Term Conflict Alert (STCA)
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Approach Path Monitor (APM)
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+RIMCAS Arrival / Landing Monitor (ALM)
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+RIMCAS Arrival / Departure Wrong Runway Alert (WRA)
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+RIMCAS Arrival / Departure Opposite Traffic Alert (OTA)
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+RIMCAS Departure Monitor (RDM)
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+RIMCAS Runway / Taxiway Crossing Monitor (RCM)
+</dd>
+<dt><code>14</code>:</dt>
+<dd>
+RIMCAS Taxiway Separation Monitor (TSM)
+</dd>
+<dt><code>15</code>:</dt>
+<dd>
+RIMCAS Unauthorized Taxiway Movement Monitor(UTMM)
+</dd>
+<dt><code>16</code>:</dt>
+<dd>
+RIMCAS Stop Bar Overrun Alert (SBOA)
+</dd>
+<dt><code>17</code>:</dt>
+<dd>
+End Of Conflict (EOC)
+</dd>
+<dt><code>18</code>:</dt>
+<dd>
+ACAS Resolution Advisory (ACASRA)
+</dd>
+<dt><code>19</code>:</dt>
+<dd>
+Near Term Conflict Alert (NTCA)
+</dd>
+<dt><code>20</code>:</dt>
+<dd>
+Downlinked Barometric Pressure Setting Monitor (DBPSM)
+</dd>
+<dt><code>21</code>:</dt>
+<dd>
+Speed Adherence Monitor (SAM)
+</dd>
+<dt><code>22</code>:</dt>
+<dd>
+Outside Controlled Airspace Tool (OCAT)
+</dd>
+<dt><code>23</code>:</dt>
+<dd>
+Vertical Conflict Detection (VCD)
+</dd>
+<dt><code>24</code>:</dt>
+<dd>
+Vertical Rate Adherence Monitor (VRAM)
+</dd>
+<dt><code>25</code>:</dt>
+<dd>
+Cleared Heading Adherence Monitor (CHAM)
+</dd>
+<dt><code>26</code>:</dt>
+<dd>
+Downlinked Selected Altitude Monitor (DSAM)
+</dd>
+<dt><code>27</code>:</dt>
+<dd>
+Holding Adherence Monitor (HAM)
+</dd>
+<dt><code>28</code>:</dt>
+<dd>
+Vertical Path Monitor (VPM)
+</dd>
+<dt><code>29</code>:</dt>
+<dd>
+RIMCAS Taxiway Traffic Alert (TTA)
+</dd>
+<dt><code>30</code>:</dt>
+<dd>
+RIMCAS Arrival/Departure Close Runway Alert (CRA)
+</dd>
+<dt><code>31</code>:</dt>
+<dd>
+RIMCAS Arrival/Departure Aircraft Separation Monitor (ASM)
+</dd>
+<dt><code>32</code>:</dt>
+<dd>
+RIMCAS ILS Area Violation Monitor (IAVM)
+</dd>
+<dt><code>33</code>:</dt>
+<dd>
+Final Target Distance Indicator (FTD)
+</dd>
+<dt><code>34</code>:</dt>
+<dd>
+Initial Target Distance Indicator (ITD)
+</dd>
+<dt><code>35</code>:</dt>
+<dd>
+Wake Vortex Indicator Infringement Alert (IIA)
+</dd>
+<dt><code>36</code>:</dt>
+<dd>
+Sequence Warning (SQW)
+</dd>
+<dt><code>37</code>:</dt>
+<dd>
+Catch Up Warning (CUW)
+</dd>
+<dt><code>38</code>:</dt>
+<dd>
+Conflicting ATC Clearances (CATC)
+</dd>
+<dt><code>39</code>:</dt>
+<dd>
+No ATC Clearance (NOCLR)
+</dd>
+<dt><code>40</code>:</dt>
+<dd>
+Aircraft Not Moving despite ATC Clearance (NOMOV)
+</dd>
+<dt><code>41</code>:</dt>
+<dd>
+Aircraft leaving/entering the aerodrome area without proper handover
+(NOH)
+</dd>
+<dt><code>42</code>:</dt>
+<dd>
+Wrong Runway or Taxiway Type (WRTY)
+</dd>
+<dt><code>43</code>:</dt>
+<dd>
+Stand Occupied (STOCC)
+</dd>
+<dt><code>44</code>:</dt>
+<dd>
+Ongoing Alert (ONGOING)
+</dd>
+<dt><code>45</code>:</dt>
+<dd>
+Non-Transgression Zone Violation (NTZ)
+</dd>
+<dt><code>97</code>:</dt>
+<dd>
+Lost Track Warning (LTW)
+</dd>
+<dt><code>98</code>:</dt>
+<dd>
+Holding Volume Infringement (HVI)
+</dd>
+<dt><code>99</code>:</dt>
+<dd>
+Airspace Infringement Warning (AIW)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li><p>In applications where transactions of various types are
+exchanged, the Message Type Data Item facilitates the proper message
+handling at the receiver side.</p></li>
+<li><p>All Message Type values are reserved for common standard
+use.</p></li>
+<li><p>Message Types 33 to 37 have been designed for applications
+supporting the ATCO in the optimisation of separation during final
+approach. They provide information required to indicate to the ATCO the
+closest possible distance of a following aircraft in relation to a
+leading aircraft. This allows to make optimum use of the available
+runway capacity.</p></li>
+<li><p>The list of items present for the 31 types of messages is defined
+in the following 4 tables. M stands for mandatory, O for optional, X for
+never present. :</p>
+<pre><code>item 001 002 003 004 005 006 007 008
+I004/000 M M M M M M M M
+I004/010 M M M M M M M M
+I004/015 O O O O O O O O
+I004/020 M M M M M M M M
+I004/030 X M M M M M M M
+I004/035 X X X X X X M X
+I004/040 X M M M M M M M
+I004/045 X O O O O O O O
+I004/060 M X X X X X X X
+I004/070 X X X O O X O X
+I004/074 X M X X X X X X
+I004/075 X X M X X X X M
+I004/076 X X X X X O X O
+I004/100 X X X X M X X O
+I004/110 X O O O O O O O
+I004/120 X X X M M X M X
+I004/170 X O O O O O O O
+I004/171 X X X X X X O X
+I004/RE O O O O O O O O
+
+item 009 010 011 012 013 014 015 016
+I004/000 M M M M M M M M
+I004/010 M M M M M M M M
+I004/015 O O O O O O O O
+I004/020 M M M M M M M M
+I004/030 M M M M M M M M
+I004/035 M X M M M M O X
+I004/040 M M M M M M M M
+I004/045 O O O O O O O O
+I004/060 X X X X X X X X
+I004/070 O X O O O O O X
+I004/074 X X X X X X X X
+I004/075 X X X X X X X X
+I004/076 X X X X X X X X
+I004/100 M M M M M M M M
+I004/110 O O O O O O O O
+I004/120 M M M M M O O O
+I004/170 O O O O O O O O
+I004/171 O X O O O O O X
+I004/RE O O O O O O O O
+
+item 017 018 019 020 021 022 023 024
+I004/000 M M M M M M M M
+I004/010 M M M M M M M M
+I004/015 O O O O O O O O
+I004/020 M M M M M M M M
+I004/030 O X M M M M M M
+I004/035 O X M X X X M X
+I004/040 M M M M M M M M
+I004/045 O O O O O O O O
+I004/060 X X X X X X X X
+I004/070 X O O X X O O X
+I004/074 X X X X X X X X
+I004/075 X X X X X X X X
+I004/076 X X X X X X X O
+I004/100 X X X O O M M O
+I004/110 X X O O O O O O
+I004/120 X X O M O M M O
+I004/170 X M O O O O O O
+I004/171 X O O X X X O X
+I004/RE O M O O O O O O
+
+item 025 026 027 028 029 030 031 032
+I004/000 M M M M M M M M
+I004/010 M M M M M M M M
+I004/015 O O O O O O O O
+I004/020 M M M M M M M M
+I004/030 M M M M M M M M
+I004/035 X X X X O O M O
+I004/040 M M M M M M M M
+I004/045 O O O O O O O O
+I004/060 X X X X X X X X
+I004/070 X X X X O O O O
+I004/074 X X O X O X X X
+I004/075 X X X X O X X X
+I004/076 X O O O O X X X
+I004/100 O O O O O O O O
+I004/110 O O O O O O O O
+I004/120 O O O X O O O O
+I004/170 O O O O O O O O
+I004/171 X X X X O O O O
+I004/RE O O O O O O O O
+
+item 033 034 035 036 037 038 039 040
+I004/000 M M M M M M M M
+I004/010 M M M M M M M M
+I004/015 O O O O O O O O
+I004/020 M M M M M M M M
+I004/030 M M M M M M M M
+I004/035 M M M X O M X X
+I004/040 M M M M M M M M
+I004/045 O O O O O O O O
+I004/060 X X X X X X X X
+I004/070 O O M X X X X X
+I004/074 X X X X X X X X
+I004/075 X X X X X X X X
+I004/076 X X X X X X X X
+I004/100 O O O O O O O O
+I004/110 X X X X X O O O
+I004/120 M M O X X M M M
+I004/170 M M M M M O O O
+I004/171 M M M X M O X X
+I004/RE O O M O O O O O
+
+item 041 042 043 044 045 097 098 099
+I004/000 M M M M M M M M
+I004/010 M M M M M M M M
+I004/015 O O O O O O O O
+I004/020 M M M M M M M M
+I004/030 M M M M M M M M
+I004/035 X X X O X X X X
+I004/040 M M M M M M M M
+I004/045 O O O O O O O O
+I004/060 X X X X X X X X
+I004/070 X X X X O O O O
+I004/074 X X X X X X X X
+I004/075 X X X X X X X X
+I004/076 X X X X X X X X
+I004/100 O M M M O O O O
+I004/110 O O O O O O O O
+I004/120 M O X X M O O O
+I004/170 O O O O O O O O
+I004/171 X X X X X X X X
+I004/RE O O O O O M O O</code></pre></li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/010 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the Safety Nets server sending the
+message.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site
+(<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/015 - SDPS Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the SDPS providing data to the safety
+nets server.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/015/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/015/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>- The up-to-date list of SACs is published on the EUROCONTROL Web
+Site (<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/020 - Time of Message</strong></p>
+<blockquote>
+<p>definition: Absolute time stamping of the message in the form of
+elapsed time since
+last midnight
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ul>
+<li>This time is given at an application level (e.g. time at which a
+message is filled), and not at the communication level (i.e. not the
+time at which the data-block containing the message is sent).</li>
+<li>The time is reset to zero at every midnight.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/030 - Track Number 1</strong></p>
+<blockquote>
+<p>definition: Identification of a track number related to conflict
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This is the track number of the first track involved in the conflict
+in case of an STCA or a RIMCA or the track involved in case of one of
+the other Safety Net functions.</li>
+<li>This track number is distributed in this field exactly as it was
+received from the Radar Processor Unit (identified by I004/015) and its
+range is depending on the range used by that unit.</li>
+<li>In case of Message Type = 33 (Final Target Distance Indicator - FTD)
+this represents the Track Number of the following aircraft.</li>
+<li>In case of Message Type = 34 (Initial Target Distance Indicator -
+ITD this represents the Track Number of the following aircraft.</li>
+<li>In case of Message Type = 35 (Wake Vortex Indicator Infringement
+Alert - IIA) this represents the track number of the following
+aircraft.</li>
+<li>In case of Message Type = 37 (Catch-Up Warning - CUW) this
+represents the track number of the following aircraft (i.e. the one
+catching up).</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/035 - Track Number 2</strong></p>
+<blockquote>
+<p>definition: Together with I004/030, this item defines the track pair
+in conflict.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This is the track number of the second track involved in the
+conflict in case of an STCA, a RIMCA, a NTCA, a VCD or in message types
+33 to 35 and 37.</li>
+<li>For the other Safety Net functions, this item is not used.</li>
+<li>This track number is distributed in this field exactly as it was
+received from the Radar Processor Unit and its range is depending on the
+range used by that unit.</li>
+<li>In case of Message Type = 33 (Final Target Distance Indicator - FTD)
+this represents the Track Number of the leading aircraft</li>
+<li>In case of Message Type = 34 (Initial Target Distance Indicator -
+ITD this represents the Track Number of the leading aircraft.</li>
+<li>In case of Message Type = 35 (Wake Vortex Indicator Infringement
+Alert - IIA) this represents the track number of the leading
+aircraft.</li>
+<li>In case of Message Type = 37 (Catch-Up Warning - CUW) this
+represents the track number of the leading aircraft.</li>
+<li>In case of Message Type = 38 (Conflicting ATC Clearances - CATC)
+this represents the track number of the aircraft to which the first ATC
+Clearance was issued.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/040 - Alert Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of an alert (Alert number)
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This item is the Alert Identification of the conflict in the
+system</li>
+<li>This number shall be assigned, by the Safety Net Server, for
+instance incrementally to every new alert and restart on zero after
+reaching the maximum value (65535)</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/045 - Area and Alert Status</strong></p>
+<blockquote>
+<p>definition: Information concerning status of the alert
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/045/AREA - Area Status</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/045/AREA/EP - Element Populated Bit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Element not populated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Element populated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/045/AREA/VAL - Area Status Value</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Inactive
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Active
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Pre-active
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Reserved for Future Use
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Reserved for Future Use
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Reserved for Future Use
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Reserved for Future Use
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reserved for Future Use
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/045/STAT - Status of the Alert</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/060 - Safety Net Function and System Status</strong></p>
+<blockquote>
+<p>definition: Status of the Safety Nets functions handled by the system
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I004/060/MRVA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+MRVA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/RAMLD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+RAMLD function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/RAMHD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+RAMHD function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/MSAW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+MSAW function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/APW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+APW function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/CLAM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+CLAM function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/STCA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+STCA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/060/APM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+APM function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/RIMCA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+RIMCA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/ACASRA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+ACAS RA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/NTCA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+NTCA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/DG</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+System degraded
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/OF</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overflow error
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/OL</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload error
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/060/AIW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+AIW function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/PAIW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+PAIW function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/OCAT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+OCAT function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/SAM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+SAM function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/VCD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+VCD function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/CHAM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+CHAM function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/DSAM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+DSAM function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/060/DBPSMARR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+DBPSM ARR sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/DBPSMDEP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+DBPSM DEP sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/DBPSMTL</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+DBPSM TL sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/VRAMCRM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+VRAM CRM sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/VRAMVTM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+VRAM VTM sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/VRAMVRM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+VRAM VRM sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/HAMHD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+HAM HD sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/060/HAMRD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+HAM RD sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/HAMVD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+HAM VD sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/HVI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+HVI function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/LTW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+LTW function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/VPM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+VPM function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/TTA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+TTA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/CRA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+CRA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/060/ASM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+ASM sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/IAVM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+IAVM sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/FTD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+FTD Function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/ITD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+ITD function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/IIA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+IIA function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/SQW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+SQW function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/CUW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+CUW function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/060/CATC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+CATC function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/NOCLR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+NOCLR sub-function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/NOMOV</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+NOMOV Function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/NOH</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+NOH function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/WRTY</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+WRTY function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/STOCC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+STOCC function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/060/ONGOING</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+ONGOING function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/060/NTZ</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Non-Transgression Zone Function
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 6</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This item only sent in “alive messages” to describe the status of
+the Safety Net functions, handled by the system</li>
+<li>Value 0 means either that the function is not managed by the system
+or has failed.</li>
+<li>Value 1 means that the function is managed by the system and is
+running well</li>
+<li>“Overflow” is defined as a situation where the number of alerts in
+the system has exceeded the threshold for safe operation. Potential
+prioritization of the alerts may lead to a loss of information.</li>
+<li>“Overload” is defined as a system status in which the number of
+alerts does not allow for a reliable performance. A correct calculation
+and transmission cannot be guaranteed.</li>
+<li>“System degraded” means that information from one or more sensors is
+lost.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/070 - Conflict Timing and Separation</strong></p>
+<blockquote>
+<p>definition: Information on Timing and Aircraft Separation
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I004/070/TC - Time to Conflict</strong></p>
+<blockquote>
+<p>description: Time remaining to actual conflict situation
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/070/TCA - Time to Closest Approach</strong></p>
+<blockquote>
+<p>description: Time to closest proximity between entities in conflict
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/070/CHS - Current Horizontal Separation</strong></p>
+<blockquote>
+<p>description: Current horizontal separation
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/070/MHS - Estimated Minimum Horizontal
+Separation</strong></p>
+<blockquote>
+<p>description: Estimated minimum horizontal separation.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/070/CVS - Current Vertical Separation</strong></p>
+<blockquote>
+<p>description: Current vertical separation
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/070/MVS - Estimated Minimum Vertical
+Separation</strong></p>
+<blockquote>
+<p>description: Estimated Minimum Vertical Separation
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/074 - Longitudinal Deviation</strong></p>
+<blockquote>
+<p>definition: Longitudinal deviation for Route Adherence Monitoring, in
+two’s complement.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">32</span> m ≈ <span class="math inline">32.0</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Longitudinal deviation will be positive if the aircraft is ahead of
+its planned position. Longitudinal deviation will be negative if the
+aircraft is behind its planned position.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/075 - Transversal Distance Deviation</strong></p>
+<blockquote>
+<p>definition: Transversal distance deviation for Route Adherence
+Monitoring, in two’s complement.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Deviation to the right of the track will be coded as a positive
+value. Deviation to the left of the track will be coded as a negative
+value</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/076 - Vertical Deviation</strong></p>
+<blockquote>
+<p>definition: Vertical Deviation from planned altitude, in two’s
+complement
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Positive value if aircraft is above planned altitude Negative value
+if aircraft is below planned altitude</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/100 - Area Definition</strong></p>
+<blockquote>
+<p>definition: Name of the area involved in a Safety Net alarm
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I004/100/AN - Area Name</strong></p>
+<blockquote>
+<p>description: Name of the area involved in a Safety Net alarm.
+Characters 1-8 (coded on 6 bits each) defining the name of the area.
+Coding rules are provided in [3]Section 3.1.2.9&quot;
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>ICAO string (6-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/100/CAN - Crossing Area Name</strong></p>
+<blockquote>
+<p>description: Name of Crossing Area Involved in RIMCA.
+Each octet is an ASCII character defining the name of the crossing
+area involved in a runway/taxiway crossing alert (message type 013)
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/100/RT1 - Runway/Taxiway Designator 1</strong></p>
+<blockquote>
+<p>description: Designator of Runway/Taxiway 1 Involved in a RIMCA
+Each octet is an ASCII character defining the runway designator
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/100/RT2 - Runway/Taxiway Designator 2</strong></p>
+<blockquote>
+<p>description: Designator of Runway/Taxiway 2 Involved in a RIMCA
+Each octet is an ASCII character defining the runway designator
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/100/SB - Stop Bar Designator</strong></p>
+<blockquote>
+<p>description: Designator of Stop-Bar Involved in RIMCA
+Each octet is an ASCII character defining the stop-bar involved
+in a stop-bar crossed alert (message type 016)
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/100/G - Gate Designator</strong></p>
+<blockquote>
+<p>description: Gate Designator (in 7 characters) of the approaching
+aircraft in
+a RIMCA or a STOCC message,
+Each octet is an ASCII character defining the gate for the
+approaching aircraft
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The area name is always left adjusted. If needed, the remaining
+characters are filled with space character.</li>
+<li>The name of the crossing area is always left adjusted. If needed,
+the remaining characters are filled with space characters.</li>
+<li>The runway designator is always left adjusted. If needed, the
+remaining characters are filled with space characters. The runway is
+encoded as follows: Location indicator, runway direction, left or right.
+Example: EGLL09L means London Heathrow (EGLL), Runway 09 (direction 090
+degrees) left runway</li>
+<li>The runway designator is always left adjusted. If needed, the
+remaining characters are filled with space characters. The runway is
+encoded as follows: Location indicator, runway direction, left or right.
+Example: EGLL09L means London Heathrow (EGLL), Runway 09 (direction 090
+degrees) left runway</li>
+<li>The stop-bar designator is always left adjusted. If needed, the
+remaining characters are filled with space characters.</li>
+<li>The gate designator is always left adjusted. If needed, the
+remaining characters are filled with space character.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/110 - FDPS Sector Control Identification</strong></p>
+<blockquote>
+<p>definition: Identification of a list of FDPS Sector Control Positions
+in charge of
+the involved targets, as provided by the FDPS
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/110/CEN</strong></p>
+<blockquote>
+<p>description: Centre identification code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/110/POS</strong></p>
+<blockquote>
+<p>description: Control position identification code
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The Centre identification code and the Control position
+identification code must be defined between the communication
+partners.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/120 - Conflict Characteristics</strong></p>
+<blockquote>
+<p>definition: Description of the Conflict Properties
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I004/120/CN - Conflict Nature</strong></p>
+<blockquote>
+<p>description: Nature of the conflict expressed by a set of properties
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I004/120/CN/MAS - Conflict Location in Military
+Airspace</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Conflict not predicted to occur in military airspace
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Conflict predicted to occur in military airspace
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/CAS - Conflict Location in Civil
+Airspace</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Conflict not predicted to occur in civil airspace
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Conflict predicted to occur in civil airspace
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/FLD - Fast Lateral Divergence</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Aircraft are not fast diverging laterally at current time
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft are fast diverging laterally at current time
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/FVD - Fast Vertical Divergence</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Aircraft are not fast diverging vertically at current time
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft are fast diverging vertically at current time
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/TYPE - Type of Separation
+Infringement</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Minor separation infringement
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Major separation infringement
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/CROSS - Crossing Test</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Aircraft have not crossed at starting time of conflict
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft have crossed at starting time of conflict
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/DIV - Divergence Test</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Aircraft are not diverging at starting time of conflict
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft are diverging at starting time of conflict
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/120/CN/RRC - Runway/Runway Crossing in
+RIMCAS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Runway/Runway Crossing
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/RTC - Runway/Taxiway Crossing in
+RIMCAS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Runway/Taxiway Crossing
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/MRVA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 4 (MSAW) indicates MRVA
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/VRAMCRM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 25 (VRAM) indicates CRM
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/VRAMVRM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 25 (VRAM) indicates VRM
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/VRAMVTM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 25 (VRAM) indicates VTM
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/HAMHD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 29 (HAM) indicates HD
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/120/CN/HAMRD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 29 (HAM) indicates RD
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/HAMVD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 29 (HAM) indicates VD
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/DBPSMARR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 20 (DBPSM) indicates ARR
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/DBPSMDEP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 20 (DBPSM) indicates DEP
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/DBPSMTL</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 20 (DBPSM) indicates above TL
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CN/AIW</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Msg Type 99 (AIW) indicates pAIW Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CC - Conflict Classification</strong></p>
+<blockquote>
+<p>description: Severity classification of the conflict
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/TID - Identification of Conflict Categories
+Definition Table</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CC/CPC - Conflict Properties Class</strong></p>
+<blockquote>
+<p>Depending on: (<code>000</code>, <code>120/CC/TID</code>)</p>
+<blockquote>
+<dl>
+<dt>(<code>5, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+APW Low Severity
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+APW Medium Severity
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+APW High Severity
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>7, 0</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+Major seperation infringement and not (crossed and diverging)
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Minor seperation infringement and not (crossed and diverging)
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Major seperation infringement and (crossed and diverging)
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Minor seperation infringement and (crossed and diverging)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>7, 1</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/LPF - Linear Prediction Filter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Filter not set
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Filter set
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CC/CPC/CPF - Current Proximity Filter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Filter not set
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Filter set
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CC/CPC/MHF - Manoeuvre Hazard Filter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Filter not set
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Filter set
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>9, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>10, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>11, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>12, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>13, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>14, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>15, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>16, 2</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/RAS - RIMCAS Alert Stage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Stage One Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Stage Two Alert
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</dd>
+<dt>(<code>15, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+2 aircraft, same taxiway, opposite direction
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft entering wrong direction
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Aircraft entering wrong taxiway
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Speed violation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>24, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+VRM Slow Climb
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+VRM Slow Descent
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>24, 2</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+VTM Fast Climb
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+VTM Fast Descent
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>26, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Vertical manoeuvre deviation prior to reaching its expected level
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Vertical manoeuvre deviation past its expected level
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>27, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Slow Descent
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Fast Descent
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Slow Climb
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Fast Climb
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>27, 2</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Above
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Below
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>33, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Table - Single RWY Operation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+MRS - Single RWY Operation
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+ROT - Single RWY Operation
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+GAP - Single RWY Operation
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Table - Parallel RWY Operation
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+MRS - Parallel RWY Operation
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+ROT - Parallel RWY Operation
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+GAP - Parallel RWY Operation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>34, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Table - Single RWY Operation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+MRS - Single RWY Operation
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+ROT - Single RWY Operation
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+GAP - Single RWY Operation
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Table - Parallel RWY Operation
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+MRS - Parallel RWY Operation
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+ROT - Parallel RWY Operation
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+GAP - Parallel RWY Operation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>35, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+End of Alert
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Planned Alert
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Alert on TABLE Indicator
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Alert on MRS Indicator
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Alert on ROT Indicator
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Alert on GAP Indicator
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>38, 0</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Line-Up vs. Line-Up
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Line-Up vs. Cross or Enter
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Line-Up vs. Take-Off
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Line-Up vs. Landing
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>38, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Cross or Enter  vs. Line-Up
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Cross or Enter  vs. Cross or Enter
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Cross or Enter  vs. Take-Off
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Cross or Enter  vs. Landing
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>38, 2</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Take-Off vs. Line-Up
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Take-Off vs. Cross or Enter
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Take-Off vs. Take-Off
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Take-Off vs. Landing
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>38, 3</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Landing vs. Line-Up
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Landing vs. Cross or Enter
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Landing vs. Take-Off
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Landing vs. Landing
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>38, 4</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Push-Back vs. Push-Back
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Push-Back vs. Taxi
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>38, 5</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Taxi vs. Push-Back
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+TAxi vs. Taxi
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>39, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Push-Back Clearance
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+No Taxi Clearance
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+No Line-Up Clearance
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+No Crossing Clearance
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+No Enter Clearance
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+No Take-Off Clearance
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Landing Clearance
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>40, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+After Push-Back Clearance
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+After Taxi Clearance
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+After Line-Up Clearance
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+After Crossing Clearance
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+After Enter Clearance
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+After Take-Off Clearance
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Stationary on Runway
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Stationary on Taxiway
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>41, 1</code>):</dt>
+<dd>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No contact (receiving ATSU)
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+No transfer (leaving ATSU)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</dd>
+<dt>(<code>45, 1</code>):</dt>
+<dd>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/120/CC/CPC/LFP - Linear Prediction Filter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Filter not set
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Filter set
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I004/120/CC/CPC/MSM - Mode S Manoeuvre/Prediction
+Filter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Filter not set
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Filter set
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</dd>
+</dl>
+<p>Default:</p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CC/CS - Conflict Severity</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+LOW
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+HIGH
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CP - Conflict Probability</strong></p>
+<blockquote>
+<p>description: Probability of the conflict
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2</span> % ≈ <span class="math inline">0.5</span> %</p>
+<p>unit: &quot;%&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/120/CD - Conflict Duration</strong></p>
+<blockquote>
+<p>description: The duration of the conflict is the elapsed time since
+the declaration of the conflict.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>If no Table Id is defined for a message type, only the value of the
+CS bit may be of relevance. In that case, for this message type, Table
+Id and Conflict Properties are meaningless and shall be set to &quot;0000&quot;
+and &quot;000&quot; respectively. 1. Additional conflict classes may be defined by
+introducing additional properties of a conflict. 2. For FTD (Message
+Type = 033), ITD (Message Type = 034) and IIA (Message Type = 035) the
+following types of separation have been applied: Table: application of
+the values contained in the separation table according to the different
+wake vortex categories of the two aircraft. MRS: Minimum Radar
+Separation for the arrival runway ROT: Runway Occupancy Time –
+separation to achieve a specific ROT. GAP: separation based on a gap
+manually input by the ATCO</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I004/170 - Aircraft Identification and Characteristics
+1</strong></p>
+<blockquote>
+<p>definition: Identification &amp; Characteristics of Aircraft 1
+Involved in the Conflict.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I004/170/AI1 - Aircraft Identifier (in 7 Characters) of
+Aircraft 1 Involved in the Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/M31 - Mode 3/A Code Aircraft 1</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I004/170/M31/MODE3A - Mode-3/A Code (Converted Into Octal
+Representation) of Aircraft 1 Involved in the Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/CPW - Predicted Conflict Position Target 1 in WGS-84
+Coordinates</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/170/CPW/LAT - In WGS-84 in Two’s Complement</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/CPW/LON - In WGS-84 in Two’s Complement</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/CPW/ALT - Altitude of Predicted
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1500.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">150000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/CPC - Predicted Conflict Position for the Aircraft 1
+Involved in the Conflict</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/170/CPC/X - Starting X-position of the
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/CPC/Y - Starting Y-position of the
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/CPC/Z - Starting Z-position of the
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1500.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">150000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/TT1 - Time to Runway Threshold for First Approaching
+Aircraft in a RIMCA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/DT1 - Distance to Runway Threshold for Aircraft 1
+Involved in a RIMCA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/AC1 - Characteristics of Aircraft 1 Involved in the
+Conflict</strong></p>
+<blockquote>
+<p>Extended</p>
+<blockquote>
+<p><strong>I004/170/AC1/GATOAT - Identification of Conflict Categories
+Definition Table</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+General Air Traffic
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Operational Air Traffic
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not applicable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/AC1/FR1FR2 - Flight Rules</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Instrument Flight Rules
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Visual Flight rules
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Not applicable
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Controlled Visual Flight Rules
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/AC1/RVSM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Approved
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Exempt
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not Approved
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/AC1/HPR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Normal Priority Flight
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+High Priority Flight
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/170/AC1/CDM - Climbing/Descending Mode</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Maintaining
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Climbing
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Descending
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/AC1/PRI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Non primary target
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Primary target
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/AC1/GV</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Ground Vehicle
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/MS1 - Aircraft Identification Downloaded from
+Aircraft 1 Involved in the Conflict If Equipped with a Mode-S
+Transponder</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>ICAO string (6-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/FP1 - Number of the Flight Plan Correlated to
+Aircraft 1 Involved in the Conflict</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 5</p>
+<p><strong>I004/170/FP1/NBR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 27</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> ≈ <span class="math inline">1.0</span> </p>
+<p>unit: &quot;&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">9.9999999<em>e</em>7</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/170/CF1 - Cleared Flight Level for Aircraft 1 Involved
+in the Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The aircraft identifier is always left adjusted. If needed, the
+remaining characters are filled with space character.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the aircraft identifier of the following aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the aircraft identifier of the following aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the aircraft identifier of the following
+aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+aircraft identifier of the following aircraft (i.e. the one catching
+up).</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Mode 3/A Code of the following aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Mode 3/A Code of the following aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Mode 3/A Code of the following aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Mode 3/A code of the following aircraft (i.e. the one catching up).</li>
+<li>Altitude expressed in two’s complement.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+data item contains the position (in WGS-84) of the Separation Indicator
+presented to the ATCO. In this case bits 16/1 are meaningless.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+data item contains the position (in WGS-84) of the Separation Indicator
+presented to the ATCO. In this case bits 16/1 are meaningless.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this data item contains the position (in WGS-84) of the Separation
+Indicator presented to the ATCO. In this case bits 16/1 are
+meaningless.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+position (in WGS-84) of the Separation Indicator presented to the ATCO.
+In this case bits 16/1 are meaningless.</li>
+<li>Two’s complement fixed-point format.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+data item contains the position (in Cartesian Coordinates) of the
+Separation Indicator presented to the ATCO. In this case bits 16/1 are
+meaningless.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+data item contains the position (in Cartesian Coordinates) of the
+Separation Indicator presented to the ATCO. In this case bits 16/1 are
+meaningless.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this data item contains the position (in Cartesian Coordinates) of
+the Separation Indicator presented to the ATCO. In this case bits 16/1
+are meaningless.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this data item
+contains the position (in Cartesian Coordinates) of the Separation
+Indicator presented to the ATCO. In this case bits 16/1 are
+meaningless.</li>
+<li>Time to Threshold expressed in Two’s Complement</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) and
+for Message Type = 34 (Initial Target Distance Indicator - FTD) this
+data item contains the additional gap in spacing between two approaching
+aircraft as manually inserted by the ATCO. This could be used, for
+example, to increase the spacing between approaching aircraft in order
+to generate sufficient spacing to clear a departing aircraft.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD)
+thiscontains the Aircraft Characteristics of the following
+aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - FTD) this
+contains the Aircraft Characteristics of the following aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Aircraft Characteristics of the following
+aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Aircraft Characteristics of the following aircraft.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Mode-S Identifier of the following aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Mode-S Identifier of the following aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Mode-S Identifier of the following aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Mode-S Identifier of the following aircraft.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Flight Plan Number of the following aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Flight Plan Number of the following aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Flight Plan Number of the following
+aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Flight Plan Number of the following aircraft.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Cleared Flight Level of the following aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Cleared Flight Level of the following aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Cleared Flight Level of the following
+aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Cleared Flight Level of the following aircraft.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/171 - Aircraft Identification and Characteristics
+2</strong></p>
+<blockquote>
+<p>definition: Identification &amp; Characteristics of Aircraft 2
+Involved in the Conflict.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I004/171/AI2 - Aircraft Identifier (in 7 Characters) of
+Aircraft 2 Involved in the Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/M32 - Mode 3/A Code Aircraft 2</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I004/171/M32/MODE3A - Mode-3/A Code (Converted Into Octal
+Representation) of Aircraft 2 Involved in the Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/CPW - Predicted Conflict Position Target 2 in WGS-84
+Coordinates</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/171/CPW/LAT - In WGS-84 in Two’s Complement</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/CPW/LON - In WGS-84 in Two’s Complement</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/CPW/ALT - Altitude of Predicted
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1500.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">150000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/CPL - Predicted Conflict Position for the Aircraft 2
+Involved in the Conflict</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I004/171/CPL/X - Starting X-position of the
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/CPL/Y - Starting Y-position of the
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/CPL/Z - Starting Z-position of the
+Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">25</span> ft ≈ <span class="math inline">25.0</span> ft</p>
+<p>unit: &quot;ft&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−1500.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">150000.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/TT2 - Time to Runway Threshold for Second
+Approaching Aircraft in a RIMCA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/DT2 - Distance to Runway Threshold for Aircraft 2
+Involved in a RIMCA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/AC2 - Characteristics of Aircraft 2 Involved in the
+Conflict</strong></p>
+<blockquote>
+<p>Extended</p>
+<blockquote>
+<p><strong>I004/171/AC2/GATOAT - Identification of Conflict Categories
+Definition Table</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+General Air Traffic
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Operational Air Traffic
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not applicable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/AC2/FR1FR2 - Flight Rules</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Instrument Flight Rules
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Visual Flight rules
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Not applicable
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Controlled Visual Flight Rules
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/AC2/RVSM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Approved
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Exempt
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not Approved
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/AC2/HPR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Normal Priority Flight
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+High Priority Flight
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I004/171/AC2/CDM - Climbing/Descending Mode</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Maintaining
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Climbing
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Descending
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/AC2/PRI</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Non primary target
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Primary target
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/AC2/GV</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Ground Vehicle
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/MS2 - Aircraft Identification Downloaded From
+Aircraft 2 Involved in the Conflict If Eequipped With a Mode-S
+Transponder</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>ICAO string (6-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/FP2 - Number of the Flight Plan Correlated to
+Aircraft 2 Involved in the Conflict</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 5</p>
+<p><strong>I004/171/FP2/NBR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 27</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> ≈ <span class="math inline">1.0</span> </p>
+<p>unit: &quot;&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">9.9999999<em>e</em>7</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I004/171/CF2 - Cleared Flight Level for Aircraft 2 Involved
+in the Conflict</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The aircraft identifier is always left adjusted. If needed, the
+remaining characters are filled with space character.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the aircraft identifier of the leading aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the aircraft identifier of the leading aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the aircraft identifier of the leading aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+aircraft identifier of the leading aircraft.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Mode 3/A Code of the leading aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Mode 3/A Code of the leading aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Mode 3/A Code of the leading aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Mode 3/A code of the leading aircraft.</li>
+<li>Altitude expressed in two’s complement.</li>
+<li>FTwo’s complement.</li>
+<li>Time to Threshold expressed in Two’s Complement</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Aircraft Characteristics of the leading aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Aircraft Characteristics of the leading aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Aircraft Characteristics of the leading
+aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Aircraft Characteristics of the leading aircraft.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Mode-S Identifier of the leading aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Mode-S Identifier of the leading aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Mode-S Identifier of the leading aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Mode-S Identifier of the leading aircraft.</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Flight Plan Number of the leading aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+contains the Flight Plan Number of the leading aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Flight Plan Number of the leading aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Flight Plan Number of the leading aircraft.</li>
+<li>The value shall be within the range described by ICAO Annex 10</li>
+<li>For Message Type = 33 (Final Target Distance Indicator - FTD) this
+contains the Cleared Flight Level of the leading aircraft.</li>
+<li>For Message Type = 34 (Initial Target Distance Indicator - ITD)
+thiscontains the Cleared Flight Level of the leading aircraft.</li>
+<li>For Message Type = 35 (Wake Vortex Indicator Infringement Alert -
+IIA) this contains the Cleared Flight Level of the leading
+aircraft.</li>
+<li>For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+Cleared Flight Level of the leading aircraft.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I004/RE - Reserved Expansion Field</strong></p>
+<blockquote>
+<p>definition: Expansion
+</p>
+<p>Explicit (ReservedExpansion)</p>
+</blockquote>
+<p><strong>I004/SP - Special Purpose Field</strong></p>
+<blockquote>
+<p>definition: Special Purpose Field
+</p>
+<p>Explicit (SpecialPurpose)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I004/010</code> - Data Source Identifier</li>
+<li>2: <code>I004/000</code> - Message Type</li>
+<li>3: <code>I004/015</code> - SDPS Identifier</li>
+<li>4: <code>I004/020</code> - Time of Message</li>
+<li>5: <code>I004/040</code> - Alert Identifier</li>
+<li>6: <code>I004/045</code> - Area and Alert Status</li>
+<li>7: <code>I004/060</code> - Safety Net Function and System
+Status</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I004/030</code> - Track Number 1</li>
+<li>9: <code>I004/170</code> - Aircraft Identification and
+Characteristics 1</li>
+<li>10: <code>I004/120</code> - Conflict Characteristics</li>
+<li>11: <code>I004/070</code> - Conflict Timing and Separation</li>
+<li>12: <code>I004/076</code> - Vertical Deviation</li>
+<li>13: <code>I004/074</code> - Longitudinal Deviation</li>
+<li>14: <code>I004/075</code> - Transversal Distance Deviation</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I004/100</code> - Area Definition</li>
+<li>16: <code>I004/035</code> - Track Number 2</li>
+<li>17: <code>I004/171</code> - Aircraft Identification and
+Characteristics 2</li>
+<li>18: <code>I004/110</code> - FDPS Sector Control Identification</li>
+<li><em>Spare</em></li>
+<li>20: <code>I004/RE</code> - Reserved Expansion Field</li>
+<li>21: <code>I004/SP</code> - Special Purpose Field</li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>

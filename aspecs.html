@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - aspecs</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+        <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./specs.html">Specifications</a>
+                <a href="./struct.html">Structure</a>
+                <a href="./syntax.html">Syntax</a>
+                <a href="./aspecs.html">Aspecs</a>
+                <a href="./faq.html">FAQ</a>
+                <a href="./source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="aspecs">Aspecs</h1>
+<p>Asterix conversion and validation tool is an integral part of this project.</p>
+<p>Features:</p>
+<ul>
+<li>validate sources file</li>
+<li>transparently convert from one format to another</li>
+<li>convert from one format to itself (prettify definition file)</li>
+<li>dump file as a list of items</li>
+<li>show asterix definition signature (like a fingerprint, but not
+depending on a particular file format)</li>
+<li>generate documentation format</li>
+</ul>
+<p>Conversion process works in the following steps:</p>
+<ol>
+<li>parse input file to internal (abstract) structure</li>
+<li>validate internal structure</li>
+<li>generate required output format from internal structure</li>
+</ol>
+<p>Supported formats:</p>
+<ul>
+<li>custom <em>.ast</em> format</li>
+<li>standard <em>.json</em> format</li>
+</ul>
+<p>It is possible to extend the converter to other formats
+by implementing appropriate <code>encodeAsterix</code> and <code>decodeAsterix</code> functions.</p>
+<p>Abstract <a href="./struct.html">internal structure</a> is the same for all formats.</p>
+<h2 id="installation">Installation</h2>
+<p>To install or upgrade asterix specifications tools, use one of the
+following methods.</p>
+<h3 id="static-binary-installation">Static binary installation</h3>
+<p>Pre-build 64-bit linux binary is available to download from
+<a href="./bin/aspecs-static">this link</a>.</p>
+<ul>
+<li>current version: <code>2.2.0</code></li>
+<li>SHA256SUM: <code>f73a708e682b770e51e004ba7249e3236a2d0da03472903e50a5991d00d586bd</code></li>
+</ul>
+<p>Download and copy the file to some location and set
+file mode, for example under UbuntuOS:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> cp aspecs-static /usr/local/bin/aspecs</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> chmod 755 /usr/local/bin/aspecs</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># verify installation</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> <span class="at">--version</span></span></code></pre></div>
+<h3 id="installation-via-nix-package-manager">Installation via <code>nix</code> package manager</h3>
+<p>With active <a href="https://nixos.org/">nix</a> environment:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> aspecs</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-build</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-env</span> <span class="at">-i</span> <span class="va">$(</span><span class="fu">readlink</span> result<span class="va">)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># verify installation</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> <span class="at">--version</span></span></code></pre></div>
+<h2 id="usage">Usage</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># show help</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> <span class="at">--help</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># validate a file (ast/json format)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> validate <span class="at">--input-ast</span> input.ast</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> validate <span class="at">--input-json</span> input.json</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># prettify ast file after editing, the file will be overwritten</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> prettify input.ast <span class="at">--ast</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># show definition fingerprint, for the same definitions</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># the fingerprint shall be the same, regardless of the format</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> checksum <span class="at">--input-ast</span> input.ast</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> checksum <span class="at">--input-json</span> input.json</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># convert ast -&gt; json</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> convert <span class="at">--input-ast</span> <span class="at">--output-json</span> input.ast <span class="op">&gt;</span> out.json</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># convert json -&gt; ast</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> convert <span class="at">--input-json</span> <span class="at">--output-ast</span> input.json <span class="op">&gt;</span> out.ast</span></code></pre></div>
+<h2 id="development">Development</h2>
+<p>Install nix package manager, clone repository</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-L</span> https://nixos.org/nix/install <span class="kw">|</span> <span class="fu">sh</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/zoranbosnjak/asterix-specs.git</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> asterix-specs/aspecs/</span></code></pre></div>
+<p>(Re)build aspecs with <code>nix-build</code> and run it</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-build</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./result/bin/aspecs</span> <span class="at">--help</span></span></code></pre></div>
+<p>Use <code>nix-shell</code> environment</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-shell</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># monitor changes, auto rebuild on any source change</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ghcid</span> <span class="st">&quot;--command=ghci -Wall </span><span class="va">$EXTENSIONS</span><span class="st"> -iother -ilib -iapp app/Main.hs&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co"># run program without rebuild</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ex">runhaskell</span> <span class="va">$EXTENSIONS</span> <span class="at">-iother</span> <span class="at">-ilib</span> <span class="at">-iapp</span> app/Main <span class="at">--help</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># (re)build with 'cabal' and run program</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ex">cabal</span> build</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-type</span> f <span class="at">-executable</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> <span class="st">&quot;\.so&quot;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div>
+        </main>
+
+        <footer>
+            Updated: 2024-12-05, git revision #116c269.
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>

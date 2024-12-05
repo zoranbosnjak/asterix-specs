@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - Home</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+        <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./specs.html">Specifications</a>
+                <a href="./struct.html">Structure</a>
+                <a href="./syntax.html">Syntax</a>
+                <a href="./aspecs.html">Aspecs</a>
+                <a href="./faq.html">FAQ</a>
+                <a href="./source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="overview">Overview</h1>
+<p><strong>Asterix</strong> is a binary data format, developed and
+maintained by <a href="https://www.eurocontrol.int/asterix">eurocontrol</a>.</p>
+<p>The major problem with the original specifications is that
+they are provided in a form of free text (PDF files). As a consequence,
+the very first step in every asterix project is to retype the
+specifications to a parsable form. And this is what this project
+is all about.</p>
+<h1 id="project-content">Project content</h1>
+<p>This project contains:</p>
+<ul>
+<li><a href="./specs.html">asterix definitions</a> in <em>zero overhead</em> custom text based <a href="./syntax.html">format</a>;</li>
+<li><a href="./aspecs.html">aspecs</a> to validate and convert specifications between formats;</li>
+<li>auto-generated specifications in <em>JSON</em> format;</li>
+<li>auto-generated specifications in <em>HTML</em> and <em>PDF</em> format;</li>
+<li>formal description of asterix <a href="./struct.html">structure</a>;</li>
+</ul>
+<h2 id="asterix-definitions">Asterix definitions</h2>
+<p>In this project, the asterix definitions are stored and maintained in a
+compact text based parsable form. The intention of this <a href="./syntax.html">format</a>
+is to be:</p>
+<ul>
+<li>exact and complete (including definition text and remarks);</li>
+<li>easy to read and write with any text editor;</li>
+<li>easy to parse and reuse in other projects;</li>
+<li>clutter free.</li>
+</ul>
+<p>Example definition snippet:</p>
+<pre><code>asterix 008 &quot;Monoradar Derived Weather Information&quot;
+edition 1.2
+date 2014-08-24
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 &quot;Message Type&quot;
+        definition
+            This Data Item allows for a more convenient handling of the messages
+            at the receiver side by further defining the type of transaction.
+        element 8
+            table
+                1: Polar vector
+                2: Cartesian vector of start point/length
+                3: Contour record
+                4: Cartesian start point and end point vector
+                254: SOP message
+                255: EOP message
+
+    010 &quot;Data Source Identifier&quot;
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC &quot;System Area Code&quot;
+                element 8
+                    raw
+            SIC &quot;System Identification Code&quot;
+                element 8
+                    raw
+        remark
+            Note:
+                The defined SACs are on the EUROCONTROL ASTERIX website
+                (www.eurocontrol.int/asterix)
+    ...</code></pre>
+<p>See the <a href="./struct.html">structure description</a> for more details.</p>
+<h1 id="how-to-use-it">How to use it?</h1>
+<p>The <a href="./specs.html">specifications</a> are provided in various formats.</p>
+<ul>
+<li><p>For new projects it is recommended to use the definitions directly
+in the original <em>ast</em> or <em>json</em> format.</p></li>
+<li><p>For the existing projects, the odds are that some subset of the
+specifications is already defined in some other structured format
+(like <em>json</em> or <em>xml</em>). In this case, the reasonable approach would
+be to write <em>additional converter</em> from the specifications in this
+project to the format required by the target project.<br />
+<br />
+This is a one-time effort and pays off quickly by:</p>
+<ul>
+<li>reusing all the <a href="./specs.html">existing</a> definitions;</li>
+<li>writing new definitions in a clutter free format.</li>
+</ul></li>
+<li><p>This project tries to address most aspects of asterix specifications,
+including rare corner cases. For some projects this might not be nessary and
+it would make sense to simplify definitions before actual use. See example
+below.</p></li>
+</ul>
+<p>If you are creating new categories, consider <a href="./source.html">contributing</a>
+definitions to the upstream repository.</p>
+<h2 id="example-simplify-specification-with-python-script">Example: simplify specification with <code>python</code> script</h2>
+<p>This example converts asterix specification to a simpler form, with
+some nonessential information removed from the structure. Where the
+specification is context dependent, it is converted to a <em>default</em>
+value (this is not exactly according to the original specification,
+but it allows much simpler struture and the problem can be handled
+manually in the application code if required - that is: hardcoding
+the exceptional cases).</p>
+<p>Input and output are both in <code>json</code> format.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># -- convert.py script</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split(obj):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (obj[<span class="st">'tag'</span>], obj[<span class="st">'contents'</span>])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> unsplit(tag, contents):</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">'tag'</span>: tag, <span class="st">'contents'</span>: contents}</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_number(obj):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Convert precise number structure to int or float&quot;&quot;&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'NumInt'</span>:</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cont</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'NumDiv'</span>:</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> handle_number(cont[<span class="st">'numerator'</span>])</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> handle_number(cont[<span class="st">'denominator'</span>])</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(a) <span class="op">/</span> <span class="bu">float</span>(b)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'NumPow'</span>:</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">pow</span>(cont[<span class="st">'base'</span>], cont[<span class="st">'exponent'</span>])</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected'</span>, t)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_rule(handler, obj):</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;Handle ContextFree/Dependent rule.</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">    In this example, ignore dependency and use 'default' rule.</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">    This handler requires another handler for the internal structure.&quot;&quot;&quot;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'ContextFree'</span>:</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> handler(cont)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Dependent'</span>:</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> handler(cont[<span class="st">'default'</span>])</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected'</span>, t)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_signedness(obj):</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Signed'</span>:</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Unsigned'</span>:</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected'</span>, t)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_content(obj):</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'ContentQuantity'</span>:</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> unsplit(<span class="st">'quantity'</span>, {</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>            <span class="st">'lsb'</span>: handle_number(cont[<span class="st">'lsb'</span>]),</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>            <span class="st">'signed'</span>: handle_signedness(cont[<span class="st">'signedness'</span>]),</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> unsplit(<span class="st">'other'</span>, <span class="va">None</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_variation(obj):</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Element'</span>:</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> {</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>            <span class="st">'bits'</span>: cont[<span class="st">'bitSize'</span>],</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>            <span class="st">'content'</span>: handle_rule(handle_content, cont[<span class="st">'rule'</span>]),</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Group'</span>:</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> [handle_item(i) <span class="cf">for</span> i <span class="kw">in</span> cont]</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Extended'</span>:</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> [handle_item(i) <span class="cf">if</span> i <span class="cf">else</span> <span class="va">None</span> <span class="cf">for</span> i <span class="kw">in</span> cont]</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Repetitive'</span>:</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> {</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>            <span class="st">'type'</span>: cont[<span class="st">'type'</span>],</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>            <span class="st">'variation'</span>: handle_variation(cont[<span class="st">'variation'</span>]),</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Explicit'</span>:</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Compound'</span>:</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> [handle_nonspare(i) <span class="cf">if</span> i <span class="cf">else</span> <span class="va">None</span> <span class="cf">for</span> i <span class="kw">in</span> cont]</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected'</span>, t)</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> unsplit(t, rv)</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_item(obj):</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Spare'</span>:</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> cont</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Item'</span>:</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> handle_nonspare(cont)</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected'</span>, t)</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> unsplit(t, rv)</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_nonspare(obj):</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>        <span class="st">'name'</span>: obj[<span class="st">'name'</span>],</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>        <span class="st">'variation'</span>: handle_rule(handle_variation, obj[<span class="st">'rule'</span>]),</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_uap_item(obj):</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'UapItem'</span>:</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cont</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_uap(obj):</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Uap'</span>:</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> unsplit(t, [handle_uap_item(i) <span class="cf">for</span> i <span class="kw">in</span> cont])</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'Uaps'</span>:</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> unsplit(t, [(name,</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>            [handle_uap_item(i) <span class="cf">for</span> i <span class="kw">in</span> lst]) <span class="cf">for</span> name, lst <span class="kw">in</span> cont[<span class="st">'cases'</span>]])</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected'</span>, t)</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> handle_asterix(obj):</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>    t, cont <span class="op">=</span> split(obj)</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'AsterixBasic'</span>:</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> {</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>            <span class="st">'category'</span>: cont[<span class="st">'category'</span>],</span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>            <span class="st">'edition'</span>: cont[<span class="st">'edition'</span>],</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>            <span class="st">'catalogue'</span>: [handle_nonspare(i) <span class="cf">for</span> i <span class="kw">in</span> cont[<span class="st">'catalogue'</span>]],</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>            <span class="st">'uap'</span>: handle_uap(cont[<span class="st">'uap'</span>]),</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> t <span class="op">==</span> <span class="st">'AsterixExpansion'</span>:</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>        rv <span class="op">=</span> {</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>            <span class="st">'category'</span>: cont[<span class="st">'category'</span>],</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>            <span class="st">'edition'</span>: cont[<span class="st">'edition'</span>],</span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>            <span class="st">'fspecByteSize'</span>: cont[<span class="st">'fspecByteSize'</span>],</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>            <span class="st">'items'</span>: [handle_nonspare(i) <span class="cf">for</span> i <span class="kw">in</span> cont[<span class="st">'items'</span>]],</span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected'</span>, t)</span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> unsplit(t, rv)</span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a><span class="co"># main</span></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>infile<span class="op">=</span>sys.argv[<span class="dv">1</span>]</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(infile) <span class="im">as</span> f:</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>    obj1 <span class="op">=</span> json.loads(f.read())</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a>obj2 <span class="op">=</span> handle_asterix(obj1)</span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(obj2, indent<span class="op">=</span><span class="dv">4</span>))</span></code></pre></div>
+<p>Download and convert one specification:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># download</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">src</span><span class="op">=</span>https://zoranbosnjak.github.io/asterix-specs/specs/</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="va">$src</span>/cat001/cats/cat1.4/definition.json <span class="op">&gt;</span> original.json</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> convert.py original.json <span class="op">&gt;</span> simple.json</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> original.json simple.json</span></code></pre></div>
+<h1 id="related-projects">Related projects</h1>
+<p>If you’re using asterix-specs definition files in your project (directly or
+indirectly) and the source code is available, your are welcome to
+<a href="./source.html">notify project maintainer</a>, to be added to the list.</p>
+<ul>
+<li><p><a href="https://github.com/zoranbosnjak/asterix-data">asterix-data</a> is a set of
+machine-readable asterix definition files in <em>xml</em> format. The <em>xml</em> files
+are generated automatically out of asterix specifications from this
+project (<em>json</em> to <em>xml</em> conversion). In turn, various other legacy projects
+are using generated <em>xml</em> definition files for encoding and decoding
+asterix data.</p></li>
+<li><p><a href="https://github.com/CroatiaControlLtd/asterix">asterix</a> is a <em>python</em> module
+and application for reading and parsing asterix data. It includes custom <em>xml</em>
+configuration files for asterix category definitions, similar but not the
+same as the <code>asterix-data</code> project mentioned above.
+<a href="https://github.com/CroatiaControlLtd/asterix/tree/master/asterix-specs-converter">This directory</a>
+contains an automatically generated version of the <em>xml</em> configuration files,
+together with the conversion script.</p></li>
+<li><p><a href="https://www.wireshark.org/">wireshark</a> is a well known
+network protocol analyzer, also capable of decoding asterix data format.
+Asterix related <code>C/C++</code> structures and decoding functions are
+automatically generated from <em>json</em> <code>asterix-specs</code> definitions. See
+<a href="https://gitlab.com/wireshark/wireshark/-/tree/master/tools/asterix">asterix parser generator</a>
+(part of wireshark source code) for details.</p></li>
+<li><p><a href="https://github.com/zoranbosnjak/asterix-libs#readme">asterix-libs</a>
+is a library collection project for processing (encoding and decoding)
+asterix data format. It currently supports
+<a href="https://github.com/zoranbosnjak/asterix-libs/tree/main/libs/python#readme">python</a>.
+The library source code is automatically updated from <code>*.ast</code> specification
+files from this project.</p></li>
+<li><p><a href="https://github.com/zoranbosnjak/asterix-tool#readme">asterix-tool</a>
+is a versatile asterix data related command line tool. Features include:
+random asterix data generation, asterix decoding, UDP datagram sending and
+receiving (including multicast), recording/replaying to/from a file, custom
+asterix filtering…
+Supported asterix categories and editions are automatically updated from
+this project.</p></li>
+</ul>
+        </main>
+
+        <footer>
+            Updated: 2024-12-05, git revision #116c269.
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>

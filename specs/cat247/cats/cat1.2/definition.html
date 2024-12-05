@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 247 - Version Number Exchange</h1>
+<p><strong>category</strong>: 247</p>
+<p><strong>edition</strong>: 1.2</p>
+<p><strong>date</strong>: 2008-02-01</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I247/010 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the radar station from which the data
+are received.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I247/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I247/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The defined SACs are on the EUROCONTROL ASTERIX website
+(www.eurocontrol.int/asterix)</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I247/015 - Service Identification</strong></p>
+<blockquote>
+<p>definition: Identification of the service provided to one or more
+users.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<p>The service identification is allocated by the system.</p>
+</blockquote>
+<p><strong>I247/140 - Time of Day</strong></p>
+<blockquote>
+<p>definition: Absolute time stamping expressed as UTC.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<p>The time of day value is reset to zero each day at midnight.</p>
+</blockquote>
+<p><strong>I247/550 - Category Version Number Report</strong></p>
+<blockquote>
+<p>definition: Version number of Categories used.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I247/550/CAT - Category</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I247/550/MAIN - Main Version Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I247/550/SUB - Sub Version Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I247/RE - Reserved Expansion Field</strong></p>
+<blockquote>
+<p>definition: Expansion
+</p>
+<p>Explicit (ReservedExpansion)</p>
+</blockquote>
+<p><strong>I247/SP - Special Purpose Field</strong></p>
+<blockquote>
+<p>definition: Special Purpose Field
+</p>
+<p>Explicit (SpecialPurpose)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I247/010</code> - Data Source Identifier</li>
+<li>2: <code>I247/015</code> - Service Identification</li>
+<li>3: <code>I247/140</code> - Time of Day</li>
+<li>4: <code>I247/550</code> - Category Version Number Report</li>
+<li><em>Spare</em></li>
+<li>6: <code>I247/SP</code> - Special Purpose Field</li>
+<li>7: <code>I247/RE</code> - Reserved Expansion Field</li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>

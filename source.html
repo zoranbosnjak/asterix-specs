@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - Source</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+        <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./specs.html">Specifications</a>
+                <a href="./struct.html">Structure</a>
+                <a href="./syntax.html">Syntax</a>
+                <a href="./aspecs.html">Aspecs</a>
+                <a href="./faq.html">FAQ</a>
+                <a href="./source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <p>Sources of this project are available in github
+<a href="https://github.com/zoranbosnjak/asterix-specs">repository</a>.</p>
+<h1 id="contributing">Contributing</h1>
+<p>Contributions (problem reports, fixes) to this projects are welcome.</p>
+<p>If you are a <em>github</em> user, the easiest way to contribute is via
+<a href="https://github.com/zoranbosnjak/asterix-specs">project’s web page</a>.<br />
+Feel free to contact project maintainer
+<a href="mailto:zoran.bosnjak@via.si">Zoran Bošnjak</a>
+via email.</p>
+<h2 id="contributing-new-categories">Contributing new categories</h2>
+<p>Before submitting new category, please make sure that
+definitions are:</p>
+<ul>
+<li>complete (including remarks);</li>
+<li>validated with the <a href="./aspecs.html">aspecs</a>;</li>
+<li>prettified with the <a href="./aspecs.html">aspecs</a>;</li>
+<li><em>code reviewed</em> by an independent reviewer;</li>
+</ul>
+<h1 id="project-structure">Project structure</h1>
+<ul>
+<li><p><a href="https://github.com/zoranbosnjak/asterix-specs/tree/master/specs">specs/</a>:
+Source files of <a href="./specs.html">asterix definitions</a>.</p></li>
+<li><p><a href="https://github.com/zoranbosnjak/asterix-specs/tree/master/aspecs">aspecs/</a>:
+Implementation of <a href="./aspecs.html">specs related tool</a>.</p></li>
+<li><p><a href="https://github.com/zoranbosnjak/asterix-specs/tree/master/to-pdf">to-pdf/</a>:
+PDF documentation generator, a simple wrapper
+around <a href="https://pandoc.org/">pandoc</a> tool.</p></li>
+<li><p><a href="https://github.com/zoranbosnjak/asterix-specs/tree/master/website">website/</a>:
+Implementation of this web site.</p></li>
+</ul>
+<h1 id="development">Development</h1>
+<p><a href="https://nixos.org/">nix</a> package manager is required for development.
+To install it, use:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-L</span> https://nixos.org/nix/install <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div>
+<p>… then logout and login again for changes to take effect.</p>
+<p>Optionally install cachix client and use binary cache,
+to speed up first build.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-env</span> <span class="at">-iA</span> cachix <span class="at">-f</span> https://cachix.org/api/v1/install</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cachix</span> use zoranbosnjak</span></code></pre></div>
+<h2 id="clone-project-to-local-disk">Clone project to local disk</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/zoranbosnjak/asterix-specs.git</span></code></pre></div>
+<blockquote>
+<p><strong>NOTE:</strong> It might take some time for <em>nix</em> do download all required
+dependencies for the first time or when switching to a new version of
+nix packages. Subsequent rebuilds on local changes are reasonably fast.</p>
+</blockquote>
+<h2 id="asterix-category-development">Asterix category development</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> asterix-specs/specs/</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-shell</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># this project uses unix file format for specs files</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># convert file from dos to unix if necessary</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">perl</span> <span class="at">-pi</span> <span class="at">-e</span> <span class="st">'s/\r\n/\n/g'</span> {file_name}</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># validate selected file</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> validate <span class="at">--input-ast</span> {file_name}</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># prettify spec file</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="ex">aspecs</span> prettify {file_name} <span class="at">--ast</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># build selected file</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ex">./build_spec.sh</span> {file_name}</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># check the result with some web browser</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ex">netsurf</span> output/</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># cleanup generated files when done</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clean <span class="at">-xdf</span> output/</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co"># validate all '.ast' files</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="va">$(</span><span class="fu">find</span> . <span class="at">-type</span> f <span class="kw">|</span> <span class="fu">grep</span> <span class="st">&quot;\.ast$&quot;</span><span class="va">)</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    <span class="ex">aspecs</span> validate <span class="at">--input-ast</span> <span class="va">$i</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span> <span class="bu">echo</span> <span class="va">$i</span><span class="kw">;</span> <span class="cf">break</span><span class="kw">;</span> <span class="cf">fi</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code></pre></div>
+<h2 id="complete-project-requild-procedure">Complete project requild procedure</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> asterix-specs/</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nix-build</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># check locally generated web site with some web browser</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">netsurf</span> ./result/index.html</span></code></pre></div>
+        </main>
+
+        <footer>
+            Updated: 2024-12-05, git revision #116c269.
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>

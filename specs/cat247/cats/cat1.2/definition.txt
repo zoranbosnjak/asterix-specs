@@ -1,0 +1,72 @@
+asterix 247 "Version Number Exchange"
+edition 1.2
+date 2008-02-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                The defined SACs are on the EUROCONTROL ASTERIX website
+                (www.eurocontrol.int/asterix)
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+        remark
+            The service identification is allocated by the system.
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            The time of day value is reset to zero each day at midnight.
+
+    550 "Category Version Number Report"
+        definition
+            Version number of Categories used.
+        repetitive 1
+            group
+                CAT "Category"
+                    element 8
+                        unsigned integer
+                MAIN "Main Version Number"
+                    element 8
+                        unsigned integer
+                SUB "Sub Version Number"
+                    element 8
+                        unsigned integer
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    015
+    140
+    550
+    -
+    SP
+    RE

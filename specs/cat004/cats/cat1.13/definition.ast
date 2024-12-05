@@ -1,0 +1,1548 @@
+asterix 004 "Safety Net Messages"
+edition 1.13
+date 2024-06-04
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the messages
+            at the receiver side by further defining the type of transaction.
+        element 8
+            table
+                1: Alive Message (AM)
+                2: Route Adherence Monitor Longitudinal Deviation (RAMLD)
+                3: Route Adherence Monitor Heading Deviation (RAMHD)
+                4: Minimum Safe Altitude Warning (MSAW)
+                5: Area Proximity Warning (APW)
+                6: Clearance Level Adherence Monitor (CLAM)
+                7: Short Term Conflict Alert (STCA)
+                8: Approach Path Monitor (APM)
+                9: RIMCAS Arrival / Landing Monitor (ALM)
+                10: RIMCAS Arrival / Departure Wrong Runway Alert (WRA)
+                11: RIMCAS Arrival / Departure Opposite Traffic Alert (OTA)
+                12: RIMCAS Departure Monitor (RDM)
+                13: RIMCAS Runway / Taxiway Crossing Monitor (RCM)
+                14: RIMCAS Taxiway Separation Monitor (TSM)
+                15: RIMCAS Unauthorized Taxiway Movement Monitor(UTMM)
+                16: RIMCAS Stop Bar Overrun Alert (SBOA)
+                17: End Of Conflict (EOC)
+                18: ACAS Resolution Advisory (ACASRA)
+                19: Near Term Conflict Alert (NTCA)
+                20: Downlinked Barometric Pressure Setting Monitor (DBPSM)
+                21: Speed Adherence Monitor (SAM)
+                22: Outside Controlled Airspace Tool (OCAT)
+                23: Vertical Conflict Detection (VCD)
+                24: Vertical Rate Adherence Monitor (VRAM)
+                25: Cleared Heading Adherence Monitor (CHAM)
+                26: Downlinked Selected Altitude Monitor (DSAM)
+                27: Holding Adherence Monitor (HAM)
+                28: Vertical Path Monitor (VPM)
+                29: RIMCAS Taxiway Traffic Alert (TTA)
+                30: RIMCAS Arrival/Departure Close Runway Alert (CRA)
+                31: RIMCAS Arrival/Departure Aircraft Separation Monitor (ASM)
+                32: RIMCAS ILS Area Violation Monitor (IAVM)
+                33: Final Target Distance Indicator (FTD)
+                34: Initial Target Distance Indicator (ITD)
+                35: Wake Vortex Indicator Infringement Alert (IIA)
+                36: Sequence Warning (SQW)
+                37: Catch Up Warning (CUW)
+                38: Conflicting ATC Clearances (CATC)
+                39: No ATC Clearance (NOCLR)
+                40: Aircraft Not Moving despite ATC Clearance (NOMOV)
+                41: Aircraft leaving/entering the aerodrome area without proper handover (NOH)
+                42: Wrong Runway or Taxiway Type (WRTY)
+                43: Stand Occupied (STOCC)
+                44: Ongoing Alert (ONGOING)
+                45: Non-Transgression Zone Violation (NTZ)
+                97: Lost Track Warning (LTW)
+                98: Holding Volume Infringement (HVI)
+                99: Airspace Infringement Warning (AIW)
+        remark
+            Notes:
+
+                1. In applications where transactions of various types are exchanged,
+                   the Message Type Data Item facilitates the proper message handling
+                   at the receiver side.
+                2. All Message Type values are reserved for common standard use.
+                3. Message Types 33 to 37 have been designed for applications supporting
+                   the ATCO in the optimisation of separation during final approach.
+                   They provide information required to indicate to the ATCO the closest
+                   possible distance of a following aircraft in relation to a leading
+                   aircraft. This allows to make optimum use of the available runway capacity.
+                4. The list of items present for the 31 types of messages is defined
+                   in the following 4 tables.
+                   M stands for mandatory, O for optional, X for never present. ::
+
+                    item 001 002 003 004 005 006 007 008
+                    I004/000 M M M M M M M M
+                    I004/010 M M M M M M M M
+                    I004/015 O O O O O O O O
+                    I004/020 M M M M M M M M
+                    I004/030 X M M M M M M M
+                    I004/035 X X X X X X M X
+                    I004/040 X M M M M M M M
+                    I004/045 X O O O O O O O
+                    I004/060 M X X X X X X X
+                    I004/070 X X X O O X O X
+                    I004/074 X M X X X X X X
+                    I004/075 X X M X X X X M
+                    I004/076 X X X X X O X O
+                    I004/100 X X X X M X X O
+                    I004/110 X O O O O O O O
+                    I004/120 X X X M M X M X
+                    I004/170 X O O O O O O O
+                    I004/171 X X X X X X O X
+                    I004/RE O O O O O O O O
+
+                    item 009 010 011 012 013 014 015 016
+                    I004/000 M M M M M M M M
+                    I004/010 M M M M M M M M
+                    I004/015 O O O O O O O O
+                    I004/020 M M M M M M M M
+                    I004/030 M M M M M M M M
+                    I004/035 M X M M M M O X
+                    I004/040 M M M M M M M M
+                    I004/045 O O O O O O O O
+                    I004/060 X X X X X X X X
+                    I004/070 O X O O O O O X
+                    I004/074 X X X X X X X X
+                    I004/075 X X X X X X X X
+                    I004/076 X X X X X X X X
+                    I004/100 M M M M M M M M
+                    I004/110 O O O O O O O O
+                    I004/120 M M M M M O O O
+                    I004/170 O O O O O O O O
+                    I004/171 O X O O O O O X
+                    I004/RE O O O O O O O O
+
+                    item 017 018 019 020 021 022 023 024
+                    I004/000 M M M M M M M M
+                    I004/010 M M M M M M M M
+                    I004/015 O O O O O O O O
+                    I004/020 M M M M M M M M
+                    I004/030 O X M M M M M M
+                    I004/035 O X M X X X M X
+                    I004/040 M M M M M M M M
+                    I004/045 O O O O O O O O
+                    I004/060 X X X X X X X X
+                    I004/070 X O O X X O O X
+                    I004/074 X X X X X X X X
+                    I004/075 X X X X X X X X
+                    I004/076 X X X X X X X O
+                    I004/100 X X X O O M M O
+                    I004/110 X X O O O O O O
+                    I004/120 X X O M O M M O
+                    I004/170 X M O O O O O O
+                    I004/171 X O O X X X O X
+                    I004/RE O M O O O O O O
+
+                    item 025 026 027 028 029 030 031 032
+                    I004/000 M M M M M M M M
+                    I004/010 M M M M M M M M
+                    I004/015 O O O O O O O O
+                    I004/020 M M M M M M M M
+                    I004/030 M M M M M M M M
+                    I004/035 X X X X O O M O
+                    I004/040 M M M M M M M M
+                    I004/045 O O O O O O O O
+                    I004/060 X X X X X X X X
+                    I004/070 X X X X O O O O
+                    I004/074 X X O X O X X X
+                    I004/075 X X X X O X X X
+                    I004/076 X O O O O X X X
+                    I004/100 O O O O O O O O
+                    I004/110 O O O O O O O O
+                    I004/120 O O O X O O O O
+                    I004/170 O O O O O O O O
+                    I004/171 X X X X O O O O
+                    I004/RE O O O O O O O O
+
+                    item 033 034 035 036 037 038 039 040
+                    I004/000 M M M M M M M M
+                    I004/010 M M M M M M M M
+                    I004/015 O O O O O O O O
+                    I004/020 M M M M M M M M
+                    I004/030 M M M M M M M M
+                    I004/035 M M M X O M X X
+                    I004/040 M M M M M M M M
+                    I004/045 O O O O O O O O
+                    I004/060 X X X X X X X X
+                    I004/070 O O M X X X X X
+                    I004/074 X X X X X X X X
+                    I004/075 X X X X X X X X
+                    I004/076 X X X X X X X X
+                    I004/100 O O O O O O O O
+                    I004/110 X X X X X O O O
+                    I004/120 M M O X X M M M
+                    I004/170 M M M M M O O O
+                    I004/171 M M M X M O X X
+                    I004/RE O O M O O O O O
+
+                    item 041 042 043 044 045 097 098 099
+                    I004/000 M M M M M M M M
+                    I004/010 M M M M M M M M
+                    I004/015 O O O O O O O O
+                    I004/020 M M M M M M M M
+                    I004/030 M M M M M M M M
+                    I004/035 X X X O X X X X
+                    I004/040 M M M M M M M M
+                    I004/045 O O O O O O O O
+                    I004/060 X X X X X X X X
+                    I004/070 X X X X O O O O
+                    I004/074 X X X X X X X X
+                    I004/075 X X X X X X X X
+                    I004/076 X X X X X X X X
+                    I004/100 O M M M O O O O
+                    I004/110 O O O O O O O O
+                    I004/120 M O X X M O O O
+                    I004/170 O O O O O O O O
+                    I004/171 X X X X X X X X
+                    I004/RE O O O O O M O O
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the Safety Nets server sending the message.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the EUROCONTROL Web
+                  Site (http://www.eurocontrol.int/asterix).
+
+    015 "SDPS Identifier"
+        definition
+            Identification of the SDPS providing data to the safety nets server.
+        repetitive 1
+            group
+                SAC "System Area Code"
+                    element 8
+                        raw
+                SIC "System Identification Code"
+                    element 8
+                        raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the EUROCONTROL Web
+                Site (http://www.eurocontrol.int/asterix).
+
+    020 "Time of Message"
+        definition
+            Absolute time stamping of the message in the form of elapsed time since
+            last midnight
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+                - This time is given at an application level (e.g. time at which a message
+                  is filled), and not at the communication level (i.e. not the time at which
+                  the data-block containing the message is sent).
+
+                - The time is reset to zero at every midnight.
+
+    030 "Track Number 1"
+        definition
+            Identification of a track number related to conflict
+        element 16
+            raw
+        remark
+            Notes:
+
+                1. This is the track number of the first track involved in the
+                   conflict in case of an STCA or a RIMCA or the track involved
+                   in case of one of the other Safety Net functions.
+                2. This track number is distributed in this field exactly as it was
+                   received from the Radar Processor Unit (identified by I004/015)
+                   and its range is depending on the range used by that unit.
+                3. In case of Message Type = 33 (Final Target Distance Indicator - FTD)
+                   this represents the Track Number of the following aircraft.
+                4. In case of Message Type = 34 (Initial Target Distance Indicator - ITD
+                   this represents the Track Number of the following aircraft.
+                5. In case of Message Type = 35 (Wake Vortex Indicator Infringement
+                   Alert - IIA) this represents the track number of the following aircraft.
+                6. In case of Message Type = 37 (Catch-Up Warning - CUW) this represents
+                   the track number of the following aircraft (i.e. the one catching up).
+
+    035 "Track Number 2"
+        definition
+            Together with I004/030, this item defines the track pair in conflict.
+        element 16
+            raw
+        remark
+            Notes:
+
+                1. This is the track number of the second track involved in the
+                   conflict in case of an STCA, a RIMCA, a NTCA, a VCD or in message
+                   types 33 to 35 and 37.
+                2. For the other Safety Net functions, this item is not used.
+                3. This track number is distributed in this field exactly as it was
+                   received from the Radar Processor Unit and its range is depending
+                   on the range used by that unit.
+                4. In case of Message Type = 33 (Final Target Distance Indicator - FTD)
+                   this represents the Track Number of the leading aircraft
+                5. In case of Message Type = 34 (Initial Target Distance Indicator - ITD
+                   this represents the Track Number of the leading aircraft.
+                6. In case of Message Type = 35 (Wake Vortex Indicator Infringement
+                   Alert - IIA) this represents the track number of the leading aircraft.
+                7. In case of Message Type = 37 (Catch-Up Warning - CUW) this represents
+                   the track number of the leading aircraft.
+                8. In case of Message Type = 38 (Conflicting ATC Clearances - CATC)
+                   this represents the track number of the aircraft to which the first
+                   ATC Clearance was issued.
+
+    040 "Alert Identifier"
+        definition
+            Identification of an alert (Alert number)
+        element 16
+            raw
+        remark
+            Notes:
+
+                1. This item is the Alert Identification of the conflict in the system
+                2. This number shall be assigned, by the Safety Net Server, for instance
+                   incrementally to every new alert and restart on zero after reaching
+                   the maximum value (65535)
+
+    045 "Area and Alert Status"
+        definition
+            Information concerning status of the alert
+        group
+            AREA "Area Status"
+                group
+                    EP "Element Populated Bit"
+                        element 1
+                            table
+                                0: Element not populated
+                                1: Element populated
+                    VAL "Area Status Value"
+                        element 3
+                            table
+                                0: Inactive
+                                1: Active
+                                2: Pre-active
+                                3: Reserved for Future Use
+                                4: Reserved for Future Use
+                                5: Reserved for Future Use
+                                6: Reserved for Future Use
+                                7: Reserved for Future Use
+            STAT "Status of the Alert"
+                element 3
+                    raw
+            spare 1
+
+    060 "Safety Net Function and System Status"
+        definition
+            Status of the Safety Nets functions handled by the system
+        extended
+            MRVA ""
+                element 1
+                    table
+                        0: Default
+                        1: MRVA function
+            RAMLD ""
+                element 1
+                    table
+                        0: Default
+                        1: RAMLD function
+            RAMHD ""
+                element 1
+                    table
+                        0: Default
+                        1: RAMHD function
+            MSAW ""
+                element 1
+                    table
+                        0: Default
+                        1: MSAW function
+            APW ""
+                element 1
+                    table
+                        0: Default
+                        1: APW function
+            CLAM ""
+                element 1
+                    table
+                        0: Default
+                        1: CLAM function
+            STCA ""
+                element 1
+                    table
+                        0: Default
+                        1: STCA function
+            -
+            APM ""
+                element 1
+                    table
+                        0: Default
+                        1: APM function
+            RIMCA ""
+                element 1
+                    table
+                        0: Default
+                        1: RIMCA function
+            ACASRA ""
+                element 1
+                    table
+                        0: Default
+                        1: ACAS RA function
+            NTCA ""
+                element 1
+                    table
+                        0: Default
+                        1: NTCA function
+            DG ""
+                element 1
+                    table
+                        0: Default
+                        1: System degraded
+            OF ""
+                element 1
+                    table
+                        0: Default
+                        1: Overflow error
+            OL ""
+                element 1
+                    table
+                        0: Default
+                        1: Overload error
+            -
+            AIW ""
+                element 1
+                    table
+                        0: Default
+                        1: AIW function
+            PAIW ""
+                element 1
+                    table
+                        0: Default
+                        1: PAIW function
+            OCAT ""
+                element 1
+                    table
+                        0: Default
+                        1: OCAT function
+            SAM ""
+                element 1
+                    table
+                        0: Default
+                        1: SAM function
+            VCD ""
+                element 1
+                    table
+                        0: Default
+                        1: VCD function
+            CHAM ""
+                element 1
+                    table
+                        0: Default
+                        1: CHAM function
+            DSAM ""
+                element 1
+                    table
+                        0: Default
+                        1: DSAM function
+            -
+            DBPSMARR ""
+                element 1
+                    table
+                        0: Default
+                        1: DBPSM ARR sub-function
+            DBPSMDEP ""
+                element 1
+                    table
+                        0: Default
+                        1: DBPSM DEP sub-function
+            DBPSMTL ""
+                element 1
+                    table
+                        0: Default
+                        1: DBPSM TL sub-function
+            VRAMCRM ""
+                element 1
+                    table
+                        0: Default
+                        1: VRAM CRM sub-function
+            VRAMVTM ""
+                element 1
+                    table
+                        0: Default
+                        1: VRAM VTM sub-function
+            VRAMVRM ""
+                element 1
+                    table
+                        0: Default
+                        1: VRAM VRM sub-function
+            HAMHD ""
+                element 1
+                    table
+                        0: Default
+                        1: HAM HD sub-function
+            -
+            HAMRD ""
+                element 1
+                    table
+                        0: Default
+                        1: HAM RD sub-function
+            HAMVD ""
+                element 1
+                    table
+                        0: Default
+                        1: HAM VD sub-function
+            HVI ""
+                element 1
+                    table
+                        0: Default
+                        1: HVI function
+            LTW ""
+                element 1
+                    table
+                        0: Default
+                        1: LTW function
+            VPM ""
+                element 1
+                    table
+                        0: Default
+                        1: VPM function
+            TTA ""
+                element 1
+                    table
+                        0: Default
+                        1: TTA function
+            CRA ""
+                element 1
+                    table
+                        0: Default
+                        1: CRA function
+            -
+            ASM ""
+                element 1
+                    table
+                        0: Default
+                        1: ASM sub-function
+            IAVM ""
+                element 1
+                    table
+                        0: Default
+                        1: IAVM sub-function
+            FTD ""
+                element 1
+                    table
+                        0: Default
+                        1: FTD Function
+            ITD ""
+                element 1
+                    table
+                        0: Default
+                        1: ITD function
+            IIA ""
+                element 1
+                    table
+                        0: Default
+                        1: IIA function
+            SQW ""
+                element 1
+                    table
+                        0: Default
+                        1: SQW function
+            CUW ""
+                element 1
+                    table
+                        0: Default
+                        1: CUW function
+            -
+            CATC ""
+                element 1
+                    table
+                        0: Default
+                        1: CATC function
+            NOCLR ""
+                element 1
+                    table
+                        0: Default
+                        1: NOCLR sub-function
+            NOMOV ""
+                element 1
+                    table
+                        0: Default
+                        1: NOMOV Function
+            NOH ""
+                element 1
+                    table
+                        0: Default
+                        1: NOH function
+            WRTY ""
+                element 1
+                    table
+                        0: Default
+                        1: WRTY function
+            STOCC ""
+                element 1
+                    table
+                        0: Default
+                        1: STOCC function
+            ONGOING ""
+                element 1
+                    table
+                        0: Default
+                        1: ONGOING function
+            -
+            NTZ ""
+                element 1
+                    table
+                        0: Default
+                        1: Non-Transgression Zone Function
+            spare 6
+            -
+        remark
+            Notes:
+
+                1. This item only sent in “alive messages” to describe the status
+                   of the Safety Net functions, handled by the system
+                2. Value 0 means either that the function is not managed by the system
+                   or has failed.
+                3. Value 1 means that the function is managed by the system and is running well
+                4. “Overflow” is defined as a situation where the number of alerts
+                   in the system has exceeded the threshold for safe operation.
+                   Potential prioritization of the alerts may lead to a loss of information.
+                5. “Overload” is defined as a system status in which the number of
+                   alerts does not allow for a reliable performance. A correct
+                   calculation and transmission cannot be guaranteed.
+                6. “System degraded” means that information from one or more sensors is lost.
+
+    070 "Conflict Timing and Separation"
+        definition
+            Information on Timing and Aircraft Separation
+        compound
+            TC "Time to Conflict"
+                description
+                    Time remaining to actual conflict situation
+                element 24
+                    unsigned quantity 1/2^7 "s"
+            TCA "Time to Closest Approach"
+                description
+                    Time to closest proximity between entities in conflict
+                element 24
+                    unsigned quantity 1/2^7 "s"
+            CHS "Current Horizontal Separation"
+                description
+                    Current horizontal separation
+                element 24
+                    unsigned quantity 1/2 "m"
+            MHS "Estimated Minimum Horizontal Separation"
+                description
+                    Estimated minimum horizontal separation.
+                element 16
+                    unsigned quantity 1/2 "m"
+            CVS "Current Vertical Separation"
+                description
+                    Current vertical separation
+                element 16
+                    unsigned quantity 25 "ft"
+            MVS "Estimated Minimum Vertical Separation"
+                description
+                    Estimated Minimum Vertical Separation
+                element 16
+                    unsigned quantity 25 "ft"
+
+    074 "Longitudinal Deviation"
+        definition
+            Longitudinal deviation for Route Adherence Monitoring, in two’s complement.
+        element 16
+            signed quantity 32 "m"
+        remark
+            Note:
+                - Longitudinal deviation will be positive if the aircraft is ahead of its
+                  planned position.
+                  Longitudinal deviation will be negative if the aircraft is behind its
+                  planned position.
+
+    075 "Transversal Distance Deviation"
+        definition
+            Transversal distance deviation for Route Adherence Monitoring, in two’s complement.
+        element 24
+            signed quantity 1/2 "m"
+        remark
+            Note:
+               - Deviation to the right of the track will be coded as a positive value.
+                 Deviation to the left of the track will be coded as a negative value
+
+    076 "Vertical Deviation"
+        definition
+            Vertical Deviation from planned altitude, in two’s complement
+        element 16
+            signed quantity 25 "ft"
+        remark
+            Note:
+                - Positive value if aircraft is above planned altitude
+                  Negative value if aircraft is below planned altitude
+
+    100 "Area Definition"
+        definition
+            Name of the area involved in a Safety Net alarm
+        compound
+            AN "Area Name"
+                description
+                    Name of the area involved in a Safety Net alarm.
+                    Characters 1-8 (coded on 6 bits each) defining the name of the area.
+                    Coding rules are provided in [3]Section 3.1.2.9"
+                element 48
+                    string icao
+            CAN "Crossing Area Name"
+                description
+                    Name of Crossing Area Involved in RIMCA.
+                    Each octet is an ASCII character defining the name of the crossing
+                    area involved in a runway/taxiway crossing alert (message type 013)
+                element 56
+                    string ascii
+            RT1 "Runway/Taxiway Designator 1"
+                description
+                    Designator of Runway/Taxiway 1 Involved in a RIMCA
+                    Each octet is an ASCII character defining the runway designator
+                element 56
+                    string ascii
+            RT2 "Runway/Taxiway Designator 2"
+                description
+                    Designator of Runway/Taxiway 2 Involved in a RIMCA
+                    Each octet is an ASCII character defining the runway designator
+                element 56
+                    string ascii
+            SB "Stop Bar Designator"
+                description
+                    Designator of Stop-Bar Involved in RIMCA
+                    Each octet is an ASCII character defining the stop-bar involved
+                    in a stop-bar crossed alert (message type 016)
+                element 56
+                    string ascii
+            G "Gate Designator"
+                description
+                    Gate Designator (in 7 characters) of the approaching aircraft in
+                    a RIMCA or a STOCC message,
+                    Each octet is an ASCII character defining the gate for the
+                    approaching aircraft
+                element 56
+                    string ascii
+        remark
+            Notes:
+
+                1. The area name is always left adjusted. If needed, the remaining
+                   characters are filled with space character.
+                2. The name of the crossing area is always left adjusted. If needed,
+                   the remaining characters are filled with space characters.
+                3. The runway designator is always left adjusted. If needed, the
+                   remaining characters are filled with space characters.
+                   The runway is encoded as follows: Location indicator, runway
+                   direction, left or right.
+                   Example: EGLL09L means London Heathrow (EGLL), Runway 09
+                   (direction 090 degrees) left runway
+                4. The runway designator is always left adjusted. If needed, the
+                   remaining characters are filled with space characters.
+                   The runway is encoded as follows: Location indicator, runway
+                   direction, left or right.
+                   Example: EGLL09L means London Heathrow (EGLL), Runway 09
+                   (direction 090 degrees) left runway
+                5. The stop-bar designator is always left adjusted. If needed, the
+                   remaining characters are filled with space characters.
+                6. The gate designator is always left adjusted. If needed, the
+                   remaining characters are filled with space character.
+
+    110 "FDPS Sector Control Identification"
+        definition
+            Identification of a list of FDPS Sector Control Positions in charge of
+            the involved targets, as provided by the FDPS
+        repetitive 1
+            group
+                CEN ""
+                    description
+                        Centre identification code
+                    element 8
+                        raw
+                POS ""
+                    description
+                        Control position identification code
+                    element 8
+                        raw
+        remark
+            Note:
+                - The Centre identification code and the Control position identification
+                  code must be defined between the communication partners.
+
+    120 "Conflict Characteristics"
+        definition
+            Description of the Conflict Properties
+        compound
+            CN "Conflict Nature"
+                description
+                    Nature of the conflict expressed by a set of properties
+                extended
+                    MAS "Conflict Location in Military Airspace"
+                        element 1
+                            table
+                                0: Conflict not predicted to occur in military airspace
+                                1: Conflict predicted to occur in military airspace
+                    CAS "Conflict Location in Civil Airspace"
+                        element 1
+                            table
+                                0: Conflict not predicted to occur in civil airspace
+                                1: Conflict predicted to occur in civil airspace
+                    FLD "Fast Lateral Divergence"
+                        element 1
+                            table
+                                0: Aircraft are not fast diverging laterally at current time
+                                1: Aircraft are fast diverging laterally at current time
+                    FVD "Fast Vertical Divergence"
+                        element 1
+                            table
+                                0: Aircraft are not fast diverging vertically at current time
+                                1: Aircraft are fast diverging vertically at current time
+                    TYPE "Type of Separation Infringement"
+                        element 1
+                            table
+                                0: Minor separation infringement
+                                1: Major separation infringement
+                    CROSS "Crossing Test"
+                        element 1
+                            table
+                                0: Aircraft have not crossed at starting time of conflict
+                                1: Aircraft have crossed at starting time of conflict
+                    DIV "Divergence Test"
+                        element 1
+                            table
+                                0: Aircraft are not diverging at starting time of conflict
+                                1: Aircraft are diverging at starting time of conflict
+                    -
+                    RRC "Runway/Runway Crossing in RIMCAS"
+                        element 1
+                            table
+                                0: Default
+                                1: Runway/Runway Crossing
+                    RTC "Runway/Taxiway Crossing in RIMCAS"
+                        element 1
+                            table
+                                0: Default
+                                1: Runway/Taxiway Crossing
+                    MRVA ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 4 (MSAW) indicates MRVA
+                    VRAMCRM ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 25 (VRAM) indicates CRM
+                    VRAMVRM ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 25 (VRAM) indicates VRM
+                    VRAMVTM ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 25 (VRAM) indicates VTM
+                    HAMHD ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 29 (HAM) indicates HD
+                    -
+                    HAMRD ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 29 (HAM) indicates RD
+                    HAMVD ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 29 (HAM) indicates VD
+                    DBPSMARR ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 20 (DBPSM) indicates ARR
+                    DBPSMDEP ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 20 (DBPSM) indicates DEP
+                    DBPSMTL ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 20 (DBPSM) indicates above TL
+                    AIW ""
+                        element 1
+                            table
+                                0: Default
+                                1: Msg Type 99 (AIW) indicates pAIW Alert
+                    spare 1
+                    -
+            CC "Conflict Classification"
+                description
+                    Severity classification of the conflict
+                group
+                    TID "Identification of Conflict Categories Definition Table"
+                        element 4
+                            raw
+                    CPC "Conflict Properties Class"
+                        case (000, 120/CC/TID)
+                            (5, 1):
+                                element 3
+                                    table
+                                        0: APW Low Severity
+                                        1: APW Medium Severity
+                                        2: APW High Severity
+                            (7, 0):
+                                element 3
+                                    table
+                                        1: Major seperation infringement and not (crossed and diverging)
+                                        2: Minor seperation infringement and not (crossed and diverging)
+                                        3: Major seperation infringement and (crossed and diverging)
+                                        4: Minor seperation infringement and (crossed and diverging)
+                            (7, 1):
+                                group
+                                    LPF "Linear Prediction Filter"
+                                        element 1
+                                            table
+                                                0: Filter not set
+                                                1: Filter set
+                                    CPF "Current Proximity Filter"
+                                        element 1
+                                            table
+                                                0: Filter not set
+                                                1: Filter set
+                                    MHF "Manoeuvre Hazard Filter"
+                                        element 1
+                                            table
+                                                0: Filter not set
+                                                1: Filter set
+                            (9, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (10, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (11, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (12, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (13, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (14, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (15, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (16, 2):
+                                group
+                                    RAS "RIMCAS Alert Stage"
+                                        element 1
+                                            table
+                                                0: Stage One Alert
+                                                1: Stage Two Alert
+                                    spare 2
+                            (15, 1):
+                                element 3
+                                    table
+                                        0: 2 aircraft, same taxiway, opposite direction
+                                        1: Aircraft entering wrong direction
+                                        2: Aircraft entering wrong taxiway
+                                        3: Speed violation
+                            (24, 1):
+                                element 3
+                                    table
+                                        0: VRM Slow Climb
+                                        1: VRM Slow Descent
+                            (24, 2):
+                                element 3
+                                    table
+                                        0: VTM Fast Climb
+                                        1: VTM Fast Descent
+                            (26, 1):
+                                element 3
+                                    table
+                                        0: Vertical manoeuvre deviation prior to reaching its expected level
+                                        1: Vertical manoeuvre deviation past its expected level
+                            (27, 1):
+                                element 3
+                                    table
+                                        0: Slow Descent
+                                        1: Fast Descent
+                                        2: Slow Climb
+                                        3: Fast Climb
+                            (27, 2):
+                                element 3
+                                    table
+                                        0: Above
+                                        1: Below
+                            (33, 1):
+                                element 3
+                                    table
+                                        0: Table - Single RWY Operation
+                                        1: MRS - Single RWY Operation
+                                        2: ROT - Single RWY Operation
+                                        3: GAP - Single RWY Operation
+                                        4: Table - Parallel RWY Operation
+                                        5: MRS - Parallel RWY Operation
+                                        6: ROT - Parallel RWY Operation
+                                        7: GAP - Parallel RWY Operation
+                            (34, 1):
+                                element 3
+                                    table
+                                        0: Table - Single RWY Operation
+                                        1: MRS - Single RWY Operation
+                                        2: ROT - Single RWY Operation
+                                        3: GAP - Single RWY Operation
+                                        4: Table - Parallel RWY Operation
+                                        5: MRS - Parallel RWY Operation
+                                        6: ROT - Parallel RWY Operation
+                                        7: GAP - Parallel RWY Operation
+                            (35, 1):
+                                element 3
+                                    table
+                                        0: End of Alert
+                                        1: Planned Alert
+                                        2: Alert on TABLE Indicator
+                                        3: Alert on MRS Indicator
+                                        4: Alert on ROT Indicator
+                                        5: Alert on GAP Indicator
+                            (38, 0):
+                                element 3
+                                    table
+                                        0: Line-Up vs. Line-Up
+                                        1: Line-Up vs. Cross or Enter
+                                        2: Line-Up vs. Take-Off
+                                        3: Line-Up vs. Landing
+                            (38, 1):
+                                element 3
+                                    table
+                                        0: Cross or Enter  vs. Line-Up
+                                        1: Cross or Enter  vs. Cross or Enter
+                                        2: Cross or Enter  vs. Take-Off
+                                        3: Cross or Enter  vs. Landing
+                            (38, 2):
+                                element 3
+                                    table
+                                        0: Take-Off vs. Line-Up
+                                        1: Take-Off vs. Cross or Enter
+                                        2: Take-Off vs. Take-Off
+                                        3: Take-Off vs. Landing
+                            (38, 3):
+                                element 3
+                                    table
+                                        0: Landing vs. Line-Up
+                                        1: Landing vs. Cross or Enter
+                                        2: Landing vs. Take-Off
+                                        3: Landing vs. Landing
+                            (38, 4):
+                                element 3
+                                    table
+                                        0: Push-Back vs. Push-Back
+                                        1: Push-Back vs. Taxi
+                            (38, 5):
+                                element 3
+                                    table
+                                        0: Taxi vs. Push-Back
+                                        1: TAxi vs. Taxi
+                            (39, 1):
+                                element 3
+                                    table
+                                        0: No Push-Back Clearance
+                                        1: No Taxi Clearance
+                                        2: No Line-Up Clearance
+                                        3: No Crossing Clearance
+                                        4: No Enter Clearance
+                                        5: No Take-Off Clearance
+                                        6: Landing Clearance
+                            (40, 1):
+                                element 3
+                                    table
+                                        0: After Push-Back Clearance
+                                        1: After Taxi Clearance
+                                        2: After Line-Up Clearance
+                                        3: After Crossing Clearance
+                                        4: After Enter Clearance
+                                        5: After Take-Off Clearance
+                                        6: Stationary on Runway
+                                        7: Stationary on Taxiway
+                            (41, 1):
+                                element 3
+                                    table
+                                        0: No contact (receiving ATSU)
+                                        1: No transfer (leaving ATSU)
+                            (45, 1):
+                                group
+                                    LFP "Linear Prediction Filter"
+                                        element 1
+                                            table
+                                                0: Filter not set
+                                                1: Filter set
+                                    spare 1
+                                    MSM "Mode S Manoeuvre/Prediction Filter"
+                                        element 1
+                                            table
+                                                0: Filter not set
+                                                1: Filter set
+                            default:
+                                element 3
+                                    raw
+                    CS "Conflict Severity"
+                        element 1
+                            table
+                                0: LOW
+                                1: HIGH
+            CP "Conflict Probability"
+                description
+                    Probability of the conflict
+                element 8
+                    unsigned quantity 1/2 "%"
+            CD "Conflict Duration"
+                description
+                    The duration of the conflict is the elapsed time since the declaration of the conflict.
+                element 24
+                    unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                If no Table Id is defined for a message type, only the value of the CS
+                bit may be of relevance. In that case, for this message type, Table Id
+                and Conflict Properties are meaningless and shall be set to "0000"
+                and "000" respectively.
+                1. Additional conflict classes may be defined by introducing additional
+                   properties of a conflict.
+                2. For FTD (Message Type = 033), ITD (Message Type = 034) and IIA
+                   (Message Type = 035) the following types of separation have been
+                   applied:
+                   Table: application of the values contained in the separation table
+                   according to the different wake vortex categories of the two aircraft.
+                   MRS: Minimum Radar Separation for the arrival runway
+                   ROT: Runway Occupancy Time – separation to achieve a specific ROT.
+                   GAP: separation based on a gap manually input by the ATCO
+
+    170 "Aircraft Identification and Characteristics 1"
+        definition
+            Identification & Characteristics of Aircraft 1 Involved in the Conflict.
+        compound
+            AI1 "Aircraft Identifier (in 7 Characters) of Aircraft 1 Involved in the Conflict"
+                element 56
+                    string ascii
+            M31 "Mode 3/A Code Aircraft 1"
+                group
+                    spare 4
+                    MODE3A "Mode-3/A Code (Converted Into Octal Representation) of Aircraft 1 Involved in the Conflict"
+                        element 12
+                            string octal
+            CPW "Predicted Conflict Position Target 1 in WGS-84 Coordinates"
+                group
+                    LAT "In WGS-84 in Two’s Complement"
+                        element 32
+                            signed quantity 180/2^25 "°" >= -90 <= 90
+                    LON "In WGS-84 in Two’s Complement"
+                        element 32
+                            signed quantity 180/2^25 "°" >= -180 < 180
+                    ALT "Altitude of Predicted Conflict"
+                        element 16
+                            signed quantity 25 "ft" >= -1500 <= 150000
+            CPC "Predicted Conflict Position for the Aircraft 1 Involved in the Conflict"
+                group
+                    X "Starting X-position of the Conflict"
+                        element 24
+                            signed quantity 1/2 "m"
+                    Y "Starting Y-position of the Conflict"
+                        element 24
+                            signed quantity 1/2 "m"
+                    Z "Starting Z-position of the Conflict"
+                        element 16
+                            signed quantity 25 "ft" >= -1500 <= 150000
+            TT1 "Time to Runway Threshold for First Approaching Aircraft in a RIMCA"
+                element 24
+                    unsigned quantity 1/2^7 "s"
+            DT1 "Distance to Runway Threshold for Aircraft 1 Involved in a RIMCA"
+                element 16
+                    unsigned quantity 1/2 "m"
+            AC1 "Characteristics of Aircraft 1 Involved in the Conflict"
+                extended
+                    GATOAT "Identification of Conflict Categories Definition Table"
+                        element 2
+                            table
+                                0: Unknown
+                                1: General Air Traffic
+                                2: Operational Air Traffic
+                                3: Not applicable
+                    FR1FR2 "Flight Rules"
+                        element 2
+                            table
+                                0: Instrument Flight Rules
+                                1: Visual Flight rules
+                                2: Not applicable
+                                3: Controlled Visual Flight Rules
+                    RVSM ""
+                        element 2
+                            table
+                                0: Unknown
+                                1: Approved
+                                2: Exempt
+                                3: Not Approved
+                    HPR ""
+                        element 1
+                            table
+                                0: Normal Priority Flight
+                                1: High Priority Flight
+                    -
+                    CDM "Climbing/Descending Mode"
+                        element 2
+                            table
+                                0: Maintaining
+                                1: Climbing
+                                2: Descending
+                                3: Invalid
+                    PRI ""
+                        element 1
+                            table
+                                0: Non primary target
+                                1: Primary target
+                    GV ""
+                        element 1
+                            table
+                                0: Default
+                                1: Ground Vehicle
+                    spare 3
+                    -
+            MS1 "Aircraft Identification Downloaded from Aircraft 1 Involved in the Conflict If Equipped with a Mode-S Transponder"
+                element 48
+                    string icao
+            FP1 "Number of the Flight Plan Correlated to Aircraft 1 Involved in the Conflict"
+                group
+                    spare 5
+                    NBR ""
+                        element 27
+                            unsigned quantity 1 "" >= 0 <= 99999999
+            CF1 "Cleared Flight Level for Aircraft 1 Involved in the Conflict"
+                element 16
+                    unsigned quantity 1/2^2 "FL"
+        remark
+            Notes:
+
+                1. The aircraft identifier is always left adjusted. If needed, the
+                   remaining characters are filled with space character.
+                2. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                   contains the aircraft identifier of the following aircraft.
+                3. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                   this contains the aircraft identifier of the following aircraft.
+                4. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                   this contains the aircraft identifier of the following aircraft.
+                5. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                   aircraft identifier of the following aircraft (i.e. the one catching up).
+                6. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                   contains the Mode 3/A Code of the following aircraft.
+                7. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                   this contains the Mode 3/A Code of the following aircraft.
+                8. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                   this contains the Mode 3/A Code of the following aircraft.
+                9. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                   Mode 3/A code of the following aircraft (i.e. the one catching up).
+                10. Altitude expressed in two’s complement.
+                11. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    data item contains the position (in WGS-84) of the Separation
+                    Indicator presented to the ATCO. In this case bits 16/1 are meaningless.
+                12. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                    this data item contains the position (in WGS-84) of the Separation
+                    Indicator presented to the ATCO. In this case bits 16/1 are meaningless.
+                13. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this data item contains the position (in WGS-84) of the Separation
+                    Indicator presented to the ATCO. In this case bits 16/1 are meaningless.
+                14. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    position (in WGS-84) of the Separation Indicator presented to the ATCO.
+                    In this case bits 16/1 are meaningless.
+                15. Two’s complement fixed-point format.
+                16. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    data item contains the position (in Cartesian Coordinates) of the
+                    Separation Indicator presented to the ATCO. In this case bits 16/1 are meaningless.
+                17. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                    this data item contains the position (in Cartesian Coordinates)
+                    of the Separation Indicator presented to the ATCO. In this case bits
+                    16/1 are meaningless.
+                18. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this data item contains the position (in Cartesian Coordinates) of the
+                    Separation Indicator presented to the ATCO. In this case bits 16/1 are meaningless.
+                19. For Message Type = 37 (Catch-Up Warning - CUW) this data item
+                    contains the position (in Cartesian Coordinates) of the Separation
+                    Indicator presented to the ATCO. In this case bits 16/1 are meaningless.
+
+                20. Time to Threshold expressed in Two’s Complement
+                21. For Message Type = 33 (Final Target Distance Indicator - FTD) and
+                    for Message Type = 34 (Initial Target Distance Indicator - FTD)
+                    this data item contains the additional gap in spacing between two
+                    approaching aircraft as manually inserted by the ATCO. This could
+                    be used, for example, to increase the spacing between approaching
+                    aircraft in order to generate sufficient spacing to clear a departing aircraft.
+                22. For Message Type = 33 (Final Target Distance Indicator - FTD)
+                    thiscontains the Aircraft Characteristics of the following aircraft.
+                23. For Message Type = 34 (Initial Target Distance Indicator - FTD)
+                    this contains the Aircraft Characteristics of the following aircraft.
+                24. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Aircraft Characteristics of the following aircraft.
+                25. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Aircraft Characteristics of the following aircraft.
+                26. For Message Type = 33 (Final Target Distance Indicator - FTD)
+                    this contains the Mode-S Identifier of the following aircraft.
+                27. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                    this contains the Mode-S Identifier of the following aircraft.
+                28. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Mode-S Identifier of the following aircraft.
+                29. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Mode-S Identifier of the following aircraft.
+                30. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    contains the Flight Plan Number of the following aircraft.
+                31. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                    this contains the Flight Plan Number of the following aircraft.
+                32. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Flight Plan Number of the following aircraft.
+                33. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Flight Plan Number of the following aircraft.
+                34. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    contains the Cleared Flight Level of the following aircraft.
+                35. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                    this contains the Cleared Flight Level of the following aircraft.
+                36. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Cleared Flight Level of the following aircraft.
+                37. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Cleared Flight Level of the following aircraft.
+
+    171 "Aircraft Identification and Characteristics 2"
+        definition
+            Identification & Characteristics of Aircraft 2 Involved in the Conflict.
+        compound
+            AI2 "Aircraft Identifier (in 7 Characters) of Aircraft 2 Involved in the Conflict"
+                element 56
+                    string ascii
+            M32 "Mode 3/A Code Aircraft 2"
+                group
+                    spare 4
+                    MODE3A "Mode-3/A Code (Converted Into Octal Representation) of Aircraft 2 Involved in the Conflict"
+                        element 12
+                            string octal
+            CPW "Predicted Conflict Position Target 2 in WGS-84 Coordinates"
+                group
+                    LAT "In WGS-84 in Two’s Complement"
+                        element 32
+                            signed quantity 180/2^25 "°" >= -90 <= 90
+                    LON "In WGS-84 in Two’s Complement"
+                        element 32
+                            signed quantity 180/2^25 "°" >= -180 < 180
+                    ALT "Altitude of Predicted Conflict"
+                        element 16
+                            signed quantity 25 "ft" >= -1500 <= 150000
+            CPL "Predicted Conflict Position for the Aircraft 2 Involved in the Conflict"
+                group
+                    X "Starting X-position of the Conflict"
+                        element 24
+                            signed quantity 1/2 "m"
+                    Y "Starting Y-position of the Conflict"
+                        element 24
+                            signed quantity 1/2 "m"
+                    Z "Starting Z-position of the Conflict"
+                        element 16
+                            signed quantity 25 "ft" >= -1500 <= 150000
+            TT2 "Time to Runway Threshold for Second Approaching Aircraft in a RIMCA"
+                element 24
+                    unsigned quantity 1/2^7 "s"
+            DT2 "Distance to Runway Threshold for Aircraft 2 Involved in a RIMCA"
+                element 16
+                    unsigned quantity 1/2 "m"
+            AC2 "Characteristics of Aircraft 2 Involved in the Conflict"
+                extended
+                    GATOAT "Identification of Conflict Categories Definition Table"
+                        element 2
+                            table
+                                0: Unknown
+                                1: General Air Traffic
+                                2: Operational Air Traffic
+                                3: Not applicable
+                    FR1FR2 "Flight Rules"
+                        element 2
+                            table
+                                0: Instrument Flight Rules
+                                1: Visual Flight rules
+                                2: Not applicable
+                                3: Controlled Visual Flight Rules
+                    RVSM ""
+                        element 2
+                            table
+                                0: Unknown
+                                1: Approved
+                                2: Exempt
+                                3: Not Approved
+                    HPR ""
+                        element 1
+                            table
+                                0: Normal Priority Flight
+                                1: High Priority Flight
+                    -
+                    CDM "Climbing/Descending Mode"
+                        element 2
+                            table
+                                0: Maintaining
+                                1: Climbing
+                                2: Descending
+                                3: Invalid
+                    PRI ""
+                        element 1
+                            table
+                                0: Non primary target
+                                1: Primary target
+                    GV ""
+                        element 1
+                            table
+                                0: Default
+                                1: Ground Vehicle
+                    spare 3
+                    -
+            MS2 "Aircraft Identification Downloaded From Aircraft 2 Involved in the Conflict If Eequipped With a Mode-S Transponder"
+                element 48
+                    string icao
+            FP2 "Number of the Flight Plan Correlated to Aircraft 2 Involved in the Conflict"
+                group
+                    spare 5
+                    NBR ""
+                        element 27
+                            unsigned quantity 1 "" >= 0 <= 99999999
+            CF2 "Cleared Flight Level for Aircraft 2 Involved in the Conflict"
+                element 16
+                    unsigned quantity 1/2^2 "FL"
+        remark
+            Notes:
+
+                1. The aircraft identifier is always left adjusted. If needed, the
+                   remaining characters are filled with space character.
+                2. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                   contains the aircraft identifier of the leading aircraft.
+                3. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                   this contains the aircraft identifier of the leading aircraft.
+                4. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                   this contains the aircraft identifier of the leading aircraft.
+                5. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                   aircraft identifier of the leading aircraft.
+                6. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                   contains the Mode 3/A Code of the leading aircraft.
+                7. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                   this contains the Mode 3/A Code of the leading aircraft.
+                8. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                   this contains the Mode 3/A Code of the leading aircraft.
+                9. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                   Mode 3/A code of the leading aircraft.
+                10. Altitude expressed in two’s complement.
+                11. FTwo’s complement.
+                12. Time to Threshold expressed in Two’s Complement
+                13. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    contains the Aircraft Characteristics of the leading aircraft.
+                14. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                    this contains the Aircraft Characteristics of the leading aircraft.
+                15. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Aircraft Characteristics of the leading aircraft.
+                16. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Aircraft Characteristics of the leading aircraft.
+                17. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    contains the Mode-S Identifier of the leading aircraft.
+                18. For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+                    contains the Mode-S Identifier of the leading aircraft.
+                19. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Mode-S Identifier of the leading aircraft.
+                20. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Mode-S Identifier of the leading aircraft.
+                21. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    contains the Flight Plan Number of the leading aircraft.
+                22. For Message Type = 34 (Initial Target Distance Indicator - ITD) this
+                    contains the Flight Plan Number of the leading aircraft.
+                23. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Flight Plan Number of the leading aircraft.
+                24. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Flight Plan Number of the leading aircraft.
+                25. The value shall be within the range described by ICAO Annex 10
+                26. For Message Type = 33 (Final Target Distance Indicator - FTD) this
+                    contains the Cleared Flight Level of the leading aircraft.
+                27. For Message Type = 34 (Initial Target Distance Indicator - ITD)
+                    thiscontains the Cleared Flight Level of the leading aircraft.
+                28. For Message Type = 35 (Wake Vortex Indicator Infringement Alert - IIA)
+                    this contains the Cleared Flight Level of the leading aircraft.
+                29. For Message Type = 37 (Catch-Up Warning - CUW) this contains the
+                    Cleared Flight Level of the leading aircraft.
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    015
+    020
+    040
+    045
+    060
+    030
+    170
+    120
+    070
+    076
+    074
+    075
+    100
+    035
+    171
+    110
+    -
+    RE
+    SP

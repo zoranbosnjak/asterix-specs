@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+
+        <title>Asterix specifications in structured format - Faq</title>
+
+        <link rel="stylesheet" type="text/css" href="./css/default.css" />
+        <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
+
+        <meta name="keywords" content="asterix" />
+        <meta name="description" content="asterix-specs - asterix specifications in structured format" />
+    </head>
+    <body>
+        <header>
+            <div id="logo">
+                Asterix specifications
+            </div>
+            <nav>
+                <a href="./index.html">Home</a>
+                <a href="./specs.html">Specifications</a>
+                <a href="./struct.html">Structure</a>
+                <a href="./syntax.html">Syntax</a>
+                <a href="./aspecs.html">Aspecs</a>
+                <a href="./faq.html">FAQ</a>
+                <a href="./source.html">Source</a>
+            </nav>
+        </header>
+
+        <main role="main">
+            <h1 id="faq---frequently-asked-questions">FAQ - Frequently Asked Questions</h1>
+<h2 id="why-custom-format-why-not-json-or-xml-or">Why custom format? Why not <code>json</code> or <code>xml</code> or …?</h2>
+<p>In short: a custom <code>ast</code> format is used only to <em>edit</em> and <em>store</em> files.
+<code>json</code> format is also available and is a prefered format for processing
+asterix descriptions.</p>
+<p>Users (author included) normally prefer standard formats like <code>json</code> or <code>xml</code>.
+However, for the purpose of editing and storing asterix specifications,
+a custom format is more convenient.</p>
+<p>It is a form of a <a href="https://en.wikipedia.org/wiki/Domain-specific_language">domain specific language</a>
+with a lot of benefits. Comparing to <code>json</code>, the custom format is:</p>
+<ul>
+<li>5-6 times shorter in terms of characters or lines required;</li>
+<li>easier to read and write;</li>
+<li>better fits to capture the essence of asterix definition.</li>
+</ul>
+<p>Compare for example the <em>same definitions</em> snippet</p>
+<p>… in <code>.ast</code></p>
+<pre><code>SAC &quot;System Area Code&quot;
+    element 8
+        raw</code></pre>
+<p>… and in <code>.json</code> format.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;definition&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;description&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;SAC&quot;</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;remark&quot;</span><span class="fu">:</span> <span class="kw">null</span><span class="fu">,</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;spare&quot;</span><span class="fu">:</span> <span class="kw">false</span><span class="fu">,</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;title&quot;</span><span class="fu">:</span> <span class="st">&quot;System Area Code&quot;</span><span class="fu">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;variation&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;content&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>            <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Raw&quot;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">},</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;size&quot;</span><span class="fu">:</span> <span class="dv">8</span><span class="fu">,</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Element&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>Admittedly, the <code>null</code> values could be excluded, but the <code>json</code> definitions
+still contain a lot of overhead.</p>
+<h2 id="i-do-not-like-a-converter-in-a-processing-chain.">I do not like a converter in a processing chain.</h2>
+<p>This is reasonable, but in order to keep the definitions
+clean and correct, some form of a tool (editor, converter)
+can not be avoided.</p>
+<p>Specifications need to be <em>validated</em>, which requires
+<em>reading</em> and <em>parsing</em> functions.</p>
+<p>Also, when the definitions are written by hand (using a general
+purpose editor), there should be a mechanism to <em>write</em> a <em>normalized</em>
+version of a file (align indents, sort key/value pairs…).</p>
+<p>In other words, <em>reading</em> and <em>writing</em> of the specs files <strong>is required</strong>,
+regardless of the format.</p>
+<p>It is important to note that <a href="./aspecs.html">aspecs</a> handles
+the conversion in a very safe way.</p>
+<p>During automatic conversion process, it is verified that all supported formats
+generate the same file signature, which is a very strong assurance that all formats
+contain the same definitions.</p>
+<h2 id="the-lsb-numeric-expression">The LSB numeric expression</h2>
+<p>The LSB (least significant bit) value is defined in the form of precise
+expression, instead of a decimal number. This is to avoid rounding error
+in specifications.</p>
+<p>For example, the extreme case is item <code>I062/105/LAT</code>.
+It is defined as <code>180/2^25</code>.</p>
+<p>If specified as fixed digit decimal number, like <code>0.00000536442</code> or
+<code>5.364418029785156e-6</code> (more valid digits), some unexpected rounding
+error might occur. It is up to library implementation
+to decide the evaluation scenario and required precision. For example,
+the following recursive function can be used to convert from
+<code>Number</code> to a real value:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- in haskell</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ot">evalNumber ::</span> <span class="dt">Fractional</span> a <span class="ot">=&gt;</span> <span class="dt">A.Number</span> <span class="ot">-&gt;</span> a</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>evalNumber <span class="ot">=</span> \<span class="kw">case</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">NumInt</span> i <span class="ot">-&gt;</span> <span class="fu">fromIntegral</span> i</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">NumDiv</span> a b <span class="ot">-&gt;</span> evalNumber a <span class="op">/</span> evalNumber b</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">NumPow</span> a b <span class="ot">-&gt;</span> <span class="fu">fromIntegral</span> (a <span class="op">^</span> b)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># in python if reading from 'json' format</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eval_number(value):</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> value[<span class="st">'type'</span>]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Integer'</span>:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(value[<span class="st">'value'</span>])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Div'</span>:</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> eval_number(value[<span class="st">'numerator'</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> eval_number(value[<span class="st">'denominator'</span>])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> a<span class="op">/</span>b</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t <span class="op">==</span> <span class="st">'Pow'</span>:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">float</span>(<span class="bu">pow</span>(value[<span class="st">'base'</span>], value[<span class="st">'exponent'</span>]))</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'unexpected value type </span><span class="sc">{}</span><span class="st">'</span>.<span class="bu">format</span>(t))</span></code></pre></div>
+<h2 id="some-unsorted-remarks-about-asterix">Some unsorted remarks about asterix</h2>
+<p>It is not strictly related to this project, but there are some
+facts about asterix which are worth mentioning. This might save
+you some time when implementing asterix encoder/decoder.</p>
+<ul>
+<li><p>Asterix definitions are <em>recursive</em> in nature. To avoid unpleasant
+surprises, do not asume fixed nesting levels on subitems when
+implementing the asterix processor. For example: compound item might contain
+a repetitive item, which might in turn contain any other group of
+items… There is no fixed rule about which item type may or may not contain
+other item types.</p></li>
+<li><p>Some (old) categories define multiple <em>UAPs</em>. The (incomplete)
+list include:</p>
+<ul>
+<li>cat001 (I001/020/TYP determines UAP)</li>
+<li>cat007 (I007/410 determines UAP)</li>
+<li>cat150</li>
+<li>cat252</li>
+<li>cat253</li>
+</ul></li>
+<li><p>In case of a category with multiple UAPs, it is not always clear from
+the received data, which UAP to use. In those cases, the UAP needs
+to be agreed between the source and the destination (example: cat253).</p></li>
+<li><p>Each <em>repetitive</em> item has the first part “the repetition indicator - REP”,
+which is normally 1 octet long, but the REP indicator can also use more
+octets. This project is always explicit about REP indicator size.
+See <code>variation/rep</code> field in <em>json</em>.</p></li>
+<li><p>Newer editions of the same category are not always backward compatible.
+They mostly are, but in general it is <strong>NOT safe</strong> to always use the
+latest edition to cope with the problem. It is more safe to be
+always explicit about which edition is in use on a particular data flow.</p></li>
+<li><p>There is no 1-to-1 corespondence between <em>category</em> edition and
+<em>expansion</em> edition. For example: cat021, edition 2.5 can be combined with
+expansion edition 1.4 or any other edition. For a safe operation,
+both category <strong>AND</strong> expansion edition must be agreed between the source
+and the destination.</p></li>
+<li><p>Compound item might contain some “always zero” bits in the first part,
+or the so called “empty slots”. Example: I011/380 (the third slot).</p></li>
+<li><p>Item presence mechanism in expansion field is similar to
+<code>compound</code> variation, with the following cases:</p>
+<ul>
+<li><p>Fspec byte size is a priori known, such as ref021, edition 1.4,
+(fspec size is 1-byte long). This is ecoded as <code>compound 1</code>.</p></li>
+<li><p>Fspec uses <code>FX</code> bit, which makes it exactly like <code>compound</code> variation,
+such as ref004, edition 1.4. This is ecoded as <code>compound fx</code>. In the
+<em>json</em>, the byte size value will be <code>null</code> in such case.</p></li>
+</ul></li>
+<li><p>Some items definitions are not “context free”, for example
+item <code>I062/380/IAS</code>. In this case, the interpretation of some bits depends
+on the value of some other bit(s). In this project, such case is
+handled with a special <code>case</code> syntax.
+In <em>json</em>, there is <code>variation/rule/type = "Dependent"</code> indication.</p></li>
+<li><p>I004/120, subitem 2 has an even more complicated content definition.</p></li>
+<li><p>Some encoding rules are complex. This project does not include any
+encoding rules, such as: “This item is optional/mandatory…”.</p></li>
+<li><p>Some item names include special characters, for example, the <code>FOE/FRI</code>
+in <code>["I048", "020", "FOE/FRI"]</code>, where “slash” is part of the name. In
+this project, special characters are removed from item names.</p></li>
+<li><p>Item <code>I021/271</code> (up to edition 2.1 of cat021) contains exception
+to the normal <em>extended item</em> encoding rules. The first extension does
+not end with the <code>FX</code> bit.</p></li>
+<li><p>Some extended items in the original definition contain only one subitem,
+with the intention to extend it with the FX bit, for example <code>I002/050</code>.
+In this project, such items are handled as a special case of <em>repetitive</em>
+item, denoted as <code>repetitive fx</code>.</p></li>
+<li><p>The interpretation of <code>V</code> bit (code validated bit) is sometimes used
+inconsistently. For example, REF-048, edition 1.12 is using both variants,
+where <code>0</code> means <code>Code validated</code> or <code>Code not validated</code>, depending on
+the subitem. See corresponding subitem notes for details.</p></li>
+</ul>
+        </main>
+
+        <footer>
+            Updated: 2024-12-05, git revision #116c269.
+            Fork this project on <a href="https://github.com/zoranbosnjak/asterix-specs">github</a>.
+        </footer>
+    </body>
+</html>
