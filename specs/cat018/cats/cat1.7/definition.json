@@ -1,0 +1,3336 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "Allows identification of the message type.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            0,
+                                            "Associate_req"
+                                        ],
+                                        [
+                                            1,
+                                            "Associate_resp"
+                                        ],
+                                        [
+                                            2,
+                                            "Release_req"
+                                        ],
+                                        [
+                                            3,
+                                            "Release_resp"
+                                        ],
+                                        [
+                                            4,
+                                            "Abort_req"
+                                        ],
+                                        [
+                                            5,
+                                            "Keep_alive"
+                                        ],
+                                        [
+                                            16,
+                                            "Aircraft_report"
+                                        ],
+                                        [
+                                            17,
+                                            "Aircraft_command"
+                                        ],
+                                        [
+                                            18,
+                                            "II_code_change"
+                                        ],
+                                        [
+                                            32,
+                                            "Uplink_packet"
+                                        ],
+                                        [
+                                            33,
+                                            "Cancel_uplink_packet"
+                                        ],
+                                        [
+                                            34,
+                                            "Uplink_packet_ack"
+                                        ],
+                                        [
+                                            35,
+                                            "Downlink_packet"
+                                        ],
+                                        [
+                                            38,
+                                            "Data_XON"
+                                        ],
+                                        [
+                                            39,
+                                            "Data_XOFF"
+                                        ],
+                                        [
+                                            48,
+                                            "Uplink_broadcast"
+                                        ],
+                                        [
+                                            49,
+                                            "Cancel_uplink_broadcast"
+                                        ],
+                                        [
+                                            50,
+                                            "Uplink_broadcast_ack"
+                                        ],
+                                        [
+                                            52,
+                                            "Downlink_broadcast"
+                                        ],
+                                        [
+                                            64,
+                                            "GICB_extraction"
+                                        ],
+                                        [
+                                            65,
+                                            "Cancel_GICB_extraction"
+                                        ],
+                                        [
+                                            66,
+                                            "GICB_extraction_ack"
+                                        ],
+                                        [
+                                            67,
+                                            "GICB_response"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Indicates the status of a particular message together with additional information.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "001",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "CAUSE",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 4,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Accepted, the request is accepted and is under processing"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Rejected, the request has not been accepted"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Cancelled, the request has been cancelled"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Finished, the request has been accepted and successfully processed"
+                                                            ],
+                                                            [
+                                                                4,
+                                                                "Delayed, the request processing is temporarily delayed but the request is still valid"
+                                                            ],
+                                                            [
+                                                                5,
+                                                                "In Progress, the request is being successfully processed"
+                                                            ],
+                                                            [
+                                                                6,
+                                                                "In Progress, the request is being successfully processed"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Cause"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "DIAG",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 4,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "No diagnostic available"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Aircraft Exit"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Incorrect aircraft address"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Impossibility to process the message"
+                                                            ],
+                                                            [
+                                                                4,
+                                                                "Insufficient or change in data link capability"
+                                                            ],
+                                                            [
+                                                                5,
+                                                                "Invalid LV field"
+                                                            ],
+                                                            [
+                                                                6,
+                                                                "Duplicate request number"
+                                                            ],
+                                                            [
+                                                                7,
+                                                                "Unknown request number"
+                                                            ],
+                                                            [
+                                                                8,
+                                                                "Timer T3 expiry"
+                                                            ],
+                                                            [
+                                                                9,
+                                                                "Expiry of I/R delivery timer"
+                                                            ],
+                                                            [
+                                                                10,
+                                                                "Uplink flow disabled by UC"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Diagnostic"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Result"
+            },
+            {
+                "documentation": {
+                    "definition": "Absolute time stamping expressed as Co-ordinated Universal Time (UTC) time.\n",
+                    "description": null,
+                    "remark": "Notes:\n    1. The time of day value is reset to zero each day at midnight.\n    2. For time management in radar transmission applications, refer\n       to Part 1, paragraph 5.4.\n"
+                },
+                "name": "002",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Day"
+            },
+            {
+                "documentation": {
+                    "definition": "Indicates the interrogator’s current and previous II Code.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The Previous II code shall be set to the Current II code value when there is no Previous II code available.\n"
+                },
+                "name": "004",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PREVIOUSII",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 4,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Former II Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "CURRENTII",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 4,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Current II Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "II Code"
+            },
+            {
+                "documentation": {
+                    "definition": "Technical Mode S address used for identification of an aircraft, as defined in ICAO Annex 10.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "005",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Mode S Address"
+            },
+            {
+                "documentation": {
+                    "definition": "List of technical Mode S addresses.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "006",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 24,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Mode S Address List"
+            },
+            {
+                "documentation": {
+                    "definition": "Command for the aircraft data link communications. It allows the\nGDLP to enable or disable the uplink & downlink data flows for a\nspecified aircraft.\n",
+                    "description": null,
+                    "remark": "Note:\n    - This command applies to the interrogator's\n      Current status (UCS/DCS) and does not affect the\n      interrogator’s Default Status (see UDS/DDS in\n      Data Item I018/008).\n"
+                },
+                "name": "007",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "UM",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "UC shall be ignored"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "UC shall be taken into account"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Uplink Mask"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "DM",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "DC shall be ignored"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "DC shall be taken into account"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Downlink Mask"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "UC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "the uplink flow shall be enabled"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "the uplink flow shall be stopped"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Uplink Command"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "DC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "the downlink flow shall be enabled"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "the downlink flow shall be stopped"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Downlink Command"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 4,
+                                "tag": "Spare"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Data Link Command"
+            },
+            {
+                "documentation": {
+                    "definition": "Status for the aircraft data link communications.\n",
+                    "description": null,
+                    "remark": "Notes:\n    1. The current status should never be more restrictive than the default status.\n    2. IC is usually set 1when the interrogator is a member of a cluster with a\n       decentralised data link responsibility protocol.\n       IC is usually set to 0 when the interrogator is connected to a GDLP. IC\n       settings shall comply with the rules defined in Ref.3.\n"
+                },
+                "name": "008",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "UDS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The interrogator is enabled to uplink frames"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The interrogator is disabled to uplink frames"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Uplink Default Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "DDS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The interrogator is enabled to extract frames"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The interrogator is disabled to extract frames"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Downlink Default Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "UCS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The interrogator is enabled to uplink frames"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The interrogator is disabled to uplink frames"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Uplink Current Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "DCS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The interrogator is enabled to extract frames"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The interrogator is disabled to extract frames"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Downlink Current Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 2,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "EI",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The aircraft is in the Datalink coverage map of the interrogator"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The aircraft is not in the Datalink coverage map of the interrogator"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Exit Indication"
+                                },
+                                "tag": "Item"
+                            },
+                            null,
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "IC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report could be changed using D_Data_link_command"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The interrogators current ability to uplink/downlink frames (UCS/DCS) and the content of the Aircraft_report cannot be changed using D_Data_link_command"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Interrogator Control"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 6,
+                                "tag": "Spare"
+                            },
+                            null
+                        ],
+                        "tag": "Extended"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Data Link Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Request for an Aircraft_report message.\n",
+                    "description": null,
+                    "remark": "Note:\n    - This item indicates to the DLF which items to send in the next Aircraft_report\n      messages (for a specified aircraft) through the use of flags. These flags\n      concern D_Data_link_status, D_COM, D_ECA, D_CQF, D_CQF_method,\n      D_Polar_position, D_Cartesian_position, D_Aircraft_ID, D_Mode_A,\n      D_Speed, D_Height, D_Heading.\n"
+                },
+                "name": "009",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include D_Data_link_status"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include D_Data_link_status"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "AR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include D_COM"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include D_COM"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "ER",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include D_ECA"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include D_ECA"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "FR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include D_CQF"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include D_CQF"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "MR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include D_CQF_method"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include D_CQF_method"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include D_Polar_position"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include D_Polar_position"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "CR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include D_Cartesian_position"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include D_Cartesian_position"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            null,
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "ID",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include Aircraft_ID"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include Aircraft_ID"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "MA",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include Mode_A"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include Mode_A"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SP",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include Speed"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include Speed"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "HG",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include Height"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include Height"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "HD",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The next Aircraft_report may not include Heading"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The next Aircraft_report shall include Heading"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 2,
+                                "tag": "Spare"
+                            },
+                            null
+                        ],
+                        "tag": "Extended"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Data Link Report Request"
+            },
+            {
+                "documentation": {
+                    "definition": "Transponder Communications Capability\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": 5,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "COM",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 3,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "No communications capability (surveillance only)"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Comm. A and Comm. B capability"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Comm. A, Comm. B and Uplink ELM"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Comm. A, Comm. B and Uplink ELM and Downlink ELM"
+                                                            ],
+                                                            [
+                                                                4,
+                                                                "Level 5 Transponder capability"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Communications Capability of the Transponder"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Transponder Communications Capability"
+            },
+            {
+                "documentation": {
+                    "definition": "Capability report as described in the Mode S subnetwork SARPs\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "011",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 56,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Capability Report"
+            },
+            {
+                "documentation": {
+                    "definition": "Coverage Quality Factor (CQF) of an aircraft (for a given interrogator).\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "012",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "FS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Aircraft is airborne"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Aircraft is on the ground"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Flight Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "CQF",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 7,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The CQF calculation method is not supported"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The CQF is minimum"
+                                                            ],
+                                                            [
+                                                                126,
+                                                                "The CQF is maximum"
+                                                            ],
+                                                            [
+                                                                127,
+                                                                "The CQF is undefined according to the calculation method"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Aircraft CQF"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Coverage Quality Factor"
+            },
+            {
+                "documentation": {
+                    "definition": "Indicates which criteria to take into account when computing the CQF of an aircraft for an interrogator.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "013",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft CQF Calculation Method"
+            },
+            {
+                "documentation": {
+                    "definition": "Measured position of an aircraft in local polar co-ordinates.\n",
+                    "description": null,
+                    "remark": "Note:\n    - When expressed in 16 bits, signed or unsigned azimuths have the same value.\n"
+                },
+                "name": "014",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RHO",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 256,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 8
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "THETA",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Position in Polar Co-ordinates"
+            },
+            {
+                "documentation": {
+                    "definition": "Calculated position of an aircraft in Cartesian co-ordinates.\n",
+                    "description": null,
+                    "remark": "Note:\n    - Negative values are expressed in 2’s complement form, bit-32 and bit-16\n      shall be set to 0 for positive values and 1 for negative values.\n"
+                },
+                "name": "015",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "X",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -256,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 256,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 7
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "X-Component"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "Y",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -256,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 256,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 7
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Y-Component"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Position in Cartesian Co-ordinates"
+            },
+            {
+                "documentation": {
+                    "definition": "Number used to correlate an uplink packet request and its associated acknowledgement.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "016",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 32,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        }
+                                    },
+                                    "tag": "ContentInteger"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Packet Number"
+            },
+            {
+                "documentation": {
+                    "definition": "List of numbers used to correlate an uplink packet request and their associated acknowledgements\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "017",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 32,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "constraints": [],
+                                                "signedness": {
+                                                    "contents": [],
+                                                    "tag": "Unsigned"
+                                                }
+                                            },
+                                            "tag": "ContentInteger"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Packet Number List"
+            },
+            {
+                "documentation": {
+                    "definition": "Properties of an uplink Mode S packet, i.e. its internal priority and its capability to be\nmultiplexed or not, and its type (SVC, MSP or ROUTE).\n",
+                    "description": null,
+                    "remark": "Note:\n    - The PT field is used to identify the ROUTE packets which have a higher\n      priority than SVCs.  The PR field is used to describe the priority of SVCs as\n      follows:\n\n          0 = low\n          1 = high\n\n      For ROUTE and MSP packets the value of PR has no significance.  However,\n      for the purpose of standardisation, it is recommended that for ROUTE\n      packets, PR is set to 15 and for MSPs the PR should be set to 31.\n"
+                },
+                "name": "018",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": 1,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 5,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Mode S Packet Internal Priority"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PT",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "SVC packets"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "MSP packets"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Route packets"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Packet Type"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Mode S Packet Properties"
+            },
+            {
+                "documentation": {
+                    "definition": "A Mode S packet as defined in the Mode S subnetwork SARPs.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "019",
+                "rule": {
+                    "contents": {
+                        "contents": null,
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Mode S Packet"
+            },
+            {
+                "documentation": {
+                    "definition": "Number used to correlate an uplink broadcast request and its associated acknowledgement.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "020",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 32,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        }
+                                    },
+                                    "tag": "ContentInteger"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Broadcast Number"
+            },
+            {
+                "documentation": {
+                    "definition": "Properties of an uplink broadcast request (power, duration, coverage).\n",
+                    "description": null,
+                    "remark": "Notes:\n     1. A broadcast with a higher priority will temporarily delay a lower priority broadcast if\n        necessary. The delayed broadcast will be resumed as soon as possible for its\n        remaining time.\n     2. The sectors are numbered from 1 to 32 clockwise, sector 1 being the first sector after the North.\n"
+                },
+                "name": "021",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PRIORITY",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 4,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Priority"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "POWER",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 4,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Power"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "DURATION",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": 1,
+                                                                "tag": "NumInt"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "s"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Duration"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "COVERAGE",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Coverage"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Broadcast Properties"
+            },
+            {
+                "documentation": {
+                    "definition": "Contents of the 32 first bits of an uplink broadcast interrogation.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The Mode S uplink broadcast interrogation will be made up of this\n      D_Broadcast_prefix field followed by the D_Broadcast field and then by the\n      Address/Parity field (in this order), as defined in ICAO Annex 10. In the\n      interrogator, the 5 first bits of D_Broadcast_prefix will be replaced by ICAO\n      UF field, as defined in Annex 10.\n"
+                },
+                "name": "022",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": 5,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PREFIX",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 27,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Prefix Field"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Broadcast Prefix"
+            },
+            {
+                "documentation": {
+                    "definition": "Broadcast message sent (MA field of the Comm-A frame) or received\n(MB field of the Comm-B frame), conformant with the ICAO Manual on\nMode S Specific Services.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "023",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 56,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Uplink or Downlink Broadcast"
+            },
+            {
+                "documentation": {
+                    "definition": "Number used to correlate subsequent GICB messages (i.e. responses\nand acknowledgements) with the original GICB request.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "025",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 32,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        }
+                                    },
+                                    "tag": "ContentInteger"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "GICB Number"
+            },
+            {
+                "documentation": {
+                    "definition": "BDS code of the GICB to be extracted.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "027",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "BDS Code"
+            },
+            {
+                "documentation": {
+                    "definition": "Periodicity of the GICB extractions.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "028",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": 1,
+                                            "tag": "NumInt"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "GICB Extraction Periodicity"
+            },
+            {
+                "documentation": {
+                    "definition": "GICB extracted message (MB field of the Comm-B frame). i.e., the\ncontents of a BDS register, conformant with the ICAO Manual on\nMode S Specific Services.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "029",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 56,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "contents": null,
+                                        "tag": "BdsAt"
+                                    },
+                                    "tag": "ContentBds"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "GICB Extracted"
+            },
+            {
+                "documentation": {
+                    "definition": "Properties of the GICB extractions.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The Non Extraction flag (NE) should be used only if the Asynchronous\n      Update flag (AU) is set to true. It is specially reserved to the ACAS' RA\n      extraction (asynchronous update without periodic extraction request).\n"
+                },
+                "name": "030",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PRIORITY",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 5,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "GICB Priority"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 3,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The periodicity may not be strictly respected"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The periodicity shall be strictly respected"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Periodicity Constraint"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "AU",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "GICB extractions should be sent only when required by the periodicity"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "If a GICB extraction is done due to external conditions, an update will also be sent, even if it does not match the expected periodicity"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Asynchronous Update"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "NE",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The GICB extraction is attempted according to the periodicity"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "There will no GICB attempts"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Non Extraction"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RD",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "The extracted GICB must be sent only on the Data Link line"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "The extracted GICB must be sent only on the Surveillance line"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "The extracted GICB must be sent both on the Data Link and on the Surveillance lines"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Reply Destination"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 3,
+                                "tag": "Spare"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "GICB Properties"
+            },
+            {
+                "documentation": {
+                    "definition": "Identity of the aircraft extracted by a BDS 20 as described in ICAO Annex 10.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "031",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 48,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Identity"
+            },
+            {
+                "documentation": {
+                    "definition": "Mode-3/A code converted into octal representation.\n",
+                    "description": null,
+                    "remark": "Note:\n    - Bit 15 has no meaning in the case of a smoothed Mode-3/A code and is set\n      to 0 for a calculated track. For Mode S, it is set to one when an error\n      correction has been attempted.\n"
+                },
+                "name": "032",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "V",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Code validated"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Code not validated"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "G",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Default"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Garbled code"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "L",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Mode-3/A code derived from the reply of the transponder"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Mode-3/A code not extracted during the last scan"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 1,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "MOD3A",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 12,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "contents": [],
+                                                            "tag": "StringOctal"
+                                                        },
+                                                        "tag": "ContentString"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Mode A"
+            },
+            {
+                "documentation": {
+                    "definition": "Flight Level converted into binary representation.\n",
+                    "description": null,
+                    "remark": "Notes:\n    1. The value shall be within the range described by ICAO Annex 10\n    2. For Mode S, bit 15 (G) is set to one when an error correction\n       has been attempted.\n    3. If Altitude is not extracted on the last scan, it is an implementation\n       issue as to whether Altitude is output from track file, if at all.\n"
+                },
+                "name": "033",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "V",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Code validated"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Code not validated"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "G",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Default"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Garbled code"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "FL",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 14,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 2
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "FL"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Flight Level"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Height"
+            },
+            {
+                "documentation": {
+                    "definition": "Tracker calculated Ground Speed of an aircraft.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "034",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 14
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "NM/s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Speed"
+            },
+            {
+                "documentation": {
+                    "definition": "Tracker calculated heading of an aircraft. . The heading is the heading with respect\nto the geographical north at the aircraft position.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "035",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 16
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 360,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "°"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Aircraft Heading"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the source node for the GDLP/LU data\n",
+                    "description": null,
+                    "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n"
+                },
+                "name": "036",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the destination node for the GDLP/LU data.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n"
+                },
+                "name": "037",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Destination Identifier"
+            }
+        ],
+        "category": 18,
+        "date": {
+            "day": 8,
+            "month": 11,
+            "year": 2015
+        },
+        "edition": {
+            "major": 1,
+            "minor": 7
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "Mode S Datalink Function Messages",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "036",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "037",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "001",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "005",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "016",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "017",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "018",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "019",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "028",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "030",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "025",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "027",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "029",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "002",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "006",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "007",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "008",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "009",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "011",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "014",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "015",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "020",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "021",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "022",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "023",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "004",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "031",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "032",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "033",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "034",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "035",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "012",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "013",
+                    "tag": "UapItem"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}

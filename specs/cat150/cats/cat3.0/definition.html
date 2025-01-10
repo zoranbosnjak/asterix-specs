@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 150 - MADAP Plan Server - Flight Data Message</h1>
+<p><strong>category</strong>: 150</p>
+<p><strong>edition</strong>: 3.0</p>
+<p><strong>date</strong>: 2004-08-20</p>
+<h2>Preamble</h2>
+<p>The main purpose of I150 messages is to distribute Flight Plan data
+to clients. However, other data items can be sent using I150 as well.
+I150 messages can be divided into the following sub-categories:</p>
+<ul>
+<li>Flight Plan (Short &amp; Complete)</li>
+<li>Start/End of cycle</li>
+<li>Correlation/De-correlation</li>
+<li>Conflict Alert</li>
+</ul>
+<h2>Description of standard data items</h2>
+<p><strong>I150/010 - Destination ID</strong></p>
+<blockquote>
+<p>definition: Identification of the receiving centre.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/010/CEN - Centre Identifier</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/010/POS - Workstation Identifier</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>See Annex 1 Centre ID definition</p>
+</dd>
+<dt>Note:</dt>
+<dd>
+<p>The Destination ID is irrelevant in CAT150 messages since the flight
+plan messages are sent to all 10 centres. Hence, the centre identifier
+is set to broadcast.</p>
+<p>The workstation identifier can be ignored.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/020 - Source ID</strong></p>
+<blockquote>
+<p>definition: Identification of the sending centre.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/020/CEN - Centre Identifier</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/020/POS - Workstation Identifier</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>See Destination ID.</p>
+</dd>
+<dt>Note:</dt>
+<dd>
+<p>The Source ID centre identifier will define the flight plan source
+centre.</p>
+<p>The workstation identifier can be ignored.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/030 - Message Type</strong></p>
+<blockquote>
+<p>definition: The event that triggered the message transmission.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+Flight plan creation
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Flight plan modification
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Flight plan repetition
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Manual flight plan deletion
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Automatic flight plan deletion
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Flight is beyond extraction area boundary
+</dd>
+<dt><code>251</code>:</dt>
+<dd>
+Short term conflict alert
+</dd>
+<dt><code>252</code>:</dt>
+<dd>
+Correlations
+</dd>
+<dt><code>253</code>:</dt>
+<dd>
+Decorrelations
+</dd>
+<dt><code>254</code>:</dt>
+<dd>
+Start of background loop
+</dd>
+<dt><code>255</code>:</dt>
+<dd>
+End of background loop
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I150/040 - Plan Reference Number</strong></p>
+<blockquote>
+<p>definition: Identification of the flight plan.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>See Plan and Track Numbers.</p>
+<p>The currently defined range for plan reference numbers used in MADAP
+is 0 .. 1999. Client systems should allow for a range of 0 .. 2047.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/050 - Callsign</strong></p>
+<blockquote>
+<p>definition: Flight identity.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/060 - Present Mode 3A</strong></p>
+<blockquote>
+<p>definition: Actual transponder code mode 3A of the flight.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>Octal representation.</p>
+<ul>
+<li>zzzz: no code availlable/assigned</li>
+<li>dd00: code family</li>
+<li>other: discrete code</li>
+</ul>
+<p>where:</p>
+<ul>
+<li>z :== &#39;z&#39;</li>
+<li>0 :== &#39;0&#39;</li>
+<li>d :== &#39;0&#39; .. &#39;7&#39;</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/070 - Next Mode 3A</strong></p>
+<blockquote>
+<p>definition: Next transponder code mode 3A of the flight.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>See Present Mode 3A.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/080 - Departure Aerodrome</strong></p>
+<blockquote>
+<p>definition: Identification of the flight’s departure aerodrome.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<ul>
+<li>zzzz: no standard ICAO location identifier</li>
+<li>other: unique ICAO location identifier</li>
+</ul>
+<p>where:</p>
+<ul>
+<li>z :== &#39;z&#39;</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/090 - Destination Aerodrome</strong></p>
+<blockquote>
+<p>definition: Identification of the flight’s destination aerodrome.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>See Departure Aerodrome.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/100 - Type Flags</strong></p>
+<blockquote>
+<p>definition: Type of flight and type of flight plan.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/100/GAT - General Air Traffic</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/100/OAT - Operational Air Traffic</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+<p><strong>I150/100/CPL - Complete Flight Plan</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/100/SPN - Short Flight Plan</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/110 - Status Flags</strong></p>
+<blockquote>
+<p>definition: Status of the flight.
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I150/110/HLD - Aircraft is in Hold State</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/110/RVQ - Aircraft is RVSM Equipped</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/110/RVC - Aircraft is RVSM Capable</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/110/RVX - Aircraft is RVSM Exempted</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>If an aircraft is set in hold status then the ETO values are
+increased with 3 hours.</p>
+<p>RVQ is set for:</p>
+<ul>
+<li>GAT or GAT SPN: never</li>
+<li>GAT or OAT CPL: if “W” filed in field 10a [Radio Communication,
+Navigation and Approach Aid Equipment] of the flightplan</li>
+</ul>
+<p>RVC is set for:</p>
+<ul>
+<li>GAT or OAT SPN: on controller input or reception of ACT with “RVSM
+Capable”</li>
+<li><dl>
+<dt>GAT or OAT CPL (in decreasing priority):</dt>
+<dd>
+<ul>
+<li>Controller input or reception of ABI or ACT with “RVSM Capable”</li>
+<li>“W” filed in field 10a [Radio Communication, Navigation and Approach
+Aid Equipment] and “1” filed in field 9a [number of aircraft] in the
+flightplan.</li>
+</ul>
+</dd>
+</dl></li>
+</ul>
+<p>RVX is set for:</p>
+<ul>
+<li>GAT SPN: on controller input “RVSM Exempted”</li>
+<li>OAT SPN: by default or on controller input “RVSM Exempted”</li>
+<li>GAT or OAT CPL: if “O”, “M” or “A” filed in field 8b [type of
+flight] of the flightplan</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/120 - Aircraft Type</strong></p>
+<blockquote>
+<p>definition: Flight formation details.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/120/NOA - Number of Aircraft</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/120/TOA - Type of Aircraft</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/120/WT - Wake Turbulence</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I150/130 - Cleared Flight Level</strong></p>
+<blockquote>
+<p>definition: Cleared flight level from the sector that has the
+aircraft under control.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>Cleared Flight Level is listed in FLs (100ft).</p>
+</dd>
+<dt>Note:</dt>
+<dd>
+<p>The Cleared Flight Level corresponds to the “current Planned Flight
+Level”, valid for the sector which is currently in communications with
+the aircraft.</p>
+<p>Intermediate flight levels, temporarily assigned by controllers, are
+not distributed by MADAP.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/140 - Route Points, Description</strong></p>
+<blockquote>
+<p>definition: Route point descriptions.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/140/T - Route Point Type</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+P, point
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+B, point with bearing and distance
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+LS, latitude/longitude position short format
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+LL, latitude/longitude position long format
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+X, x/y co-ordinate position
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+G, georeference position
+</dd>
+<dt><code>14</code>:</dt>
+<dd>
+E, airport
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I150/140/E - Route Point Description Element</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 88</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>See layout table in specification document.</p>
+</dd>
+<dt>Note:</dt>
+<dd>
+<p>For all route point items (140..180), present in a single message the
+count values are equal. Co4 ordinate (1), description (1), etc. form a
+single route point.</p>
+<p>The maximum number of route points is currently set to 28.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/150 - Route Points, Coordinates</strong></p>
+<blockquote>
+<p>definition: Route point co-ordinates.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/150/X - X Co-ordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>6</sup></span> NM ≈ <span class="math inline">1.5625<em>e</em> − 2</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/150/Y - Y Co-ordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>6</sup></span> NM ≈ <span class="math inline">1.5625<em>e</em> − 2</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>Co-ordinate values are in [NM] as Cartesian offsets from 51°00’00”N,
+008°00’00”E.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/151 - Route Points, Geographic Position</strong></p>
+<blockquote>
+<p>definition: Route point position in Lat. / Long. (WSG84).
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/151/LAT - Latitude in WGS.84 in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I150/151/LON - Longitude in WGS.84 in Two&#39;s Complement
+Form</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>This corresponds to an accuracy of at least 2.4 meters.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/160 - Route Points, Time</strong></p>
+<blockquote>
+<p>definition: Estimated times over route points.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/160/HH - Hours</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/160/MM - Minutes</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>Times are specified in 24-hour format. I.e. ranging from 00:00 to
+23:59.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/170 - Route Points, Flight Level</strong></p>
+<blockquote>
+<p>definition: Planned flight level over route point.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>The planned flight levels are given in FLs (100 ft).</p>
+</dd>
+<dt>Note:</dt>
+<dd>
+<p>All flight levels have the same value, equal to the “Current Planned
+Flight Level”. This is the Planned Flight Level valid for the sector
+which is in communication with the aircraft.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/171 - Route Points, Requested Flight Level</strong></p>
+<blockquote>
+<p>definition: Requested flight level over route point.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>The planned flight levels are given in FLs (100 ft).</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/180 - Route Points, Speed</strong></p>
+<blockquote>
+<p>definition: Filed true air speed over route point.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>The true airspeed is indicated in Knots [NM/h].</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/190 - Controller ID</strong></p>
+<blockquote>
+<p>definition: Current control position in charge of the aircraft.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Translation:</dt>
+<dd>
+<p>Single character controller ids are sent with a leading space
+character. This can be interpreted as a right aligned value.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/200 - Field 18</strong></p>
+<blockquote>
+<p>definition: Field 18 free text information. Contains subfields, each
+starting with a 3 or 4 letter keyword followed by
+forward slash; e.g. RMK/free text.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/210 - Correlated Track Number</strong></p>
+<blockquote>
+<p>definition: The track number of the track that has been correlated to
+the flight plan.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>See Plan and Track Numbers.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/220 - Maximum Plan Count</strong></p>
+<blockquote>
+<p>definition: Maximum plan count is the maximum number of possible
+active plans.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned integer</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The maximum number of active plans is fixed and, at present, set to
+302.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/230 - Number of Plans</strong></p>
+<blockquote>
+<p>definition: Number of plans that were sent during the last update
+cycle.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned integer</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The number of extracted plans should be equal to the number of plans
+received between the start of cycle and end of cycle messages.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/240 - Newly Correlated Plans</strong></p>
+<blockquote>
+<p>definition: Array of correlated plan/track combinations valid in the
+Maastricht UAC Area of Interest.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/240/PLAN - Plan Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/240/TRACK - Track Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>See Plan and Track Numbers.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/250 - Newly De-correlated Plans</strong></p>
+<blockquote>
+<p>definition: Array of de-correlated plans.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>Contains an array of Plan Numbers. See Plan and Track Numbers.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I150/251 - Tracks in Conflict</strong></p>
+<blockquote>
+<p>definition: Array of conflicting track/track combinations.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I150/251/TRACK1 - Track Number 1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I150/251/TRACK2 - Track Number 2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>See Plan and Track Numbers.</p>
+</dd>
+</dl>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I150/010</code> - Destination ID</li>
+<li>2: <code>I150/020</code> - Source ID</li>
+<li>3: <code>I150/030</code> - Message Type</li>
+<li>4: <code>I150/040</code> - Plan Reference Number</li>
+<li>5: <code>I150/050</code> - Callsign</li>
+<li>6: <code>I150/060</code> - Present Mode 3A</li>
+<li>7: <code>I150/070</code> - Next Mode 3A</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I150/080</code> - Departure Aerodrome</li>
+<li>9: <code>I150/090</code> - Destination Aerodrome</li>
+<li>10: <code>I150/100</code> - Type Flags</li>
+<li>11: <code>I150/110</code> - Status Flags</li>
+<li>12: <code>I150/120</code> - Aircraft Type</li>
+<li>13: <code>I150/130</code> - Cleared Flight Level</li>
+<li>14: <code>I150/140</code> - Route Points, Description</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I150/150</code> - Route Points, Coordinates</li>
+<li>16: <code>I150/160</code> - Route Points, Time</li>
+<li>17: <code>I150/170</code> - Route Points, Flight Level</li>
+<li>18: <code>I150/180</code> - Route Points, Speed</li>
+<li>19: <code>I150/190</code> - Controller ID</li>
+<li>20: <code>I150/200</code> - Field 18</li>
+<li>21: <code>I150/210</code> - Correlated Track Number</li>
+<li>(FX) - Field extension indicator</li>
+<li>22: <code>I150/220</code> - Maximum Plan Count</li>
+<li>23: <code>I150/230</code> - Number of Plans</li>
+<li>24: <code>I150/240</code> - Newly Correlated Plans</li>
+<li>25: <code>I150/250</code> - Newly De-correlated Plans</li>
+<li>26: <code>I150/251</code> - Tracks in Conflict</li>
+<li>27: <code>I150/171</code> - Route Points, Requested Flight
+Level</li>
+<li>28: <code>I150/151</code> - Route Points, Geographic Position</li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 018 - Mode S Datalink Function Messages</h1>
+<p><strong>category</strong>: 018</p>
+<p><strong>edition</strong>: 1.7</p>
+<p><strong>date</strong>: 2015-11-08</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I018/000 - Message Type</strong></p>
+<blockquote>
+<p>definition: Allows identification of the message type.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Associate_req
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Associate_resp
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Release_req
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Release_resp
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Abort_req
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Keep_alive
+</dd>
+<dt><code>16</code>:</dt>
+<dd>
+Aircraft_report
+</dd>
+<dt><code>17</code>:</dt>
+<dd>
+Aircraft_command
+</dd>
+<dt><code>18</code>:</dt>
+<dd>
+II_code_change
+</dd>
+<dt><code>32</code>:</dt>
+<dd>
+Uplink_packet
+</dd>
+<dt><code>33</code>:</dt>
+<dd>
+Cancel_uplink_packet
+</dd>
+<dt><code>34</code>:</dt>
+<dd>
+Uplink_packet_ack
+</dd>
+<dt><code>35</code>:</dt>
+<dd>
+Downlink_packet
+</dd>
+<dt><code>38</code>:</dt>
+<dd>
+Data_XON
+</dd>
+<dt><code>39</code>:</dt>
+<dd>
+Data_XOFF
+</dd>
+<dt><code>48</code>:</dt>
+<dd>
+Uplink_broadcast
+</dd>
+<dt><code>49</code>:</dt>
+<dd>
+Cancel_uplink_broadcast
+</dd>
+<dt><code>50</code>:</dt>
+<dd>
+Uplink_broadcast_ack
+</dd>
+<dt><code>52</code>:</dt>
+<dd>
+Downlink_broadcast
+</dd>
+<dt><code>64</code>:</dt>
+<dd>
+GICB_extraction
+</dd>
+<dt><code>65</code>:</dt>
+<dd>
+Cancel_GICB_extraction
+</dd>
+<dt><code>66</code>:</dt>
+<dd>
+GICB_extraction_ack
+</dd>
+<dt><code>67</code>:</dt>
+<dd>
+GICB_response
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/001 - Result</strong></p>
+<blockquote>
+<p>definition: Indicates the status of a particular message together
+with additional information.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/001/CAUSE - Cause</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Accepted, the request is accepted and is under processing
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Rejected, the request has not been accepted
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Cancelled, the request has been cancelled
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Finished, the request has been accepted and successfully processed
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Delayed, the request processing is temporarily delayed but the request
+is still valid
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+In Progress, the request is being successfully processed
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+In Progress, the request is being successfully processed
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/001/DIAG - Diagnostic</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No diagnostic available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft Exit
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Incorrect aircraft address
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Impossibility to process the message
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Insufficient or change in data link capability
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Invalid LV field
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Duplicate request number
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Unknown request number
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Timer T3 expiry
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Expiry of I/R delivery timer
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Uplink flow disabled by UC
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/002 - Time of Day</strong></p>
+<blockquote>
+<p>definition: Absolute time stamping expressed as Co-ordinated
+Universal Time (UTC) time.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>The time of day value is reset to zero each day at midnight.</li>
+<li>For time management in radar transmission applications, refer to
+Part 1, paragraph 5.4.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/004 - II Code</strong></p>
+<blockquote>
+<p>definition: Indicates the interrogator’s current and previous II
+Code.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/004/PREVIOUSII - Former II Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/004/CURRENTII - Current II Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The Previous II code shall be set to the Current II code value when
+there is no Previous II code available.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/005 - Mode S Address</strong></p>
+<blockquote>
+<p>definition: Technical Mode S address used for identification of an
+aircraft, as defined in ICAO Annex 10.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/006 - Mode S Address List</strong></p>
+<blockquote>
+<p>definition: List of technical Mode S addresses.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/007 - Aircraft Data Link Command</strong></p>
+<blockquote>
+<p>definition: Command for the aircraft data link communications. It
+allows the
+GDLP to enable or disable the uplink &amp; downlink data flows for a
+specified aircraft.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/007/UM - Uplink Mask</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+UC shall be ignored
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+UC shall be taken into account
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/007/DM - Downlink Mask</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+DC shall be ignored
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+DC shall be taken into account
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/007/UC - Uplink Command</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+the uplink flow shall be enabled
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+the uplink flow shall be stopped
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/007/DC - Downlink Command</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+the downlink flow shall be enabled
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+the downlink flow shall be stopped
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>This command applies to the interrogator&#39;s Current status (UCS/DCS)
+and does not affect the interrogator’s Default Status (see UDS/DDS in
+Data Item I018/008).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/008 - Aircraft Data Link Status</strong></p>
+<blockquote>
+<p>definition: Status for the aircraft data link communications.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I018/008/UDS - Uplink Default Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The interrogator is enabled to uplink frames
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The interrogator is disabled to uplink frames
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/008/DDS - Downlink Default Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The interrogator is enabled to extract frames
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The interrogator is disabled to extract frames
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/008/UCS - Uplink Current Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The interrogator is enabled to uplink frames
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The interrogator is disabled to uplink frames
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/008/DCS - Downlink Current Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The interrogator is enabled to extract frames
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The interrogator is disabled to extract frames
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I018/008/EI - Exit Indication</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The aircraft is in the Datalink coverage map of the interrogator
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The aircraft is not in the Datalink coverage map of the interrogator
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I018/008/IC - Interrogator Control</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The interrogators current ability to uplink/downlink frames (UCS/DCS)
+and the content of the Aircraft_report could be changed using
+D_Data_link_command
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The interrogators current ability to uplink/downlink frames (UCS/DCS)
+and the content of the Aircraft_report cannot be changed using
+D_Data_link_command
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 6</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>The current status should never be more restrictive than the default
+status.</li>
+<li>IC is usually set 1when the interrogator is a member of a cluster
+with a decentralised data link responsibility protocol. IC is usually
+set to 0 when the interrogator is connected to a GDLP. IC settings shall
+comply with the rules defined in Ref.3.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/009 - Aircraft Data Link Report Request</strong></p>
+<blockquote>
+<p>definition: Request for an Aircraft_report message.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I018/009/SR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include D_Data_link_status
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include D_Data_link_status
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/AR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include D_COM
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include D_COM
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/ER</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include D_ECA
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include D_ECA
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/FR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include D_CQF
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include D_CQF
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/MR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include D_CQF_method
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include D_CQF_method
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/PR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include D_Polar_position
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include D_Polar_position
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/CR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include D_Cartesian_position
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include D_Cartesian_position
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>I018/009/ID</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include Aircraft_ID
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include Aircraft_ID
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/MA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include Mode_A
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include Mode_A
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/SP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include Speed
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include Speed
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/HG</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include Height
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include Height
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/009/HD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The next Aircraft_report may not include Heading
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The next Aircraft_report shall include Heading
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>This item indicates to the DLF which items to send in the next
+Aircraft_report messages (for a specified aircraft) through the use of
+flags. These flags concern D_Data_link_status, D_COM, D_ECA, D_CQF,
+D_CQF_method, D_Polar_position, D_Cartesian_position, D_Aircraft_ID,
+D_Mode_A, D_Speed, D_Height, D_Heading.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/010 - Transponder Communications Capability</strong></p>
+<blockquote>
+<p>definition: Transponder Communications Capability
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 5</p>
+<p><strong>I018/010/COM - Communications Capability of the
+Transponder</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No communications capability (surveillance only)
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Comm. A and Comm. B capability
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Comm. A, Comm. B and Uplink ELM
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Comm. A, Comm. B and Uplink ELM and Downlink ELM
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Level 5 Transponder capability
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/011 - Capability Report</strong></p>
+<blockquote>
+<p>definition: Capability report as described in the Mode S subnetwork
+SARPs
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/012 - Aircraft Coverage Quality Factor</strong></p>
+<blockquote>
+<p>definition: Coverage Quality Factor (CQF) of an aircraft (for a given
+interrogator).
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/012/FS - Flight Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Aircraft is airborne
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft is on the ground
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/012/CQF - Aircraft CQF</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The CQF calculation method is not supported
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The CQF is minimum
+</dd>
+<dt><code>126</code>:</dt>
+<dd>
+The CQF is maximum
+</dd>
+<dt><code>127</code>:</dt>
+<dd>
+The CQF is undefined according to the calculation method
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/013 - Aircraft CQF Calculation Method</strong></p>
+<blockquote>
+<p>definition: Indicates which criteria to take into account when
+computing the CQF of an aircraft for an interrogator.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/014 - Aircraft Position in Polar
+Co-ordinates</strong></p>
+<blockquote>
+<p>definition: Measured position of an aircraft in local polar
+co-ordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/014/RHO</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I018/014/THETA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>When expressed in 16 bits, signed or unsigned azimuths have the same
+value.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/015 - Aircraft Position in Cartesian
+Co-ordinates</strong></p>
+<blockquote>
+<p>definition: Calculated position of an aircraft in Cartesian
+co-ordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/015/X - X-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−256.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I018/015/Y - Y-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−256.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Negative values are expressed in 2’s complement form, bit-32 and
+bit-16 shall be set to 0 for positive values and 1 for negative
+values.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/016 - Packet Number</strong></p>
+<blockquote>
+<p>definition: Number used to correlate an uplink packet request and its
+associated acknowledgement.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/017 - Packet Number List</strong></p>
+<blockquote>
+<p>definition: List of numbers used to correlate an uplink packet
+request and their associated acknowledgements
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/018 - Mode S Packet Properties</strong></p>
+<blockquote>
+<p>definition: Properties of an uplink Mode S packet, i.e. its internal
+priority and its capability to be
+multiplexed or not, and its type (SVC, MSP or ROUTE).
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I018/018/PR - Mode S Packet Internal Priority</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/018/PT - Packet Type</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+SVC packets
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+MSP packets
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Route packets
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li><p>The PT field is used to identify the ROUTE packets which have a
+higher priority than SVCs. The PR field is used to describe the priority
+of SVCs as follows:</p>
+<blockquote>
+<p>0 = low 1 = high</p>
+</blockquote>
+<p>For ROUTE and MSP packets the value of PR has no significance.
+However, for the purpose of standardisation, it is recommended that for
+ROUTE packets, PR is set to 15 and for MSPs the PR should be set to
+31.</p></li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/019 - Mode S Packet</strong></p>
+<blockquote>
+<p>definition: A Mode S packet as defined in the Mode S subnetwork
+SARPs.
+</p>
+<p>Explicit</p>
+</blockquote>
+<p><strong>I018/020 - Broadcast Number</strong></p>
+<blockquote>
+<p>definition: Number used to correlate an uplink broadcast request and
+its associated acknowledgement.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/021 - Broadcast Properties</strong></p>
+<blockquote>
+<p>definition: Properties of an uplink broadcast request (power,
+duration, coverage).
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/021/PRIORITY - Priority</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/021/POWER - Power</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/021/DURATION - Duration</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> s ≈ <span class="math inline">1.0</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/021/COVERAGE - Coverage</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>A broadcast with a higher priority will temporarily delay a lower
+priority broadcast if necessary. The delayed broadcast will be resumed
+as soon as possible for its remaining time.</li>
+<li>The sectors are numbered from 1 to 32 clockwise, sector 1 being the
+first sector after the North.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/022 - Broadcast Prefix</strong></p>
+<blockquote>
+<p>definition: Contents of the 32 first bits of an uplink broadcast
+interrogation.
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 5</p>
+<p><strong>I018/022/PREFIX - Prefix Field</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 27</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The Mode S uplink broadcast interrogation will be made up of this
+D_Broadcast_prefix field followed by the D_Broadcast field and then by
+the Address/Parity field (in this order), as defined in ICAO Annex 10.
+In the interrogator, the 5 first bits of D_Broadcast_prefix will be
+replaced by ICAO UF field, as defined in Annex 10.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/023 - Uplink or Downlink Broadcast</strong></p>
+<blockquote>
+<p>definition: Broadcast message sent (MA field of the Comm-A frame) or
+received
+(MB field of the Comm-B frame), conformant with the ICAO Manual on
+Mode S Specific Services.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/025 - GICB Number</strong></p>
+<blockquote>
+<p>definition: Number used to correlate subsequent GICB messages (i.e.
+responses
+and acknowledgements) with the original GICB request.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/027 - BDS Code</strong></p>
+<blockquote>
+<p>definition: BDS code of the GICB to be extracted.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/028 - GICB Extraction Periodicity</strong></p>
+<blockquote>
+<p>definition: Periodicity of the GICB extractions.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1</span> s ≈ <span class="math inline">1.0</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/029 - GICB Extracted</strong></p>
+<blockquote>
+<p>definition: GICB extracted message (MB field of the Comm-B frame).
+i.e., the
+contents of a BDS register, conformant with the ICAO Manual on
+Mode S Specific Services.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>BDS register at unknown address</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/030 - GICB Properties</strong></p>
+<blockquote>
+<p>definition: Properties of the GICB extractions.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/030/PRIORITY - GICB Priority</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+<p><strong>I018/030/PC - Periodicity Constraint</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The periodicity may not be strictly respected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The periodicity shall be strictly respected
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/030/AU - Asynchronous Update</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+GICB extractions should be sent only when required by the periodicity
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+If a GICB extraction is done due to external conditions, an update will
+also be sent, even if it does not match the expected periodicity
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/030/NE - Non Extraction</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The GICB extraction is attempted according to the periodicity
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+There will no GICB attempts
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/030/RD - Reply Destination</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+The extracted GICB must be sent only on the Data Link line
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+The extracted GICB must be sent only on the Surveillance line
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+The extracted GICB must be sent both on the Data Link and on the
+Surveillance lines
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The Non Extraction flag (NE) should be used only if the Asynchronous
+Update flag (AU) is set to true. It is specially reserved to the ACAS&#39;
+RA extraction (asynchronous update without periodic extraction
+request).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/031 - Aircraft Identity</strong></p>
+<blockquote>
+<p>definition: Identity of the aircraft extracted by a BDS 20 as
+described in ICAO Annex 10.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/032 - Aircraft Mode A</strong></p>
+<blockquote>
+<p>definition: Mode-3/A code converted into octal representation.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/032/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/032/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/032/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode-3/A code derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode-3/A code not extracted during the last scan
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I018/032/MOD3A</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Bit 15 has no meaning in the case of a smoothed Mode-3/A code and is
+set to 0 for a calculated track. For Mode S, it is set to one when an
+error correction has been attempted.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/033 - Aircraft Height</strong></p>
+<blockquote>
+<p>definition: Flight Level converted into binary representation.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/033/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/033/G</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Garbled code
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I018/033/FL - Flight Level</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>The value shall be within the range described by ICAO Annex 10</li>
+<li>For Mode S, bit 15 (G) is set to one when an error correction has
+been attempted.</li>
+<li>If Altitude is not extracted on the last scan, it is an
+implementation issue as to whether Altitude is output from track file,
+if at all.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/034 - Aircraft Speed</strong></p>
+<blockquote>
+<p>definition: Tracker calculated Ground Speed of an aircraft.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>14</sup></span> NM/s ≈ <span class="math inline">6.103515625<em>e</em> − 5</span> NM/s</p>
+<p>unit: &quot;NM/s&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/035 - Aircraft Heading</strong></p>
+<blockquote>
+<p>definition: Tracker calculated heading of an aircraft. . The heading
+is the heading with respect
+to the geographical north at the aircraft position.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/036 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the source node for the GDLP/LU data
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/036/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/036/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site
+(<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I018/037 - Data Destination Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the destination node for the GDLP/LU
+data.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I018/037/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I018/037/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site
+(<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I018/036</code> - Data Source Identifier</li>
+<li>2: <code>I018/037</code> - Data Destination Identifier</li>
+<li>3: <code>I018/000</code> - Message Type</li>
+<li>4: <code>I018/001</code> - Result</li>
+<li>5: <code>I018/005</code> - Mode S Address</li>
+<li>6: <code>I018/016</code> - Packet Number</li>
+<li>7: <code>I018/017</code> - Packet Number List</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I018/018</code> - Mode S Packet Properties</li>
+<li>9: <code>I018/019</code> - Mode S Packet</li>
+<li>10: <code>I018/028</code> - GICB Extraction Periodicity</li>
+<li>11: <code>I018/030</code> - GICB Properties</li>
+<li>12: <code>I018/025</code> - GICB Number</li>
+<li>13: <code>I018/027</code> - BDS Code</li>
+<li>14: <code>I018/029</code> - GICB Extracted</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I018/002</code> - Time of Day</li>
+<li>16: <code>I018/006</code> - Mode S Address List</li>
+<li>17: <code>I018/007</code> - Aircraft Data Link Command</li>
+<li>18: <code>I018/008</code> - Aircraft Data Link Status</li>
+<li>19: <code>I018/009</code> - Aircraft Data Link Report Request</li>
+<li>20: <code>I018/010</code> - Transponder Communications
+Capability</li>
+<li>21: <code>I018/011</code> - Capability Report</li>
+<li>(FX) - Field extension indicator</li>
+<li>22: <code>I018/014</code> - Aircraft Position in Polar
+Co-ordinates</li>
+<li>23: <code>I018/015</code> - Aircraft Position in Cartesian
+Co-ordinates</li>
+<li>24: <code>I018/020</code> - Broadcast Number</li>
+<li>25: <code>I018/021</code> - Broadcast Properties</li>
+<li>26: <code>I018/022</code> - Broadcast Prefix</li>
+<li>27: <code>I018/023</code> - Uplink or Downlink Broadcast</li>
+<li>28: <code>I018/004</code> - II Code</li>
+<li>(FX) - Field extension indicator</li>
+<li>29: <code>I018/031</code> - Aircraft Identity</li>
+<li>30: <code>I018/032</code> - Aircraft Mode A</li>
+<li>31: <code>I018/033</code> - Aircraft Height</li>
+<li>32: <code>I018/034</code> - Aircraft Speed</li>
+<li>33: <code>I018/035</code> - Aircraft Heading</li>
+<li>34: <code>I018/012</code> - Aircraft Coverage Quality Factor</li>
+<li>35: <code>I018/013</code> - Aircraft CQF Calculation Method</li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>
