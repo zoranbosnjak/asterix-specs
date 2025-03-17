@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 034 - Transmission of Monoradar Service
+Messages</h1>
+<p><strong>category</strong>: 034</p>
+<p><strong>edition</strong>: 1.28</p>
+<p><strong>date</strong>: 2021-03-02</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I034/000 - Message Type</strong></p>
+<blockquote>
+<p>definition: This Data Item allows for a more convenient handling of
+the messages at the receiver side by further defining
+the type of transaction.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+North marker message
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Sector crossing message
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Geographical filtering message
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Jamming strobe message
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Solar Storm Message
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li><p>In applications where transactions of various types are
+exchanged, the Message Type Data Item facilitates the proper message
+handling at the receiver side.</p></li>
+<li><p>All Message Type values are reserved for common standard
+use.</p></li>
+<li><p>The list of items present for the four message types is defined
+in the following table.</p>
+<p>M stands for mandatory, O for optional, X for never present.</p>
+<p>TODO: message types table</p></li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I034/010 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the radar station from which the data
+are received.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL Web Site
+(<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I034/020 - Sector Number</strong></p>
+<blockquote>
+<p>definition: Eight most significant bits of the antenna azimuth
+defining a particular azimuth sector.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>8</sup></span> ° ≈ <span class="math inline">1.40625</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/030 - Time of Day</strong></p>
+<blockquote>
+<p>definition: Absolute time stamping expressed as UTC time.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The time of day value is reset to zero each day at midnight.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I034/041 - Antenna Rotation Speed</strong></p>
+<blockquote>
+<p>definition: Antenna rotation period as measured between two
+consecutive North crossings
+or as averaged during a period of time.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>This item represents the antenna rotation period as measured by the
+radar station between two consecutive North crossings, or a calculated
+antenna rotation speed as averaged during a period of time, or during a
+number of antenna rotation scans.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I034/050 - System Configuration and Status</strong></p>
+<blockquote>
+<p>definition: Information concerning the configuration and status of a
+System.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I034/050/COM - Common Part</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/050/COM/NOGO - Operational Release Status of the
+System</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+System is released for operational use
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Operational use of System is inhibited, i.e. the data shall be discarded
+by an operational SDPS
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/COM/RDPC - Radar Data Processor Chain Selection
+Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+RDPC-1 selected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+RDPC-2 selected
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/COM/RDPR - Event to Signal a Reset/restart of the
+Selected Radar Data Processor Chain, I.e. Expect a New Assignment of
+Track Numbers</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default situation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Reset of RDPC
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/COM/OVLRDP - Radar Data Processor Overload
+Indicator</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default, no overload
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload in RDP
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/COM/OVLXMT - Transmission Subsystem Overload
+Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default, no overload
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload in transmission subsystem
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/COM/MSC - Monitoring System Connected
+Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Monitoring system connected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Monitoring system disconnected
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/COM/TSV - Time Source Validity</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Valid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+</blockquote>
+<p><em>Spare</em></p>
+<p><em>Spare</em></p>
+<p><strong>I034/050/PSR - Specific Status Information for a PSR
+Sensor</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/050/PSR/ANT - Selected Antenna</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Antenna 1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Antenna 2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/PSR/CHAB - Channel A/B Selection Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No channel selected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Channel A only selected
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Channel B only selected
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Diversity mode ; Channel A and B selected
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/PSR/OVL - Overload Condition</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No overload
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/PSR/MSC - Monitoring System Connected
+Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Monitoring system connected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Monitoring system disconnected
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/SSR - Specific Status Information for a SSR
+Sensor</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/050/SSR/ANT - Selected Antenna</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Antenna 1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Antenna 2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/SSR/CHAB - Channel A/B Selection Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No channel selected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Channel A only selected
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Channel B only selected
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid combination
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/SSR/OVL - Overload Condition</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No overload
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/SSR/MSC - Monitoring System Connected
+Status:</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Monitoring system connected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Monitoring system disconnected
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS - Specific Status Information for a Mode S
+Sensor</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/050/MDS/ANT - Selected Antenna</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Antenna 1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Antenna 2
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS/CHAB - Channel A/B Selection Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No channel selected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Channel A only selected
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Channel B only selected
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Illegal combination
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS/OVLSUR - Overload Condition</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No overload
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS/MSC - Monitoring System Connected
+Status:</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Monitoring system connected
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Monitoring system disconnected
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS/SCF - Channel A/B Selection Status for
+Surveillance Co-ordination Function</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Channel A in use
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Channel B in use
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS/DLF - Channel A/B Selection Status for Data Link
+Function</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Channel A in use
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Channel B in use
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS/OVLSCF - Overload in Surveillance Co-ordination
+Function</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No overload
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/050/MDS/OVLDLF - Overload in Data Link
+Function</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No overload
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Overload
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 7</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/060 - System Processing Mode</strong></p>
+<blockquote>
+<p>definition: Status concerning the processing options, in use during
+the last antenna
+revolution, for the various Sensors, composing the System.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I034/060/COM - Common Part</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I034/060/COM/REDRDP - Reduction Steps in Use for An Overload
+of the RDP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No reduction active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Reduction step 1 active
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reduction step 2 active
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Reduction step 3 active
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Reduction step 4 active
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Reduction step 5 active
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Reduction step 6 active
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reduction step 7 active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/060/COM/REDXMT - Reduction Steps in Use for An Overload
+of the Transmission Subsystem</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No reduction active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Reduction step 1 active
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reduction step 2 active
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Reduction step 3 active
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Reduction step 4 active
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Reduction step 5 active
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Reduction step 6 active
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reduction step 7 active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+</blockquote>
+<p><em>Spare</em></p>
+<p><em>Spare</em></p>
+<p><strong>I034/060/PSR - Specific Processing Mode Information for a PSR
+Sensor</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/060/PSR/POL - Polarization in Use by PSR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Linear polarization
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Circular polarization
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/060/PSR/REDRAD - Reduction Steps in Use as Result of An
+Overload Within the PSR Subsystem</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No reduction active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Reduction step 1 active
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reduction step 2 active
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Reduction step 3 active
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Reduction step 4 active
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Reduction step 5 active
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Reduction step 6 active
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reduction step 7 active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/060/PSR/STC - Sensitivity Time Control Map in
+Use</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+STC Map-1
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+STC Map-2
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+STC Map-3
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+STC Map-4
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/060/SSR - Specific Processing Mode Information for a SSR
+Sensor</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/060/SSR/REDRAD - Reduction Steps in Use as Result of An
+Overload Within the SSR Subsystem</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No reduction active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Reduction step 1 active
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reduction step 2 active
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Reduction step 3 active
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Reduction step 4 active
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Reduction step 5 active
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Reduction step 6 active
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reduction step 7 active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 5</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/060/MDS - Specific Processing Mode Information for a
+Mode S Sensor</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/060/MDS/REDRAD - Reduction Steps in Use as Result of An
+Overload Within the Mode S Subsystem</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No reduction active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Reduction step 1 active
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Reduction step 2 active
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Reduction step 3 active
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Reduction step 4 active
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Reduction step 5 active
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Reduction step 6 active
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Reduction step 7 active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/060/MDS/CLU - Cluster State</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Autonomous
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Not autonomous
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Applicable to all defined secondary subfields. The actual mapping
+between the up to seven data reduction steps and their associated data
+reduction measures is not subject to standardisation.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I034/070 - Message Count Values</strong></p>
+<blockquote>
+<p>definition: Message Count values, according the various types of
+messages, for the
+last completed antenna revolution, counted between two North crossings
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/070/TYP - Type of Message Counter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No detection (number of misses)
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Single PSR target reports
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Single SSR target reports (Non-Mode S)
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+SSR+PSR target reports (Non-Mode S)
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Single All-Call target reports (Mode S)
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Single Roll-Call target reports (Mode S)
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+All-Call + PSR (Mode S) target reports
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Roll-Call + PSR (Mode S) target reports
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Filter for Weather data
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Filter for Jamming Strobe
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Filter for PSR data
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+Filter for SSR/Mode S data
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+Filter for SSR/Mode S+PSR data
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+Filter for Enhanced Surveillance data
+</dd>
+<dt><code>14</code>:</dt>
+<dd>
+Filter for PSR+Enhanced Surveillance
+</dd>
+<dt><code>15</code>:</dt>
+<dd>
+Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of
+Prime Interest
+</dd>
+<dt><code>16</code>:</dt>
+<dd>
+Filter for PSR+Enhanced Surveillance + all SSR/Mode S data
+</dd>
+<dt><code>17</code>:</dt>
+<dd>
+Re-Interrogations (per sector)
+</dd>
+<dt><code>18</code>:</dt>
+<dd>
+BDS Swap and wrong DF replies(per sector)
+</dd>
+<dt><code>19</code>:</dt>
+<dd>
+Mode A/C FRUIT (per sector)
+</dd>
+<dt><code>20</code>:</dt>
+<dd>
+Mode S FRUIT (per sector)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/070/COUNT - COUNTER</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 11</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/090 - Collimation Error</strong></p>
+<blockquote>
+<p>definition: Averaged difference in range and in azimuth for the
+primary target position
+with respect to the SSR target position as calculated by the radar
+station.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/090/RNG - Range Error</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> NM ≈ <span class="math inline">7.8125<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/090/AZM - Azimuth Error</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>14</sup></span> ° ≈ <span class="math inline">2.197265625<em>e</em> − 2</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Negative values are coded in two’s complement form.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>I034/100 - Generic Polar Window</strong></p>
+<blockquote>
+<p>definition: Geographical window defined in polar co-ordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/100/RHOST - Rho Start</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I034/100/RHOEND - Rho End</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>8</sup></span> NM ≈ <span class="math inline">3.90625<em>e</em> − 3</span> NM</p>
+<p>unit: &quot;NM&quot;</p>
+<p><code>&lt;=</code> <span class="math inline">256.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I034/100/THETAST - Theta Start</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/100/THETAEND - Theta End</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/110 - Data Filter</strong></p>
+<blockquote>
+<p>definition: Data Filter, which allows suppression of individual data
+types.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Invalid value
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Filter for Weather data
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Filter for Jamming Strobe
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Filter for PSR data
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Filter for SSR/Mode S data
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Filter for SSR/Mode S + PSR data
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Enhanced Surveillance data
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Filter for PSR+Enhanced Surveillance data
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of
+Prime Interest
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Filter for PSR+Enhanced Surveillance + all SSR/Mode S data
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>This Data Item is often used in conjunction with I034/100 and
+represents a Data Filter for a specific geographical subarea. A Data
+Source may have zero, one or multiple data filters active at any
+time.</li>
+<li>If I034/110 is not accompanied with I034/100, then the Data Filter
+is valid throughout the total area of coverage.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I034/120 - 3D-Position Of Data Source</strong></p>
+<blockquote>
+<p>definition: 3D-Position of Data Source in WGS 84 Co-ordinates
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I034/120/HGT - Height of Data Source</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1</span> m ≈ <span class="math inline">1.0</span> m</p>
+<p>unit: &quot;m&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I034/120/LAT - Latitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I034/120/LON - Longitude</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>23</sup></span> ° ≈ <span class="math inline">2.1457672119140625<em>e</em> − 5</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I034/RE - Reserved Expansion Field</strong></p>
+<blockquote>
+<p>definition: Expansion
+</p>
+<p>Explicit (ReservedExpansion)</p>
+</blockquote>
+<p><strong>I034/SP - Special Purpose Field</strong></p>
+<blockquote>
+<p>definition: Special Purpose Field
+</p>
+<p>Explicit (SpecialPurpose)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I034/010</code> - Data Source Identifier</li>
+<li>2: <code>I034/000</code> - Message Type</li>
+<li>3: <code>I034/030</code> - Time of Day</li>
+<li>4: <code>I034/020</code> - Sector Number</li>
+<li>5: <code>I034/041</code> - Antenna Rotation Speed</li>
+<li>6: <code>I034/050</code> - System Configuration and Status</li>
+<li>7: <code>I034/060</code> - System Processing Mode</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I034/070</code> - Message Count Values</li>
+<li>9: <code>I034/100</code> - Generic Polar Window</li>
+<li>10: <code>I034/110</code> - Data Filter</li>
+<li>11: <code>I034/120</code> - 3D-Position Of Data Source</li>
+<li>12: <code>I034/090</code> - Collimation Error</li>
+<li>13: <code>I034/RE</code> - Reserved Expansion Field</li>
+<li>14: <code>I034/SP</code> - Special Purpose Field</li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>

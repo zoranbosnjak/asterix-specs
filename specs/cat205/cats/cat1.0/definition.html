@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 205 - Radio Direction Finder Reports</h1>
+<p><strong>category</strong>: 205</p>
+<p><strong>edition</strong>: 1.0</p>
+<p><strong>date</strong>: 2020-03-17</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I205/000 - Message Type</strong></p>
+<blockquote>
+<p>definition: This Data Item allows for a more convenient handling of
+the
+messages at the receiver side by further defining the type of
+transaction.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+System Position Report
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+System Bearing Report
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+System Position Report of conflicting transmission
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+System Detection End Report
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Sensor Data Report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I205/010 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the Radio Direction Finder System or
+Sensor from which the
+report is received.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I205/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I205/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The up-to-date list of SACs is published on the EUROCONTROL Web Site
+(<a href="http://www.eurocontrol.int/asterix">http://www.eurocontrol.int/asterix</a>).</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/015 - Service Identification</strong></p>
+<blockquote>
+<p>definition: Identification of the service provided to one or more
+users.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The service identification is allocated by the system.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/030 - Time of Day</strong></p>
+<blockquote>
+<p>definition: UTC time of transmission of this ASTERIX message.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The TOD value is reset to zero at every midnight UTC.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/040 - Report Number</strong></p>
+<blockquote>
+<p>definition: Sequential and cyclic number of position detection
+reports.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The number is incremented if there is a new position or bearing
+detected, independent from the respective channel. The report number
+shall also be incremented if, during the ongoing position or bearing
+detection, the position or bearing value is deviating by a
+system-defined threshold from the previous one. If the message type
+(I205/000) changes to another Detection Report, the report number is
+incremented as well. to detect lost messages.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/050 - Position in WGS-84 Coordinates</strong></p>
+<blockquote>
+<p>definition: Calculated position in WGS-84 Coordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I205/050/LAT - Latitude in WGS-84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I205/050/LON - Longitude in WGS-84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The LSB provides a resolution at least better than 0.6 meters. For
+reports of Message Type 001 and 003, the item shall contain the
+estimated position of the transmitting aircraft. For reports of Message
+Type 002, the item shall contain the position of the bearing starting
+point, i.e. the position of the respective RDF sensor.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/060 - Position in Cartesian Coordinates</strong></p>
+<blockquote>
+<p>definition: Calculated position in Cartesian Coordinates.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I205/060/X - X-coordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−4194300.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">4194300.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I205/060/Y - Y-coordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−4194300.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">4194300.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The Cartesian coordinates are relative to an agreed System Reference
+Point. The System Reference Point may be communicated in ASTERIX
+category 025, item 600. For reports of Message Type 001 and 003, the
+item shall contain the estimated position of the transmitting aircraft.
+For reports of Message Type 002, the item shall contain the position of
+the bearing starting point, i.e. the position of the respective RDF
+sensor.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/070 - Local Bearing</strong></p>
+<blockquote>
+<p>definition: Bearing of the detected radio transmission, starting at
+the position contained in
+I205/050 and given relative to this position.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/100</span> ° ≈ <span class="math inline">1.0<em>e</em> − 2</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">360.0</span></p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The angle is given in degrees, in clock-wise notation, starting with
+0 degrees for the geographical North.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/080 - System Bearing</strong></p>
+<blockquote>
+<p>definition: Bearing of the detected radio transmission, starting at
+the position contained in
+I205/060, projected to the Cartesian Coordinate System relative to the
+System
+Reference Point (as used for I205/ 060).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/100</span> ° ≈ <span class="math inline">1.0<em>e</em> − 2</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">360.0</span></p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The angle is given in degrees, in clock-wise notation, starting with
+0 degrees for the geographical North.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/090 - Radio Channel Name</strong></p>
+<blockquote>
+<p>definition: Name of the channel the radio transmission is detected
+on.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>NU1 till NU7 contain digits or a decimal point in ASCII
+representation, specifying the name of the radio channel. Channel names
+that could be provided with less than 6 digits shall be filled with
+trailing zeroes (e.g. 121.100). This channel name is not identical with
+the actual physical frequency.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/100 - Quality of Measurement</strong></p>
+<blockquote>
+<p>definition: Quality of the measurement provided by the Radio
+Direction Finder system.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The actual meanings of the bits are application dependent.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/110 - Estimated Uncertainty</strong></p>
+<blockquote>
+<p>definition: Uncertainty estimation of the RDF System. The transmitter
+is expected to be
+within the provided radius around the calculated position.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">100</span> m ≈ <span class="math inline">100.0</span> m</p>
+<p>unit: &quot;m&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">25500.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I205/120 - Contributing Sensors</strong></p>
+<blockquote>
+<p>definition: The identification of the RDF sensors that contributed to
+the detection of the radio
+transmitter.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The actual identification of the receivers is application
+dependent.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/130 - Conflicting Transmitter Position in WGS-84
+Coordinates</strong></p>
+<blockquote>
+<p>definition: Calculated position in WGS-84 Coordinates. This is the
+position of a second
+transmitter on the same frequency and overlapping in time with the
+transmitter
+position communicated in data item I205/050.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I205/130/LAT - Latitude in WGS-84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I205/130/LON - Longitude in WGS-84</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">180/2<sup>25</sup></span> ° ≈ <span class="math inline">5.36441802978515625<em>e</em> − 6</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−180.0</span></p>
+<p><code>&lt;</code> <span class="math inline">180.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The LSB provides a resolution at least better than 0.6 meters.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/140 - Conflicting Transmitter Position in Cartesian
+Coordinates</strong></p>
+<blockquote>
+<p>definition: Calculated position in Cartesian Coordinates. This is the
+position of a second
+transmitter on the same frequency and overlapping in time with the
+transmitter
+position communicated in data item I205/060.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I205/140/X - X-coordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−4194300.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">4194300.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I205/140/Y - Y-coordinate</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/2</span> m ≈ <span class="math inline">0.5</span> m</p>
+<p>unit: &quot;m&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−4194300.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">4194300.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The Cartesian coordinates are relative to an agreed System Reference
+Point. The System Reference Point may be communicated in ASTERIX
+category 025, item 600.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/150 - Conflicting Transmitter Estimated
+Uncertainty</strong></p>
+<blockquote>
+<p>definition: Range uncertainty estimation of the RDF System for the
+Conflicting Transmitter,
+i.e. a transmitter on the same frequency and with a timely overlapping
+transmission. The transmitter is estimated to be within the provided
+radius around
+the detected position.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">100</span> m ≈ <span class="math inline">100.0</span> m</p>
+<p>unit: &quot;m&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">25500.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I205/160 - Track Number</strong></p>
+<blockquote>
+<p>definition: Unique identification of a track at the calculated RDF
+position.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I205/170 - Sensor Identification</strong></p>
+<blockquote>
+<p>definition: Unique identification of an RDF sensor.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>For Message Type 5 (Sensor Data Report) in I205/000, the item has to
+be used if there is no unique SAC/SIC defined for each RDF Sensor. The
+actual identification number is application dependent</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/180 - Signal Level</strong></p>
+<blockquote>
+<p>definition: The level of the signal received by an RDF sensor.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/100</span> dBµV ≈ <span class="math inline">1.0<em>e</em> − 2</span> dBµV</p>
+<p>unit: &quot;dBµV&quot;</p>
+</blockquote>
+</blockquote>
+<p><strong>I205/190 - Signal Quality</strong></p>
+<blockquote>
+<p>definition: Relative quality of the received signal as estimated by
+the RDF sensor.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>255 corresponds to the best quality, 0 to the worst quality</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I205/200 - Signal Elevation</strong></p>
+<blockquote>
+<p>definition: The elevation of the signal received by an RDF sensor.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Signed quantity</p>
+<p>LSB = <span class="math inline">1/100</span> ° ≈ <span class="math inline">1.0<em>e</em> − 2</span> °</p>
+<p>unit: &quot;°&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">−90.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">90.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I205/SP - Special Purpose Field</strong></p>
+<blockquote>
+<p>definition: Special Purpose Field
+</p>
+<p>Explicit (SpecialPurpose)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I205/010</code> - Data Source Identifier</li>
+<li>2: <code>I205/015</code> - Service Identification</li>
+<li>3: <code>I205/000</code> - Message Type</li>
+<li>4: <code>I205/030</code> - Time of Day</li>
+<li>5: <code>I205/040</code> - Report Number</li>
+<li>6: <code>I205/090</code> - Radio Channel Name</li>
+<li>7: <code>I205/050</code> - Position in WGS-84 Coordinates</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I205/060</code> - Position in Cartesian Coordinates</li>
+<li>9: <code>I205/070</code> - Local Bearing</li>
+<li>10: <code>I205/080</code> - System Bearing</li>
+<li>11: <code>I205/100</code> - Quality of Measurement</li>
+<li>12: <code>I205/110</code> - Estimated Uncertainty</li>
+<li>13: <code>I205/120</code> - Contributing Sensors</li>
+<li>14: <code>I205/130</code> - Conflicting Transmitter Position in
+WGS-84 Coordinates</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I205/140</code> - Conflicting Transmitter Position in
+Cartesian Coordinates</li>
+<li>16: <code>I205/150</code> - Conflicting Transmitter Estimated
+Uncertainty</li>
+<li>17: <code>I205/160</code> - Track Number</li>
+<li>18: <code>I205/170</code> - Sensor Identification</li>
+<li>19: <code>I205/180</code> - Signal Level</li>
+<li>20: <code>I205/190</code> - Signal Quality</li>
+<li>21: <code>I205/200</code> - Signal Elevation</li>
+<li>(FX) - Field extension indicator</li>
+<li>22: <code>I205/SP</code> - Special Purpose Field</li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li><em>Spare</em></li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>
