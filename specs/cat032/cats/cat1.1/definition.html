@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 032 - Miniplan Reports to an SDPS</h1>
+<p><strong>category</strong>: 032</p>
+<p><strong>edition</strong>: 1.1</p>
+<p><strong>date</strong>: 2020-12-11</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I032/010 - Server Identification Tag</strong></p>
+<blockquote>
+<p>definition: Identification of the Server of track information.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The up-to-date list of SACs is published on the EUROCONTROL ASTERIX
+Web Site (<a href="http://www.eurocontrol.int/services/system-area-code-list">http://www.eurocontrol.int/services/system-area-code-list</a>).</li>
+<li>In case of message originating from an FPPS, the Server
+Identification Tag corresponds to the SDPS unit receiving the
+Miniplan.</li>
+<li>In case of message originating from a SDPS, the Server
+Identification Tag corresponds to the SDPS unit sending the
+Miniplan.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/015 - User Number</strong></p>
+<blockquote>
+<p>definition: Identification of the User of the track data.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned integer</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The User numbers are predefined in the User registration data base
+of the SDPS Unit to which the User wants to connect.</li>
+<li>In case of message originating from an FPPS, the User Number
+corresponds to the FPPS one.</li>
+<li>In case of message originating from an SDPS, the User Number
+corresponds to the SDPS unit receiving the Miniplan.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/018 - Data Source Identification Tag</strong></p>
+<blockquote>
+<p>definition: Identification of the data source (FPPS system) from
+which the information
+contained in the message was initially originated.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/018/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/018/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The up-to-date list of SACs is published on the EUROCONTROL ASTERIX
+Web Site (<a href="http://www.eurocontrol.int/services/system-area-code-list">http://www.eurocontrol.int/services/system-area-code-list</a>).</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I032/020 - Time of ASTERIX Report Generation</strong></p>
+<blockquote>
+<p>definition: Time of the generation of the ASTERIX category 032 report
+in the form of
+elapsed time since last midnight, expressed as UTC.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The Time of ASTERIX Report Generation is reset to zero at every
+midnight.</li>
+<li>This time is determined at an application level (e.g. time at which
+a message is filled), and not at the communication level (i.e. not the
+time at which the data-block is sent).</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/035 - Type of Message</strong></p>
+<blockquote>
+<p>definition: This data item allows for a more convenient handling of
+the message at the
+receiver side by further defining the type of transaction.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/035/FAMILY</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+Information sent by an FPPS
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/035/NATURE</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 4</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+Flight Plan to track initial correlation
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Miniplan update
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+End of correlation
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Miniplan Cancellation
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Retained Miniplan
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li><p>The composition of the messages is described in the following
+table. :</p>
+<pre><code>Data        Description         FPL to track Initial    End of correlation ($13),
+Ref Num                         Correlation ($11),      Miniplan cancellation ($14),
+                                Miniplan update ($12)   Retained Miniplan ($15)
+
+I032/010    Server id ...               M                       M
+I032/015    User Number                 O                       O
+I032/018    Data Source ...             M                       M
+I032/020    Time of ...                 M                       M
+I032/035    Type of Message             M                       M
+I032/040    Track Number            M from FPPS             M from FPPS
+                                    X from SDPS             X from SDPS
+I032/050    Composed trknum...      M from SDPS             M from SDPS
+                                    X from FPPS             X from FDPS
+I032/060    Track Mode 3/A              O                       X
+I032/400    Callsign                    O                       X
+I032/410    Plan Number                 O                       X
+I032/420    Flight Category             O                       X
+I032/430    Type of Aircraft            O                       X
+I032/435    Wake Turbulence ...         O                       X
+I032/440    Departure ...               O                       X
+I032/450    Destination ...             O                       X
+I032/460    Allocated SSR Codes         O                       X
+I032/480    Current Cleared FL...       O                       X
+I032/490    Current Control Pos...      O                       X
+I032/500    Supplementary FD...         O                       X</code></pre></li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I032/040 - Track Number</strong></p>
+<blockquote>
+<p>definition: Identification of a track (track number)
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/050 - Composed Track Number</strong></p>
+<blockquote>
+<p>definition: Identification of a system track.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I032/050/SUI - System Unit Identification</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/050/STN - System Track Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 15</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each Track Number (i.e. either a Master or a Slave Track Number) is
+composed of a System Unit Identification (i.e. the identification of the
+SDPS unit processing the) together with the relevant System Track Number
+(i.e. the number of the track local to the SDPS Unit in question).</li>
+<li>The Composed Track Number is used by co-operating SDPS units to
+uniquely identify a track. It consists of the unit identifier and system
+track number for each unit involved in the co-operation. The first unit
+identification identifies the unit that is responsible for the track
+amalgamation.</li>
+<li>The Master Track Number and the possible extensions (Slave Tracks
+Numbers) are identically composed.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/060 - Track Mode 3/A</strong></p>
+<blockquote>
+<p>definition: Mode 3/A code associated to the track
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I032/060/MODE3A - (Mode 3/A Code) 4 Digits, Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/400 - Callsign</strong></p>
+<blockquote>
+<p>definition: Callsign (in 7 characters) of an aircraft (provided in
+the Miniplan).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>Each one of the seven octets contains an ASCII Character. The
+Callsign is always left adjusted. It contains up to seven upper-case
+alphanumeric characters, the remaining character positions (if any) are
+padded with space characters.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I032/410 - Plan Number</strong></p>
+<blockquote>
+<p>definition: The Plan Number is an integer value representing a unique
+reference to a
+Flight-plan record within a particular FPPS.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/420 - Flight Category</strong></p>
+<blockquote>
+<p>definition: Flight Category.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/420/GATOAT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+General Air Traffic
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Operational Air Traffic
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not applicable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/420/FR1FR2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Instrument Flight Rules
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Visual Flight rules
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Not applicable
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Controlled Visual Flight Rules
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/420/SP3</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/420/SP2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/420/SP1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The definition of the sub-categories is system dependent and shall
+be descried in the system ICD.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I032/430 - Type of Aircraft</strong></p>
+<blockquote>
+<p>definition: Type of Aircraft.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each one of the four octets composing the type of aircraft contains
+an ASCII Character (upper-case alphabetic characters with trailing
+spaces).</li>
+<li>The types of aircraft are defined in the ICAO Document 4444.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/435 - Wake Turbulence Category</strong></p>
+<blockquote>
+<p>definition: Wake turbulence category of an aircraft.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>76</code>:</dt>
+<dd>
+Light
+</dd>
+<dt><code>77</code>:</dt>
+<dd>
+Medium
+</dd>
+<dt><code>72</code>:</dt>
+<dd>
+Heavy
+</dd>
+<dt><code>74</code>:</dt>
+<dd>
+Super
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/440 - Departure Aerodrome</strong></p>
+<blockquote>
+<p>definition: Departure Aerodrome
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each octet contains one ASCII Character (Upper Case Alphabetic)</li>
+<li>The Aerodrome Names are indicated in the ICAO Location Indicators
+book.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/450 - Destination Aerodrome</strong></p>
+<blockquote>
+<p>definition: Departure Aerodrome
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 32</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>Each octet contains one ASCII Character (Upper Case
+Alphabetic).</li>
+<li>The Aerodrome Names are indicated in the ICAO Location Indicators
+book [Ref. 5].</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/460 - Allocated SSR Codes</strong></p>
+<blockquote>
+<p>definition: List of successive SSR Codes allocated to a flight.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I032/460/OCT1 - 1st Octal Digit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/460/OCT2 - 2nd Octal Digit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/460/OCT3 - 3rd Octal Digit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/460/OCT4 - 4th Octal Digit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/480 - Current Cleared Flight Level</strong></p>
+<blockquote>
+<p>definition: Current Cleared Flight Level
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>2</sup></span> FL ≈ <span class="math inline">0.25</span> FL</p>
+<p>unit: &quot;FL&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">1500.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I032/490 - Current Control Position</strong></p>
+<blockquote>
+<p>definition: Identification of the Control Position currently
+controlling a flight.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/490/CEN - Centre</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/490/POS - Position</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ul>
+<li>The Centre and Control Position Identification Codes are
+implementation specific and have to be agreed upon between communication
+partners.</li>
+</ul>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I032/500 - Supplementary Flight Data</strong></p>
+<blockquote>
+<p>definition: Flight related data provided by ground based systems.
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>I032/500/IFI - IFPS FLIGHT ID</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/500/IFI/TYP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Plan Number
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Unit 1 internal flight number
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unit 2 internal flight number
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Unit 3 internal flight number
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 3</p>
+<p><strong>I032/500/IFI/NBR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 27</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">9.9999999<em>e</em>7</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/RVP - RVSM &amp; Flight Priority</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 5</p>
+<p><strong>I032/500/RVP/RVSM</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Approved
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Exempt
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Not approved
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/RVP/HPR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Normal Priority Flight
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+High Priority Flight
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/RDS - Runway Designation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/500/RDS/NU1 - First Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/RDS/NU2 - Second Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/RDS/LTR - Letter</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/TOD - Time of Departure / Arrival</strong></p>
+<blockquote>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/500/TOD/TYP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Scheduled Off-Block Time
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Estimated Off-Block Time
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Estimated Take-Off Time
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Actual Off-Block Time
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Predicted Time at Runway Hold
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+Actual Time at Runway Hold
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+Actual Line-Up Time
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+Actual Take-Off Time
+</dd>
+<dt><code>8</code>:</dt>
+<dd>
+Estimated Time of Arrival
+</dd>
+<dt><code>9</code>:</dt>
+<dd>
+Predicted Landing Time
+</dd>
+<dt><code>10</code>:</dt>
+<dd>
+Actual Landing Time
+</dd>
+<dt><code>11</code>:</dt>
+<dd>
+Actual Time off Runway
+</dd>
+<dt><code>12</code>:</dt>
+<dd>
+Predicted Time to Gate
+</dd>
+<dt><code>13</code>:</dt>
+<dd>
+Actual On-Block Time
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/TOD/DAY</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Today
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Yesterday
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Tomorrow
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+<p><strong>I032/500/TOD/HOR</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">23.0</span></p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I032/500/TOD/MIN</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 6</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">59.0</span></p>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/TOD/AVS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Seconds available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Seconds not available
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>I032/500/TOD/SEC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 6</p>
+<p>Unsigned integer</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">59.0</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/AST - Aircraft Stand</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 48</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/STS - Stand Status</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>I032/500/STS/EMP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Empty
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Occupied
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/STS/AVL</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Available
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Not available
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Unknown
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Invalid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/SID - Standard Instrument Departure</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+<p><strong>I032/500/STAR - Standard Instrument Arrival</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 56</p>
+<p>Ascii string (8-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>NU1, NU2 and LTR each contain an ASCII character (upper case
+alphabetic).</li>
+<li>For details refer to ICAO Annex 14 Chapter 5 [Ref. 4].</li>
+<li>Estimated times are derived from flight plan processing systems.
+Predicted times are derived by the fusion system based on surveillance
+data. For definitions see [Ref.4]</li>
+<li>Each one of the six Octets contains an ASCII Character. The Aircraft
+Stand identification is always left adjusted. It contains up to six
+upper-case alphanumeric characters, the remaining character positions
+(if any) are padded with space characters.</li>
+<li>Each one of the seven Octets contains an ASCII Character. The SID is
+always left adjusted. It contains up to seven alphanumeric characters,
+the remaining character positions (if any) are padded with space
+characters.</li>
+<li>Each one of the seven Octets contains an ASCII Character. The STAR
+is always left adjusted. It contains up to seven alphanumeric
+characters, the remaining character positions (if any) are padded with
+space characters.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>I032/RE - Reserved Expansion Field</strong></p>
+<blockquote>
+<p>definition: Expansion
+</p>
+<p>Explicit (ReservedExpansion)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I032/010</code> - Server Identification Tag</li>
+<li>2: <code>I032/015</code> - User Number</li>
+<li>3: <code>I032/018</code> - Data Source Identification Tag</li>
+<li>4: <code>I032/035</code> - Type of Message</li>
+<li>5: <code>I032/020</code> - Time of ASTERIX Report Generation</li>
+<li>6: <code>I032/040</code> - Track Number</li>
+<li>7: <code>I032/050</code> - Composed Track Number</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I032/060</code> - Track Mode 3/A</li>
+<li>9: <code>I032/400</code> - Callsign</li>
+<li>10: <code>I032/410</code> - Plan Number</li>
+<li>11: <code>I032/420</code> - Flight Category</li>
+<li>12: <code>I032/440</code> - Departure Aerodrome</li>
+<li>13: <code>I032/450</code> - Destination Aerodrome</li>
+<li>14: <code>I032/480</code> - Current Cleared Flight Level</li>
+<li>(FX) - Field extension indicator</li>
+<li>15: <code>I032/490</code> - Current Control Position</li>
+<li>16: <code>I032/430</code> - Type of Aircraft</li>
+<li>17: <code>I032/435</code> - Wake Turbulence Category</li>
+<li>18: <code>I032/460</code> - Allocated SSR Codes</li>
+<li>19: <code>I032/500</code> - Supplementary Flight Data</li>
+<li><em>Spare</em></li>
+<li>21: <code>I032/RE</code> - Reserved Expansion Field</li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>

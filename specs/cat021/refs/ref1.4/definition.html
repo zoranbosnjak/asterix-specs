@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix expansion 021 - ADS-B Target Reports Expansion</h1>
+<p><strong>category</strong>: 021</p>
+<p><strong>edition</strong>: 1.4</p>
+<p><strong>date</strong>: 2018-03-08</p>
+<p><strong>FSPEC byte size</strong>: 1</p>
+<h2>Items</h2>
+<p><strong>BPS - Barometric Pressure Setting</strong></p>
+<blockquote>
+<p>definition: Barometric Pressure Setting
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>BPS/BPS - Barometric Pressure Setting</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/10</span> hPa ≈ <span class="math inline">0.1</span> hPa</p>
+<p>unit: &quot;hPa&quot;</p>
+<p><code>&gt;=</code> <span class="math inline">0.0</span></p>
+<p><code>&lt;=</code> <span class="math inline">409.5</span></p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>BPS is the barometric pressure setting of the aircraft minus 800
+hPa</li>
+<li>A value of &quot;0&quot; indicates that in the aircraft a value of 800 hPa or
+less has been selected.</li>
+<li>A value of &quot;409.5&quot; indicates that in the aircraft a value of 1209.5
+hPa or more has been selected.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>SH - Selected Heading</strong></p>
+<blockquote>
+<p>definition: Selected Heading
+</p>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 4</p>
+<p><strong>SH/HDR - Horizontal Reference Direction</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+True North
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Magnetic North
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SH/STAT - Selected Heading Status</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Data is either unavailable or invalid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Data is available and valid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SH/SH - Selected Heading</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 10</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">45/2<sup>6</sup></span> ° ≈ <span class="math inline">0.703125</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>On many aircraft, the ADS-B Transmitting Subsystem receives Selected
+Heading from a Mode Control Panel / Flight Control Unit (MCP / FCU).
+Users of this data are cautioned that the Selected Heading value
+transmitted by the ADS-B Transmitting Subsystem does not necessarily
+reflect the true intention of the airplane during certain flight modes
+(e.g., during LNAV mode).</p>
+</blockquote>
+<p><strong>NAV - Navigation Mode</strong></p>
+<blockquote>
+<p>definition: Navigation Mode Settings
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>NAV/AP - Autopilot</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Autopilot not engaged
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Autopilot engaged
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/VN - Vertical Navigation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Vertical Navigation not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Vertical Navigation active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/AH - Altitude Hold</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Altitude Hold not engaged
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Altitude Hold engaged
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>NAV/AM - Approach Mode</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Approach Mode not active
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Approach Mode active
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 4</p>
+</blockquote>
+<p>This data-item should only be transmitted if an ADS-B indication has
+been received that the mode bits have been &quot;actively populated&quot;.by the
+avionics (1090 ES version 2 (as defined in I021/210) BDS 6,2, subtype 1,
+bit 47: &quot;Status of MCP / FCU Mode Bits&quot;)</p>
+</blockquote>
+<p><strong>GAO - GPS Antenna Offset</strong></p>
+<blockquote>
+<p>definition: GPS Antenna Offset
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+<p>The value of this field is copied from the respective bits 33-40 of
+version 2 (as defined in I021/210) of 1090 ES BDS register 6,5 (Aircraft
+Operational Status)</p>
+</blockquote>
+<p><strong>SGV - Surface Ground Vector</strong></p>
+<blockquote>
+<p>definition: Ground Speed and Track Angle elements of the Surface
+Ground Vector.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>SGV/STP</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Aircraft has not stopped
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Aircraft has stopped
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/HTS</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Heading/Ground Track data is not valid
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Heading/Ground Track data is valid
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/HTT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Heading data provided
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Ground Track provided
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/HRD</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+True North
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Magnetic North
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>SGV/GSS - Ground Speed</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 11</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>3</sup></span> kt ≈ <span class="math inline">0.125</span> kt</p>
+<p>unit: &quot;kt&quot;</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p><strong>SGV/HGT - Heading/Ground Track Information</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">45/2<sup>4</sup></span> ° ≈ <span class="math inline">2.8125</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>STA - Aircraft Status</strong></p>
+<blockquote>
+<p>definition: This item contains flags to convey information on the
+status
+of a target.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>STA/ES</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Target is not 1090 ES IN capable
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Target is 1090 ES IN capable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>STA/UAT</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Target is not UAT IN capable
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Target is UAT IN capable
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 5</p>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+</blockquote>
+<p><strong>TNH - True North Heading</strong></p>
+<blockquote>
+<p>definition: True North Heading (Element of Air Vector).
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+<p>Magnetic Heading is defined in I021/152.</p>
+</blockquote>
+<p><strong>MES - Military Extended Squitter</strong></p>
+<blockquote>
+<p>definition: Contents of Extended Squitters transmitted by Military
+Aircraft
+</p>
+<p>Compound</p>
+<blockquote>
+<p><strong>MES/SUM - Mode 5 Summary</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MES/SUM/M5</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No Mode 5 interrogation
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 5 interrogation
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/ID</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 ID reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 ID reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/DA</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+No authenticated Mode 5 Data reply or Report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply
+type other than ID)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/M1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 1 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/M2</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 2 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 2 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/M3</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 3 code not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Mode 3 code from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/MC</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Flightlevel not present or not from Mode 5 reply/report
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Flightlevel from Mode 5 reply/report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/SUM/PO</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Position not from Mode 5 report (ADS-B report)
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Position from Mode 5 report
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ol type="1">
+<li>The flag M2 refers to the contents of Subfield #6 below, M3, MC
+refer to the contents of data items I021/070 and I021/145 respectively.
+The flag M1 refers to the contents of Subfield #3 below (Extended Mode 1
+Code in Octal Representation).</li>
+<li>If a Mode 5 reply/report is received with the Emergency bit set,
+then the Military Emergency bit (ME) in Data Item I021/200, Target
+Status, shall be set.</li>
+<li>If a Mode 5 reply/report is received with the Identification of
+Position bit set, then the Special Position Identification bit (SPI) in
+Data Item I021/200, Target Status, shall be set.</li>
+<li>If a Mode 5 report (ID or Data) is received and fullfill the
+autentication criteria the corresponding authentication bit shall be
+set.</li>
+</ol>
+</blockquote>
+</blockquote>
+<p><strong>MES/PNO - Mode 5 PIN / National Origin</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MES/PNO/PIN - PIN Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 14</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 5</p>
+<p><strong>MES/PNO/NO - National Origin Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 11</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MES/EM1/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/EM1/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode 1 code as derived from the report of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode 1 code as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/EM1/EM1 - Extended Mode 1 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>Subfield #1 is present, the M1 bit in Subfield #1 indicates whether
+the Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If
+Subfield #1 is not present, the Extended Mode 1 Code is from a Mode 1
+reply.</li>
+<li>If Subfield #3 is not present the Mode 1 Code was not reported or
+all Code Bits were equal to 0.</li>
+<li>The valid bit is set if the Code was only reported once for that
+target.</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP - X Pulse Presence</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 2</p>
+<p><strong>MES/XP/XP - X-pulse from Mode 5 PIN Reply/report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-Pulse not present
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse present
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X5 - X-pulse from Mode 5 Data Reply or
+Report</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no authenticated Data reply or Report received
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/XC - X-pulse from Mode C Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode C reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X3 - X-pulse from Mode 3/A Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 3/A reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X2 - X-pulse from Mode 2 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+0 X-pulse set to zero or no Mode 2 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/XP/X1 - X-pulse from Mode 1 Reply</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+X-pulse set to zero or no Mode 1 reply
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+X-pulse set to one (present)
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Within Mode 5 reports, the X-Pulse can be set for the following
+cases:</p>
+<p>1. In a combined Mode 1 and Mode 2 report: in this case the X5 bit
+and the X2 bit shall be set;</p>
+<p>2. In a combined Mode 3 and Mode C report: in this case the X5 bit
+and the X3 bit shall be set;</p>
+<p>3. In a Mode 5 PIN data report: in this case the X5 bit and the XP
+bit shall be set. The X1 bit and the XC bit are meaningless as in Mode 1
+and Mode C replies/reports the X Pulse is not defined. They are kept for
+compatibility reasons.</p>
+</blockquote>
+<p><strong>MES/FOM - Figure of Merit</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p>Spare bits: 3</p>
+<p><strong>MES/FOM/FOM - Figure of Merit</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>MES/M2 - Mode 2 Code in Octal Representation</strong></p>
+<blockquote>
+<p>Group</p>
+<blockquote>
+<p><strong>MES/M2/V</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Code validated
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Code not validated
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/M2/L</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Mode-2 code as derived from the reply of the transponder
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Smoothed Mode-2 code as provided by a local tracker
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Spare bits: 1</p>
+<p><strong>MES/M2/MODE2 - Mode 2 Code in Octal
+Representation</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 12</p>
+<p>Octal string (3-bits per char)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>If Subfield 6 is not present the Mode 2 Code was no reported or all
+Code Bits were equal to 0.</p>
+</blockquote>
+</blockquote>
+<p>Notes:</p>
+<blockquote>
+<ul>
+<li>The Reserved Expansion Field is optional. When used to transmit MES,
+it shall be sent when the targets are represented by Mode 5 Level 2
+reports.</li>
+<li>The information contained in this data item is specific to 1090MHz
+Extended Squitter messages transmitted by military aircraft (Mode 5
+Level 2 squitter).</li>
+</ul>
+</blockquote>
+</blockquote>
+</body>
+</html>

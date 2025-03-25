@@ -1,0 +1,459 @@
+asterix 032 "Miniplan Reports to an SDPS"
+edition 1.1
+date 2020-12-11
+preamble
+    Surveillance data exchange.
+
+items
+
+    010 "Server Identification Tag"
+        definition
+            Identification of the Server of track information.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Notes:
+
+                1. The up-to-date list of SACs is published on the EUROCONTROL ASTERIX
+                   Web Site (http://www.eurocontrol.int/services/system-area-code-list).
+                2. In case of message originating from an FPPS, the Server Identification
+                   Tag corresponds to the SDPS unit receiving the Miniplan.
+                3. In case of message originating from a SDPS, the Server Identification
+                   Tag corresponds to the SDPS unit sending the Miniplan.
+
+    015 "User Number"
+        definition
+            Identification of the User of the track data.
+        element 16
+            unsigned integer
+        remark
+            Notes:
+
+                1. The User numbers are predefined in the User registration data base
+                   of the SDPS Unit to which the User wants to connect.
+                2. In case of message originating from an FPPS, the User Number
+                   corresponds to the FPPS one.
+                3. In case of message originating from an SDPS, the User Number
+                   corresponds to the SDPS unit receiving the Miniplan.
+
+    018 "Data Source Identification Tag"
+        definition
+            Identification of the data source (FPPS system) from which the information
+            contained in the message was initially originated.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the EUROCONTROL ASTERIX
+                  Web Site (http://www.eurocontrol.int/services/system-area-code-list).
+
+    020 "Time of ASTERIX Report Generation"
+        definition
+            Time of the generation of the ASTERIX category 032 report in the form of
+            elapsed time since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                1. The Time of ASTERIX Report Generation is reset to zero at every midnight.
+                2. This time is determined at an application level (e.g. time at which
+                   a message is filled), and not at the communication level (i.e. not
+                   the time at which the data-block is sent).
+
+    035 "Type of Message"
+        definition
+            This data item allows for a more convenient handling of the message at the
+            receiver side by further defining the type of transaction.
+        group
+            FAMILY ""
+                element 4
+                    table
+                        1: Information sent by an FPPS
+            NATURE ""
+                element 4
+                    table
+                        1: Flight Plan to track initial correlation
+                        2: Miniplan update
+                        3: End of correlation
+                        4: Miniplan Cancellation
+                        5: Retained Miniplan
+        remark
+            Note:
+                - The composition of the messages is described in the following table. ::
+
+                    Data        Description         FPL to track Initial    End of correlation ($13),
+                    Ref Num                         Correlation ($11),      Miniplan cancellation ($14),
+                                                    Miniplan update ($12)   Retained Miniplan ($15)
+
+                    I032/010    Server id ...               M                       M
+                    I032/015    User Number                 O                       O
+                    I032/018    Data Source ...             M                       M
+                    I032/020    Time of ...                 M                       M
+                    I032/035    Type of Message             M                       M
+                    I032/040    Track Number            M from FPPS             M from FPPS
+                                                        X from SDPS             X from SDPS
+                    I032/050    Composed trknum...      M from SDPS             M from SDPS
+                                                        X from FPPS             X from FDPS
+                    I032/060    Track Mode 3/A              O                       X
+                    I032/400    Callsign                    O                       X
+                    I032/410    Plan Number                 O                       X
+                    I032/420    Flight Category             O                       X
+                    I032/430    Type of Aircraft            O                       X
+                    I032/435    Wake Turbulence ...         O                       X
+                    I032/440    Departure ...               O                       X
+                    I032/450    Destination ...             O                       X
+                    I032/460    Allocated SSR Codes         O                       X
+                    I032/480    Current Cleared FL...       O                       X
+                    I032/490    Current Control Pos...      O                       X
+                    I032/500    Supplementary FD...         O                       X
+
+    040 "Track Number"
+        definition
+            Identification of a track (track number)
+        element 16
+            unsigned integer
+
+    050 "Composed Track Number"
+        definition
+            Identification of a system track.
+        extended
+            SUI "System Unit Identification"
+                element 8
+                    unsigned integer
+            STN "System Track Number"
+                element 15
+                    unsigned integer
+            -
+        remark
+            Notes:
+
+                1. Each Track Number (i.e. either a Master or a Slave Track Number)
+                   is composed of a System Unit Identification (i.e. the identification
+                   of the SDPS unit processing the) together with the relevant System
+                   Track Number (i.e. the number of the track local to the SDPS Unit
+                   in question).
+                2. The Composed Track Number is used by co-operating SDPS units to
+                   uniquely identify a track. It consists of the unit identifier and
+                   system track number for each unit involved in the co-operation.
+                   The first unit identification identifies the unit that is responsible
+                   for the track amalgamation.
+                3. The Master Track Number and the possible extensions (Slave Tracks
+                   Numbers) are identically composed.
+
+    060 "Track Mode 3/A"
+        definition
+            Mode 3/A code associated to the track
+        group
+            spare 4
+            MODE3A "(Mode 3/A Code) 4 Digits, Octal Representation"
+                element 12
+                    string octal
+
+    400 "Callsign"
+        definition
+            Callsign (in 7 characters) of an aircraft (provided in the Miniplan).
+        element 56
+            string ascii
+        remark
+            Note:
+                - Each one of the seven octets contains an ASCII Character. The Callsign
+                  is always left adjusted. It contains up to seven upper-case alphanumeric
+                  characters, the remaining character positions (if any) are padded with
+                  space characters.
+
+    410 "Plan Number"
+        definition
+            The Plan Number is an integer value representing a unique reference to a
+            Flight-plan record within a particular FPPS.
+        element 16
+            unsigned integer
+
+    420 "Flight Category"
+        definition
+            Flight Category.
+        group
+            GATOAT ""
+                element 2
+                    table
+                        0: Unknown
+                        1: General Air Traffic
+                        2: Operational Air Traffic
+                        3: Not applicable
+            FR1FR2 ""
+                element 2
+                    table
+                        0: Instrument Flight Rules
+                        1: Visual Flight rules
+                        2: Not applicable
+                        3: Controlled Visual Flight Rules
+            SP3 ""
+                element 1
+                    raw
+            SP2 ""
+                element 1
+                    raw
+            SP1 ""
+                element 1
+                    raw
+            spare 1
+        remark
+            Note:
+                - The definition of the sub-categories is system dependent and shall
+                  be descried in the system ICD.
+
+    430 "Type of Aircraft"
+        definition
+            Type of Aircraft.
+        element 32
+            string ascii
+        remark
+            Notes:
+
+                1. Each one of the four octets composing the type of aircraft contains
+                   an ASCII Character (upper-case alphabetic characters with trailing
+                   spaces).
+                2. The types of aircraft are defined in the ICAO Document 4444.
+
+    435 "Wake Turbulence Category"
+        definition
+            Wake turbulence category of an aircraft.
+        element 8
+            table
+                76: Light
+                77: Medium
+                72: Heavy
+                74: Super
+
+    440 "Departure Aerodrome"
+        definition
+            Departure Aerodrome
+        element 32
+            string ascii
+        remark
+            Notes:
+
+                1. Each octet contains one ASCII Character (Upper Case Alphabetic)
+                2. The Aerodrome Names are indicated in the ICAO Location Indicators book.
+
+    450 "Destination Aerodrome"
+        definition
+            Departure Aerodrome
+        element 32
+            string ascii
+        remark
+            Notes:
+
+                1. Each octet contains one ASCII Character (Upper Case Alphabetic).
+                2. The Aerodrome Names are indicated in the ICAO Location Indicators book [Ref. 5].
+
+    460 "Allocated SSR Codes"
+        definition
+            List of successive SSR Codes allocated to a flight.
+        repetitive 1
+            group
+                spare 4
+                OCT1 "1st Octal Digit"
+                    element 3
+                        raw
+                OCT2 "2nd Octal Digit"
+                    element 3
+                        raw
+                OCT3 "3rd Octal Digit"
+                    element 3
+                        raw
+                OCT4 "4th Octal Digit"
+                    element 3
+                        raw
+
+    480 "Current Cleared Flight Level"
+        definition
+            Current Cleared Flight Level
+        element 16
+            unsigned quantity 1/2^2 "FL" >= 0 <= 1500
+
+    490 "Current Control Position"
+        definition
+            Identification of the Control Position currently controlling a flight.
+        group
+            CEN "Centre"
+                element 8
+                    raw
+            POS "Position"
+                element 8
+                    raw
+        remark
+            Note:
+                - The Centre and Control Position Identification Codes are implementation
+                  specific and have to be agreed upon between communication partners.
+
+    500 "Supplementary Flight Data"
+        definition
+            Flight related data provided by ground based systems.
+        compound
+            IFI "IFPS FLIGHT ID"
+                group
+                    TYP ""
+                        element 2
+                            table
+                                0: Plan Number
+                                1: Unit 1 internal flight number
+                                2: Unit 2 internal flight number
+                                3: Unit 3 internal flight number
+                    spare 3
+                    NBR ""
+                        element 27
+                            unsigned integer >= 0 <= 99999999
+            RVP "RVSM & Flight Priority"
+                group
+                    spare 5
+                    RVSM ""
+                        element 2
+                            table
+                                0: Unknown
+                                1: Approved
+                                2: Exempt
+                                3: Not approved
+                    HPR ""
+                        element 1
+                            table
+                                0: Normal Priority Flight
+                                1: High Priority Flight
+            RDS "Runway Designation"
+                group
+                    NU1 "First Number"
+                        element 8
+                            string ascii
+                    NU2 "Second Number"
+                        element 8
+                            string ascii
+                    LTR "Letter"
+                        element 8
+                            string ascii
+            TOD "Time of Departure / Arrival"
+                repetitive 1
+                    group
+                        TYP ""
+                            element 5
+                                table
+                                    0: Scheduled Off-Block Time
+                                    1: Estimated Off-Block Time
+                                    2: Estimated Take-Off Time
+                                    3: Actual Off-Block Time
+                                    4: Predicted Time at Runway Hold
+                                    5: Actual Time at Runway Hold
+                                    6: Actual Line-Up Time
+                                    7: Actual Take-Off Time
+                                    8: Estimated Time of Arrival
+                                    9: Predicted Landing Time
+                                    10: Actual Landing Time
+                                    11: Actual Time off Runway
+                                    12: Predicted Time to Gate
+                                    13: Actual On-Block Time
+                        DAY ""
+                            element 2
+                                table
+                                    0: Today
+                                    1: Yesterday
+                                    2: Tomorrow
+                                    3: Invalid
+                        spare 4
+                        HOR ""
+                            element 5
+                                unsigned integer >= 0 <= 23
+                        spare 2
+                        MIN ""
+                            element 6
+                                unsigned integer >= 0 <= 59
+                        AVS ""
+                            element 1
+                                table
+                                    0: Seconds available
+                                    1: Seconds not available
+                        spare 1
+                        SEC ""
+                            element 6
+                                unsigned integer >= 0 <= 59
+            AST "Aircraft Stand"
+                element 48
+                    string ascii
+            STS "Stand Status"
+                group
+                    EMP ""
+                        element 2
+                            table
+                                0: Empty
+                                1: Occupied
+                                2: Unknown
+                                3: Invalid
+                    AVL ""
+                        element 2
+                            table
+                                0: Available
+                                1: Not available
+                                2: Unknown
+                                3: Invalid
+                    spare 4
+            SID "Standard Instrument Departure"
+                element 56
+                    string ascii
+            STAR "Standard Instrument Arrival"
+                element 56
+                    string ascii
+        remark
+            Notes:
+
+                1. NU1, NU2 and LTR each contain an ASCII character (upper case alphabetic).
+                2. For details refer to ICAO Annex 14 Chapter 5 [Ref. 4].
+                3. Estimated times are derived from flight plan processing systems.
+                   Predicted times are derived by the fusion system based on surveillance
+                   data. For definitions see [Ref.4]
+                4. Each one of the six Octets contains an ASCII Character. The Aircraft
+                   Stand identification is always left adjusted. It contains up to six
+                   upper-case alphanumeric characters, the remaining character positions
+                   (if any) are padded with space characters.
+                5. Each one of the seven Octets contains an ASCII Character. The SID is
+                   always left adjusted. It contains up to seven alphanumeric characters,
+                   the remaining character positions (if any) are padded with space characters.
+                6. Each one of the seven Octets contains an ASCII Character. The STAR
+                   is always left adjusted. It contains up to seven alphanumeric
+                   characters, the remaining character positions (if any) are padded
+                   with space characters.
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+uap
+    010
+    015
+    018
+    035
+    020
+    040
+    050
+    060
+    400
+    410
+    420
+    440
+    450
+    480
+    490
+    430
+    435
+    460
+    500
+    -
+    RE

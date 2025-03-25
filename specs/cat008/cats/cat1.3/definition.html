@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>asterix specification</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <link href="data:application/octet-stream;base64,Ym9keSB7CiAgICBjb2xvcjogIzJCMzMyRTsKICAgIGJhY2tncm91bmQ6ICNGRkZGRkY7CiAgICBmb250LXNpemU6IDE2cHg7CiAgICBmb250LXNpemU6IDEuMHJlbTsKICAgIG1heC13aWR0aDogOTYwcHg7CiAgICBwYWRkaW5nOiAwcHggODBweCAyNXB4OwogICAgZm9udC1mYW1pbHk6ICdMdWNpZGEgR3JhbmRlJywgJ0x1Y2lkYSBTYW5zIFVuaWNvZGUnLCAnRGVqYVZ1IFNhbnMnLCBzYW5zLXNlcmlmOwp9CgpkaXYjbG9nbyB7CiAgICBmb250LXdlaWdodDogYm9sZDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHBhZGRpbmc6IDBweCAwcHggMTBweDsKfQoKaGVhZGVyIHsKICAgIGJvcmRlci1ib3R0b206IDAuMnJlbSBzb2xpZCAjMDAwOwogICAgcGFkZGluZzogMHB4IDBweCAyNXB4Owp9CgpuYXYgewogICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7Cn0KCmE6bGluayB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCkE6dmlzaXRlZCB7CiAgICBjb2xvcjogYmx1ZTsKICAgIGJhY2tncm91bmQtY29sb3I6IHRyYW5zcGFyZW50OwogICAgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7Cn0KCmE6aG92ZXIgewogICAgY29sb3I6ICNDQzMzMzM7CiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB0cmFuc3BhcmVudDsKICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKfQoKZm9vdGVyIHsKICAgIHRleHQtYWxpZ246IHJpZ2h0OwogICAgbWFyZ2luLXRvcDogM3JlbTsKICAgIHBhZGRpbmc6IDEuMnJlbSAwOwogICAgYm9yZGVyLXRvcDogMC4ycmVtIHNvbGlkICMwMDA7CiAgICBmb250LXNpemU6IDAuOHJlbTsKICAgIGNvbG9yOiAjNTU1Owp9Cgpjb2RlIHsKICAgIGJhY2tncm91bmQtY29sb3I6IHJnYigyNTAsIDI1MCwgMjUwKTsKICAgIGJvcmRlcjogMXB4IHNvbGlkIHJnYigyMDAsIDIwMCwgMjAwKTsKICAgIHBhZGRpbmctbGVmdDogNHB4OwogICAgcGFkZGluZy1yaWdodDogNHB4Owp9CgpwcmUgY29kZSB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIHBhZGRpbmc6IDhweDsKICAgIG1hcmdpbi1ib3R0b206IDJlbTsKfQoKaW1nIHsKICBtYXgtd2lkdGg6IDgwMHB4OwogIGRpc3BsYXk6IGJsb2NrOwp9Cgo=" rel="stylesheet" />
+  <link href="data:application/octet-stream;base64,YS5zb3VyY2VMaW5lIHsgZGlzcGxheTogaW5saW5lLWJsb2NrOyBsaW5lLWhlaWdodDogMS4yNTsgfQphLnNvdXJjZUxpbmUgeyBwb2ludGVyLWV2ZW50czogbm9uZTsgY29sb3I6IGluaGVyaXQ7IHRleHQtZGVjb3JhdGlvbjogaW5oZXJpdDsgfQphLnNvdXJjZUxpbmU6ZW1wdHkgeyBoZWlnaHQ6IDEuMmVtOyB9Ci5zb3VyY2VDb2RlIHsgb3ZlcmZsb3c6IHZpc2libGU7IH0KY29kZS5zb3VyY2VDb2RlIHsgd2hpdGUtc3BhY2U6IHByZTsgcG9zaXRpb246IHJlbGF0aXZlOyB9CmRpdi5zb3VyY2VDb2RlIHsgbWFyZ2luOiAxZW0gMDsgfQpwcmUuc291cmNlQ29kZSB7IG1hcmdpbjogMDsgfQpAbWVkaWEgc2NyZWVuIHsKZGl2LnNvdXJjZUNvZGUgeyBvdmVyZmxvdzogYXV0bzsgfQp9CkBtZWRpYSBwcmludCB7CmNvZGUuc291cmNlQ29kZSB7IHdoaXRlLXNwYWNlOiBwcmUtd3JhcDsgfQphLnNvdXJjZUxpbmUgeyB0ZXh0LWluZGVudDogLTFlbTsgcGFkZGluZy1sZWZ0OiAxZW07IH0KfQpwcmUubnVtYmVyU291cmNlIGEuc291cmNlTGluZQogIHsgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtNGVtOyB9CnByZS5udW1iZXJTb3VyY2UgYS5zb3VyY2VMaW5lOjpiZWZvcmUKICB7IGNvbnRlbnQ6IGF0dHIodGl0bGUpOwogICAgcG9zaXRpb246IHJlbGF0aXZlOyBsZWZ0OiAtMWVtOyB0ZXh0LWFsaWduOiByaWdodDsgdmVydGljYWwtYWxpZ246IGJhc2VsaW5lOwogICAgYm9yZGVyOiBub25lOyBwb2ludGVyLWV2ZW50czogYWxsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAtd2Via2l0LXRvdWNoLWNhbGxvdXQ6IG5vbmU7IC13ZWJraXQtdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAta2h0bWwtdXNlci1zZWxlY3Q6IG5vbmU7IC1tb3otdXNlci1zZWxlY3Q6IG5vbmU7CiAgICAtbXMtdXNlci1zZWxlY3Q6IG5vbmU7IHVzZXItc2VsZWN0OiBub25lOwogICAgcGFkZGluZzogMCA0cHg7IHdpZHRoOiA0ZW07CiAgICBjb2xvcjogI2FhYWFhYTsKICB9CnByZS5udW1iZXJTb3VyY2UgeyBtYXJnaW4tbGVmdDogM2VtOyBib3JkZXItbGVmdDogMXB4IHNvbGlkICNhYWFhYWE7ICBwYWRkaW5nLWxlZnQ6IDRweDsgfQpkaXYuc291cmNlQ29kZQogIHsgIH0KQG1lZGlhIHNjcmVlbiB7CmEuc291cmNlTGluZTo6YmVmb3JlIHsgdGV4dC1kZWNvcmF0aW9uOiB1bmRlcmxpbmU7IH0KfQpjb2RlIHNwYW4uYWwgeyBjb2xvcjogI2ZmMDAwMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IH0gLyogQWxlcnQgKi8KY29kZSBzcGFuLmFuIHsgY29sb3I6ICM2MGEwYjA7IGZvbnQtd2VpZ2h0OiBib2xkOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQW5ub3RhdGlvbiAqLwpjb2RlIHNwYW4uYXQgeyBjb2xvcjogIzdkOTAyOTsgfSAvKiBBdHRyaWJ1dGUgKi8KY29kZSBzcGFuLmJuIHsgY29sb3I6ICM0MGEwNzA7IH0gLyogQmFzZU4gKi8KY29kZSBzcGFuLmJ1IHsgfSAvKiBCdWlsdEluICovCmNvZGUgc3Bhbi5jZiB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBDb250cm9sRmxvdyAqLwpjb2RlIHNwYW4uY2ggeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBDaGFyICovCmNvZGUgc3Bhbi5jbiB7IGNvbG9yOiAjODgwMDAwOyB9IC8qIENvbnN0YW50ICovCmNvZGUgc3Bhbi5jbyB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogQ29tbWVudCAqLwpjb2RlIHNwYW4uY3YgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBDb21tZW50VmFyICovCmNvZGUgc3Bhbi5kbyB7IGNvbG9yOiAjYmEyMTIxOyBmb250LXN0eWxlOiBpdGFsaWM7IH0gLyogRG9jdW1lbnRhdGlvbiAqLwpjb2RlIHNwYW4uZHQgeyBjb2xvcjogIzkwMjAwMDsgfSAvKiBEYXRhVHlwZSAqLwpjb2RlIHNwYW4uZHYgeyBjb2xvcjogIzQwYTA3MDsgfSAvKiBEZWNWYWwgKi8KY29kZSBzcGFuLmVyIHsgY29sb3I6ICNmZjAwMDA7IGZvbnQtd2VpZ2h0OiBib2xkOyB9IC8qIEVycm9yICovCmNvZGUgc3Bhbi5leCB7IH0gLyogRXh0ZW5zaW9uICovCmNvZGUgc3Bhbi5mbCB7IGNvbG9yOiAjNDBhMDcwOyB9IC8qIEZsb2F0ICovCmNvZGUgc3Bhbi5mdSB7IGNvbG9yOiAjMDYyODdlOyB9IC8qIEZ1bmN0aW9uICovCmNvZGUgc3Bhbi5pbSB7IH0gLyogSW1wb3J0ICovCmNvZGUgc3Bhbi5pbiB7IGNvbG9yOiAjNjBhMGIwOyBmb250LXdlaWdodDogYm9sZDsgZm9udC1zdHlsZTogaXRhbGljOyB9IC8qIEluZm9ybWF0aW9uICovCmNvZGUgc3Bhbi5rdyB7IGNvbG9yOiAjMDA3MDIwOyBmb250LXdlaWdodDogYm9sZDsgfSAvKiBLZXl3b3JkICovCmNvZGUgc3Bhbi5vcCB7IGNvbG9yOiAjNjY2NjY2OyB9IC8qIE9wZXJhdG9yICovCmNvZGUgc3Bhbi5vdCB7IGNvbG9yOiAjMDA3MDIwOyB9IC8qIE90aGVyICovCmNvZGUgc3Bhbi5wcCB7IGNvbG9yOiAjYmM3YTAwOyB9IC8qIFByZXByb2Nlc3NvciAqLwpjb2RlIHNwYW4uc2MgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBTcGVjaWFsQ2hhciAqLwpjb2RlIHNwYW4uc3MgeyBjb2xvcjogI2JiNjY4ODsgfSAvKiBTcGVjaWFsU3RyaW5nICovCmNvZGUgc3Bhbi5zdCB7IGNvbG9yOiAjNDA3MGEwOyB9IC8qIFN0cmluZyAqLwpjb2RlIHNwYW4udmEgeyBjb2xvcjogIzE5MTc3YzsgfSAvKiBWYXJpYWJsZSAqLwpjb2RlIHNwYW4udnMgeyBjb2xvcjogIzQwNzBhMDsgfSAvKiBWZXJiYXRpbVN0cmluZyAqLwpjb2RlIHNwYW4ud2EgeyBjb2xvcjogIzYwYTBiMDsgZm9udC13ZWlnaHQ6IGJvbGQ7IGZvbnQtc3R5bGU6IGl0YWxpYzsgfSAvKiBXYXJuaW5nICovCg==" rel="stylesheet" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">asterix specification</h1>
+</header>
+<h1>Asterix category 008 - Monoradar Derived Weather Information</h1>
+<p><strong>category</strong>: 008</p>
+<p><strong>edition</strong>: 1.3</p>
+<p><strong>date</strong>: 2021-04-01</p>
+<h2>Preamble</h2>
+<p>Surveillance data exchange.</p>
+<h2>Description of standard data items</h2>
+<p><strong>I008/000 - Message Type</strong></p>
+<blockquote>
+<p>definition: This Data Item allows for a more convenient handling of
+the messages
+at the receiver side by further defining the type of transaction.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>1</code>:</dt>
+<dd>
+Polar vector
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+Cartesian vector of start point/length
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+Contour record
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+Cartesian start point and end point vector
+</dd>
+<dt><code>254</code>:</dt>
+<dd>
+SOP message
+</dd>
+<dt><code>255</code>:</dt>
+<dd>
+EOP message
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I008/010 - Data Source Identifier</strong></p>
+<blockquote>
+<p>definition: Identification of the radar station from which the data
+are received.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I008/010/SAC - System Area Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I008/010/SIC - System Identification Code</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The defined SACs are on the EUROCONTROL ASTERIX website
+(www.eurocontrol.int/asterix)</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/020 - Vector Qualifier</strong></p>
+<blockquote>
+<p>definition: Precipitation intensity level, shading orientation of the
+vectors
+representing the precipitation area and coordinate system used.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I008/020/ORG</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Local Coordinates
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+System Coordinates
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I008/020/I - Intensity Level</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I008/020/S - Shading Orientation with Respect to
+North</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+0°
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+22.5°
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+45°
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+67.5°
+</dd>
+<dt><code>4</code>:</dt>
+<dd>
+90°
+</dd>
+<dt><code>5</code>:</dt>
+<dd>
+112.5°
+</dd>
+<dt><code>6</code>:</dt>
+<dd>
+135°
+</dd>
+<dt><code>7</code>:</dt>
+<dd>
+157.5°
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+<p>Spare bits: 5</p>
+<p><strong>I008/020/TST</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Test vector
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I008/020/ER</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Default
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Error condition encountered
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>For polar vectors bits-4/2 are meaningless and are set to zero.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/034 - Sequence of Polar Vectors in SPF
+Notation</strong></p>
+<blockquote>
+<p>definition: Sequence of weather vectors in local polar coordinates.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I008/034/STR - Start Range</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/034/ENDR - End Range</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/034/AZ - Azimuth</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">360/2<sup>16</sup></span> ° ≈ <span class="math inline">5.4931640625<em>e</em> − 3</span> °</p>
+<p>unit: &quot;°&quot;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>f is a parameter of the SOP message.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/036 - Sequence of Cartesian Vectors in SPF
+Notation</strong></p>
+<blockquote>
+<p>definition: Sequence of weather vectors, in the representation start
+point/length,
+in local or in system cartesian coordinates.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I008/036/X - X-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/036/Y - Y-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/036/LENGTH - Length</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Unsigned integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ol type="1">
+<li>LSB of [X, Y, L] is calculated as <span class="math inline">2<sup>−6 + <em>F</em></sup></span>.</li>
+<li>F is a parameter of the SOP message.</li>
+<li>Negative values are expressed in 2&#39;s complement form, bit-24 and
+bit-16 are set to 0 for positive values and 1 for negative values.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/038 - Sequence of Weather Vectors in SPF
+Notation</strong></p>
+<blockquote>
+<p>definition: Sequence of weather vectors, in the representation start
+point/ end
+point, in local or in system cartesian coordinates.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I008/038/X1 - X1-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/038/Y1 - Y1-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/038/X2 - X2-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/038/Y2 - Y2-Component</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ol type="1">
+<li>LSB of [X1, Y1, X2, Y2] is calculated as <span class="math inline">2<sup>−6 + <em>f</em></sup></span>.</li>
+<li>f is a parameter of the SOP message.</li>
+<li>Negative values are expressed in 2&#39;s complement form, bits-32, 24,
+16 and 8 are set to 0 for positive values and 1 for negative
+values.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/040 - Contour Identifier</strong></p>
+<blockquote>
+<p>definition: Contour serial number together with the precipitation
+intensity levels
+and the coordinates system used.
+</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I008/040/ORG</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 1</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Local Coordinates
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+System Coordinates
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I008/040/I - Intensity Level</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p>Spare bits: 2</p>
+<p><strong>I008/040/FSTLST</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 2</p>
+<p>Values:</p>
+<blockquote>
+<dl>
+<dt><code>0</code>:</dt>
+<dd>
+Intermediate record of a contour
+</dd>
+<dt><code>1</code>:</dt>
+<dd>
+Last record of a contour of at least two records
+</dd>
+<dt><code>2</code>:</dt>
+<dd>
+First record of a contour of at least two records
+</dd>
+<dt><code>3</code>:</dt>
+<dd>
+First and only record, fully defining a contour
+</dd>
+</dl>
+</blockquote>
+</blockquote>
+</blockquote>
+<p><strong>I008/040/CSN - Contour Serial Number</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>The Contour Serial Number provides an unambiguous identification for
+each contour record. Within one update cycle, a serial number shall
+never be assigned twice.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/050 - Sequence of Contour Points in SPF
+Notation</strong></p>
+<blockquote>
+<p>definition: Cartesian coordinates of a variable number of points
+defining a contour.
+</p>
+<p>Repetitive</p>
+<p>Regular, 1 byte(s) REP field size.</p>
+<p>Group</p>
+<blockquote>
+<p><strong>I008/050/X1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+<p><strong>I008/050/Y1</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 8</p>
+<p>Signed integer</p>
+</blockquote>
+<p>Adjust with scaling factor &#39;100/F&#39;</p>
+</blockquote>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<ol type="1">
+<li>LSB of [X1, Y1] is calculated as <span class="math inline">2<sup>−6 + <em>f</em></sup></span>.</li>
+<li>f is a parameter of the SOP message.</li>
+<li>Negative values are expressed in 2&#39;s complement form, bit-16 and
+bit-8 shall be set to 0 for positive values and 1 for negative
+values.</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/090 - Time of Day</strong></p>
+<blockquote>
+<p>definition: Absolute time stamping expressed as Coordinated Universal
+Time (UTC) time.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 24</p>
+<p>Unsigned quantity</p>
+<p>LSB = <span class="math inline">1/2<sup>7</sup></span> s ≈ <span class="math inline">7.8125<em>e</em> − 3</span> s</p>
+<p>unit: &quot;s&quot;</p>
+</blockquote>
+<dl>
+<dt>Notes:</dt>
+<dd>
+<ol type="1">
+<li>The time of day value is reset to zero each day at midnight.</li>
+<li>For time management in radar transmission applications, refer to
+Part 1, paragraph 5.4 [Ref. 1].</li>
+</ol>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/100 - Processing Status</strong></p>
+<blockquote>
+<p>definition: Information concerning the scaling factor currently
+applied, current
+reduction step in use, etc.
+</p>
+<p>Extended</p>
+<blockquote>
+<p><strong>I008/100/F - Scaling Factor</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 5</p>
+<p>Signed integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I008/100/R - Current Reduction Stage in Use</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 3</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><strong>I008/100/Q - Processing Parameters</strong></p>
+<blockquote>
+<blockquote>
+<p>Element</p>
+<p>bit size: 15</p>
+<p>Raw Content</p>
+</blockquote>
+</blockquote>
+<p><em>(FX) - extension bit</em></p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>F: Scaling factor, negative values are represented in 2&#39;s complement
+form, bit-24 is set to 0 for positive values and 1 for negative values.
+R: Current reduction stage in use. Normal operation is indicated by a
+value of zero. The actual bit signification is application dependent. Q:
+Processing parameters. The actual bit signification isapplication
+dependent.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/110 - Station Configuration Status</strong></p>
+<blockquote>
+<p>definition: Information concerning the use and status of some vital
+hardware
+components of a radar system .
+</p>
+<p>Repetitive</p>
+<p>With FX extension bit.</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 7</p>
+<p>Raw Content</p>
+</blockquote>
+<dl>
+<dt>Note:</dt>
+<dd>
+<p>Due to the diversity in hardware design and requirements of present
+and future radar stations, it is felt impractical to attempt to define
+individual bits.</p>
+</dd>
+</dl>
+</blockquote>
+<p><strong>I008/120 - Total Number of Items Constituting One Weather
+Picture</strong></p>
+<blockquote>
+<p>definition: Total number of vectors, respectively contour points,
+constituting
+the total weather image, provided with the EOP message.
+</p>
+<blockquote>
+<p>Element</p>
+<p>bit size: 16</p>
+<p>Unsigned integer</p>
+</blockquote>
+</blockquote>
+<p><strong>I008/SP - Special Purpose Field</strong></p>
+<blockquote>
+<p>definition: Special Purpose Field
+</p>
+<p>Explicit (SpecialPurpose)</p>
+</blockquote>
+<h2>User Application Profile</h2>
+<ul>
+<li>1: <code>I008/010</code> - Data Source Identifier</li>
+<li>2: <code>I008/000</code> - Message Type</li>
+<li>3: <code>I008/020</code> - Vector Qualifier</li>
+<li>4: <code>I008/036</code> - Sequence of Cartesian Vectors in SPF
+Notation</li>
+<li>5: <code>I008/034</code> - Sequence of Polar Vectors in SPF
+Notation</li>
+<li>6: <code>I008/040</code> - Contour Identifier</li>
+<li>7: <code>I008/050</code> - Sequence of Contour Points in SPF
+Notation</li>
+<li>(FX) - Field extension indicator</li>
+<li>8: <code>I008/090</code> - Time of Day</li>
+<li>9: <code>I008/100</code> - Processing Status</li>
+<li>10: <code>I008/110</code> - Station Configuration Status</li>
+<li>11: <code>I008/120</code> - Total Number of Items Constituting One
+Weather Picture</li>
+<li>12: <code>I008/038</code> - Sequence of Weather Vectors in SPF
+Notation</li>
+<li>13: <code>I008/SP</code> - Special Purpose Field</li>
+<li><em>RFS indicator</em></li>
+<li>(FX) - Field extension indicator</li>
+</ul>
+</body>
+</html>
