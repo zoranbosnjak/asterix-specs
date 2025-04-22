@@ -11,5 +11,6 @@ nix-shell -p niv --run "niv init"
 # update packages
 nix-shell -p niv --run "niv update nixpkgs -b master"
 nix-shell -p niv --run "niv update nixpkgs -b release-..."
+nix-shell -p niv --run "niv update nixpkgs -b release-... -r {rev}"
 ```
 
