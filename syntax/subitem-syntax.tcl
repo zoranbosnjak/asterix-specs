@@ -30,7 +30,7 @@ set spec {
                     }
                 }
             }
-            { line /repetitive { or /fx BITS} subitem-def }
+            { line /repetitive { or /fx BYTES} subitem-def }
             { line /explicit
                 { or
                     {}

@@ -63,7 +63,7 @@ This project reuses the definitions and vocabulary to the maximum possible exten
 - Element (containing number of bits and content definition)
 - Group (containing list of Items)
 - Extended (containing list of Items and position of FX bits)
-- Repetitive (containing number of bits for the first part and recursive ItemType definition)
+- Repetitive (containing number of bytes for the first part and recursive ItemType definition)
 - Explicit (no further information attached)
 - Compound (containing list of Items where some items may be missing)
 
