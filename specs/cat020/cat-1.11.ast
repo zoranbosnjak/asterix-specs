@@ -1,6 +1,6 @@
 asterix 020 "Multilateration Target Reports"
-edition 1.10
-date 2021-02-19
+edition 1.11
+date 2025-07-02
 preamble
     Surveillance data exchange.
 
@@ -529,7 +529,13 @@ items
                         5: No alert, SPI, aircraft airborne or on ground
                         6: Not assigned
                         7: Information not yet extracted
-            spare 2
+            CASEVN "CAS Extended Version Number"
+                element 2
+                    table
+                        0: Non-extended version
+                        1: ACAS Xa Version 1
+                        2: ACAS Xu Version 1
+                        3: Reserved for future use
             MSSC "Mode-S Specific Service Capability"
                 element 1
                     table
@@ -551,6 +557,36 @@ items
             B1B "BDS 1,0 Bits 37/40"
                 element 4
                     raw
+        remark
+            Notes:
+                - (applicable to bits-10/9 (CASEVN)): if bits-2/1 (of the B1B field) are
+                  set to ‘11’, bits-10/9 contain information about the Extended Version
+                  Number of the CAS. If bits-2/1 (of the B1B field) contain a value
+                  different from ‘11’, bits-10/9 are set to zero.
+
+                - (applicable to bit-5 (B1A)): this is a copy of bit 16 of BDS register 1,0.
+                  If set to ‘1’, bit-5 indicates that the interface between the CAS and the
+                  Transponder is operational. If set to ‘0’, bit-5 indicates that the CAS
+                  has failed or is in standby.
+
+                - (applicable to bits 4/1 (B1B)): this is a copy of bits 37 to 40 of BDS
+                  register 1,0.
+
+                  bit-4 (bit 37 of BDS Register 1,0): If set to ‘1’ indicates Hybrid
+                  Surveillance Capability. If set to ‘0’ indicates no Hybrid Surveillance
+                  Capability.
+
+                  bit-3: (bit 38 of BDS Register 1,0): If set to ‘1’ indicates the capability
+                  of the CAS to generate TAs and RAs. If set to ‘0’ indicates the
+                  capability of the CAS to generate TAs only.
+
+                  bits-2/1: (bits 40 and 39 of BDS Register 1,0) indicate the CAS
+                  Version Number:
+
+                  00 = RTCA DO-185
+                  01 = RTCA DO-185A
+                  10 = EUROCAE ED-143/RTCA DO-185B
+                  11 = CAS Extended Version Number (see bits-10/9)
 
     245 "Target Identification"
         definition
@@ -578,20 +614,25 @@ items
             Mode S Comm B data as extracted from the aircraft transponder.
         repetitive 1
             group
-                BDSREGISTER "56-bit Message Conveying Mode S Comm B Message Data"
+                BDSDATA "56-bit Message Conveying BDS Register Data"
                     element 56
                         raw
-                BDS1 "Comm B Data Buffer Store 1 Address"
+                BDS1 "BDS Register Address 1"
                     element 4
                         raw
-                BDS2 "Comm B Data Buffer Store 2 Address"
+                BDS2 "BDS Register Address 2"
                     element 4
                         raw
         remark
             Notes:
 
-                1. For the transmission of BDS20, item I020/245 is used.
-                2. For the transmission of BDS30, item I020/260 is used.
+                1. For the transmission of BDS Register 2,0, Data Item I020/245 is used.
+                2. For the transmission of BDS Register 3,0, Data Item I020/260 is
+                   used. In case of ACAS Xu (as defined in [4]), the Resolution
+                   Advisory consists of two parts (BDS Register 3,0 and BDS
+                   Register 3,1). BDS Register 3,1 will be transmitted using Data Item
+                   I020/250. For the detailed definition of BDS Register 3,0 and 3,1
+                   please refer to [2] Tables B-3-48a and B-3-49.
 
     260 "ACAS Resolution Advisory Report"
         definition
@@ -602,8 +643,10 @@ items
             raw
         remark
             Notes:
-
-                Refer to ICAO Draft SARPs for ACAS for detailed explanations.
+                1. Refer to ICAO Draft SARPs for ACAS for detailed explanations.
+                2. In case of ACAS Xu, the Resolution Advisory consists of two parts (BDS
+                   Register 3,0 and BDS Register 3,1). The contents of BDS Register 3,1 will
+                   be transmitted using item 250.
 
     300 "Vehicle Fleet Identification"
         definition
