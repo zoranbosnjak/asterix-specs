@@ -1,8 +1,10 @@
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Asterix.Pandoc where
 
+#ifndef NOPANDOC
 import           Data.Coerce
 import           Data.List           (intersperse)
 import           Data.Scientific
@@ -283,3 +285,5 @@ toPandoc = \case
     mkDate date = para (strong (str "date") <> ": " <> str
            (sformat (int % "-" % left 2 '0' % "-" % left 2 '0')
                (dateYear date) (dateMonth date) (dateDay date)))
+#endif
+

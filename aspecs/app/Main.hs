@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE PackageImports    #-}
@@ -18,12 +19,15 @@ import           Main.Utf8                (withUtf8)
 import           Options.Applicative      as Opt
 import           System.Exit              (die)
 import           System.IO                as IO
+
+#ifndef NOPANDOC
 import           Text.Pandoc              (def, runIOorExplode, writeNative)
+import           Asterix.Pandoc           (toPandoc)
+#endif
 
 import           Data.Version             (showVersion)
 import           Paths_aspecs             (version)
 
-import           Asterix.Pandoc           (toPandoc)
 import           Asterix.Specs.Syntaxes
 import           Asterix.Specs.Types
 import           Asterix.Specs.Validation
@@ -129,7 +133,13 @@ main = withUtf8 $ execParser pOpts >>= \case
         readIORef ok >>= \case
             True -> pure ()
             False -> die "Validation error(s) present!"
+#ifndef NOPANDOC
     Pandoc decoder input -> do
         asterix <- decodeInput input decoder
         t <- runIOorExplode $ writeNative def $ toPandoc asterix
         T.putStrLn t
+#else
+    Pandoc _decoder _input -> do
+        error "Pandoc is not supported in this build instance."
+#endif
+
