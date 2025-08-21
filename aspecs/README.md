@@ -27,6 +27,10 @@ find . | grep "\.hs$" | xargs stylish-haskell --inplace
 # run 'ghcid'
 ghcid --no-title --lint "--command=ghci -Wall -iother -ilib -iapp app/Main.hs"
 
+# check for unused packages (pandoc is exception in this case - conditional)
+cabal clean
+cabal build --flag checkunused
+
 # run program, show usage
 runhaskell -iother -ilib -iapp ./app/Main.hs --help
 

@@ -19,6 +19,10 @@ flag nopandoc
     Description: Disable pandoc support
     Default:     False
 
+flag checkunused
+    Description: Check unused packages
+    Default:     False
+
 common pandoc
     if flag(nopandoc)
         cpp-options:   -DNOPANDOC
@@ -27,6 +31,13 @@ common pandoc
         build-depends:
             pandoc
             , pandoc-types
+
+common check
+    if flag(checkunused)
+        ghc-options:
+            -Wunused-packages
+    else
+        ghc-options:
 
 common base
     ghc-options:
@@ -40,22 +51,10 @@ common base
         GHC2021
     build-depends:
         base < 5
-        , with-utf8
         , text
-        , bytestring
-        , transformers
-        , optparse-applicative
-        , megaparsec
-        , parser-combinators
-        , formatting
-        , cryptonite
-        , pretty-show
-        , aeson
-        , aeson-pretty
-        , scientific
 
 library
-    import:           base, pandoc
+    import:           base, pandoc, check
     exposed-modules:
         Asterix.Indent
         Asterix.Specs
@@ -69,10 +68,19 @@ library
         Asterix.Pandoc
     -- other-modules:
     -- other-extensions:
+    build-depends:
+        , aeson
+        , aeson-pretty
+        , transformers
+        , megaparsec
+        , parser-combinators
+        , formatting
+        , pretty-show
+        , scientific
     hs-source-dirs:   lib
 
 executable aspecs
-    import:           base, pandoc
+    import:           base, pandoc, check
     ghc-options:
         -O2 -rtsopts -funbox-strict-fields -with-rtsopts=-T -threaded
     main-is:          Main.hs
@@ -82,4 +90,8 @@ executable aspecs
     build-depends:
         base < 5
         , aspecs
+        , with-utf8
+        , optparse-applicative
+        , bytestring
+        , cryptonite
     hs-source-dirs:   app
