@@ -1,0 +1,960 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ntransaction.\n",
+                    "description": null,
+                    "remark": "Notes:\n    1. In application where transactions of various types are exchanged, the\n    Message Type Data Item facilitates the proper message handling at the\n    receiver side.\n\n    2. Message Type values 1-127 are reserved for common standard use,\n    whereas the values 128-255 are application dependent.\n"
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "North marker message"
+                                        ],
+                                        [
+                                            2,
+                                            "Sector crossing message"
+                                        ],
+                                        [
+                                            3,
+                                            "South marker message"
+                                        ],
+                                        [
+                                            8,
+                                            "Activation of blind zone filtering"
+                                        ],
+                                        [
+                                            9,
+                                            "Stop of blind zone filtering"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the system sending the data.\n",
+                    "description": null,
+                    "remark": "Notes:\n    1. The defined SACs are listed in Part 1, Table 2 [Ref. 2]\n    2. The defined SICs are listed in Part 1, Annex B [Ref. 2]\n"
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Eight most significant bits of the antenna azimuth defining a\nparticular azimuth sector.\n",
+                    "description": null,
+                    "remark": "The use of the antenna azimuth as sector number has the\nadvantage of being independent of the number of sectors\nimplemented.\n"
+                },
+                "name": "020",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 8
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 360,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "°"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Sector Number"
+            },
+            {
+                "documentation": {
+                    "definition": "Absolute time stamping expressed as UTC time.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    1. The time of day value is reset to zero each day at midnight.\n    2. For time management in radar transmission applications, refer to Part 1,\n       paragraph 5.4 [ Ref.2].\n    3. Data Item I002/030 can have various logical meanings. In a particular\n       message, the logical meaning is implicit from its context (e.g. in a North\n       marker message it represents the antenna North crossing time; in a\n       sector message it represents the antenna sector crossing time).\n"
+                },
+                "name": "030",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Day"
+            },
+            {
+                "documentation": {
+                    "definition": "Antenna rotation period as measured between two\nconsecutive North crossings or as averaged during a period\nof time.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "041",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Antenna Rotation Speed"
+            },
+            {
+                "documentation": {
+                    "definition": "Information concerning the use and status of some vital\nhardware components of the radar system.\n",
+                    "description": null,
+                    "remark": "Due to the diversity in hardware design and requirement of\npresent and future radar stations, it is felt impractical to attempt to\ndefine the individual bits.\n"
+                },
+                "name": "050",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": [],
+                                "tag": "RepetitiveFx"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 7,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Station Configuration Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Details concerning the present status with respect to\nprocessing parameters and options.\n",
+                    "description": null,
+                    "remark": "NOTES:\n    1. Typical information conveyed within this Data Item includes inter alia\n       type of polarisation in use, Moving Target Indicator (MTI) in use and/or\n       definition of the range to which MTI is applied, presence of overload\n       conditions and the type of load reduction measures in use.\n    2. Only the structure of this Data Item is defined, no attempt is made to\n       standardise its contents, in order not to hamper any application or future\n       development.\n"
+                },
+                "name": "060",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": [],
+                                "tag": "RepetitiveFx"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 7,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Station Processing Mode"
+            },
+            {
+                "documentation": {
+                    "definition": "Plot count values according to various plot categories, either\nfor the last full antenna scan or for the last sector processed.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "070",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": [
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "A",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 1,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        0,
+                                                                        "Counter for antenna 1"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Counter for antenna 2"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Aerial Identification"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "IDENT",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 5,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        1,
+                                                                        "Sole primary plots"
+                                                                    ],
+                                                                    [
+                                                                        2,
+                                                                        "Sole SSR plots"
+                                                                    ],
+                                                                    [
+                                                                        3,
+                                                                        "Combined plots"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": ""
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "COUNTER",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 10,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [],
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Unsigned"
+                                                                    }
+                                                                },
+                                                                "tag": "ContentInteger"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": ""
+                                        },
+                                        "tag": "Item"
+                                    }
+                                ],
+                                "tag": "Group"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Plot Count Values"
+            },
+            {
+                "documentation": {
+                    "definition": "Warning/error conditions affecting the functioning of the\nradar system itself.\n",
+                    "description": null,
+                    "remark": "NOTE:\n    Warning/error condition values 1-63 are reserved for common\n    Standard use, whereas the values 64-127 are application\n    dependent.\n"
+                },
+                "name": "080",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": [],
+                                "tag": "RepetitiveFx"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 7,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Warning/Error Conditions"
+            },
+            {
+                "documentation": {
+                    "definition": "Averaged difference in range and in azimuth for the primary\ntarget position with respect to the SSR target position as\ncalculated by the radar station.\n",
+                    "description": null,
+                    "remark": "NOTES\n    1. LSB of RE is calculated as :math:`2^{16-f}`.\n    2. A default quantisation unit of 0.022° and a range between -2.8125° and\n       +2.7905° is obtained for a value of f=2 .\n"
+                },
+                "name": "090",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RE",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 7
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Range Error"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "AE",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 14
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Azimuth Error"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Collimation Error"
+            },
+            {
+                "documentation": {
+                    "definition": "Signals the activation of a certain selective filtering function\nand in a polar coordinates system the respective\ngeographical areas.\n",
+                    "description": null,
+                    "remark": "The logical meaning of the polar window is defined by its context,\ngiven by the Message Type (Data Item I002/000) in the record\nconcerned.\n"
+                },
+                "name": "100",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 512,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 7
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Rho Start"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RE",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 512,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 7
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Rho End"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Theta Start"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TE",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Theta End"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Dynamic Window Type 1"
+            },
+            {
+                "documentation": {
+                    "definition": "Special Purpose Field\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "SP",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "SpecialPurpose"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Special Purpose Field"
+            }
+        ],
+        "category": 2,
+        "date": {
+            "day": 1,
+            "month": 11,
+            "year": 1997
+        },
+        "edition": {
+            "major": 1,
+            "minor": 0
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "Transmission of Monoradar Service Messages",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "020",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "030",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "041",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "050",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "060",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "070",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "100",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "090",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "080",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": "SP",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemRFS"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}
