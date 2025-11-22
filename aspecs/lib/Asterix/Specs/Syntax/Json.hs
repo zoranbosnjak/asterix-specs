@@ -15,7 +15,7 @@ import           Data.Aeson.Types         (Parser, emptyArray, typeMismatch)
 import           Data.Text                as T
 import           Data.Text.Encoding       as T
 
-import           Asterix.Specs.Syntax
+import           Asterix.Specs.Syntax     (Coder (..))
 import           Asterix.Specs.Types
 
 -- | Aeson lib does this by default, but be explicit.

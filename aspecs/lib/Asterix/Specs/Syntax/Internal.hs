@@ -9,7 +9,7 @@ import qualified Data.Text.Lazy.Builder as T
 import           Text.Read              (readEither)
 import           Text.Show.Pretty       (ppShow)
 
-import           Asterix.Specs.Syntax
+import           Asterix.Specs.Syntax   (Coder (..))
 
 coder :: Coder
 coder = Coder

@@ -39,3 +39,10 @@ showConstrain = \case
 
 showPath :: ItemPath -> Text
 showPath (ItemPath lst) = intercalate "/" [name | ItemName name <- lst]
+
+evalNumber :: Fractional a => Number -> a
+evalNumber = \case
+    NumInt i -> fromIntegral i
+    NumDiv a b -> evalNumber a / evalNumber b
+    NumPow a b -> fromIntegral (a ^ b)
+

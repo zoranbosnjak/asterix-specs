@@ -21,16 +21,14 @@ import           System.Exit              (die)
 import           System.IO                as IO
 
 #ifndef NOPANDOC
+import           Asterix.Specs.Pandoc     (toPandoc)
 import           Text.Pandoc              (def, runIOorExplode, writeNative)
-import           Asterix.Pandoc           (toPandoc)
 #endif
 
 import           Data.Version             (showVersion)
 import           Paths_aspecs             (version)
 
-import           Asterix.Specs.Syntaxes
-import           Asterix.Specs.Types
-import           Asterix.Specs.Validation
+import           Asterix.Specs
 
 hashing :: [(String, BS.ByteString -> String)]
 hashing =

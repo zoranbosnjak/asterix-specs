@@ -19,7 +19,7 @@ loadSpec fmt path getS = do
     let syntax = fromJust $ lookup fmt syntaxes
         decoder = fromJust $ cDecoder syntax
         ast = fromRight (error "unexpected") $ decoder path s
-    return ast
+    pure ast
 
 augment :: (a -> b) -> (a -> [c]) -> a -> [(b, [c])]
 augment f1 f2 x = do
