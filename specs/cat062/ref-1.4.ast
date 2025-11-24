@@ -111,7 +111,7 @@ compound 1
                                 3: Anonymous address
                                 4: Fixed ADS-B Beacon
             -
-            DAD "Service wide Duplicate Address"
+            DAD "Service Wide Duplicate Address"
                 group
                     EP "DAD Element Populated"
                         element 1
@@ -121,9 +121,9 @@ compound 1
                     VAL "DAD Value"
                         element 1
                             table
-                                0: duplicate address not present
-                                1: duplicate address present
-            DUP "Duplicate Address condition"
+                                0: Duplicate address not present
+                                1: Duplicate address present
+            DUP "Duplicate Address Condition"
                 group
                     EP "DUP Element Populated"
                         element 1
@@ -146,8 +146,8 @@ compound 1
                     VAL "CSX Value"
                         element 1
                             table
-                                0: no extended coasting
-                                1: extended coasting
+                                0: No extended coasting
+                                1: Extended coasting
             -
             TLI "Transition Level Indication"
                 group
@@ -159,20 +159,20 @@ compound 1
                     VAL "TLI Value"
                         element 1
                             table
-                                0: at or above transition level
-                                1: below transition level
+                                0: At or above transition level
+                                1: Below transition level
             TAI "Transition Altitude Indication"
                 group
-                    EP "TAI Element Populated
+                    EP "TAI Element Populated"
                         element 1
                             table
                                 0: TAI not populated
                                 1: TAI populated
                     VAL "TAI Value"
                         element 1
-                            table 1
-                                0: above transition altitude
-                                1: at or below transition altitude
+                            table
+                                0: Above transition altitude
+                                1: At or below transition altitude
             spare 3
             -
         remark
@@ -195,7 +195,6 @@ compound 1
                   properties following the normal coast phase. During the extended
                   coasting I062/080/CST shall be set to one. Extended Coasting is
                   implementation dependent and shall be described in the ICD.
-
     V3 "ADS-B Version 3 Data"
         definition
             Information transmitted by aircraft equipped with an ADS-B Version 3 System
@@ -512,20 +511,19 @@ compound 1
 
                         - The Movement Plan Alphanumeric ID consists of letters, numbers and
                           other symbols as available in ASCII.
-
             LS "Leading Source"
                 description
                     Identification of the current Leading Source triggering the track output
                     generation in case of a source driven update mode. Leading source may be
                     a sensor or a tracker.
                 group
-                    LSSAC "System Area Code of the leading source"
+                    LSSAC "System Area Code of the Leading Source"
                         element 8
                             raw
-                    LSSIC "System Identification Code of the leading Source"
+                    LSSIC "System Identification Code of the Leading Source"
                         element 8
                             raw
-                    LSSID "Service Identification of the leading source"
+                    LSSID "Service Identification of the Leading Source"
                         group
                             EP "LSSID Element Populated Bit"
                                 element 1
@@ -544,7 +542,6 @@ compound 1
 
                         - The up-to-date list of SACs is published on the EUROCONTROL
                           Web Site (http://www.eurocontrol.int).
-
             LSQI "Leading Source Quality Indication"
                 description
                     Quality indication of the current Leading Source triggering the track
@@ -582,7 +579,6 @@ compound 1
                     DTNT ""
                         element 13
                             unsigned quantity 360/2^13 "°"
-
             DMNT "Downlinked Magnetic North Track Angle"
                 description
                     Magnetic North Track Angle as downlinked by the aircraft.
@@ -604,7 +600,6 @@ compound 1
 
                         - This is not the barometric pressure setting (BPS) reported by the
                           aircraft.
-
             ALTQCMFL "Altitude from QNH Corrected Measured Flight Level"
                 description
                     Altitude from QNH Corrected last valid and credible flight level used
@@ -621,7 +616,6 @@ compound 1
 
                           - The rounding of the altitude from QNH corrected measured flight
                             level is system dependent and shall be described in the ICD.
-
             CTBA "Calculated Track Barometric Altitude"
                 description
                     Calculated Barometric Altitude of the track.
@@ -632,7 +626,7 @@ compound 1
                                 0: No QNH correction applied
                                 1: QNH correction applied
                     CTBA ""
-                        element 16
+                        element 15
                             signed quantity 25 "ft" >= -1500 <= 15000
                 remark
                     Notes:
@@ -644,7 +638,6 @@ compound 1
                           If needed, the other variant can be provided in this item.
 
                         - If this item is provided, then I062/135 shall also be provided.
-
             INPS "Input to SDPS with Service ID and Local Track Number"
                 description
                     Input contributing to the system track and potentially providing a
@@ -667,7 +660,7 @@ compound 1
                                 VAL "Value of SID"
                                     element 8
                                         raw
-                        TIDN "Type of Identification number"
+                        TIDN "Type of Identification Number"
                             element 3
                                 table
                                     0: Information not available
@@ -675,76 +668,54 @@ compound 1
                                     2: Address Type & Address Extension Number
                         IDN "Identification Number"
                             element 16
-                                case MOI/TIDN
-                                    0:
-                                        spare 16
-                                    1:
-                                        LTN "Local Track Number"
-                                            unsigned integer
-                                    2:
-                                        ATP "Address Type"
-                                            group
-                                                EP "ATP Element Populated Bit"
-                                                    element 1
-                                                        table
-                                                            0: Element not populated
-                                                            1: Element populated
-                                                VAL "Address Type Values"
-                                                   element 3
-                                                       table
-                                                           0: 24-Bit ICAO address
-                                                           1: 24-Bit Non-ICAO address
-                                                           2: Surface vehicle address
-                                                           3: Anonymous address
-                                                           4: Fixed ADS-B Beacon
-                                        AEN "Address Extension Number"
-                                            element 4
-                                                unsigned integer
-                                        spare 8
-                                    default:
-                                        raw
-                        AINP "Age of input"
-                            element 9
-				                group
-				                    EP "AINP Element Populated Bit"
-				                        element 1
-				                            table
-				                                0: Element not populated
-				                                1: Element populated
-				                    VAL "Value of AINP"
-				                        element 8
-				                            unsigned quantity 1/2^2 "s"
-		                SSS "SDPS Support Status of Input"
-		                    element 1
-		                        tables
-		                            0: sensor measurement
-		                            1: tracked data
-		                INCS "Independent Non-Cooperative support status of input"
-		                    element 1
-		                        table
-		                            0: no INCS support
-		                            1: has INCS support
-		                SSR "SSR support status of input"
-		                    element 1
-		                        table
-		                            0: no SSR support
-		                            1: has SSR support
-		                MDS "Mode-S radar support status of input"
-		                    element 1
-		                        table
-		                            0: no Mode-S radar support
-		                            1: has Mode-S radar support
-		                ADS "ADS-B support status of input"
-		                    element 1
-		                        table
-		                            0: no ADS-B support
-		                            1: has ADS-B support
-		                MLT "MLAT support status of input"
-		                    element 1
-		                        table
-		                            0: no MLAT support
-		                            1: has MLAT support
-		                spare 5
+                                raw
+                            remark
+                                Implementation remark:
+                                This item is non-standard. In the original PDF,
+                                there is a complex dependent structure under
+                                this item, which is not currently supported.
+                                Item structure is replaced with 'raw'.
+                        AINP "Age of Input"
+                            group
+                                EP "AINP Element Populated Bit"
+                                    element 1
+                                        table
+                                            0: Element not Populated
+                                            1: Element Populated
+                                VAL "Value of AINP"
+                                    element 8
+                                        unsigned quantity 1/2^2 "s"
+                        SSS "SDPS Support Status of Input"
+                            element 1
+                                table
+                                    0: Sensor Measurement
+                                    1: Tracked Data
+                        INCS "Independent Non-Cooperative Support Status of Input"
+                            element 1
+                                table
+                                    0: No INCS Support
+                                    1: Has INCS Support
+                        SSR "SSR Support Status of Input"
+                            element 1
+                                table
+                                    0: No SSR Support
+                                    1: Has SSR Support
+                        MDS "Mode-S Radar Support Status of Input"
+                            element 1
+                                table
+                                    0: No Mode-S Radar Support
+                                    1: Has Mode-S Radar Support
+                        ADS "ADS-B Support Status of Input"
+                            element 1
+                                table
+                                    0: No ADS-B Support
+                                    1: Has ADS-B Support
+                        MLT "MLAT Support Status of Input"
+                            element 1
+                                table
+                                    0: No MLAT Support
+                                    1: Has MLAT Support
+                        spare 5
                 remark
                     Notes:
 
@@ -782,15 +753,14 @@ compound 1
 
                         - The up-to-date list of SACs is published on the EUROCONTROL
                           Web Site (http://www.eurocontrol.int).
-
             FPVHR "Fractional Part of Velocity (High Resolution)"
                 description
                     Fractional Part of Cartesian Velocity in two’s complement.
                 group
-                    DVX "FPVHR in x direction"
+                    DVX "FPVHR in X Direction"
                         element 8
                             signed quantity 1/2^10 "m/s"
-                    DVY "FPVHR in y direction"
+                    DVY "FPVHR in Y Direction"
                         element 8
                             signed quantity 1/2^10 "m/s"
                 remark
@@ -806,13 +776,11 @@ compound 1
                         - To derive the high resolution of the calculated track velocity, DVX
                           and DVY have to be added to the corresponding velocity values of
                           I062/185.
-
             SCT "SUC Correlation Text"
                 description
                     Text to be displayed to the controller in case of a special use code (SUC).
-                SUCTXT ""
-                    element 56
-                        string ASCII
+                element 56
+                    string ascii
                 remark
                     Notes:
 
@@ -826,14 +794,12 @@ compound 1
                           I062/REF/MOI/SCT in the target report.
 
                         - An SSR code may be used as SUC globally or on a local basis.
-
             SCSM "System Calculated Separation Minimum"
                 description
                     Separation Minimum applicable for this track determined within
                     the surveillance data processing chain.
-                SEPMIN ""
-                    element 16
-                        unsigned quantity 1/10 "NM"
+                element 16
+                    unsigned quantity 1/10 "NM"
                 remark
                     Notes:
 
@@ -845,36 +811,35 @@ compound 1
                         - Especially for an ADS-B supported target the separation may be
                           applied per target depending on the downlinked quality indicators
                           as well as potentially the accuracy of conducted validation.
-
             TCAT "Target Category"
                 description
                     Category of the target.
-                group
+                extended
                     TYP ""
                         element 4
                             table
                                 0: Information not available
-                                1: powered fixed/variable sweep wing
-                                2: rotocraft
-                                3: glider/sailplane
-                                4: lighter-than-air
-                                5: ultralight/handglider/paraglider
-                                6: parachutist/skydiver
-                                7: surface vehicle
+                                1: Powered fixed/variable sweep wing
+                                2: Rotocraft
+                                3: Glider/sailplane
+                                4: Lighter-than-air
+                                5: Ultralight/handglider/paraglider
+                                6: Parachutist/skydiver
+                                7: Surface vehicle
                     WGT ""
                         element 4
                             table
                                 0: Information not available
-                                1: light aircraft ≤ 7000 kg
+                                1: Light aircraft ≤ 7000 kg
                                 2: 7000 kg < medium aircraft < 136000 kg
                                 3: 136000 kg ≤ heavy aircraft
                     PLT ""
                         element 2
                             table
                                 0: Information not available
-                                1: on-board piloted
-                                2: remotely piloted
-                                3: autonomous
+                                1: On-board piloted
+                                2: Remotely piloted
+                                3: Autonomous
                     spare 5
                     -
                 remark
@@ -886,7 +851,6 @@ compound 1
 
                         - For targets identified as surface vehicle (TYP = 7), I062/300 allows
                           providing an actual type of vehicle.
-
     MTI "Miscellaneous Technical Items"
         definition
             Miscellaneous items for the addition of information to Category
@@ -958,7 +922,6 @@ compound 1
                             Meridian Convergence, in two’s complement.
                         element 16
                             signed quantity 180/2^15 ""
-
                 remark
                     Notes:
 
@@ -977,18 +940,17 @@ compound 1
 
                         - They can also be used to convert the local Cartesian acceleration
                           (I062/210) to the projected acceleration on the system plane.
-
             IMP "IMM Model Probability"
                 description
                     Interacting Multiple Model (IMM) model identification and probability.
                 repetitive 1
                     group
-                        IMM_MID ""
+                        MID ""
                             description
                                 IMM model identification.
                             element 8
                                 raw
-                        IMM_MPR ""
+                        MPR ""
                             description
                                 IMM model probability.
                             element 8
@@ -1008,14 +970,13 @@ compound 1
 
                         - The main use case for this item is to support the performance
                           evaluation of the SDPS and/or the tuning of the IMM.
-
             IST "IMM State"
                 description
                     Interacting Multiple Model (IMM) model identification and state
                     consisting of position in WG-84, velocity vector and acceleration vector.
                 repetitive 1
                     group
-                        IMM_MID ""
+                        MID ""
                             description
                                 IMM model identification.
                             element 8
@@ -1083,7 +1044,6 @@ compound 1
                           within the slave. Thus, the time of track termination ensures that the
                           slave tracker terminates all tracks, which are no longer supported
                           by the master tracker.
-
             EXM3A "Expired Mode 3/A Code"
                 description
                     This item provides the expired Mode 3/A Code after I062/060, Track Mode 3/A
@@ -1091,8 +1051,8 @@ compound 1
                 group
                     spare 4
                     EXM3A "Expired Mode 3/A"
-                       element 12
-                           raw
+                        element 12
+                            raw
                 remark
                     Notes:
 
@@ -1111,7 +1071,6 @@ compound 1
 
                         - The age of this item is given by I062/295/MDA, identical as for the
                           non-expired case.
-
             EXADDR "Expired Target Address"
                 description
                     This item provides the expired Target Address after I062/380/SI#1,
@@ -1136,7 +1095,6 @@ compound 1
 
                         - The age of this item is given by I062/REF/MOI/ATAD, identical as
                           for the non-expired case.
-
             EXTID "Expired Target Identification"
                 description
                     This item provides the expired Target Identification after I062/380/SI#2,
@@ -1161,12 +1119,12 @@ compound 1
 
                         - The age of this item is given by I062/REF/MOI/ATID, identical as for
                           the non-expired case.
-
     GEN62 "Generic Category 062 Data"
         definition
             Placeholder for the addition of information to Category 062,
             even if all bits of the Item Indicator are allocated.
         compound
+            -
         remark
             Notes:
 
@@ -1176,4 +1134,3 @@ compound 1
                 - The definition of additional subitems to I062/REF/GEN62 is the
                   responsibility of the AMG and shall be agreed upon prior to
                   implementation.
-
