@@ -266,7 +266,8 @@ instance Validate (Variation a) where
                     throw "alignment error"
         mapM_ validate lst
         when (itemNames lst' /= nub (itemNames lst')) "duplicated names"
-        when (isNothing $ last items) "last element in compound is empty"
+        when (length items > 1 && isNothing (last items))
+            "last element in compound is empty"
       where
         lst = catMaybes items
         lst' = fmap Item lst

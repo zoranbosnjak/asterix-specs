@@ -137,10 +137,14 @@ instance ToPandoc (Variation ()) where
                 RepetitiveFx -> "With FX extension bit."
             , tp p var
             ]
-        Explicit mt -> para $ str $ case mt of
-            Nothing                -> "Explicit"
-            Just ReservedExpansion -> "Explicit (ReservedExpansion)"
-            Just SpecialPurpose    -> "Explicit (SpecialPurpose)"
+        Explicit mt -> case mt of
+            Nothing                -> para $ str "Explicit"
+            Just ReservedExpansion -> para $ str "Explicit (ReservedExpansion)"
+            Just SpecialPurpose    -> para $ str "Explicit (SpecialPurpose)"
+            Just (ExplicitVariation var) -> mconcat
+                [ para $ str "Explicit (Variation)"
+                , tp p var
+                ]
         Compound lst -> mconcat
             [ para $ str "Compound"
             , blockQuote $ mconcat $ fmap f lst

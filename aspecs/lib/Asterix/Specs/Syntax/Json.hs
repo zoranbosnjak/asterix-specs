@@ -223,15 +223,17 @@ instance FromJSON RepetitiveType where
         , ("RepetitiveFx", \o -> parseUnit o >> pure RepetitiveFx)
         ]
 
-instance ToJSON ExplicitType where
+instance ToJSON (ExplicitType ()) where
     toJSON = \case
         ReservedExpansion -> tagged "ReservedExpansion" ()
         SpecialPurpose -> tagged "SpecialPurpose" ()
+        ExplicitVariation var -> tagged "ExplicitVariation" var
 
-instance FromJSON ExplicitType where
+instance FromJSON (ExplicitType ()) where
     parseJSON = untagged "ExplicitType"
         [ ("ReservedExpansion", \o -> parseUnit o >> pure ReservedExpansion)
         , ("SpecialPurpose", \o -> parseUnit o >> pure SpecialPurpose)
+        , ("ExplicitVariation", fmap ExplicitVariation . parseJSON)
         ]
 
 instance ToJSON (Variation ()) where

@@ -307,7 +307,16 @@ pExplicit = Explicit <$> go where
     pt = tryOne
         [ MC.string "re" >> pure ReservedExpansion
         , MC.string "sp" >> pure SpecialPurpose
+        , MC.string "var" >> var
         ]
+    var = do
+        i <- lookAhead (scn >> L.indentLevel)
+        let sc' = do
+                scn
+                j <- L.indentLevel
+                end <- atEnd
+                bool (fail "unexpected indent") (pure ()) ((j > i) || end)
+        ExplicitVariation <$> pVariation sc'
 
 -- | Parse 'compound' item.
 pCompound :: Parser (Variation ())
@@ -558,6 +567,9 @@ instance MkBlock (Variation ()) where
                 Just val -> case val of
                     ReservedExpansion -> "explicit re"
                     SpecialPurpose    -> "explicit sp"
+                    ExplicitVariation variation -> do
+                        "explicit var"
+                        indent $ mkBlock variation
 
         Compound lst -> do
             "compound"

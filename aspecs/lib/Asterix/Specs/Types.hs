@@ -129,10 +129,11 @@ data RepetitiveType
     | RepetitiveFx
     deriving (Generic, Eq, Ord, Show, Read)
 
-data ExplicitType
+data ExplicitType offset
     = ReservedExpansion
     | SpecialPurpose
-    deriving (Generic, Eq, Ord, Show, Read)
+    | ExplicitVariation (Variation offset)
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Variation offset
     -- leaf of the structure
@@ -149,7 +150,7 @@ data Variation offset
     | Repetitive RepetitiveType (Variation offset)
 
     -- item with explicit size
-    | Explicit (Maybe ExplicitType)
+    | Explicit (Maybe (ExplicitType offset))
 
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective
