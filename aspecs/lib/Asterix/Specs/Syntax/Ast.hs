@@ -299,7 +299,8 @@ pRepetitive = do
 
 -- | Parse 'explicit' item.
 pExplicit :: Parser (Variation ())
-pExplicit = Explicit <$> go where
+pExplicit = Explicit <$> bs <*> go where
+    bs = fmap ByteSize L.decimal
     go = tryOne
         [ Just <$> (MC.string "explicit" >> sc >> pt)
         , MC.string "explicit" >> pure Nothing
@@ -307,7 +308,16 @@ pExplicit = Explicit <$> go where
     pt = tryOne
         [ MC.string "re" >> pure ReservedExpansion
         , MC.string "sp" >> pure SpecialPurpose
+        , MC.string "var" >> var
         ]
+    var = do
+        i <- lookAhead (scn >> L.indentLevel)
+        let sc' = do
+                scn
+                j <- L.indentLevel
+                end <- atEnd
+                bool (fail "unexpected indent") (pure ()) ((j > i) || end)
+        ExplicitVariation <$> pVariation sc'
 
 -- | Parse 'compound' item.
 pCompound :: Parser (Variation ())
@@ -552,12 +562,15 @@ instance MkBlock (Variation ()) where
                 RepetitiveFx                   -> fmt "repetitive fx"
             indent $ mkBlock variation
 
-        Explicit mt -> do
+        Explicit (ByteSize n) mt -> do
             case mt of
-                Nothing -> "explicit"
+                Nothing -> fmt ("explicit " % int) n
                 Just val -> case val of
-                    ReservedExpansion -> "explicit re"
-                    SpecialPurpose    -> "explicit sp"
+                    ReservedExpansion -> fmt ("explicit " % int % " re") n
+                    SpecialPurpose    -> fmt ("explicit " % int % " sp") n
+                    ExplicitVariation variation -> do
+                        fmt ("explicit " % int % " var") n
+                        indent $ mkBlock variation
 
         Compound lst -> do
             "compound"

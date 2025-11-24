@@ -20,7 +20,7 @@ instance Semigroup BitSize where BitSize a <> BitSize b = BitSize (a+b)
 instance Monoid BitSize where mempty = BitSize 0
 
 newtype ByteSize = ByteSize Int
-    deriving (Generic, Eq, Ord, Show, Read)
+    deriving (Generic, Eq, Ord, Show, Read, Num)
 
 instance Semigroup ByteSize where ByteSize a <> ByteSize b = ByteSize (a+b)
 instance Monoid ByteSize where mempty = ByteSize 0
@@ -129,10 +129,11 @@ data RepetitiveType
     | RepetitiveFx
     deriving (Generic, Eq, Ord, Show, Read)
 
-data ExplicitType
+data ExplicitType offset
     = ReservedExpansion
     | SpecialPurpose
-    deriving (Generic, Eq, Ord, Show, Read)
+    | ExplicitVariation (Variation offset)
+    deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Variation offset
     -- leaf of the structure
@@ -149,7 +150,7 @@ data Variation offset
     | Repetitive RepetitiveType (Variation offset)
 
     -- item with explicit size
-    | Explicit (Maybe ExplicitType)
+    | Explicit ByteSize (Maybe (ExplicitType offset))
 
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective

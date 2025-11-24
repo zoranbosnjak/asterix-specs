@@ -60,7 +60,7 @@ instance Alignment (Variation a) where
     addedOffset (Repetitive rt variation) = case rt of
         RepetitiveRegular _ -> addedOffset variation
         RepetitiveFx        -> addedOffset variation <> offset8 1
-    addedOffset (Explicit _) = mempty
+    addedOffset (Explicit _ _) = mempty
     addedOffset (Compound lst) = mconcat $ do
         lst >>= \case
             Nothing -> pure mempty
@@ -265,7 +265,11 @@ instance Validate (Variation a) where
             when (addedOffset variation /= mempty) "variation alignment"
             validate variation
         RepetitiveFx -> validate variation
-    validate (Explicit _) = pure ()
+    validate (Explicit n met) = do
+        when (n < 1) "Unexpected explicit LEN"
+        case met of
+            Just (ExplicitVariation var) -> validate var
+            _ -> pure ()
     validate (Compound items) = do
         forM_ items $ \case
             Nothing -> pure ()
@@ -274,7 +278,8 @@ instance Validate (Variation a) where
                     throw "alignment error"
         mapM_ validate lst
         when (itemNames lst' /= nub (itemNames lst')) "duplicated names"
-        when (isNothing $ last items) "last element in compound is empty"
+        when (length items > 1 && isNothing (last items))
+            "last element in compound is empty"
       where
         lst = catMaybes items
         lst' = fmap Item lst
@@ -425,7 +430,10 @@ instance Validate Basic where
                 Item nsp -> validateDepItem nsp
             Repetitive _rt variation' -> validateDepItem
                 (NonSpare name title (ContextFree variation') doc)
-            Explicit _ -> pure ()
+            Explicit _n met -> case met of
+                Just (ExplicitVariation variation') -> validateDepItem
+                    (NonSpare name title (ContextFree variation') doc)
+                _ -> pure ()
             Compound lst -> mapM_ validateDepItem (catMaybes lst)
 
 instance Validate Expansion where

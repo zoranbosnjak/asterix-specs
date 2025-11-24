@@ -88,9 +88,10 @@ let
   env = pkgs.stdenv.mkDerivation rec {
     name = "aspecs-devel-environment";
     buildInputs = drv1.env.nativeBuildInputs ++ [
-      pkgs.cabal2nix
+      haskellPackages.cabal-install
       pkgs.ghcid
-      haskellPackages.haskell-language-server
+      pkgs.hlint
+      pkgs.stylish-haskell
     ];
     shellHook = ''
       export LC_ALL=C.UTF-8

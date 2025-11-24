@@ -83,9 +83,10 @@ data RepetitiveType
     -- Number of repetitions are defined by FX bit value
     | RepetitiveFx
 
-data ExplicitType
+data ExplicitType offset
     = ReservedExpansion
     | SpecialPurpose
+    | ExplicitVariation (Variation offset)
 
 data Variation offset
     -- leaf of the structure
@@ -102,7 +103,7 @@ data Variation offset
     | Repetitive RepetitiveType (Variation offset)
 
     -- item with explicit size
-    | Explicit (Maybe ExplicitType)
+    | Explicit ByteSize (Maybe (ExplicitType offset))
 
     -- list of subitems with FSPEC mechanism
     -- Some subitems may not be defined in which case the respective

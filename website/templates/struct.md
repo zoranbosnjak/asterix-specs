@@ -165,6 +165,20 @@ for exact definition.
 
 ## Non-backward compatible changes
 
+### 2026-11-17 - explicit field content, empty compound
+
+Parent git release: `#5cf64b63`
+
+- `ExplicitType` now has additional case (`ExplicitVariation`).
+  Such items are still *explicit*, but with a known nested strucutre
+  (inner `Variation`).
+- `Explicit` variation has additional attribute - byte size of the LEN field.
+  This field is normally 1 byte long, but is now configurable for future
+  asterix extensions.
+- `Compound` item is now allowed to be empty.
+
+Changes are required to support `REF062-1.4` and `REF020-1.5`.
+
 ### 2024-11-07 - expansion fspec size
 
 Parent git release: `#f61aad7`

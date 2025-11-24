@@ -223,15 +223,17 @@ instance FromJSON RepetitiveType where
         , ("RepetitiveFx", \o -> parseUnit o >> pure RepetitiveFx)
         ]
 
-instance ToJSON ExplicitType where
+instance ToJSON (ExplicitType ()) where
     toJSON = \case
         ReservedExpansion -> tagged "ReservedExpansion" ()
         SpecialPurpose -> tagged "SpecialPurpose" ()
+        ExplicitVariation var -> tagged "ExplicitVariation" var
 
-instance FromJSON ExplicitType where
+instance FromJSON (ExplicitType ()) where
     parseJSON = untagged "ExplicitType"
         [ ("ReservedExpansion", \o -> parseUnit o >> pure ReservedExpansion)
         , ("SpecialPurpose", \o -> parseUnit o >> pure SpecialPurpose)
+        , ("ExplicitVariation", fmap ExplicitVariation . parseJSON)
         ]
 
 instance ToJSON (Variation ()) where
@@ -246,7 +248,10 @@ instance ToJSON (Variation ()) where
             [ "type" .= t
             , "variation" .= var
             ]
-        Explicit mt -> tagged "Explicit" mt
+        Explicit n mt -> tagged "Explicit" $ object
+            [ "byteSize" .= n
+            , "type"     .= mt
+            ]
         Compound lst -> tagged "Compound" lst
 
 instance FromJSON (Variation ()) where
@@ -261,7 +266,10 @@ instance FromJSON (Variation ()) where
           <$> o .: "type"
           <*> o .: "variation"
           )
-        , ("Explicit", fmap Explicit . parseJSON)
+        , ("Explicit", withObject "Explicit" $ \o -> Explicit
+          <$> o .: "byteSize"
+          <*> o .: "type"
+          )
         , ("Compound", fmap Compound . parseJSON)
         ]
 
