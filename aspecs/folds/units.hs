@@ -1,6 +1,5 @@
 -- Gather all units from 'Quantity' elements
 
-{-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 import           Control.Monad
@@ -11,7 +10,7 @@ import           Options.Applicative as Opt
 
 import           Folds
 
-data Options = Options
+newtype Options = Options
     { paths :: [FilePath]
     } deriving (Show)
 

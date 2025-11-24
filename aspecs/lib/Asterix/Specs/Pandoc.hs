@@ -1,17 +1,26 @@
+--------
+-- |
+-- Module : Asterix.Specs.Pandoc
+--
+-- Convert asterix spec to pandoc structure.
+
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE LambdaCase        #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-module Asterix.Pandoc where
+module Asterix.Specs.Pandoc where
 
+#ifndef NOPANDOC
 import           Data.Coerce
-import           Data.List           (intersperse)
+import           Data.List            (intersperse)
 import           Data.Scientific
-import           Data.Text           (Text)
-import           Formatting          as F
+import           Data.Text            (Text)
+import           Formatting           as F
 import           Text.Pandoc
-import           Text.Pandoc.Builder as PB
+import           Text.Pandoc.Builder  as PB
 
-import           Asterix.Specs
+import           Asterix.Specs.Syntax
+import           Asterix.Specs.Types
 
 fromRST :: Text -> Blocks
 fromRST s = fromList val
@@ -283,3 +292,5 @@ toPandoc = \case
     mkDate date = para (strong (str "date") <> ": " <> str
            (sformat (int % "-" % left 2 '0' % "-" % left 2 '0')
                (dateYear date) (dateMonth date) (dateDay date)))
+#endif
+

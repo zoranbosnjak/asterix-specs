@@ -295,7 +295,9 @@ indirectly) and the source code is available, your are welcome to
 * [asterix-libs](https://github.com/zoranbosnjak/asterix-libs#readme)
   is a library collection project for processing (encoding and decoding)
   asterix data format. It currently supports
-  [python](https://github.com/zoranbosnjak/asterix-libs/tree/main/libs/python#readme).
+  [python](https://github.com/zoranbosnjak/asterix-libs/tree/main/libs/python#readme)
+  and
+  [haskell](https://github.com/zoranbosnjak/asterix-libs/tree/main/libs/haskell#readme).
   The library source code is automatically updated from `*.ast` specification
   files from this project.
 

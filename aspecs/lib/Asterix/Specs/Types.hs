@@ -1,4 +1,9 @@
 -- Asterix data types.
+--
+-- Remark: 'offset' type parameter in some types below is required, to be able
+-- to keep the specs stored on disk without offset, for example 'NonSpare ()'.
+-- The same structure could be later used with the actual offset value
+-- calculated, for example 'NonSpare BitOffset' for code generation.
 
 module Asterix.Specs.Types where
 
@@ -152,7 +157,8 @@ data Variation offset
     | Compound [Maybe (NonSpare offset)]
     deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
-data NonSpare offset = NonSpare ItemName Title (Rule (Variation offset)) Documentation
+data NonSpare offset
+    = NonSpare ItemName Title (Rule (Variation offset)) Documentation
     deriving (Generic, Eq, Ord, Show, Read, Functor, Foldable, Traversable)
 
 data Item offset

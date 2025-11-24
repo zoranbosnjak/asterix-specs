@@ -21,8 +21,9 @@ import           Text.Megaparsec                hiding (State)
 import           Text.Megaparsec.Char           as MC
 import qualified Text.Megaparsec.Char.Lexer     as L
 
-import           Asterix.Indent
-import           Asterix.Specs.Syntax
+import           Asterix.Specs.Indent
+import           Asterix.Specs.Syntax           (Coder (..), showConstrain,
+                                                 showNumber, showPath)
 import           Asterix.Specs.Types
 
 -- | Parse from Text
@@ -643,7 +644,7 @@ instance MkBlock Expansion where
         fmt ("date " % int % "-" % left 2 '0' % "-" % left 2 '0') year month day
         ""
         case mn of
-            Nothing -> "compound fx"
+            Nothing                    -> "compound fx"
             Just (ByteSize fspecBytes) -> fmt ("compound " % int) fspecBytes
         indent $ forM_ items $ \case
             Nothing -> "-"

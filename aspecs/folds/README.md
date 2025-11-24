@@ -8,7 +8,7 @@ Run from `aspecs` directory, for example
 cd asterix-specs/aspecs
 nix-shell
 
-ghcid "--command=ghci -Wall $EXTENSIONS -ilib -ifolds folds/some-file.hs"
+ghcid --no-title --lint "--command=ghci -Wall $EXTENSIONS -ilib -ifolds folds/some-file.hs"
 
 specs=$(find ../specs/cat* -type f | grep \.ast$)
 runhaskell $EXTENSIONS -ilib -ifolds folds/units.hs ${specs}

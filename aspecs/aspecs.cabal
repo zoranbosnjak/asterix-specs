@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               aspecs
-version:            2.2.1
+version:            2.3.0
 synopsis:           Asterix specifications tools.
 -- description:
 homepage:           https://zoranbosnjak.github.io/asterix-specs/
@@ -15,6 +15,30 @@ build-type:         Simple
 extra-doc-files:    CHANGELOG.md
 -- extra-source-files:
 
+flag nopandoc
+    Description: Disable pandoc support
+    Default:     False
+
+flag checkunused
+    Description: Check unused packages
+    Default:     False
+
+common pandoc
+    if flag(nopandoc)
+        cpp-options:   -DNOPANDOC
+        build-depends:
+    else
+        build-depends:
+            pandoc
+            , pandoc-types
+
+common check
+    if flag(checkunused)
+        ghc-options:
+            -Wunused-packages
+    else
+        ghc-options:
+
 common base
     ghc-options:
         -Wall
@@ -27,41 +51,35 @@ common base
         GHC2021
     build-depends:
         base < 5
-        , with-utf8
         , text
-        , bytestring
-        , transformers
-        , optparse-applicative
-        , megaparsec
-        , parser-combinators
-        , formatting
-        , cryptonite
-        , pretty-show
-        , aeson
-        , aeson-pretty
-        , pandoc
-        , pandoc-types
-        , scientific
 
 library
-    import:           base
+    import:           base, pandoc, check
     exposed-modules:
-        Asterix.Indent
-        Asterix.Specs
         Asterix.Specs.Types
-        Asterix.Specs.Validation
+        Asterix.Specs.Indent
         Asterix.Specs.Syntax
         Asterix.Specs.Syntax.Internal
         Asterix.Specs.Syntax.Ast
         Asterix.Specs.Syntax.Json
-        Asterix.Specs.Syntaxes
-        Asterix.Pandoc
+        Asterix.Specs.Validation
+        Asterix.Specs.Pandoc
+        Asterix.Specs
     -- other-modules:
     -- other-extensions:
+    build-depends:
+        , aeson
+        , aeson-pretty
+        , transformers
+        , megaparsec
+        , parser-combinators
+        , formatting
+        , pretty-show
+        , scientific
     hs-source-dirs:   lib
 
 executable aspecs
-    import:           base
+    import:           base, pandoc, check
     ghc-options:
         -O2 -rtsopts -funbox-strict-fields -with-rtsopts=-T -threaded
     main-is:          Main.hs
@@ -71,4 +89,8 @@ executable aspecs
     build-depends:
         base < 5
         , aspecs
+        , with-utf8
+        , optparse-applicative
+        , bytestring
+        , cryptonite
     hs-source-dirs:   app

@@ -15,9 +15,99 @@ import           Data.String
 import           Data.Text                  (Text)
 import qualified Data.Text                  as T
 
-import           Asterix.Specs
+import           Asterix.Specs.Syntax
+import           Asterix.Specs.Types
 
-type ValidationError = T.Text
+newtype Offset8 = Offset8 Int
+    deriving (Show, Eq, Ord)
+
+instance Semigroup Offset8 where
+    Offset8 a <> Offset8 b = offset8 (a+b)
+
+instance Monoid Offset8 where
+    mempty = Offset8 0
+
+offset8 :: Int -> Offset8
+offset8 n = Offset8 (n `mod` 8)
+
+class Alignment a where
+    addedOffset :: a -> Offset8
+    bitSize :: a -> Maybe Int
+
+sameValue :: (Show a, Eq a) => [a] -> a
+sameValue [] = error "empty list"
+sameValue [x] = x
+sameValue (x:y:xs)
+    | x == y = sameValue (y:xs)
+    | otherwise = error $ "Expecting list with same values, got: "
+        <> show (x:y:xs)
+
+instance Alignment BitSize where
+    addedOffset (BitSize n) = offset8 n
+    bitSize (BitSize n) = Just n
+
+instance Alignment a => Alignment (Rule a) where
+    addedOffset = sameValue . fmap addedOffset . toList
+    bitSize = sameValue . fmap bitSize . toList
+
+instance Alignment (Variation a) where
+    addedOffset (Element _ n _rule) = addedOffset n
+    addedOffset (Group _ lst) = mconcat $ fmap addedOffset lst
+    addedOffset (Extended lst) = mconcat $ do
+        lst >>= \case
+            Nothing -> pure $ offset8 1
+            Just item -> pure $ addedOffset item
+    addedOffset (Repetitive rt variation) = case rt of
+        RepetitiveRegular _ -> addedOffset variation
+        RepetitiveFx        -> addedOffset variation <> offset8 1
+    addedOffset (Explicit _) = mempty
+    addedOffset (Compound lst) = mconcat $ do
+        lst >>= \case
+            Nothing -> pure mempty
+            Just item -> pure $ addedOffset item
+
+    bitSize = \case
+        Element _ n _rule -> bitSize n
+        Group _ lst -> sum <$> mapM bitSize lst
+        _ -> Nothing
+
+instance Alignment (NonSpare a) where
+    addedOffset (NonSpare _name _title rule _doc) = addedOffset rule
+    bitSize (NonSpare _name _title rule _doc) = bitSize rule
+
+instance Alignment (Item a) where
+    addedOffset (Spare _ n) = addedOffset n
+    addedOffset (Item nsp)  = addedOffset nsp
+
+    bitSize (Spare _ n) = bitSize n
+    bitSize (Item nsp)  = bitSize nsp
+
+findItemByName :: [NonSpare a] -> ItemPath -> Maybe (NonSpare a)
+findItemByName _ (ItemPath []) = Nothing
+findItemByName catalogue (ItemPath (x : xs)) = do
+    let f (NonSpare name _ _ _) = name == x
+    item <- find f catalogue
+    go item xs
+  where
+    go :: NonSpare a -> [ItemName] -> Maybe (NonSpare a)
+    go item [] = Just item
+    go (NonSpare _ _ rule _) (y:ys) = case rule of
+        ContextFree variation -> do
+            let candidates = case variation of
+                    Group _ lst   -> lst >>= \case
+                        Spare _ _ -> []
+                        Item nsp -> [nsp]
+                    Extended lst -> lst >>= \case
+                        Just (Item nsp) -> [nsp]
+                        _ -> []
+                    Compound lst -> catMaybes lst
+                    _            -> []
+                byName (NonSpare n _ _ _) = n == y
+            nextItem <- find byName candidates
+            go nextItem ys
+        Dependent {} -> Nothing
+
+type ValidationError = Text
 
 newtype ErrM a = ErrM { unErrM :: Writer [ValidationError] a }
     deriving (Functor, Applicative, Monad)
@@ -45,7 +135,7 @@ withPreffix :: Text -> ErrM () -> ErrM ()
 withPreffix name act = forM_ (runErrM act) $ \err -> do
     throw $ name <> ":" <> err
 
-isCapital :: T.Text -> Bool
+isCapital :: Text -> Bool
 isCapital w
     | w `elem` exceptions = True
     | otherwise = T.head w `notElem` ['a'..'z']
@@ -54,6 +144,21 @@ isCapital w
         [ "of", "in", "by", "to", "from", "the", "for", "and", "or"
         , "with", "which", "is", "as", "on", "a", "vs."
         ]
+
+isNegative :: Number -> Bool
+isNegative = \case
+    NumInt val -> val < 0
+    NumDiv a b -> isNegative a /= isNegative b
+    NumPow a _ -> a < 0
+
+getConstrainNumber :: Constrain -> Number
+getConstrainNumber = \case
+    EqualTo val -> val
+    NotEqualTo val -> val
+    GreaterThan val -> val
+    GreaterThanOrEqualTo val -> val
+    LessThan val -> val
+    LessThanOrEqualTo val -> val
 
 instance Validate (Signedness, Constrain) where
     validate = \case
@@ -140,7 +245,7 @@ instance Validate (Variation a) where
         when (length lst <= 1) "group requires more items"
         when (itemNames lst /= nub (itemNames lst)) "duplicated names"
     validate (Extended items) = do
-        when (offset (Extended items) /= mempty) "alignment error"
+        when (addedOffset (Extended items) /= mempty) "alignment error"
         when (itemNames lst /= nub (itemNames lst)) "duplicated names"
         when (length items <= 1) "extended subitem list size"
         mapM_ validate lst
@@ -149,12 +254,16 @@ instance Validate (Variation a) where
     validate (Repetitive rt variation) = case rt of
         RepetitiveRegular (ByteSize m) -> do
             when (m <= 0) "REP size"
-            when (offset variation /= mempty) "variation alignment"
+            when (addedOffset variation /= mempty) "variation alignment"
             validate variation
         RepetitiveFx -> validate variation
     validate (Explicit _) = pure ()
     validate (Compound items) = do
-        when (offset (Compound items) /= mempty) "alignment error"
+        forM_ items $ \case
+            Nothing -> pure ()
+            Just nsp@(NonSpare (ItemName name) _ _ _) -> withPreffix name $ do
+                when (addedOffset nsp /= mempty) $ do
+                    throw "alignment error"
         mapM_ validate lst
         when (itemNames lst' /= nub (itemNames lst')) "duplicated names"
         when (isNothing $ last items) "last element in compound is empty"
@@ -163,7 +272,8 @@ instance Validate (Variation a) where
         lst' = fmap Item lst
 
 instance Validate (NonSpare a) where
-    validate (NonSpare (ItemName name) (Title title) rule _doc) = withPreffix name $ do
+    validate (NonSpare (ItemName name) (Title title) rule _doc) = do
+      withPreffix name $ do
         when (T.length name > 15) "Item name too long"
         forM_ (T.unpack name) $ \c -> do
             unless (c `elem` (['A'..'Z'] <> ['0'..'9'])) $ do
@@ -177,7 +287,7 @@ instance Validate (NonSpare a) where
             throw $ "Title contain leading or trailing whitespaces -> " <> title
         when ('"' `elem` T.unpack title) $ do
             throw $ "Title contain quotes -> " <> title
-        mapM_ validate rule
+        validate rule
 
 instance Validate (Item a) where
     validate (Spare _ (BitSize n)) = do
@@ -244,7 +354,7 @@ instance Validate Basic where
         validate edition
         validate date
         forM_ catalogue $ \item -> do
-            when (offset item /= mempty) "top level alignment error"
+            when (addedOffset item /= mempty) "top level alignment error"
             validate item
             validateDepItem item
         forM_ required $ \name -> do
@@ -278,12 +388,15 @@ instance Validate Basic where
                             False -> "Case vector size mismatch"
                             True -> forM_ (zip items xs) $ \(someItemName, x) -> do
                                 case findItemByName catalogue someItemName of
-                                    Nothing -> throw $ showPath someItemName <> " not defined"
+                                    Nothing -> throw $ showPath someItemName
+                                        <> " not defined"
                                     Just someItem -> case bitSize someItem of
-                                        Nothing -> throw $ showPath someItemName <> " unknown size"
+                                        Nothing -> throw $ showPath someItemName
+                                            <> " unknown size"
                                         Just m -> do
                                             when (x > (2^m)) $ do
-                                                throw $ showPath (ItemPath [name]) <> " too many cases"
+                                                throw $ showPath (ItemPath [name])
+                                                    <> " too many cases"
             Group _ items -> do
                 forM_ items $ \case
                     Spare _ _ -> pure ()
@@ -297,7 +410,8 @@ instance Validate Basic where
                             throw $
                                 showPath (ItemPath [name, subName])
                                 <> ": name repetition, suggesting -> "
-                                <> showPath (ItemPath [name, ItemName (T.drop n subName')])
+                                <> showPath (ItemPath [name, ItemName
+                                    (T.drop n subName')])
             Extended lst -> forM_ (catMaybes lst) $ \case
                 Spare _ _ -> pure ()
                 Item nsp -> validateDepItem nsp
@@ -315,11 +429,13 @@ instance Validate Expansion where
             Nothing -> pure ()
             Just (ByteSize n) -> do
                 when (length items > n*8) "insufficient fspec length"
-        forM_ (catMaybes items) $ \item -> do
-            when (offset item /= mempty) "top level alignment error"
-            validate item
+        forM_ (catMaybes items) $ \nsp@(NonSpare (ItemName name) _ _ _) -> do
+            validate nsp
+            withPreffix name $ do
+                when (addedOffset nsp /= mempty) "alignment error"
 
 instance Validate Asterix where
     validate = \case
         AsterixBasic x -> validate x
         AsterixExpansion x -> validate x
+
