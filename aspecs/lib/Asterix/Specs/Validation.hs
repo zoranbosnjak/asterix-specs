@@ -244,11 +244,19 @@ instance Validate (Variation a) where
         mapM_ validate lst
         when (length lst <= 1) "group requires more items"
         when (itemNames lst /= nub (itemNames lst)) "duplicated names"
+        forM_ lst $ \case
+            Spare _ _ -> pure ()
+            Item nsp@(NonSpare (ItemName name) _ _ _) -> withPreffix name $ do
+                when (isNothing $ bitSize nsp) $ throw "unknown item size"
     validate (Extended items) = do
         when (addedOffset (Extended items) /= mempty) "alignment error"
         when (itemNames lst /= nub (itemNames lst)) "duplicated names"
         when (length items <= 1) "extended subitem list size"
         mapM_ validate lst
+        forM_ lst $ \case
+            Spare _ _ -> pure ()
+            Item nsp@(NonSpare (ItemName name) _ _ _) -> withPreffix name $ do
+                when (isNothing $ bitSize nsp) $ throw "unknown item size"
       where
         lst = catMaybes items
     validate (Repetitive rt variation) = case rt of

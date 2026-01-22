@@ -149,6 +149,8 @@ enforced by the [validator](/aspecs.html):
   not exceed the value that size can represent.
 - Subitem names shall be non-repetitive, in respect to the parent item name,
   for example: "POSITION/POSITIONX" is suggested to change to "POSITION/X".
+- Group subitems shall have known bit size.
+- Extended subitems shall have known bit size.
 
 ## Asterix definition in `haskell` syntax
 
