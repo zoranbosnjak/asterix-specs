@@ -1,0 +1,610 @@
+asterix 010 "Transmission of Monosensor Surface Movement Data"
+edition 1.1
+date 2007-03-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the messages
+            at the receiver side by further defining the type of transaction.
+        element 8
+            table
+                1: Target Report
+                2: Start of Update Cycle
+                3: Periodic Status Message
+                4: Event-triggered Status Message
+        remark
+            Notes:
+
+                1. In applications where transactions of various types are exchanged,
+                   the Message Type Data Item facilitates the proper message handling
+                   at the receiver side.
+                2. All Message Type values are reserved for common standard use.
+                3. The list of items present for the four message types is defined in
+                   the following table.
+                   M stands for mandatory, O for optional, X for never present.
+
+            The list of items present for the four message types is defined in the following
+            table. M stands for mandatory, O for optional, X for never present. ::
+
+                Item Type [001, 002, 003, 004]
+                          [Target Report, Start of Update Cycle, Periodic Status Message, Event Status Message]
+
+                I010/000 Message Type M M M M
+                I010/010 Data Source Identifier M M M M
+                I010/020 Target Report Descriptor M X X X
+                I010/040 Measured Position in Polar Coordinates O X X X
+                I010/041 Position in WGS-84 Coordinates O X X X
+                I010/042 Position in Cartesian Coordinates O X X X
+                I010/060 Mode-3/A Code O X X X
+                I010/090 Flight Level in Binary Representation O X X X
+                I010/091 Measured Height O X X X
+                I010/131 Amplitude of Primary Plot O X X X
+                I010/140 Time of Day M M M M
+                I010/161 Track Number O X X X
+                I010/170 Track Status O X X X
+                I010/200 Calculated Track Velocity in Polar Coordinates O X X X
+                I010/202 Calculated Track Velocity in Cartesian Coordinates O X X X
+                I010/210 Calculated Acceleration O X X X
+                I010/220 Target Address O X X X
+                I010/245 Target Identification O X X X
+                I010/250 Mode S MB Data O X X X
+                I010/270 Target Size & Orientation O X X X
+                I010/280 Presence O X X X
+                I010/300 Vehicle Fleet Identification O X X X
+                I010/310 Pre-programmed Message O X X X
+                I010/500 Standard Deviation of Position O X X X
+                I010/550 System Status X O M M
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the system from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            NOTE - The SAC is fixed to zero to indicate a data flow local to the airport.
+
+    020 "Target Report Descriptor"
+        definition
+            Type and characteristics of the data as transmitted by a system.
+        extended
+            TYP ""
+                element 3
+                    table
+                        0: SSR multilateration
+                        1: Mode S multilateration
+                        2: ADS-B
+                        3: PSR
+                        4: Magnetic Loop System
+                        5: HF multilateration
+                        6: Not defined
+                        7: Other types
+            DCR ""
+                element 1
+                    table
+                        0: No differential correction (ADS-B)
+                        1: Differential correction (ADS-B)
+            CHN ""
+                element 1
+                    table
+                        0: Chain 1
+                        1: Chain 2
+            GBS ""
+                element 1
+                    table
+                        0: Transponder Ground bit not set
+                        1: Transponder Ground bit set
+            CRT ""
+                element 1
+                    table
+                        0: No Corrupted reply in multilateration
+                        1: Corrupted replies in multilateration
+            -
+            SIM ""
+                element 1
+                    table
+                        0: Actual target report
+                        1: Simulated target report
+            TST ""
+                element 1
+                    table
+                        0: Default
+                        1: Test Target
+            RAB ""
+                element 1
+                    table
+                        0: Report from target transponder
+                        1: Report from field monitor (fixed transponder)
+            LOP ""
+                element 2
+                    table
+                        0: Undetermined
+                        1: Loop start
+                        2: Loop finish
+            TOT ""
+                element 2
+                    table
+                        0: Undetermined
+                        1: Aircraft
+                        2: Ground vehicle
+                        3: Helicopter
+            -
+            SPI ""
+                element 1
+                    table
+                        0: Absence of SPI
+                        1: Special Position Identification
+            spare 6
+            -
+
+    040 "Measured Position in Polar Co-ordinates"
+        definition
+            Measured position of a target in local polar co-ordinates.
+        group
+            RHO "RHO"
+                element 16
+                    unsigned quantity 1 "m" <= 65536
+            TH "Theta"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+
+    041 "Position in WGS-84 Co-ordinates"
+        definition
+            Position of a target in WGS-84 Co-ordinates.
+        group
+            LAT "Latitude"
+                element 32
+                    signed quantity 180/2^31 "°" >= -90 <= 90
+            LON "Longitude"
+                element 32
+                    signed quantity 180/2^31 "°" >= -180 < 180
+
+    042 "Position in Cartesian Co-ordinates"
+        definition
+            Position of a target in Cartesian co-ordinates, in two’s complement form.
+        group
+            X "X Coordinate"
+                element 16
+                    signed quantity 1 "m" >= -32768 <= 32768
+            Y "Y Coordinate"
+                element 16
+                    signed quantity 1 "m" >= -32768 <= 32768
+
+    060 "Mode-3/A Code in Octal Representation"
+        definition
+            Mode-3/A code converted into octal representation.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-3/A code derived from the reply of the transponder
+                        1: Mode-3/A code not extracted during the last scan
+            spare 1
+            MODE3A "Mode-3/A Reply in Octal Representation"
+                element 12
+                    string octal
+        remark
+            Notes:
+
+                1. Bit 15 has no meaning in the case of a smoothed Mode-3/A code
+                   and is set to 0 for a calculated track. For Mode S, it is set
+                   to one when an error correction has been attempted.
+                2. For Mode S, bit 16 is normally set to zero, but can exceptionally
+                   be set to one to indicate a non-validated Mode-3/A code (e.g. alert
+                   condition detected, but new Mode-3/A code not successfully extracted).
+
+    090 "Flight Level in Binary Representation"
+        definition
+            Flight Level (Mode C / Mode S Altitude) converted into binary two's
+            complement representation.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            FL "Flight Level"
+                element 14
+                    signed quantity 1/2^2 "FL"
+        remark
+            Notes:
+
+                1. The value shall be within the range described by ICAO Annex 10
+                2. For Mode S, bit 15 (G) is set to one when an error correction has
+                   been attempted.
+
+    091 "Measured Height"
+        definition
+            Height above local 2D co-ordinate reference system (two's complement)
+            based on direct measurements not related to barometric pressure.
+        element 16
+            signed quantity 25/2^2 "ft" >= -204800 <= 204800
+
+    131 "Amplitude of Primary Plot"
+        definition
+            Amplitude of Primary Plot.
+        element 8
+            raw
+        remark
+            Notes:
+
+                - The value is radar-dependent, 0 being the minimum detectable level
+                  for that radar.
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                - The time of day value is reset to zero each day at midnight.
+
+    161 "Track Number"
+        definition
+            An integer value representing a unique reference to a track record
+            within a particular track file.
+        group
+            spare 4
+            TRK "Track Number"
+                element 12
+                    raw
+
+    170 "Track Status"
+        definition
+            Status of track.
+        extended
+            CNF ""
+                element 1
+                    table
+                        0: Confirmed track
+                        1: Track in initialisation phase
+            TRE ""
+                element 1
+                    table
+                        0: Default
+                        1: Last report for a track
+            CST ""
+                element 2
+                    table
+                        0: No extrapolation
+                        1: Predictable extrapolation due to sensor refresh period (see NOTE)
+                        2: Predictable extrapolation in masked area
+                        3: Extrapolation due to unpredictable absence of detection
+            MAH ""
+                element 1
+                    table
+                        0: Default
+                        1: Horizontal manoeuvre
+            TCC ""
+                element 1
+                    table
+                        0: Tracking performed in 'Sensor Plane', i.e. neither slant range correction nor projection was applied
+                        1: Slant range correction and a suitable projection technique are used to track in a 2D.reference plane, tangential to the earth model at the Sensor Site co-ordinates
+            STH ""
+                element 1
+                    table
+                        0: Measured position
+                        1: Smoothed position
+            -
+            TOM ""
+                element 2
+                    table
+                        0: Unknown type of movement
+                        1: Taking-off
+                        2: Landing
+                        3: Other types of movement
+            DOU ""
+                element 3
+                    table
+                        0: No doubt
+                        1: Doubtful correlation (undetermined reason)
+                        2: Doubtful correlation in clutter
+                        3: Loss of accuracy
+                        4: Loss of accuracy in clutter
+                        5: Unstable track
+                        6: Previously coasted
+            MRS ""
+                element 2
+                    table
+                        0: Merge or split indication undetermined
+                        1: Track merged by association to plot
+                        2: Track merged by non-association to plot
+                        3: Split track
+            -
+            GHO ""
+                element 1
+                    table
+                        0: Default
+                        1: Ghost track
+            spare 6
+            -
+        remark
+            Notes:
+
+                1. Some sensors are not be able to scan the whole coverage in one
+                   refresh period. Therefore, track extrapolation is performed in
+                   un-scanned sectors. CST is then set to 01.
+                2. Bit-8 (GHO) is used to signal that the track is suspected to have
+                   been generated by a fake target.
+
+    200 "Calculated Track Velocity in Polar Co-ordinates"
+        definition
+            Calculated track velocity expressed in polar co-ordinates.
+        group
+            GSP "Ground Speed"
+                element 16
+                    unsigned quantity 1/2^14 "NM/s" <= 2
+            TRA "Track Angle"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+
+    202 "Calculated Track Velocity in Cartesian Co-ordinates"
+        definition
+            Calculated track velocity expressed in Cartesian co-ordinates, in two’s
+            complement representation.
+        group
+            VX "X Velocity"
+                element 16
+                    signed quantity 1/2^4 "m/s" >= -8192 <= 8192
+            VY "Y Velocity"
+                element 16
+                    signed quantity 1/2^4 "m/s" >= -8192 <= 8192
+
+    210 "Calculated Acceleration"
+        definition
+            Calculated Acceleration of the target, in two’s complement form.
+        group
+            AX "X Acceleration"
+                element 8
+                    signed quantity 1/2^4 "m/s²" >= -31 <= 31
+            AY "Y Acceleration"
+                element 8
+                    signed quantity 1/2^4 "m/s²" >= -31 <= 31
+
+    220 "Target Address"
+        definition
+            Target address (24-bits address) assigned uniquely to each Target.
+        element 24
+            raw
+
+    245 "Target Identification"
+        definition
+            Target (aircraft or vehicle) identification in 8 characters.
+        group
+            STI ""
+                element 2
+                    table
+                        0: Callsign or registration downlinked from transponder
+                        1: Callsign not downlinked from transponder
+                        2: Registration not downlinked from transponder
+            spare 6
+            CHR "Characters 1-8 (Coded on 6 Bits Each) Defining Target Identification"
+                element 48
+                    string icao
+        remark
+            Notes:
+
+                - See ICAO document Annex 10, Volume I, Part I, section 3.8.2.9 for
+                  the coding rules.
+
+    250 "Mode S MB Data"
+        definition
+            Mode S Comm B data as extracted from the aircraft transponder.
+        repetitive 1
+            group
+                MBDATA ""
+                    description
+                        56-bit message conveying Mode S Comm B message data
+                    element 56
+                        raw
+                BDS1 ""
+                    description
+                        Comm B Data Buffer Store 1 Address
+                    element 4
+                        raw
+                BDS2 ""
+                    description
+                        Comm B Data Buffer Store 2 Address
+                    element 4
+                        raw
+        remark
+            Notes:
+
+                - For the transmission of BDS20, item 245 is used.
+
+    270 "Target Size and Orientation"
+        definition
+            Target size defined as length and width of the detected target, and orientation.
+        extended
+            LENGTH "Length"
+                element 7
+                    unsigned quantity 1 "m"
+            -
+            ORIENTATION "Orientation"
+                element 7
+                    unsigned quantity 360/2^7 "°"
+            -
+            WIDTH "Width"
+                element 7
+                    unsigned quantity 1 "m"
+            -
+        remark
+            Notes:
+
+                - The orientation gives the direction which the aircraft nose is
+                  pointing, relative to the Geographical North.
+
+    280 "Presence"
+        definition
+            Positions of all elementary presences constituting a plot.
+        repetitive 1
+            group
+                DRHO ""
+                    description
+                        Difference between the radial distance of the plot centre
+                        and that of the presence.
+                    element 8
+                        signed quantity 1 "m" >= -127 <= 127
+                DTHETA ""
+                    description
+                        Difference between the azimuth of the plot centre and that
+                        of the presence.
+                    element 8
+                        signed quantity 3/20 "°" >= -381/20 <= 381/20
+
+    300 "Vehicle Fleet Identification"
+        definition
+            Vehicle fleet identification number.
+        element 8
+            table
+                0: Unknown
+                1: ATC equipment maintenance
+                2: Airport maintenance
+                3: Fire
+                4: Bird scarer
+                5: Snow plough
+                6: Runway sweeper
+                7: Emergency
+                8: Police
+                9: Bus
+                10: Tug (push/tow)
+                11: Grass cutter
+                12: Fuel
+                13: Baggage
+                14: Catering
+                15: Aircraft maintenance
+                16: Flyco (follow me)
+
+    310 "Pre-programmed Message"
+        definition
+            Number related to a pre-programmed message that can be transmitted by a vehicle.
+        group
+            TRB ""
+                element 1
+                    table
+                        0: Default
+                        1: In Trouble
+            MSG ""
+                element 7
+                    table
+                        1: Towing aircraft
+                        2: “Follow me” operation
+                        3: Runway check
+                        4: Emergency operation (fire, medical...)
+                        5: Work in progress (maintenance, birds scarer, sweepers...)
+
+    500 "Standard Deviation of Position"
+        definition
+            Standard Deviation of Position
+        group
+            DEVX "Standard Deviation of X Component"
+                element 8
+                    unsigned quantity 1/2^2 "m"
+            DEVY "Standard Deviation of Y Component"
+                element 8
+                    unsigned quantity 1/2^2 "m"
+            COVXY "Covariance in Two’s Complement Form"
+                element 16
+                    signed quantity 1/2^2 "m"
+
+    550 "System Status"
+        definition
+            Information concerning the configuration and status of a System.
+        group
+            NOGO "Operational Release Status of the System"
+                element 2
+                    table
+                        0: Operational
+                        1: Degraded
+                        2: NOGO
+            OVL "Overload Indicator"
+                element 1
+                    table
+                        0: No overload
+                        1: Overload
+            TSV "Time Source Validity"
+                element 1
+                    table
+                        0: Valid
+                        1: Invalid
+            DIV ""
+                element 1
+                    table
+                        0: Normal Operation
+                        1: Diversity degraded
+            TTF ""
+                element 1
+                    table
+                        0: Test Target Operative
+                        1: Test Target Failure
+            spare 2
+        remark
+            Notes:
+
+                - For a radar, bit-4 (DIV) is set to zero either when diversity is
+                  not used, or when diversity is used and operational.
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    020
+    140
+    041
+    040
+    042
+    200
+    202
+    161
+    170
+    060
+    220
+    245
+    250
+    300
+    090
+    091
+    270
+    550
+    310
+    500
+    280
+    131
+    210
+    -
+    SP
+    RE

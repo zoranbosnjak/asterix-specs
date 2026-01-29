@@ -1,0 +1,685 @@
+asterix 001 "Transmission of Monoradar Data Target Reports"
+edition 1.4
+date 2022-08-18
+preamble
+    Surveillance data exchange.
+
+items
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                The defined SACs are on the EUROCONTROL ASTERIX website
+                (www.eurocontrol.int/asterix)
+
+    020 "Target Report Descriptor"
+        definition
+            Type and characteristics of the radar data as transmitted by a radar station.
+        extended
+            TYP ""
+                element 1
+                    table
+                        0: Plot
+                        1: Track
+            SIM ""
+                element 1
+                    table
+                        0: Actual plot or track
+                        1: Simulated plot or track
+            SSRPSR "Radar Detection in Last Antenna Scan"
+                element 2
+                    table
+                        0: No detection
+                        1: Sole primary detection
+                        2: Sole secondary detection
+                        3: Combined primary and secondary detection
+            ANT ""
+                element 1
+                    table
+                        0: Target report from antenna 1
+                        1: Target report from antenna 2
+            SPI ""
+                element 1
+                    table
+                        0: Default
+                        1: Special Position Identification
+            RAB ""
+                element 1
+                    table
+                        0: Default
+                        1: Plot or track from a fixed transponder
+            -
+            TST ""
+                element 1
+                    table
+                        0: Default
+                        1: Test target indicator
+            DS1DS2 "Radar Detection in Last Antenna Scan"
+                element 2
+                    table
+                        0: Default
+                        1: Unlawful interference (code 7500)
+                        2: Radio-communication failure (code 7600)
+                        3: Emergency (code 7700)
+            ME ""
+                element 1
+                    table
+                        0: Default
+                        1: Military emergency
+            MI ""
+                element 1
+                    table
+                        0: Default
+                        1: Military identification
+            spare 2
+            -
+        remark
+            Note:
+
+                - Bit-7 (SIM) is used to identify a simulated target report as produced by a traffic simulator.
+
+    030 "Warning/Error Conditions"
+        definition
+            Warning/error conditions detected by a radar station for the target
+            report involved.
+        repetitive fx
+            element 7
+                table
+                    0: No warning nor error condition
+                    1: Garbled reply
+                    2: Reflection
+                    3: Sidelobe reply
+                    4: Split plot
+                    5: Second time around reply
+                    6: Angels
+                    7: Terrestrial vehicles
+                    64: Possible wrong code in Mode-3/A
+                    65: Possible wrong altitude information, transmitted when the Code C credibility check fails together with the Mode-C code in binary notation
+                    66: Possible phantom MSSR plot
+                    80: Fixed PSR plot
+                    81: Slow PSR plot
+                    82: Low quality PSR plot
+        remark
+            Notes:
+
+                1. Warning/error condition values 0-63 are reserved for common
+                   standard use, whereas the values 64-127 are application dependent.
+
+    040 "Measured Position in Polar Co-ordinates"
+        definition
+            Measured position of an aircraft in local polar co-ordinates.
+        group
+            RHO ""
+                element 16
+                    unsigned quantity 1/2^7 "NM" <= 512
+            THETA ""
+                element 16
+                    unsigned quantity 360/2^16 "°"
+        remark
+            Note:
+
+                - When expressed in 16 bits, signed or unsigned azimuths have the same value.
+
+    042 "Calculated Position in Cartesian Co-ordinates"
+        definition
+            Calculated position of an aircraft in Cartesian co-ordinates.
+        group
+            X "X-Component"
+                element 16
+                    signed quantity 1/2^6 "NM" >= -512 <= 512
+            Y "Y-Component"
+                element 16
+                    signed quantity 1/2^6 "NM" >= -512 <= 512
+        remark
+            Notes:
+
+                1. LSB is calculated as :math:`2^{-6+f}`.
+                2. A default quantisation unit of 1/64 NM is obtained for a value of f = 0.
+                3. Negative values are expressed in 2's complement form, bit-32 and
+                   bit-16 shall be set to 0 for positive values and 1 for negative values.
+
+    050 "Mode-2 Code in Octal Representation"
+        definition
+            Reply to Mode-2 interrogation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-2 code as derived from the reply of the transponder
+                        1: Smoothed Mode-2 code as provided by a local tracker
+            spare 1
+            MODE2 "Mode-2 Code in Octal Representation"
+                element 12
+                    string octal
+        remark
+            Notes:
+
+                1. Smoothed Mode-2 data (bit-14 set to one) is used when the plot
+                   contains no Mode-2 code or the Mode-2 codes of the plot and track
+                   are different.
+                2. Bits-16/15 have no meaning in the case of a smoothed Mode-2 and
+                   are set to 0 for a calculated track.
+
+    060 "Mode-2 Code Confidence Indicator"
+        definition
+            Confidence level for each bit of a Mode-2 reply as provided by a monopulse SSR station.
+        group
+            spare 4
+            QA4 ""
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QA2 ""
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QA1 ""
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QB4 ""
+                element 1
+                    table
+                        0: High quality pulse B4
+                        1: Low quality pulse B4
+            QB2 ""
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QB1 ""
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+            QC4 ""
+                element 1
+                    table
+                        0: High quality pulse C4
+                        1: Low quality pulse C4
+            QC2 ""
+                element 1
+                    table
+                        0: High quality pulse C2
+                        1: Low quality pulse C2
+            QC1 ""
+                element 1
+                    table
+                        0: High quality pulse C1
+                        1: Low quality pulse C1
+            QD4 ""
+                element 1
+                    table
+                        0: High quality pulse D4
+                        1: Low quality pulse D4
+            QD2 ""
+                element 1
+                    table
+                        0: High quality pulse D2
+                        1: Low quality pulse D2
+            QD1 ""
+                element 1
+                    table
+                        0: High quality pulse D1
+                        1: Low quality pulse D1
+        remark
+            Note:
+                - This Data Item is only transmitted if at least one pulse is of low quality.
+
+    070 "Mode-3/A Code in Octal Representation"
+        definition
+            Mode-3/A code converted into octal representation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-3/A code derived from the reply of the transponder
+                        1: Smoothed Mode-3/A code as provided by a local tracker
+            spare 1
+            MODE3A "Mode-3/A Reply in Octal Representation"
+                element 12
+                    string octal
+        remark
+            Notes:
+
+                1. The detector signals a garbled code (bit-15 set to one) when at
+                   least two replies are overlapping.
+                2. Smoothed Mode-3/A data (bit-14 set to a one) are used in the case
+                   of the absence of Mode-3/A code information in the plot, or in the
+                   case of a difference between the plot and track Mode-3/A code information.
+                3. Bits-16/15 have no meaning in the case of a smoothed Mode-3/A and
+                   are set to 0 for a calculated track.
+
+    080 "Mode-3/A Code Confidence Indicator"
+        definition
+            Confidence level for each bit of a Mode-3/A reply as provided by a monopulse SSR station.
+        group
+            spare 4
+            QA4 ""
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QA2 ""
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QA1 ""
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QB4 ""
+                element 1
+                    table
+                        0: High quality pulse B4
+                        1: Low quality pulse B4
+            QB2 ""
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QB1 ""
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+            QC4 ""
+                element 1
+                    table
+                        0: High quality pulse C4
+                        1: Low quality pulse C4
+            QC2 ""
+                element 1
+                    table
+                        0: High quality pulse C2
+                        1: Low quality pulse C2
+            QC1 ""
+                element 1
+                    table
+                        0: High quality pulse C1
+                        1: Low quality pulse C1
+            QD4 ""
+                element 1
+                    table
+                        0: High quality pulse D4
+                        1: Low quality pulse D4
+            QD2 ""
+                element 1
+                    table
+                        0: High quality pulse D2
+                        1: Low quality pulse D2
+            QD1 ""
+                element 1
+                    table
+                        0: High quality pulse D1
+                        1: Low quality pulse D1
+
+    090 "Mode-C Code in Binary Representation"
+        definition
+            Mode-C height converted into binary representation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            HGT "Mode-C HEIGHT"
+                element 14
+                    signed quantity 1/2^2 "FL"
+        remark
+            Notes:
+
+                1. The detector signals a garbled code when at least two replies are overlapping.
+                2. The maximum height which can be represented is 204 775 ft.
+                   Practically the maximum valid value is 126 750 ft (refer to ICAO Annex 10).
+                3. Negative values are expressed in 2's complement form, bit-14 is
+                   set to 0 for positive values and 1 for negative values.
+
+    100 "Mode-C Code and Code Confidence Indicator"
+        definition
+            Mode-C height in Gray notation as received from the transponder together
+            with the confidence level for each reply bit as provided by a monopulse SSR station.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            spare 2
+            MODEC "Mode-C Reply in Gray Notation"
+                element 12
+                    raw
+            spare 4
+            QC1 ""
+                element 1
+                    table
+                        0: High quality pulse C1
+                        1: Low quality pulse C1
+            QA1 ""
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QC2 ""
+                element 1
+                    table
+                        0: High quality pulse C2
+                        1: Low quality pulse C2
+            QA2 ""
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QC4 ""
+                element 1
+                    table
+                        0: High quality pulse C4
+                        1: Low quality pulse C4
+            QA4 ""
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QB1 ""
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+            QD1 ""
+                element 1
+                    table
+                        0: High quality pulse D1
+                        1: Low quality pulse D1
+            QB2 ""
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QD2 ""
+                element 1
+                    table
+                        0: High quality pulse D2
+                        1: Low quality pulse D2
+            QB4 ""
+                element 1
+                    table
+                        0: High quality pulse B4
+                        1: Low quality pulse B4
+            QD4 ""
+                element 1
+                    table
+                        0: High quality pulse D4
+                        1: Low quality pulse D4
+        remark
+            Notes:
+
+                1. This Data Item is only transmitted if at least one pulse is of low quality.
+                2. The detector signals a garbled code when at least two replies are overlapping.
+
+    120 "Measured Radial Doppler Speed"
+        definition
+            Radial component of the ground speed as measured by means of Doppler filter banks in radar signal processors.
+        element 8
+            signed quantity 1/2^8 "NM/s"
+        remark
+            Notes:
+                1. LSB is calculated as :math:`2^{-14+f}`.
+                2. A default quantisation unit of 14.0625 kt and a maximum of +/- 1 800 kt
+                   is obtained for a value of f = 6.
+                3. Negative values are expressed in 2's complement form, bit-8 is
+                   set to 0 for positive values and 1 for negative values.
+
+    130 "Radar Plot Characteristics"
+        definition
+            Additional information on the quality of the target report.
+        repetitive fx
+            element 7
+                raw
+        remark
+            Notes:
+                - The actual meaning of the bits is application dependent."
+
+                - This Data Item may contain parameters such as plot runlength
+                  (primary and secondary), difference between primary and secondary
+                  derived azimuth, pulse amplitude, etc.
+
+    131 "Received Power"
+        definition
+            Measurement of the received power.
+        element 8
+            signed quantity 1 "dBm"
+        remark
+            Notes:
+
+                1. POWER is the measured value of the power received on the sum
+                   pattern for a plot.
+                2. Negative values are expressed in 2's complement form, bit-8 is
+                   set to 0 for positive values and 1 for negative values.
+
+    141 "Truncated Time of Day"
+        definition
+            Absolute time stamping expressed as Coordinated Universal Time (UTC) time.
+        element 16
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                1. The exchange of this Data Item allows the easy derivation of the
+                   correct UTC time value, provided that the clocks at the data source
+                   and sink(s) are less than 512 seconds out of synchronisation.
+                   Special care has to be taken at the transition of an "all ones"
+                   value to an "all zeros" value (every 512 seconds).
+                2. The time of day value is reset to 0 each day at midnight.
+                3. For time management in radar transmission applications, refer to
+                   Part 1, paragraph 5.4 [Ref. 2].
+
+    150 "Presence of X-Pulse"
+        definition
+            Presence of the X-Pulse for the various modes applied in the interrogation interlace pattern.
+        group
+            XA ""
+                element 1
+                    table
+                        0: Default
+                        1: X-pulse received in Mode-3/A reply
+            spare 1
+            XC ""
+                element 1
+                    table
+                        0: Default
+                        1: X-pulse received in Mode-C reply
+            spare 2
+            X2 ""
+                element 1
+                    table
+                        0: Default
+                        1: X-pulse received in Mode-2 reply
+            spare 2
+        remark
+            Note:
+
+                - This Data Item is transmitted only if at least one X-pulse has been
+                  received in a Mode-A, Mode-2 or Mode-C reply.
+
+    161 "Track Plot Number"
+        definition
+            An integer value representing a unique reference to a track/plot record within a particular track/plot file.
+        element 16
+            raw
+        remark
+            Note:
+
+                - The differentiation between track and plot number is either implicit
+                  or is made via the Target Report Descriptor (Data Item I001/020).
+
+    170 "Track Status"
+        definition
+            Status of track derived either from primary and/or secondary radar information.
+        extended
+            CON ""
+                element 1
+                    table
+                        0: Confirmed Track
+                        1: Track in initialisation phase
+            RAD ""
+                element 1
+                    table
+                        0: Primary track
+                        1: SSR/Combined track
+            MAN ""
+                element 1
+                    table
+                        0: Default
+                        1: Aircraft manoeuvring
+            DOU ""
+                element 1
+                    table
+                        0: Default
+                        1: Doubtful plot to track association
+            RDPC "Radar Data Processing Chain"
+                element 1
+                    table
+                        0: RDP Chain 1
+                        1: RDP Chain 2
+            spare 1
+            GHO ""
+                element 1
+                    table
+                        0: Default
+                        1: Ghost track
+            -
+            TRE ""
+                element 1
+                    table
+                        0: Default
+                        1: Last report for a track
+            spare 6
+            -
+        remark
+            Notes:
+
+                1. Bit-2 (GHO) is used to signal that the track is suspected to have
+                   been generated by a fake target.
+                2. Bit-4 (RDPC) is used to signal the discontinuity of the track numbers.
+
+    200 "Calculated Track Velocity in Polar Co-ordinates"
+        definition
+            Calculated track velocity expressed in polar co-ordinates.
+        group
+            GSP "Calculated Groundspeed"
+                element 16
+                    unsigned quantity 1/2^14 "NM/s"
+            HDG "Calculated Heading"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+
+    210 "Track Quality"
+        definition
+            Relative track quality.
+        repetitive fx
+            element 7
+                raw
+        remark
+            Note:
+
+                - Actual bit signification is application dependent.
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uaps
+    variations
+        plot
+            010
+            020
+            040
+            070
+            090
+            130
+            141
+            050
+            120
+            131
+            080
+            100
+            060
+            030
+            150
+            -
+            -
+            -
+            -
+            SP
+            rfs
+        track
+            010
+            020
+            161
+            040
+            042
+            200
+            070
+            090
+            141
+            130
+            131
+            120
+            170
+            210
+            050
+            080
+            100
+            060
+            030
+            SP
+            rfs
+            150
+    case 020/TYP
+        0: plot
+        1: track

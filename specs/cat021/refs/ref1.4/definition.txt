@@ -1,0 +1,328 @@
+ref 021 "ADS-B Target Reports Expansion"
+edition 1.4
+date 2018-03-08
+
+compound 1
+    BPS "Barometric Pressure Setting"
+        definition
+            Barometric Pressure Setting
+        group
+            spare 4
+            BPS "Barometric Pressure Setting"
+                element 12
+                    unsigned quantity 1/10 "hPa" >= 0 <= 819/2
+        remark
+            Notes:
+
+                - BPS is the barometric pressure setting of the aircraft minus 800 hPa
+
+                - A value of "0" indicates that in the aircraft a value of 800 hPa or
+                  less has been selected.
+
+                - A value of "409.5" indicates that in the aircraft a value of 1209.5
+                  hPa or more has been selected.
+    SH "Selected Heading"
+        definition
+            Selected Heading
+        group
+            spare 4
+            HDR "Horizontal Reference Direction"
+                element 1
+                    table
+                        0: True North
+                        1: Magnetic North
+            STAT "Selected Heading Status"
+                element 1
+                    table
+                        0: Data is either unavailable or invalid
+                        1: Data is available and valid
+            SH "Selected Heading"
+                element 10
+                    unsigned quantity 45/2^6 "°"
+        remark
+            On many aircraft, the ADS-B Transmitting Subsystem receives
+            Selected Heading from a Mode Control Panel / Flight Control Unit
+            (MCP / FCU). Users of this data are cautioned that the Selected
+            Heading value transmitted by the ADS-B Transmitting Subsystem
+            does not necessarily reflect the true intention of the airplane during
+            certain flight modes (e.g., during LNAV mode).
+    NAV "Navigation Mode"
+        definition
+            Navigation Mode Settings
+        group
+            AP "Autopilot"
+                element 1
+                    table
+                        0: Autopilot not engaged
+                        1: Autopilot engaged
+            VN "Vertical Navigation"
+                element 1
+                    table
+                        0: Vertical Navigation not active
+                        1: Vertical Navigation active
+            AH "Altitude Hold"
+                element 1
+                    table
+                        0: Altitude Hold not engaged
+                        1: Altitude Hold engaged
+            AM "Approach Mode"
+                element 1
+                    table
+                        0: Approach Mode not active
+                        1: Approach Mode active
+            spare 4
+        remark
+            This data-item should only be transmitted if an ADS-B indication has
+            been received that the mode bits have been "actively populated".by
+            the avionics (1090 ES version 2 (as defined in I021/210) BDS 6,2,
+            subtype 1, bit 47: "Status of MCP / FCU Mode Bits")
+    GAO "GPS Antenna Offset"
+        definition
+            GPS Antenna Offset
+        element 8
+            raw
+        remark
+            The value of this field is copied from the respective bits 33-40 of
+            version 2 (as defined in I021/210) of 1090 ES BDS register 6,5
+            (Aircraft Operational Status)
+    SGV "Surface Ground Vector"
+        definition
+            Ground Speed and Track Angle elements of the Surface
+            Ground Vector.
+        extended
+            STP ""
+                element 1
+                    table
+                        0: Aircraft has not stopped
+                        1: Aircraft has stopped
+            HTS ""
+                element 1
+                    table
+                        0: Heading/Ground Track data is not valid
+                        1: Heading/Ground Track data is valid
+            HTT ""
+                element 1
+                    table
+                        0: Heading data provided
+                        1: Ground Track provided
+            HRD ""
+                element 1
+                    table
+                        0: True North
+                        1: Magnetic North
+            GSS "Ground Speed"
+                element 11
+                    unsigned quantity 1/2^3 "kt"
+            -
+            HGT "Heading/Ground Track Information"
+                element 7
+                    unsigned quantity 45/2^4 "°"
+            -
+    STA "Aircraft Status"
+        definition
+            This item contains flags to convey information on the status
+            of a target.
+        extended
+            ES ""
+                element 1
+                    table
+                        0: Target is not 1090 ES IN capable
+                        1: Target is 1090 ES IN capable
+            UAT ""
+                element 1
+                    table
+                        0: Target is not UAT IN capable
+                        1: Target is UAT IN capable
+            spare 5
+            -
+    TNH "True North Heading"
+        definition
+            True North Heading (Element of Air Vector).
+        element 16
+            unsigned quantity 360/2^16 "°"
+        remark
+            Magnetic Heading is defined in I021/152.
+    MES "Military Extended Squitter"
+        definition
+            Contents of Extended Squitters transmitted by Military Aircraft
+        compound
+            SUM "Mode 5 Summary"
+                group
+                    M5 ""
+                        element 1
+                            table
+                                0: No Mode 5 interrogation
+                                1: Mode 5 interrogation
+                    ID ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 ID reply/report
+                                1: Authenticated Mode 5 ID reply/report
+                    DA ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 Data reply or Report
+                                1: Authenticated Mode 5 Data reply or Report (i.e any valid Mode 5 reply type other than ID)
+                    M1 ""
+                        element 1
+                            table
+                                0: Mode 1 code not present or not from Mode 5 reply/report
+                                1: Mode 1 code from Mode 5 reply/report
+                    M2 ""
+                        element 1
+                            table
+                                0: Mode 2 code not present or not from Mode 5 reply/report
+                                1: Mode 2 code from Mode 5 reply/report
+                    M3 ""
+                        element 1
+                            table
+                                0: Mode 3 code not present or not from Mode 5 reply/report
+                                1: Mode 3 code from Mode 5 reply/report
+                    MC ""
+                        element 1
+                            table
+                                0: Flightlevel not present or not from Mode 5 reply/report
+                                1: Flightlevel from Mode 5 reply/report
+                    PO ""
+                        element 1
+                            table
+                                0: Position not from Mode 5 report (ADS-B report)
+                                1: Position from Mode 5 report
+                remark
+                    Notes:
+
+                        1. The flag M2 refers to the contents of Subfield #6 below, M3, MC refer
+                           to the contents of data items I021/070 and I021/145 respectively. The
+                           flag M1 refers to the contents of Subfield #3 below (Extended Mode 1
+                           Code in Octal Representation).
+
+                        2. If a Mode 5 reply/report is received with the Emergency bit set, then
+                           the Military Emergency bit (ME) in Data Item I021/200, Target Status,
+                           shall be set.
+
+                        3. If a Mode 5 reply/report is received with the Identification of Position bit
+                           set, then the Special Position Identification bit (SPI) in Data Item
+                           I021/200, Target Status, shall be set.
+
+                        4. If a Mode 5 report (ID or Data) is received and fullfill the autentication
+                           criteria the corresponding authentication bit shall be set.
+            PNO "Mode 5 PIN / National Origin"
+                group
+                    spare 2
+                    PIN "PIN Code"
+                        element 14
+                            raw
+                    spare 5
+                    NO "National Origin Code"
+                        element 11
+                            raw
+            EM1 "Extended Mode 1 Code in Octal Representation"
+                group
+                    V ""
+                        element 1
+                            table
+                                0: Code validated
+                                1: Code not validated
+                    spare 1
+                    L ""
+                        element 1
+                            table
+                                0: Mode 1 code as derived from the report of the transponder
+                                1: Smoothed Mode 1 code as provided by a local tracker
+                    spare 1
+                    EM1 "Extended Mode 1 Code in Octal Representation"
+                        element 12
+                            string octal
+                remark
+                    Notes:
+
+                        - Subfield #1 is present, the M1 bit in Subfield #1 indicates whether the
+                          Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If
+                          Subfield #1 is not present, the Extended Mode 1 Code is from a Mode
+                          1 reply.
+
+                        - If Subfield #3 is not present the Mode 1 Code was not reported or all
+                          Code Bits were equal to 0.
+
+                        - The valid bit is set if the Code was only reported once for that target.
+            XP "X Pulse Presence"
+                group
+                    spare 2
+                    XP "X-pulse from Mode 5 PIN Reply/report"
+                        element 1
+                            table
+                                0: X-Pulse not present
+                                1: X-pulse present
+                    X5 "X-pulse from Mode 5 Data Reply or Report"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no authenticated Data reply or Report received
+                                1: X-pulse set to one (present)
+                    XC "X-pulse from Mode C Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode C reply
+                                1: X-pulse set to one (present)
+                    X3 "X-pulse from Mode 3/A Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 3/A reply
+                                1: X-pulse set to one (present)
+                    X2 "X-pulse from Mode 2 Reply"
+                        element 1
+                            table
+                                0: 0 X-pulse set to zero or no Mode 2 reply
+                                1: X-pulse set to one (present)
+                    X1 "X-pulse from Mode 1 Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 1 reply
+                                1: X-pulse set to one (present)
+                remark
+                    Within Mode 5 reports, the X-Pulse can be set for the following cases:
+
+                    1. In a combined Mode 1 and Mode 2 report: in this case the X5 bit and the X2 bit
+                    shall be set;
+
+                    2. In a combined Mode 3 and Mode C report: in this case the X5 bit and the X3
+                    bit shall be set;
+
+                    3. In a Mode 5 PIN data report: in this case the X5 bit and the XP bit shall be set.
+                    The X1 bit and the XC bit are meaningless as in Mode 1 and Mode C
+                    replies/reports the X Pulse is not defined. They are kept for compatibility
+                    reasons.
+            FOM "Figure of Merit"
+                group
+                    spare 3
+                    FOM "Figure of Merit"
+                        element 5
+                            raw
+            M2 "Mode 2 Code in Octal Representation"
+                group
+                    V ""
+                        element 1
+                            table
+                                0: Code validated
+                                1: Code not validated
+                    spare 1
+                    L ""
+                        element 1
+                            table
+                                0: Mode-2 code as derived from the reply of the transponder
+                                1: Smoothed Mode-2 code as provided by a local tracker
+                    spare 1
+                    MODE2 "Mode 2 Code in Octal Representation"
+                        element 12
+                            string octal
+                remark
+                    If Subfield 6 is not present the Mode 2 Code was no reported or all
+                    Code Bits were equal to 0.
+        remark
+            Notes:
+
+                - The Reserved Expansion Field is optional. When used to transmit MES, it shall
+                  be sent when the targets are represented by Mode 5 Level 2 reports.
+
+                - The information contained in this data item is specific to
+                  1090MHz Extended Squitter messages transmitted by military
+                  aircraft (Mode 5 Level 2 squitter).

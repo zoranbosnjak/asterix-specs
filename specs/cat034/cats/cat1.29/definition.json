@@ -1,0 +1,2683 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "This Data Item allows for a more convenient handling of\nthe messages at the receiver side by further defining\nthe type of transaction.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    1. In applications where transactions of various\n       types are exchanged, the Message Type Data Item facilitates the\n       proper message handling at the receiver side.\n    2. All Message Type values are reserved for common standard use.\n    3. The list of items present for the four message types is defined in\n       the following table.\n\n       M stands for mandatory, O for optional, X for never present.\n\n       TODO: message types table\n"
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "North marker message"
+                                        ],
+                                        [
+                                            2,
+                                            "Sector crossing message"
+                                        ],
+                                        [
+                                            3,
+                                            "Geographical filtering message"
+                                        ],
+                                        [
+                                            4,
+                                            "Jamming strobe message"
+                                        ],
+                                        [
+                                            5,
+                                            "Solar Storm Message"
+                                        ],
+                                        [
+                                            6,
+                                            "SSR Jamming Strobe Message"
+                                        ],
+                                        [
+                                            7,
+                                            "Mode S Jamming Strobe Message"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the radar station from which the data are received.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n"
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Eight most significant bits of the antenna azimuth defining a particular azimuth sector.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "020",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 8
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 360,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "°"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Sector Number"
+            },
+            {
+                "documentation": {
+                    "definition": "Absolute time stamping expressed as UTC time.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    - The time of day value is reset to zero each day at midnight.\n"
+                },
+                "name": "030",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Day"
+            },
+            {
+                "documentation": {
+                    "definition": "Antenna rotation period as measured between two consecutive North crossings\nor as averaged during a period of time.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    - This item represents the antenna rotation period as measured by the\n      radar station between two consecutive North crossings, or a calculated\n      antenna rotation speed as averaged during a period of time, or during a\n      number of antenna rotation scans.\n"
+                },
+                "name": "041",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Antenna Rotation Speed"
+            },
+            {
+                "documentation": {
+                    "definition": "Information concerning the configuration and status of a System.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "050",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "COM",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "NOGO",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "System is released for operational use"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Operational use of System is inhibited, i.e. the data shall be discarded by an operational SDPS"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Operational Release Status of the System"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "RDPC",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "RDPC-1 selected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "RDPC-2 selected"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Radar Data Processor Chain Selection Status"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "RDPR",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Default situation"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Reset of RDPC"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Event to Signal a Reset/restart of the Selected Radar Data Processor Chain, I.e. Expect a New Assignment of Track Numbers"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "OVLRDP",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Default, no overload"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Overload in RDP"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Radar Data Processor Overload Indicator"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "OVLXMT",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Default, no overload"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Overload in transmission subsystem"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Transmission Subsystem Overload Status"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "MSC",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Monitoring system connected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Monitoring system disconnected"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Monitoring System Connected Status"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "TSV",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Valid"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Invalid"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Time Source Validity"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 1,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Common Part"
+                            },
+                            null,
+                            null,
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "PSR",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "ANT",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Antenna 1"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Antenna 2"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Selected Antenna"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "CHAB",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 2,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No channel selected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Channel A only selected"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Channel B only selected"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Diversity mode ; Channel A and B selected"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Channel A/B Selection Status"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "OVL",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No overload"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Overload"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Overload Condition"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "MSC",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Monitoring system connected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Monitoring system disconnected"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Monitoring System Connected Status"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 3,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Specific Status Information for a PSR Sensor"
+                            },
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "SSR",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "ANT",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Antenna 1"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Antenna 2"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Selected Antenna"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "CHAB",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 2,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No channel selected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Channel A only selected"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Channel B only selected"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Invalid combination"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Channel A/B Selection Status"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "OVL",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No overload"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Overload"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Overload Condition"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "MSC",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Monitoring system connected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Monitoring system disconnected"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Monitoring System Connected Status:"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 3,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Specific Status Information for a SSR Sensor"
+                            },
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "MDS",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "ANT",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Antenna 1"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Antenna 2"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Selected Antenna"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "CHAB",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 2,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No channel selected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Channel A only selected"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Channel B only selected"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Illegal combination"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Channel A/B Selection Status"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "OVLSUR",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No overload"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Overload"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Overload Condition"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "MSC",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Monitoring system connected"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Monitoring system disconnected"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Monitoring System Connected Status:"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "SCF",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Channel A in use"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Channel B in use"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Channel A/B Selection Status for Surveillance Co-ordination Function"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "DLF",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Channel A in use"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Channel B in use"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Channel A/B Selection Status for Data Link Function"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "OVLSCF",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No overload"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Overload"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Overload in Surveillance Co-ordination Function"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "OVLDLF",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No overload"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Overload"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Overload in Data Link Function"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 7,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Specific Status Information for a Mode S Sensor"
+                            }
+                        ],
+                        "tag": "Compound"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "System Configuration and Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Status concerning the processing options, in use during the last antenna\nrevolution, for the various Sensors, composing the System.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    - Applicable to all defined secondary subfields. The actual mapping\n      between the up to seven data reduction steps and their associated\n      data reduction measures is not subject to standardisation.\n"
+                },
+                "name": "060",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "COM",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": 1,
+                                                "tag": "Spare"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "REDRDP",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 3,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No reduction active"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Reduction step 1 active"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Reduction step 2 active"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Reduction step 3 active"
+                                                                            ],
+                                                                            [
+                                                                                4,
+                                                                                "Reduction step 4 active"
+                                                                            ],
+                                                                            [
+                                                                                5,
+                                                                                "Reduction step 5 active"
+                                                                            ],
+                                                                            [
+                                                                                6,
+                                                                                "Reduction step 6 active"
+                                                                            ],
+                                                                            [
+                                                                                7,
+                                                                                "Reduction step 7 active"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Reduction Steps in Use for An Overload of the RDP"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "REDXMT",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 3,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No reduction active"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Reduction step 1 active"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Reduction step 2 active"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Reduction step 3 active"
+                                                                            ],
+                                                                            [
+                                                                                4,
+                                                                                "Reduction step 4 active"
+                                                                            ],
+                                                                            [
+                                                                                5,
+                                                                                "Reduction step 5 active"
+                                                                            ],
+                                                                            [
+                                                                                6,
+                                                                                "Reduction step 6 active"
+                                                                            ],
+                                                                            [
+                                                                                7,
+                                                                                "Reduction step 7 active"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Reduction Steps in Use for An Overload of the Transmission Subsystem"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 1,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Common Part"
+                            },
+                            null,
+                            null,
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "PSR",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "POL",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Linear polarization"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Circular polarization"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Polarization in Use by PSR"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "REDRAD",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 3,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No reduction active"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Reduction step 1 active"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Reduction step 2 active"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Reduction step 3 active"
+                                                                            ],
+                                                                            [
+                                                                                4,
+                                                                                "Reduction step 4 active"
+                                                                            ],
+                                                                            [
+                                                                                5,
+                                                                                "Reduction step 5 active"
+                                                                            ],
+                                                                            [
+                                                                                6,
+                                                                                "Reduction step 6 active"
+                                                                            ],
+                                                                            [
+                                                                                7,
+                                                                                "Reduction step 7 active"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Reduction Steps in Use as Result of An Overload Within the PSR Subsystem"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "STC",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 2,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "STC Map-1"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "STC Map-2"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "STC Map-3"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "STC Map-4"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Sensitivity Time Control Map in Use"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 2,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Specific Processing Mode Information for a PSR Sensor"
+                            },
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "SSR",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "REDRAD",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 3,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No reduction active"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Reduction step 1 active"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Reduction step 2 active"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Reduction step 3 active"
+                                                                            ],
+                                                                            [
+                                                                                4,
+                                                                                "Reduction step 4 active"
+                                                                            ],
+                                                                            [
+                                                                                5,
+                                                                                "Reduction step 5 active"
+                                                                            ],
+                                                                            [
+                                                                                6,
+                                                                                "Reduction step 6 active"
+                                                                            ],
+                                                                            [
+                                                                                7,
+                                                                                "Reduction step 7 active"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Reduction Steps in Use as Result of An Overload Within the SSR Subsystem"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 5,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Specific Processing Mode Information for a SSR Sensor"
+                            },
+                            {
+                                "documentation": {
+                                    "definition": null,
+                                    "description": null,
+                                    "remark": null
+                                },
+                                "name": "MDS",
+                                "rule": {
+                                    "contents": {
+                                        "contents": [
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "REDRAD",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 3,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "No reduction active"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Reduction step 1 active"
+                                                                            ],
+                                                                            [
+                                                                                2,
+                                                                                "Reduction step 2 active"
+                                                                            ],
+                                                                            [
+                                                                                3,
+                                                                                "Reduction step 3 active"
+                                                                            ],
+                                                                            [
+                                                                                4,
+                                                                                "Reduction step 4 active"
+                                                                            ],
+                                                                            [
+                                                                                5,
+                                                                                "Reduction step 5 active"
+                                                                            ],
+                                                                            [
+                                                                                6,
+                                                                                "Reduction step 6 active"
+                                                                            ],
+                                                                            [
+                                                                                7,
+                                                                                "Reduction step 7 active"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Reduction Steps in Use as Result of An Overload Within the Mode S Subsystem"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "documentation": {
+                                                        "definition": null,
+                                                        "description": null,
+                                                        "remark": null
+                                                    },
+                                                    "name": "CLU",
+                                                    "rule": {
+                                                        "contents": {
+                                                            "contents": {
+                                                                "bitSize": 1,
+                                                                "rule": {
+                                                                    "contents": {
+                                                                        "contents": [
+                                                                            [
+                                                                                0,
+                                                                                "Autonomous"
+                                                                            ],
+                                                                            [
+                                                                                1,
+                                                                                "Not autonomous"
+                                                                            ]
+                                                                        ],
+                                                                        "tag": "ContentTable"
+                                                                    },
+                                                                    "tag": "ContextFree"
+                                                                }
+                                                            },
+                                                            "tag": "Element"
+                                                        },
+                                                        "tag": "ContextFree"
+                                                    },
+                                                    "title": "Cluster State"
+                                                },
+                                                "tag": "Item"
+                                            },
+                                            {
+                                                "contents": 4,
+                                                "tag": "Spare"
+                                            }
+                                        ],
+                                        "tag": "Group"
+                                    },
+                                    "tag": "ContextFree"
+                                },
+                                "title": "Specific Processing Mode Information for a Mode S Sensor"
+                            }
+                        ],
+                        "tag": "Compound"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "System Processing Mode"
+            },
+            {
+                "documentation": {
+                    "definition": "Message Count values, according the various types of messages, for the\nlast completed antenna revolution, counted between two North crossings\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "070",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": [
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "TYP",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 5,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        0,
+                                                                        "No detection (number of misses)"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Single PSR target reports"
+                                                                    ],
+                                                                    [
+                                                                        2,
+                                                                        "Single SSR target reports (Non-Mode S)"
+                                                                    ],
+                                                                    [
+                                                                        3,
+                                                                        "SSR+PSR target reports (Non-Mode S)"
+                                                                    ],
+                                                                    [
+                                                                        4,
+                                                                        "Single All-Call target reports (Mode S)"
+                                                                    ],
+                                                                    [
+                                                                        5,
+                                                                        "Single Roll-Call target reports (Mode S)"
+                                                                    ],
+                                                                    [
+                                                                        6,
+                                                                        "All-Call + PSR (Mode S) target reports"
+                                                                    ],
+                                                                    [
+                                                                        7,
+                                                                        "Roll-Call + PSR (Mode S) target reports"
+                                                                    ],
+                                                                    [
+                                                                        8,
+                                                                        "Filter for Weather data"
+                                                                    ],
+                                                                    [
+                                                                        9,
+                                                                        "Filter for Jamming Strobe"
+                                                                    ],
+                                                                    [
+                                                                        10,
+                                                                        "Filter for PSR data"
+                                                                    ],
+                                                                    [
+                                                                        11,
+                                                                        "Filter for SSR/Mode S data"
+                                                                    ],
+                                                                    [
+                                                                        12,
+                                                                        "Filter for SSR/Mode S+PSR data"
+                                                                    ],
+                                                                    [
+                                                                        13,
+                                                                        "Filter for Enhanced Surveillance data"
+                                                                    ],
+                                                                    [
+                                                                        14,
+                                                                        "Filter for PSR+Enhanced Surveillance"
+                                                                    ],
+                                                                    [
+                                                                        15,
+                                                                        "Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of Prime Interest"
+                                                                    ],
+                                                                    [
+                                                                        16,
+                                                                        "Filter for PSR+Enhanced Surveillance + all SSR/Mode S data"
+                                                                    ],
+                                                                    [
+                                                                        17,
+                                                                        "Re-Interrogations (per sector)"
+                                                                    ],
+                                                                    [
+                                                                        18,
+                                                                        "BDS Swap and wrong DF replies(per sector)"
+                                                                    ],
+                                                                    [
+                                                                        19,
+                                                                        "Mode A/C FRUIT (per sector)"
+                                                                    ],
+                                                                    [
+                                                                        20,
+                                                                        "Mode S FRUIT (per sector)"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Type of Message Counter"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "COUNT",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 11,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": {
+                                                                    "constraints": [],
+                                                                    "signedness": {
+                                                                        "contents": [],
+                                                                        "tag": "Unsigned"
+                                                                    }
+                                                                },
+                                                                "tag": "ContentInteger"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "COUNTER"
+                                        },
+                                        "tag": "Item"
+                                    }
+                                ],
+                                "tag": "Group"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Count Values"
+            },
+            {
+                "documentation": {
+                    "definition": "Averaged difference in range and in azimuth for the primary target position\nwith respect to the SSR target position as calculated by the radar station.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    - Negative values are coded in two’s complement form.\n"
+                },
+                "name": "090",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RNG",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 7
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Range Error"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "AZM",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 14
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Azimuth Error"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Collimation Error"
+            },
+            {
+                "documentation": {
+                    "definition": "Geographical window defined in polar co-ordinates.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "100",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RHOST",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 256,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 8
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Rho Start"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RHOEND",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 256,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 8
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "NM"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Rho End"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "THETAST",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Theta Start"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "THETAEND",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Theta End"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Generic Polar Window"
+            },
+            {
+                "documentation": {
+                    "definition": "Data Filter, which allows suppression of individual data types.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    1. This Data Item is often used in conjunction with I034/100 and\n       represents a Data Filter for a specific geographical subarea.\n       A Data Source may have zero, one or multiple data filters active at any time.\n    2. If I034/110 is not accompanied with I034/100, then the Data Filter\n       is valid throughout the total area of coverage.\n"
+                },
+                "name": "110",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            0,
+                                            "Invalid value"
+                                        ],
+                                        [
+                                            1,
+                                            "Filter for Weather data"
+                                        ],
+                                        [
+                                            2,
+                                            "Filter for Jamming Strobe"
+                                        ],
+                                        [
+                                            3,
+                                            "Filter for PSR data"
+                                        ],
+                                        [
+                                            4,
+                                            "Filter for SSR/Mode S data"
+                                        ],
+                                        [
+                                            5,
+                                            "Filter for SSR/Mode S + PSR data"
+                                        ],
+                                        [
+                                            6,
+                                            "Enhanced Surveillance data"
+                                        ],
+                                        [
+                                            7,
+                                            "Filter for PSR+Enhanced Surveillance data"
+                                        ],
+                                        [
+                                            8,
+                                            "Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of Prime Interest"
+                                        ],
+                                        [
+                                            9,
+                                            "Filter for PSR+Enhanced Surveillance + all SSR/Mode S data"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Filter"
+            },
+            {
+                "documentation": {
+                    "definition": "3D-Position of Data Source in WGS 84 Co-ordinates\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "120",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "HGT",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": 1,
+                                                                "tag": "NumInt"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "m"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Height of Data Source"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LAT",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 24,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 23
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Latitude"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LON",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 24,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 23
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Longitude"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "3D-Position Of Data Source"
+            },
+            {
+                "documentation": {
+                    "definition": "Expansion\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "RE",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "ReservedExpansion"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Reserved Expansion Field"
+            },
+            {
+                "documentation": {
+                    "definition": "Special Purpose Field\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "SP",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "SpecialPurpose"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Special Purpose Field"
+            }
+        ],
+        "category": 34,
+        "date": {
+            "day": 15,
+            "month": 3,
+            "year": 2021
+        },
+        "edition": {
+            "major": 1,
+            "minor": 29
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "Transmission of Monoradar Service Messages",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "030",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "020",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "041",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "050",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "060",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "070",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "100",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "110",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "120",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "090",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "RE",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "SP",
+                    "tag": "UapItem"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}

@@ -1,0 +1,742 @@
+asterix 020 "Multilateration Target Reports"
+edition 1.9
+date 2015-03-25
+preamble
+    Surveillance data exchange.
+
+items
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the system from which the data are received
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    020 "Target Report Descriptor"
+        definition
+            Type and characteristics of the data as transmitted by a system.
+        extended
+            SSR ""
+                element 1
+                    table
+                        0: Non-Mode S 1090MHz multilateration
+                        1: No Non-Mode S 1090MHz multilat
+            MS ""
+                element 1
+                    table
+                        0: Mode-S 1090 MHz multilateration
+                        1: No Mode-S 1090 MHz multilateration
+            HF ""
+                element 1
+                    table
+                        0: HF multilateration
+                        1: No HF multilateration
+            VDL4 ""
+                element 1
+                    table
+                        0: VDL Mode 4 multilateration
+                        1: No VDL Mode 4 multilateration
+            UAT ""
+                element 1
+                    table
+                        0: UAT multilateration
+                        1: No UAT multilateration
+            DME ""
+                element 1
+                    table
+                        0: DME/TACAN multilateration
+                        1: No DME/TACAN multilateration
+            OT ""
+                element 1
+                    table
+                        0: Other Technology Multilateration
+                        1: No Other Technology Multilateration
+            -
+            RAB ""
+                element 1
+                    table
+                        0: Report from target transponder
+                        1: Report from field monitor (element transponder)
+            SPI ""
+                element 1
+                    table
+                        0: Absence of SPI
+                        1: Special Position Identification
+            CHN ""
+                element 1
+                    table
+                        0: Chain 1
+                        1: Chain 2
+            GBS ""
+                element 1
+                    table
+                        0: Transponder Ground bit not set
+                        1: Transponder Ground bit set
+            CRT ""
+                element 1
+                    table
+                        0: No Corrupted reply in multilateration
+                        1: Corrupted replies in multilateration
+            SIM ""
+                element 1
+                    table
+                        0: Actual target report
+                        1: Simulated target report
+            TST ""
+                element 1
+                    table
+                        0: Default
+                        1: Test Target
+            -
+
+    030 "Warning/Error Conditions"
+        definition
+            Warning/error conditions detected by a system for the target report involved.
+        repetitive fx
+            element 7
+                table
+                    0: Not defined; never used
+                    1: Multipath Reply (Reflection)
+                    3: Split plot
+                    10: Phantom SSR plot
+                    11: Non-Matching Mode-3/A Code
+                    12: Mode C code / Mode S altitude code abnormal value compared to the track
+                    15: Transponder anomaly detected
+                    16: Duplicated or Illegal Mode S Aircraft Address
+                    17: Mode S error correction applied
+                    18: Undecodable Mode C code / Mode S altitude code
+        remark
+            Notes:
+
+                1. It has to be stressed that a series of one or more W/E conditions
+                   can be reported per target report.
+                2. Data conveyed in this item are of secondary importance, and can
+                   generally also be derived from the processing of mandatory items.
+                3. Definitions can be found in SUR.ET1.ST03.1000-STD-01-01 Radar
+                   Sensor Performance Analysis.
+                4. The coding of Warning/Errors is kept consistent with category 048.
+
+    041 "Position In WGS-84 Coordinates"
+        definition
+            Position of a target in WGS-84 Coordinates.
+        group
+            LAT "Latitude"
+                element 32
+                    signed quantity 180/2^25 "°" >= -90 <= 90
+            LON "Longitude"
+                element 32
+                    signed quantity 180/2^25 "°" >= -180 < 180
+
+    042 "Position in Cartesian Coordinates"
+        definition
+            Calculated position in Cartesian Coordinates, in two’s complement
+            representation.
+        group
+            X "X-coordinate"
+                element 24
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
+            Y "Y-coordinate"
+                element 24
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
+
+    050 "Mode-2 Code in Octal Representation"
+        definition
+            Mode-2 code converted into octal representation.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-2 code derived from the reply of the transponder
+                        1: Smoothed Mode-2 code as provided by a local tracker n
+            spare 1
+            MODE2 "Mode-2 Reply in Octal Representation"
+                element 12
+                    string octal
+
+    055 "Mode-1 Code in Octal Representation"
+        definition
+            Mode-1 code converted into octal representation.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-1 code derived from the reply of the transponder
+                        1: Smoothed Mode-1 code as provided by a local tracker
+            MODE1 "Mode-1 Code in Octal Representation"
+                element 5
+                    raw
+
+    070 "Mode-3/A Code in Octal Representation"
+        definition
+            Mode-3/A code converted into octal representation.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-3/A code derived from the reply of the transponder
+                        1: Mode-3/A code not extracted during the last update period
+            spare 1
+            MODE3A "Mode-3/A Reply in Octal Representation"
+                element 12
+                    string octal
+        remark
+            Notes:
+
+                1. Bit 15 (G) is set to one when an error correction has been attempted.
+                2. Bit 16 (V) is normally set to zero, but can exceptionally be set to
+                   one to indicate a non-validated Mode-3/A code (e.g. alert condition
+                   detected, but new Mode-3/A code not successfully extracted).
+
+    090 "Flight Level in Binary Representation"
+        definition
+            Flight Level (Mode S Altitude) converted into binary two's complement representation.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            FL "Flight Level"
+                element 14
+                    signed quantity 1/2^2 "FL"
+        remark
+            Notes:
+
+                1. When Mode C code / Mode S altitude code is present but not
+                   decodable, the “Undecodable Mode C code / Mode S altitude
+                   code” Warning/Error should be sent in I020/030.
+                2. When local tracking is applied and the received Mode S altitude
+                   code corresponds to an abnormal value (i.e: the difference in
+                   altitude between the current and the previous plot exceeds a
+                   predefined system threshold), the “Mode C code / Mode S altitude
+                   code abnormal value compared to the track“ Warning/Error should
+                   be sent in I020/030.
+                3. The value shall be within the range described by ICAO Annex 10
+                4. For Mode S, bit 15 (G) is set to one when an error correction has
+                   been attempted.
+
+    100 "Mode C Code"
+        definition
+            Mode-C height in Gray notation as received from the transponder together
+            with the confidence level for each reply bit as provided by a MSSR/Mode-S
+            station.
+        group
+            V "Validated"
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G "Garbled"
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            spare 2
+            MODEC "Mode-C Reply in Gray Notation"
+                element 12
+                    raw
+            spare 4
+            QC1 "Quality Pulse C1"
+                element 1
+                    table
+                        0: High quality pulse C1
+                        1: Low quality pulse C1
+            QA1 "Quality Pulse A1"
+                element 1
+                    table
+                        0: High quality pulse A1
+                        1: Low quality pulse A1
+            QC2 "Quality Pulse C2"
+                element 1
+                    table
+                        0: High quality pulse C2
+                        1: Low quality pulse C2
+            QA2 "Quality Pulse A2"
+                element 1
+                    table
+                        0: High quality pulse A2
+                        1: Low quality pulse A2
+            QC4 "Quality Pulse C4"
+                element 1
+                    table
+                        0: High quality pulse C4
+                        1: Low quality pulse C4
+            QA4 "Quality Pulse A4"
+                element 1
+                    table
+                        0: High quality pulse A4
+                        1: Low quality pulse A4
+            QB1 "Quality Pulse B1"
+                element 1
+                    table
+                        0: High quality pulse B1
+                        1: Low quality pulse B1
+            QD1 "Quality Pulse D1"
+                element 1
+                    table
+                        0: High quality pulse D1
+                        1: Low quality pulse D1
+            QB2 "Quality Pulse B2"
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QD2 "Quality Pulse D2"
+                element 1
+                    table
+                        0: High quality pulse B2
+                        1: Low quality pulse B2
+            QB4 "Quality Pulse B4"
+                element 1
+                    table
+                        0: High quality pulse B4
+                        1: Low quality pulse B4
+            QD4 "Quality Pulse D4"
+                element 1
+                    table
+                        0: High quality pulse D4
+                        1: Low quality pulse D4
+        remark
+            Notes:
+
+                1. For Mode S, bit 31 (G) is set to one when an error correction
+                   has been attempted.
+                2. For Mode S, D1 is also designated as Q, and is used to denote
+                   either 25ft or 100ft reporting.
+
+    105 "Geometric Height (WGS-84)"
+        definition
+            Vertical distance between the target and the projection of its position
+            on the earth’s ellipsoid, as defined by WGS84, in two’s complement form.
+        element 16
+            signed quantity 25/2^2 "ft" >= -204800 <= 204800
+
+    110 "Measured Height (Local Cartesian Coordinates)"
+        definition
+            Height above local 2D co-ordinate system in reference to the MLT System
+            Reference Point as defined in item I019/610, in two’s complement form,
+            based on a direct measurement not related to barometric pressure.
+        element 16
+            signed quantity 25/2^2 "ft" >= -204800 <= 204800
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+
+    161 "Track Number"
+        definition
+            An integer value representing a unique reference to a track record
+            within a particular track file.
+        group
+            spare 4
+            TRN "Track Number"
+                element 12
+                    raw
+
+    170 "Track Status"
+        definition
+            Status of a track.
+        extended
+            CNF ""
+                element 1
+                    table
+                        0: Confirmed track
+                        1: Track in initiation phase
+            TRE ""
+                element 1
+                    table
+                        0: Default
+                        1: Last report for a track
+            CST ""
+                element 1
+                    table
+                        0: Not extrapolated
+                        1: Extrapolated
+            CDM ""
+                element 2
+                    table
+                        0: Maintaining
+                        1: Climbing
+                        2: Descending
+                        3: Invalid
+            MAH ""
+                element 1
+                    table
+                        0: Default
+                        1: Horizontal manoeuvre
+            STH ""
+                element 1
+                    table
+                        0: Measured position
+                        1: Smoothed position
+            -
+            GHO ""
+                element 1
+                    table
+                        0: Default
+                        1: Ghost track
+            spare 6
+            -
+        remark
+            Notes:
+
+                1. Bit-8 (GHO) is used to signal that the track is suspected to
+                   have been generated by a fake target.
+
+    202 "Calculated Track Velocity in Cartesian Coordinates"
+        definition
+            Calculated track velocity expressed in Cartesian Coordinates, in two’s
+            complement representation.
+        group
+            VX ""
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
+            VY ""
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
+
+    210 "Calculated Acceleration"
+        definition
+            Calculated Acceleration of the target, in two’s complement form.
+        group
+            AX ""
+                element 8
+                    signed quantity 1/2^2 "m/s²" >= -31 <= 31
+            AY ""
+                element 8
+                    signed quantity 1/2^2 "m/s²" >= -31 <= 31
+        remark
+            Notes:
+                1. Maximum value means "maximum value or above"
+
+    220 "Target Address"
+        definition
+            Target address (ICAO 24-bit address) assigned uniquely to each Target.
+        element 24
+            raw
+
+    230 "Communications/ACAS Capability and Flight Status"
+        definition
+            Communications capability of the transponder, capability of the on-board
+            ACAS equipment and flight status.
+        group
+            COM "Communications Capability of the Transponder"
+                element 3
+                    table
+                        0: No communications capability (surveillance only)
+                        1: Comm. A and Comm. B capability
+                        2: Comm. A, Comm. B and Uplink ELM
+                        3: Comm. A, Comm. B, Uplink ELM and Downlink ELM
+                        4: Level 5 Transponder capability
+                        5: Not assigned
+                        6: Not assigned
+                        7: Not assigned
+            STAT "Flight Status"
+                element 3
+                    table
+                        0: No alert, no SPI, aircraft airborne
+                        1: No alert, no SPI, aircraft on ground
+                        2: Alert, no SPI, aircraft airborne
+                        3: Alert, no SPI, aircraft on ground
+                        4: Alert, SPI, aircraft airborne or on ground
+                        5: No alert, SPI, aircraft airborne or on ground
+                        6: Not assigned
+                        7: Information not yet extracted
+            spare 2
+            MSSC "Mode-S Specific Service Capability"
+                element 1
+                    table
+                        0: No
+                        1: Yes
+            ARC "Altitude Reporting Capability"
+                element 1
+                    table
+                        0: 100 ft resolution
+                        1: 25 ft resolution
+            AIC "Aircraft Identification Capability"
+                element 1
+                    table
+                        0: No
+                        1: Yes
+            B1A "BDS 1,0 Bit 16"
+                element 1
+                    raw
+            B1B "BDS 1,0 Bits 37/40"
+                element 4
+                    raw
+
+    245 "Target Identification"
+        definition
+            Target (aircraft or vehicle) identification in 8 characters.
+        group
+            STI ""
+                element 2
+                    table
+                        0: Callsign or registration not downlinked from transponder
+                        1: Registration downlinked from transponder
+                        2: Callsign downlinked from transponder
+                        3: Not defined
+            spare 6
+            CHR "Characters 1-8 (coded on 6 Bits Each) Defining Target Identification"
+                element 48
+                    string icao
+        remark
+            Notes:
+
+                1. See ICAO document Annex 10, Volume IV, section 3.1.2.9 for the
+                   coding rules.
+
+    250 "Mode S MB Data"
+        definition
+            Mode S Comm B data as extracted from the aircraft transponder.
+        repetitive 1
+            group
+                MBDATA "56-bit Message Conveying Mode S Comm B Message Data"
+                    element 56
+                        raw
+                BDS1 "Comm B Data Buffer Store 1 Address"
+                    element 4
+                        raw
+                BDS2 "Comm B Data Buffer Store 2 Address"
+                    element 4
+                        raw
+        remark
+            Notes:
+
+                1. For the transmission of BDS20, item I020/245 is used.
+                2. For the transmission of BDS30, item I020/260 is used.
+
+    260 "ACAS Resolution Advisory Report"
+        definition
+            Currently active Resolution Advisory (RA), if any, generated by the
+            ACAS associated with the transponder transmitting the report and
+            threat identity data.
+        element 56
+            raw
+        remark
+            Notes:
+
+                Refer to ICAO Draft SARPs for ACAS for detailed explanations.
+
+    300 "Vehicle Fleet Identification"
+        definition
+            Vehicle fleet identification number.
+        element 8
+            table
+                0: Unknown
+                1: ATC equipment maintenance
+                2: Airport maintenance
+                3: Fire
+                4: Bird scarer
+                5: Snow plough
+                6: Runway sweeper
+                7: Emergency
+                8: Police
+                9: Bus
+                10: Tug (push/tow)
+                11: Grass cutter
+                12: Fuel
+                13: Baggage
+                14: Catering
+                15: Aircraft maintenance
+                16: Flyco (follow me)
+
+    310 "Pre-programmed Message"
+        definition
+            Number related to a pre-programmed message that can be transmitted by a vehicle.
+        group
+            TRB ""
+                element 1
+                    table
+                        0: Default
+                        1: In Trouble
+            MSG ""
+                element 7
+                    table
+                        1: Towing aircraft
+                        2: FOLLOW-ME operation
+                        3: Runway check
+                        4: Emergency operation (fire, medical...)
+                        5: Work in progress (maintenance, birds scarer, sweepers...)
+
+    400 "Contributing Devices"
+        definition
+            Overview of Receiver Units, which have contributed to the Target Detection.
+        repetitive 1
+            group
+                BIT1 "TU1/RU1 Contribution"
+                    element 1
+                        table
+                            0: TU1/RU1 has NOT contributed to the target detection
+                            1: TU1/RU1 has contributed to the target detection
+                BIT2 "TU2/RU2 Contribution"
+                    element 1
+                        table
+                            0: TU2/RU2 has NOT contributed to the target detection
+                            1: TU2/RU2 has contributed to the target detection
+                BIT3 "TU3/RU3 Contribution"
+                    element 1
+                        table
+                            0: TU3/RU3 has NOT contributed to the target detection
+                            1: TU3/RU3 has contributed to the target detection
+                BIT4 "TU4/RU4 Contribution"
+                    element 1
+                        table
+                            0: TU4/RU4 has NOT contributed to the target detection
+                            1: TU4/RU4 has contributed to the target detection
+                BIT5 "TU5/RU5 Contribution"
+                    element 1
+                        table
+                            0: TU5/RU5 has NOT contributed to the target detection
+                            1: TU5/RU5 has contributed to the target detection
+                BIT6 "TU6/RU6 Contribution"
+                    element 1
+                        table
+                            0: TU6/RU6 has NOT contributed to the target detection
+                            1: TU6/RU6 has contributed to the target detection
+                BIT7 "TU7/RU7 Contribution"
+                    element 1
+                        table
+                            0: TU7/RU7 has NOT contributed to the target detection
+                            1: TU7/RU7 has contributed to the target detection
+                BIT8 "TU8/RU8 Contribution"
+                    element 1
+                        table
+                            0: TU8/RU8 has NOT contributed to the target detection
+                            1: TU8/RU8 has contributed to the target detection
+        remark
+            Note:
+
+                In case of more than 8 devices connected to the system, the numbering
+                of the field "RUx Contribution" follows the standard ASTERIX rule:
+                bits are numbered from right to left.
+                The example below shows the case of a maximum of 16 devices with
+                devices 1, 7 and 14 contributing to the target:
+
+                <TODO: add table>
+
+    500 "Position Accuracy"
+        definition
+            Standard Deviation of Position
+        compound
+            DOP "DOP of Position"
+                group
+                    X "DOP (X-Component)"
+                        element 16
+                            unsigned quantity 1/2^2 ""
+                    Y "DOP (Y-Component)"
+                        element 16
+                            unsigned quantity 1/2^2 ""
+                    XY "DOP (Correlation XY)"
+                        element 16
+                            unsigned quantity 1/2^2 ""
+            SDP "Standard Deviation of Position"
+                group
+                    X "SDP (X-Component)"
+                        element 16
+                            unsigned quantity 1/2^2 "m"
+                    Y "SDP (Y-Component)"
+                        element 16
+                            unsigned quantity 1/2^2 "m"
+                    XY "SDP (Correlation XY)"
+                        element 16
+                            unsigned quantity 1/2^2 ""
+            SDH "Standard Deviation of Geometric Height (WGS 84)"
+                element 16
+                    unsigned quantity 1/2 "m"
+        remark
+            Note:
+
+                1. There is now a new Item for the Position Accuracy defined in
+                   the Reserved Expansion Field (REF), more complete (includes a
+                   Standard Deviation of Position in WGS-84) and is based on a
+                   different calculation method (covariance instead of correlation).
+                   It is recommended to use the new definition. Nevertheless, Item
+                   I020/500 is kept in order to prevent a full incompatibility with
+                   previous releases of ASTERIX Cat. 020 already implemented.
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    020
+    140
+    041
+    042
+    161
+    170
+    070
+    202
+    090
+    100
+    220
+    245
+    110
+    105
+    210
+    300
+    310
+    500
+    400
+    250
+    230
+    260
+    030
+    055
+    050
+    RE
+    SP

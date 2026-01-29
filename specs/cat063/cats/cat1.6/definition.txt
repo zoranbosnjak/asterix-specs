@@ -1,0 +1,235 @@
+asterix 063 "Sensor Status Reports"
+edition 1.6
+date 2020-08-04
+preamble
+    Surveillance data exchange.
+
+items
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                The defined SACs are on the EUROCONTROL ASTERIX website
+                (www.eurocontrol.int/asterix)
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+        remark
+            The service identification is allocated by the SDPS
+
+    030 "Time of Message"
+        definition
+            Absolute time stamping of the message, in the form of elapsed time
+            since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            The time of the day value is reset to zero at every midnight.
+
+    050 "Sensor Identifier"
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            - The up-to-date list of SACs is published on the EUROCONTROL
+              Web Site (http://www.eurocontrol.int/asterix).
+            - If the SAC/SIC refers to an SDPS used as input, the respective
+              sensor status information will be transmitted using the Reserved
+              Expansion Field.
+
+    060 "Sensor Configuration and Status"
+        definition
+            Configuration and status of the sensor
+        extended
+            CON ""
+                element 2
+                    table
+                        0: Operational
+                        1: Degraded
+                        2: Initialization
+                        3: Not currently connected
+            PSR ""
+                element 1
+                    table
+                        0: PSR GO
+                        1: PSR NOGO
+            SSR ""
+                element 1
+                    table
+                        0: SSR GO
+                        1: SSR NOGO
+            MDS ""
+                element 1
+                    table
+                        0: MDS GO
+                        1: MDS NOGO
+            ADS ""
+                element 1
+                    table
+                        0: ADS GO
+                        1: ADS NOGO
+            MLT ""
+                element 1
+                    table
+                        0: MLT GO
+                        1: MLT NOGO
+            -
+            OPS "Operational Release Status of the System"
+                element 1
+                    table
+                        0: System is released for operational use
+                        1: Operational use of System is inhibited
+            ODP "Data Processor Overload Indicator"
+                element 1
+                    table
+                        0: Default, no overload
+                        1: Overload in DP
+            OXT "Transmission Subsystem Overload Status"
+                element 1
+                    table
+                        0: Default, no overload
+                        1: Overload in transmission subsystem
+            MSC "Monitoring System Connected Status"
+                element 1
+                    table
+                        0: Monitoring system connected
+                        1: Monitoring system disconnected
+            TSV "Time Source Validity"
+                element 1
+                    table
+                        0: Valid
+                        1: Invalid
+            NPW "No Plot Warning"
+                element 1
+                    table
+                        0: Default (no meaning)
+                        1: No plots being received
+            spare 1
+            -
+        remark
+            1. GO/NOGO information from PSR, SSR, Mode S, ADS and MLT is derived
+               from monosensor categories and has a meaning only for operational
+               sensors, whereas (CON) is derived by the SDPS.
+            2. The information (OPS), (ODP), (OXT), (MSC) and (TSV) are only related to
+               CNS/ATM Ground Station and are derived from monosensor category
+               (ASTERIX Cat 023).
+
+    070 "Time Stamping Bias"
+        definition
+            Plot Time stamping bias, in two’s complement form
+        element 16
+            signed quantity 1 "ms"
+
+    080 "SSR / Mode S Range Gain and Bias"
+        definition
+            SSR / Mode S Range Gain and Range Bias, in two’s complement form.
+        group
+            SRG "Mode S Range Gain"
+                element 16
+                    signed quantity 1/100000 ""
+            SRB "Mode S Range Bias"
+                element 16
+                    signed quantity 1/2^7 "NM"
+        remark
+            Note:
+
+                The following formula is used to correct range:
+
+                .. math::
+
+                    \rho_\mathrm{corrected} = \frac{\rho_\mathrm{measured} - range\_bias}{1 + range\_gain}
+
+    081 "SSR Mode S Azimuth Bias"
+        definition
+            SSR / Mode S Azimuth Bias, in two’s complement form.
+        element 16
+            signed quantity 360/2^16 "°"
+        remark
+            Note:
+
+                The following formula is used to correct azimuth:
+
+                .. math::
+
+                    \theta_\mathrm{corrected} = \theta_\mathrm{measured} - azimuth\_bias
+
+    090 "PSR Range Gain and Bias"
+        definition
+            PSR Range Gain and PSR Range Bias, in two’s complement form.
+        group
+            PRG "PSR Range Gain"
+                element 16
+                    signed quantity 1/100000 ""
+            PRB "PSR Range Bias"
+                element 16
+                    signed quantity 1/2^7 "NM"
+        remark
+            Note:
+
+                The following formula is used to correct range:
+
+                .. math:
+
+                    \rho_\mathrm{corrected} = \frac{\rho_\mathrm{measured} - range\_bias}{1 + range\_gain}
+
+    091 "PSR Azimuth Bias"
+        definition
+            PSR Azimuth Bias, in two’s complement form.
+        element 16
+            signed quantity 360/2^16 "°"
+        remark
+            Note:
+
+                The following formula is used to correct azimuth:
+
+                .. math::
+
+                    \theta_\mathrm{corrected} = \theta_\mathrm{measured} - azimuth\_bias
+
+    092 "PSR Elevation Bias"
+        definition
+            PSR Elevation Bias, in two’s complement form.
+        element 16
+            signed quantity 360/2^16 "°"
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    015
+    030
+    050
+    060
+    070
+    080
+    081
+    090
+    091
+    092
+    -
+    RE
+    SP

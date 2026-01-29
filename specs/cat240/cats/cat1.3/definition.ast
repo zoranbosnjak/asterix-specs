@@ -1,0 +1,249 @@
+asterix 240 "Radar Video Transmission"
+edition 1.3
+date 2015-05-13
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the messages at
+            the receiver side by further defining the type of transaction.
+        element 8
+            table
+                1: Video Summary message
+                2: Video message
+        remark
+            Notes:
+
+                1. In applications where transactions of various types are exchanged,
+                   the Message Type Data Item facilitates the proper report handling
+                   at the receiver side.
+                2. All Message Type values are reserved for common standard use.
+                3. The list of items present for the two message types is defined in
+                   the following table.
+
+                Table: Message Types ::
+
+                    Type Item       001         002
+                    I240/000        M           M
+                    I240/010        M           M
+                    I240/020        X           M
+                    I240/030        M           X
+                    I240/040        X           O(1)
+                    I240/041        X           O(1)
+                    I240/048        X           M
+                    I240/049        X           M
+                    I240/050        X           O(2)
+                    I240/051        X           O(2)
+                    I240/052        X           O(2)
+                    I240/140        O           O
+
+                (1) - Either Item I240/040 or I240/041 shall be present in each Video Message
+                (2) - Either Item I240/050 or I240/051 or I240/052 shall be present in each video
+                      message
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the system from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the EUROCONTROL Web Site
+                  (http://www.eurocontrol.int/asterix)
+
+    020 "Video Record Header"
+        definition
+            Contains a message sequence identifier.
+        element 32
+            unsigned integer
+        remark
+            Note:
+                - The Message Sequence Identifier is used by the receiving application
+                  to detect lost messages.
+
+    030 "Video Summary"
+        definition
+            Contains an ASCII string (free text to define stream meta data).
+        repetitive 1
+            element 8
+                string ascii
+
+    040 "Video Header Nano"
+        definition
+            Defines a group of video cells corresponding to a video radial: all cells
+            have the same size in azimuth and range and are consecutive in range.
+        group
+            STARTAZ "Start Azimuth of the Cells Group"
+                element 16
+                    unsigned quantity 360/2^16 "°" >= 0 < 360
+            ENDAZ "End Azimuth of the Cells Group"
+                element 16
+                    unsigned quantity 360/2^16 "°" >= 0 < 360
+            STARTRG "Starting Range of the Cells Group, Expressed in Number of Cells"
+                element 32
+                    unsigned integer
+            CELLDUR "Video Cell Duration in Nano-seconds"
+                element 32
+                    unsigned quantity 1 "ns"
+
+    041 "Video Header Femto"
+        definition
+            Defines a group of video cells corresponding to a video radial: all cells
+            have the same size in azimuth and range and are consecutive in range.
+        group
+            STARTAZ "Start Azimuth of the Cells Group"
+                element 16
+                    unsigned quantity 360/2^16 "°" >= 0 < 360
+            ENDAZ "End Azimuth of the Cells Group"
+                element 16
+                    unsigned quantity 360/2^16 "°" >= 0 < 360
+            STARTRG "Starting Range of the Cells Group, Expressed in Number of Cells"
+                element 32
+                    unsigned integer
+            CELLDUR "Video Cell Duration in Femto-seconds"
+                element 32
+                    unsigned quantity 1 "fs"
+
+    048 "Video Cells Resolution & Data Compression Indicator"
+        definition
+            This Data Item defines the bit resolution used in the coding of the video
+            signal amplitude in all cells of the video group as well as an indicator
+            whether data compression has been applied.
+        group
+            C "Data Compression Indicator"
+                element 1
+                    table
+                        0: No compression applied
+                        1: Compression applied
+            spare 7
+            RES "Bit Resolution"
+                element 8
+                    table
+                        1: Monobit Resolution (1 bit)
+                        2: Low Resolution (2 bits)
+                        3: Medium Resolution (4 bits)
+                        4: High Resolution (8 bits)
+                        5: Very High Resolution (16 bits)
+                        6: Ultra High Resolution (32 bits)
+        remark
+            Note:
+                - When the Data Compression Indicator (C) is set, shows that a data
+                  compression technique has been applied. The actual algorithm used
+                  and the related parameters have to be specified in a relevant ICD
+                  (Interface Control Document).
+
+    049 "Video Octets & Video Cells Counters"
+        definition
+            This Data Item contains the number of “valid” octets (i.e. nonempty octets)
+            used in the coding of the video signal amplitude and the number of “valid”
+            cells in the video group.
+        group
+            NBVB "Number of 'valid' Octets"
+                element 16
+                    unsigned integer
+            NBCELLS "Number of 'valid' Cells"
+                element 24
+                    unsigned integer
+
+    050 "Video Block Low Data Volume"
+        definition
+            Contains a group of video cells corresponding to a video radial; all cells
+            have the same size in azimuth and range and are consecutive in range. This
+            item shall be used in cases where a low data volume, up to 1020 bytes, will
+            be transmitted.
+        repetitive 1
+            element 32
+                raw
+        remark
+            Notes:
+
+                1. The first cell in the block is always the closest to the sensor and
+                   the following cells are in increasing range order.
+                2. To get the range in meters of the cell at position “NU_CELL” in the
+                   data stream, the following formula shall be used:
+                   D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)
+                   where c = 299 792 458 m/s: light celerity.
+
+    051 "Video Block Medium Data Volume"
+        definition
+            Contains a group of video cells corresponding to a video radial; all cells
+            have the same size in azimuth and range and are consecutive in range. This
+            item shall be used in cases where a medium data volume, up to 16320 bytes,
+            will be transmitted.
+        repetitive 1
+            element 512
+                raw
+        remark
+            Notes:
+
+                1. The first cell in the block is always the closest to the sensor and
+                   the following cells are in increasing range order.
+                2. To get the range in meters of the cell at position “NU_CELL” in the
+                   data stream, the following formula shall be used:
+                   D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)
+                   where c = 299 792 458 m/s: light celerity.
+
+    052 "Video Block High Data Volume"
+        definition
+            Contains a group of video cells corresponding to a video radial; all cells
+            have the same size in azimuth and range and are consecutive in range. This
+            item shall be used in cases where a high data volume, up to 65024 bytes,
+            will be transmitted.
+        repetitive 1
+            element 2048
+                raw
+        remark
+            Notes:
+
+                1. The first cell in the block is always the closest to the sensor and
+                   the following cells are in increasing range order.
+                2. The maximum value of REP that should be used is 254, in order to keep
+                   the maximum size of the field at 64kbytes.
+                3. To get the range in meters of the cell at position “NU_CELL” in the
+                   data stream, the following formula shall be used:
+                   D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)
+                   where c = 299 792 458 m/s: light celerity.
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                - The time information, shall reflect the exact time of an event,
+                  expressed as a number of 1/128 s elapsed since last midnight.
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    020
+    030
+    040
+    041
+    048
+    049
+    050
+    051
+    052
+    140
+    RE
+    SP

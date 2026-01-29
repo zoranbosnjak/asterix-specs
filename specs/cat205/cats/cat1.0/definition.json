@@ -1,0 +1,1423 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ntransaction.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "System Position Report"
+                                        ],
+                                        [
+                                            2,
+                                            "System Bearing Report"
+                                        ],
+                                        [
+                                            3,
+                                            "System Position Report of conflicting transmission"
+                                        ],
+                                        [
+                                            4,
+                                            "System Detection End Report"
+                                        ],
+                                        [
+                                            5,
+                                            "Sensor Data Report"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the Radio Direction Finder System or Sensor from which the \nreport is received.\n",
+                    "description": null,
+                    "remark": "Note:\n    The up-to-date list of SACs is published on the\n    EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n"
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the service provided to one or more users.\n",
+                    "description": null,
+                    "remark": "Note:\n    The service identification is allocated by the system.\n"
+                },
+                "name": "015",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Service Identification"
+            },
+            {
+                "documentation": {
+                    "definition": "UTC time of transmission of this ASTERIX message.\n",
+                    "description": null,
+                    "remark": "Note:\n    The TOD value is reset to zero at every midnight UTC. \n"
+                },
+                "name": "030",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Day"
+            },
+            {
+                "documentation": {
+                    "definition": "Sequential and cyclic number of position detection reports.\n",
+                    "description": null,
+                    "remark": "Note:\n    The number is incremented if there is a new position or bearing detected, independent \n    from the respective channel. The report number shall also be incremented if, during \n    the ongoing position or bearing detection, the position or bearing value is deviating by \n    a system-defined threshold from the previous one. If the message type (I205/000) \n    changes to another Detection Report, the report number is incremented as well.\n    to detect lost messages.\n    \n"
+                },
+                "name": "040",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Report Number"
+            },
+            {
+                "documentation": {
+                    "definition": "Calculated position in WGS-84 Coordinates.\n",
+                    "description": null,
+                    "remark": "Note:\n    The LSB provides a resolution at least better than 0.6 meters.\n    For reports of Message Type 001 and 003, the item shall contain the estimated \n    position of the transmitting aircraft.\n    For reports of Message Type 002, the item shall contain the position of the bearing \n    starting point, i.e. the position of the respective RDF sensor.\n    \n"
+                },
+                "name": "050",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LAT",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 25
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Latitude in WGS-84"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LON",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 25
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Longitude in WGS-84"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Position in WGS-84 Coordinates"
+            },
+            {
+                "documentation": {
+                    "definition": "Calculated position in Cartesian Coordinates.\n",
+                    "description": null,
+                    "remark": "Note:\n    The Cartesian coordinates are relative to an agreed System Reference Point. The \n    System Reference Point may be communicated in ASTERIX category 025, item 600.\n    For reports of Message Type 001 and 003, the item shall contain the estimated \n    position of the transmitting aircraft.\n    For reports of Message Type 002, the item shall contain the position of the bearing \n    starting point, i.e. the position of the respective RDF sensor.\n    \n"
+                },
+                "name": "060",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "X",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 24,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": 2,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "m"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "X-coordinate"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "Y",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 24,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": 2,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "m"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Y-coordinate"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Position in Cartesian Coordinates"
+            },
+            {
+                "documentation": {
+                    "definition": "Bearing of the detected radio transmission, starting at the position contained in \nI205/050 and given relative to this position.\n",
+                    "description": null,
+                    "remark": "Note:\n    The angle is given in degrees, in clock-wise notation, \n    starting with 0 degrees for the geographical North. \n"
+                },
+                "name": "070",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": 0,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThanOrEqualTo"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "contents": 360,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "LessThanOrEqualTo"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": 100,
+                                                    "tag": "NumInt"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "°"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Local Bearing"
+            },
+            {
+                "documentation": {
+                    "definition": "Bearing of the detected radio transmission, starting at the position contained in \nI205/060, projected to the Cartesian Coordinate System relative to the System \nReference Point (as used for I205/ 060).\n",
+                    "description": null,
+                    "remark": "Note:\n    The angle is given in degrees, in clock-wise notation, \n    starting with 0 degrees for the geographical North. \n"
+                },
+                "name": "080",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": 0,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThanOrEqualTo"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "contents": 360,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "LessThanOrEqualTo"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": 100,
+                                                    "tag": "NumInt"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "°"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "System Bearing"
+            },
+            {
+                "documentation": {
+                    "definition": "Name of the channel the radio transmission is detected on.\n",
+                    "description": null,
+                    "remark": "Note:\n    NU1 till NU7 contain digits or a decimal point in ASCII representation, specifying the \n    name of the radio channel. Channel names that could be provided with less than 6 \n    digits shall be filled with trailing zeroes (e.g. 121.100).\n    This channel name is not identical with the actual physical frequency.\n    \n"
+                },
+                "name": "090",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 56,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "contents": [],
+                                        "tag": "StringAscii"
+                                    },
+                                    "tag": "ContentString"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Radio Channel Name"
+            },
+            {
+                "documentation": {
+                    "definition": "Quality of the measurement provided by the Radio Direction Finder system.\n",
+                    "description": null,
+                    "remark": "Note:\n    The actual meanings of the bits are application dependent.\n    \n"
+                },
+                "name": "100",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Quality of Measurement"
+            },
+            {
+                "documentation": {
+                    "definition": "Uncertainty estimation of the RDF System. The transmitter is expected to be \nwithin the provided radius around the calculated position.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "110",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": 0,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThanOrEqualTo"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "contents": 25500,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "LessThanOrEqualTo"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": 100,
+                                            "tag": "NumInt"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "m"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Estimated Uncertainty"
+            },
+            {
+                "documentation": {
+                    "definition": "The identification of the RDF sensors that contributed to the detection of the radio \ntransmitter.\n",
+                    "description": null,
+                    "remark": "Note:\n    The actual identification of the receivers is application dependent.\n    \n"
+                },
+                "name": "120",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 8,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Contributing Sensors"
+            },
+            {
+                "documentation": {
+                    "definition": "Calculated position in WGS-84 Coordinates. This is the position of a second \ntransmitter on the same frequency and overlapping in time with the transmitter \nposition communicated in data item I205/050.\n",
+                    "description": null,
+                    "remark": "Note:\n    The LSB provides a resolution at least better than 0.6 meters.\n"
+                },
+                "name": "130",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LAT",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 25
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Latitude in WGS-84"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LON",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 25
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Longitude in WGS-84"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Conflicting Transmitter Position in WGS-84 Coordinates"
+            },
+            {
+                "documentation": {
+                    "definition": "Calculated position in Cartesian Coordinates. This is the position of a second \ntransmitter on the same frequency and overlapping in time with the transmitter \nposition communicated in data item I205/060.\n",
+                    "description": null,
+                    "remark": "Note:\n    The Cartesian coordinates are relative to an agreed System Reference Point. The \n    System Reference Point may be communicated in ASTERIX category 025, item 600.\n    \n"
+                },
+                "name": "140",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "X",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 24,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": 2,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "m"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "X-coordinate"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "Y",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 24,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 4194300,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": 2,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 1,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "m"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Y-coordinate"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Conflicting Transmitter Position in Cartesian Coordinates"
+            },
+            {
+                "documentation": {
+                    "definition": "Range uncertainty estimation of the RDF System for the Conflicting Transmitter, \ni.e. a transmitter on the same frequency and with a timely overlapping \ntransmission. The transmitter is estimated to be within the provided radius around \nthe detected position.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "150",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": 0,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThanOrEqualTo"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "contents": 25500,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "LessThanOrEqualTo"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": 100,
+                                            "tag": "NumInt"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "m"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Conflicting Transmitter Estimated Uncertainty"
+            },
+            {
+                "documentation": {
+                    "definition": "Unique identification of a track at the calculated RDF position.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "160",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Track Number"
+            },
+            {
+                "documentation": {
+                    "definition": "Unique identification of an RDF sensor.\n",
+                    "description": null,
+                    "remark": "Note:\n    For Message Type 5 (Sensor Data Report) in I205/000, the item has to be used if \n    there is no unique SAC/SIC defined for each RDF Sensor.\n    The actual identification number is application dependent\n    \n"
+                },
+                "name": "170",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Sensor Identification"
+            },
+            {
+                "documentation": {
+                    "definition": "The level of the signal received by an RDF sensor.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "180",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": 100,
+                                                    "tag": "NumInt"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Signed"
+                                        },
+                                        "unit": "dBµV"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Signal Level"
+            },
+            {
+                "documentation": {
+                    "definition": "Relative quality of the received signal as estimated by the RDF sensor.\n",
+                    "description": null,
+                    "remark": "Note:\n    255 corresponds to the best quality,\n    0 to the worst quality\n"
+                },
+                "name": "190",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Signal Quality"
+            },
+            {
+                "documentation": {
+                    "definition": "The elevation of the signal received by an RDF sensor.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "200",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": -90,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThanOrEqualTo"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "contents": 90,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "LessThanOrEqualTo"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": 100,
+                                                    "tag": "NumInt"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Signed"
+                                        },
+                                        "unit": "°"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Signal Elevation"
+            },
+            {
+                "documentation": {
+                    "definition": "Special Purpose Field\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "SP",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "SpecialPurpose"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Special Purpose Field"
+            }
+        ],
+        "category": 205,
+        "date": {
+            "day": 17,
+            "month": 3,
+            "year": 2020
+        },
+        "edition": {
+            "major": 1,
+            "minor": 0
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "Radio Direction Finder Reports",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "015",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "030",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "040",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "090",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "050",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "060",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "070",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "080",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "100",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "110",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "120",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "130",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "140",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "150",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "160",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "170",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "180",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "190",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "200",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "SP",
+                    "tag": "UapItem"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}
