@@ -1,7 +1,6 @@
 { sources ? import ../nix/sources.nix
 , packages ? import sources.nixpkgs {}
 , inShell ? null
-, strip ? true
 , static ? false    # build static binary
 }:
 
@@ -26,6 +25,14 @@ let
         buildHaskellPackages = super.buildHaskellPackages.override (oldBuildHaskellPackages: {
           ghc = fixGHC oldBuildHaskellPackages.ghc;
         });
+        extension = self : super : {
+          cabal =
+            if static == true
+            then
+              pkgs.haskellPackages.cabalNoTest
+            else
+              pkgs.haskellPackages.cabal;
+        };
         # haskellPackage1 = self.callPackage ./nix/myPackage1.nix { };
         # haskellPackage2 = self.callPackage ./nix/myPackage2.nix { };
         # ...
@@ -47,7 +54,10 @@ let
 
   drv = if static == true
     then drv2.overrideDerivation (oldAttrs: {
-      configureFlags = [
+        enableSharedExecutables = false;
+        enableSharedLibraries = false;
+        enableLibraryProfiling = false;
+        configureFlags = [
           "--ghc-option=-split-sections"
           "--ghc-option=-optl=-static"
           "--disable-shared"
@@ -56,6 +66,7 @@ let
           "--extra-lib-dirs=${pkgs.glibc.static}/lib"
           "--extra-lib-dirs=${pkgs.gmp6.override { withStatic = true; }}/lib"
           "--extra-lib-dirs=${pkgs.libffi.overrideAttrs (old: { dontDisableStatic = true; })}/lib"
+          "--extra-lib-dirs=${pkgs.numactl.overrideAttrs (old: { dontDisableStatic = true; })}/lib"
           # The ones below are due to GHC's runtime system
           # depending on libdw (DWARF info), which depends on
           # a bunch of compression algorithms.
@@ -65,19 +76,13 @@ let
           "--ghc-option=-optl=-llzma"
           "--ghc-option=-optl=-lzstd"
           "--extra-lib-dirs=${pkgs.zlib.static}/lib"
-          "--extra-lib-dirs=${pkgs.libffi.overrideAttrs (old: { dontDisableStatic = true; })}/lib"
           "--extra-lib-dirs=${(pkgs.xz.override { enableStatic = true; }).out}/lib"
           "--extra-lib-dirs=${(pkgs.zstd.override { enableStatic = true; }).out}/lib"
           "--extra-lib-dirs=${(pkgs.bzip2.override { enableStatic = true; }).out}/lib"
           "--extra-lib-dirs=${(pkgs.elfutils.overrideAttrs (old: { dontDisableStatic= true; })).out}/lib"
-          # double-conversion temporary patch
-          # This is required on nix-packages 24.05 until this patch is merged
-          # https://github.com/NixOS/nixpkgs/pull/322738
           "--extra-lib-dirs=${pkgs.double-conversion.overrideAttrs(_: { cmakeFlags = [ ]; })}/lib"
-        ] ++ pkgs.lib.optionals (!strip) [
-          "--disable-executable-stripping"
         ];
-      })
+    })
     else drv2;
 
   env = pkgs.stdenv.mkDerivation rec {
