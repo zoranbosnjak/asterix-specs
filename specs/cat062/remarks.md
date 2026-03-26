@@ -1,8 +1,4 @@
-# Revision history
-
-## v1.20
-
-Remarks:
+# cat062, ed 1.20
 
 - Typo in the original document (PDF), page 19.
   "bit-7" (MLAT). Correct is "bit-2".
@@ -11,3 +7,4 @@ Remarks:
   Short item name and title:
   It is: bit-5 (MB) ... Mode S MB Data
   Correct: bit-5 (BDSDATA) ... BDS Register Data
+

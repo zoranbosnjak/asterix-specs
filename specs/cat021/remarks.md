@@ -1,3 +1,4 @@
-# Duplicated name
+# cat021
 
-`I021/090/SIL` item name is duplicated in the original specifications.
+- item 090, `I021/090/SIL` item name is duplicated in the original specifications.
+
