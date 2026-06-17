@@ -4,7 +4,7 @@ FROM archlinux:latest
 RUN pacman -Syyu --noconfirm
 
 # essential dev tools
-RUN pacman -S --noconfirm git nix
+RUN pacman -S --noconfirm git nix pandoc ttf-dejavu
 
 RUN nix-env -iA cachix -f https://cachix.org/api/v1/install
 
