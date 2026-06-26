@@ -1,0 +1,255 @@
+asterix 019 "Multilateration System Status Messages"
+edition 1.3
+date 2010-12-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the
+            messages at the receiver side by further defining the type of
+            information.
+        element 8
+            table
+                1: Start of Update Cycle
+                2: Periodic Status Message
+                3: Event-triggered Status Message
+        remark
+            NOTES:
+              1. In applications where data of various types is exchanged, the Message
+                 Type Data Item facilitates the proper message handling at the receiver
+                 side.
+              2. All Message Type values are reserved for common standard use.
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the system from which the data is received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+
+                The time of day value is reset to zero each day at midnight.
+
+    550 "System Status"
+        definition
+            Information concerning the configuration and status of a System.
+        group
+            NOGO "Operational Release Status of the System"
+                element 2
+                    table
+                        0: Operational
+                        1: Degraded
+                        2: NOGO
+                        3: Undefined
+            OVL "Overload Indicator"
+                element 1
+                    table
+                        0: No overload
+                        1: Overload
+            TSV "Time Source Validity"
+                element 1
+                    table
+                        0: Valid
+                        1: Invalid
+            TTF "Test Target"
+                element 1
+                    table
+                        0: Test Target Operative
+                        1: Test Target Failure
+            spare 3
+        remark
+            Note:
+
+                A time source is considered as valid when either externally synchronised
+                or running on a local oscillator within the required accuracy of UTC.
+
+    551 "Tracking Processor Detailed Status"
+        definition
+            Information concerning the configuration and status of the Tracking processors.
+        group
+            TP1A ""
+                element 1
+                    table
+                        0: Standby
+                        1: Exec
+            TP1B ""
+                element 1
+                    table
+                        0: Faulted
+                        1: Good
+            TP2A ""
+                element 1
+                    table
+                        0: Standby
+                        1: Exec
+            TP2B ""
+                element 1
+                    table
+                        0: Faulted
+                        1: Good
+            TP3A ""
+                element 1
+                    table
+                        0: Standby
+                        1: Exec
+            TP3B ""
+                element 1
+                    table
+                        0: Faulted
+                        1: Good
+            TP4A ""
+                element 1
+                    table
+                        0: Standby
+                        1: Exec
+            TP4B ""
+                element 1
+                    table
+                        0: Faulted
+                        1: Good
+        remark
+            Note:
+
+                Both Bits of one TP set to zero means, that this TP is not used
+                in the system.
+
+    552 "Remote Sensor Detailed Status"
+        definition
+            Information concerning the configuration and status of the Remote Sensors (RS)
+        repetitive 1
+            group
+                RSI "8-bit Identification Number of RS"
+                    element 8
+                        raw
+                spare 1
+                RS1090 "Receiver 1090 MHz"
+                    element 1
+                        table
+                            0: Not present
+                            1: Present
+                TX1030 "Transmitter 1030 MHz"
+                    element 1
+                        table
+                            0: Not present
+                            1: Present
+                TX1090 "Transmitter 1090 MHz"
+                    element 1
+                        table
+                            0: Not present
+                            1: Present
+                RSS "RS Status"
+                    element 1
+                        table
+                            0: Faulted
+                            1: Good
+                RSO "RS Operational"
+                    element 1
+                        table
+                            0: Offline
+                            1: Online
+                spare 2
+
+    553 "Reference Transponder Detailed Status"
+        definition
+            Information concerning the configuration and status of the Reference Transponder.
+        extended
+            REFTR1 "Ref Trans 1 Status"
+                element 2
+                    table
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 2
+            REFTR2 "Ref Trans 2 Status"
+                element 2
+                    table
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 1
+            -
+            REFTR3 "Ref Trans 3 Status"
+                element 2
+                    table
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 2
+            REFTR4 "Ref Trans 4 Status"
+                element 2
+                    table
+                        1: Warning
+                        2: Faulted
+                        3: Good
+            spare 1
+            -
+
+    600 "Position of the MLT System Reference Point"
+        definition
+            Position of the MLT reference point in WGS-84 Coordinates.
+        group
+            LAT "Latitude"
+                element 32
+                    signed quantity 180/2^30 "°" >= -90 <= 90
+            LON "Longitude"
+                element 32
+                    signed quantity 180/2^30 "°" >= -180 < 180
+
+    610 "Height of the MLT System Reference Point"
+        definition
+            Height of the MLT system reference point in two’s complement form.
+            The height shall use mean sea level as the zero reference level.
+        element 16
+            signed quantity 1/2^2 "m" >= -8192 <= 8192
+
+    620 "WGS-84 Undulation"
+        definition
+            WGS-84 undulation value of the MLT system reference point, in meters.
+            Geoid undulation value is the difference between the ellipsoidal height
+            and the height above mean sea level
+        element 8
+            signed quantity 1 "m"
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    140
+    550
+    551
+    552
+    553
+    600
+    610
+    620
+    -
+    -
+    RE
+    SP

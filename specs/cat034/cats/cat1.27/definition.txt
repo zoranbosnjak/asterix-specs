@@ -1,0 +1,443 @@
+asterix 034 "Transmission of Monoradar Service Messages"
+edition 1.27
+date 2007-05-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of
+            the messages at the receiver side by further defining
+            the type of transaction.
+        element 8
+            table
+                1: North marker message
+                2: Sector crossing message
+                3: Geographical filtering message
+                4: Jamming strobe message
+        remark
+            Notes:
+
+                1. In applications where transactions of various
+                   types are exchanged, the Message Type Data Item facilitates the
+                   proper message handling at the receiver side.
+                2. All Message Type values are reserved for common standard use.
+                3. The list of items present for the four message types is defined in
+                   the following table.
+
+                   M stands for mandatory, O for optional, X for never present.
+
+                   TODO: message types table
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    020 "Sector Number"
+        definition
+            Eight most significant bits of the antenna azimuth defining a particular azimuth sector.
+        element 8
+            unsigned quantity 360/2^8 "°"
+
+    030 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC time.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                - The time of day value is reset to zero each day at midnight.
+
+    041 "Antenna Rotation Speed"
+        definition
+            Antenna rotation period as measured between two consecutive North crossings
+            or as averaged during a period of time.
+        element 16
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                - This item represents the antenna rotation period as measured by the
+                  radar station between two consecutive North crossings, or a calculated
+                  antenna rotation speed as averaged during a period of time, or during a
+                  number of antenna rotation scans.
+
+    050 "System Configuration and Status"
+        definition
+            Information concerning the configuration and status of a System.
+        compound
+            COM "Common Part"
+                group
+                    NOGO "Operational Release Status of the System"
+                        element 1
+                            table
+                                0: System is released for operational use
+                                1: Operational use of System is inhibited, i.e. the data shall be discarded by an operational SDPS
+                    RDPC "Radar Data Processor Chain Selection Status"
+                        element 1
+                            table
+                                0: RDPC-1 selected
+                                1: RDPC-2 selected
+                    RDPR "Event to Signal a Reset/restart of the Selected Radar Data Processor Chain, I.e. Expect a New Assignment of Track Numbers"
+                        element 1
+                            table
+                                0: Default situation
+                                1: Reset of RDPC
+                    OVLRDP "Radar Data Processor Overload Indicator"
+                        element 1
+                            table
+                                0: Default, no overload
+                                1: Overload in RDP
+                    OVLXMT "Transmission Subsystem Overload Status"
+                        element 1
+                            table
+                                0: Default, no overload
+                                1: Overload in transmission subsystem
+                    MSC "Monitoring System Connected Status"
+                        element 1
+                            table
+                                0: Monitoring system connected
+                                1: Monitoring system disconnected
+                    TSV "Time Source Validity"
+                        element 1
+                            table
+                                0: Valid
+                                1: Invalid
+                    spare 1
+            -
+            -
+            PSR "Specific Status Information for a PSR Sensor"
+                group
+                    ANT "Selected Antenna"
+                        element 1
+                            table
+                                0: Antenna 1
+                                1: Antenna 2
+                    CHAB "Channel A/B Selection Status"
+                        element 2
+                            table
+                                0: No channel selected
+                                1: Channel A only selected
+                                2: Channel B only selected
+                                3: Diversity mode ; Channel A and B selected
+                    OVL "Overload Condition"
+                        element 1
+                            table
+                                0: No overload
+                                1: Overload
+                    MSC "Monitoring System Connected Status"
+                        element 1
+                            table
+                                0: Monitoring system connected
+                                1: Monitoring system disconnected
+                    spare 3
+            SSR "Specific Status Information for a SSR Sensor"
+                group
+                    ANT "Selected Antenna"
+                        element 1
+                            table
+                                0: Antenna 1
+                                1: Antenna 2
+                    CHAB "Channel A/B Selection Status"
+                        element 2
+                            table
+                                0: No channel selected
+                                1: Channel A only selected
+                                2: Channel B only selected
+                                3: Invalid combination
+                    OVL "Overload Condition"
+                        element 1
+                            table
+                                0: No overload
+                                1: Overload
+                    MSC "Monitoring System Connected Status:"
+                        element 1
+                            table
+                                0: Monitoring system connected
+                                1: Monitoring system disconnected
+                    spare 3
+            MDS "Specific Status Information for a Mode S Sensor"
+                group
+                    ANT "Selected Antenna"
+                        element 1
+                            table
+                                0: Antenna 1
+                                1: Antenna 2
+                    CHAB "Channel A/B Selection Status"
+                        element 2
+                            table
+                                0: No channel selected
+                                1: Channel A only selected
+                                2: Channel B only selected
+                                3: Illegal combination
+                    OVLSUR "Overload Condition"
+                        element 1
+                            table
+                                0: No overload
+                                1: Overload
+                    MSC "Monitoring System Connected Status:"
+                        element 1
+                            table
+                                0: Monitoring system connected
+                                1: Monitoring system disconnected
+                    SCF "Channel A/B Selection Status for Surveillance Co-ordination Function"
+                        element 1
+                            table
+                                0: Channel A in use
+                                1: Channel B in use
+                    DLF "Channel A/B Selection Status for Data Link Function"
+                        element 1
+                            table
+                                0: Channel A in use
+                                1: Channel B in use
+                    OVLSCF "Overload in Surveillance Co-ordination Function"
+                        element 1
+                            table
+                                0: No overload
+                                1: Overload
+                    OVLDLF "Overload in Data Link Function"
+                        element 1
+                            table
+                                0: No overload
+                                1: Overload
+                    spare 7
+
+    060 "System Processing Mode"
+        definition
+            Status concerning the processing options, in use during the last antenna
+            revolution, for the various Sensors, composing the System.
+        compound
+            COM "Common Part"
+                group
+                    spare 1
+                    REDRDP "Reduction Steps in Use for An Overload of the RDP"
+                        element 3
+                            table
+                                0: No reduction active
+                                1: Reduction step 1 active
+                                2: Reduction step 2 active
+                                3: Reduction step 3 active
+                                4: Reduction step 4 active
+                                5: Reduction step 5 active
+                                6: Reduction step 6 active
+                                7: Reduction step 7 active
+                    REDXMT "Reduction Steps in Use for An Overload of the Transmission Subsystem"
+                        element 3
+                            table
+                                0: No reduction active
+                                1: Reduction step 1 active
+                                2: Reduction step 2 active
+                                3: Reduction step 3 active
+                                4: Reduction step 4 active
+                                5: Reduction step 5 active
+                                6: Reduction step 6 active
+                                7: Reduction step 7 active
+                    spare 1
+            -
+            -
+            PSR "Specific Processing Mode Information for a PSR Sensor"
+                group
+                    POL "Polarization in Use by PSR"
+                        element 1
+                            table
+                                0: Linear polarization
+                                1: Circular polarization
+                    REDRAD "Reduction Steps in Use as Result of An Overload Within the PSR Subsystem"
+                        element 3
+                            table
+                                0: No reduction active
+                                1: Reduction step 1 active
+                                2: Reduction step 2 active
+                                3: Reduction step 3 active
+                                4: Reduction step 4 active
+                                5: Reduction step 5 active
+                                6: Reduction step 6 active
+                                7: Reduction step 7 active
+                    STC "Sensitivity Time Control Map in Use"
+                        element 2
+                            table
+                                0: STC Map-1
+                                1: STC Map-2
+                                2: STC Map-3
+                                3: STC Map-4
+                    spare 2
+            SSR "Specific Processing Mode Information for a SSR Sensor"
+                group
+                    REDRAD "Reduction Steps in Use as Result of An Overload Within the SSR Subsystem"
+                        element 3
+                            table
+                                0: No reduction active
+                                1: Reduction step 1 active
+                                2: Reduction step 2 active
+                                3: Reduction step 3 active
+                                4: Reduction step 4 active
+                                5: Reduction step 5 active
+                                6: Reduction step 6 active
+                                7: Reduction step 7 active
+                    spare 5
+            MDS "Specific Processing Mode Information for a Mode S Sensor"
+                group
+                    REDRAD "Reduction Steps in Use as Result of An Overload Within the Mode S Subsystem"
+                        element 3
+                            table
+                                0: No reduction active
+                                1: Reduction step 1 active
+                                2: Reduction step 2 active
+                                3: Reduction step 3 active
+                                4: Reduction step 4 active
+                                5: Reduction step 5 active
+                                6: Reduction step 6 active
+                                7: Reduction step 7 active
+                    CLU "Cluster State"
+                        element 1
+                            table
+                                0: Autonomous
+                                1: Not autonomous
+                    spare 4
+        remark
+            Notes:
+
+                - Applicable to all defined secondary subfields. The actual mapping
+                  between the up to seven data reduction steps and their associated
+                  data reduction measures is not subject to standardisation.
+
+    070 "Message Count Values"
+        definition
+            Message Count values, according the various types of messages, for the
+            last completed antenna revolution, counted between two North crossings
+        repetitive 1
+            group
+                TYP "Type of Message Counter"
+                    element 5
+                        table
+                            0: No detection (number of misses)
+                            1: Single PSR target reports
+                            2: Single SSR target reports (Non-Mode S)
+                            3: SSR+PSR target reports (Non-Mode S)
+                            4: Single All-Call target reports (Mode S)
+                            5: Single Roll-Call target reports (Mode S)
+                            6: All-Call + PSR (Mode S) target reports
+                            7: Roll-Call + PSR (Mode S) target reports
+                            8: Filter for Weather data
+                            9: Filter for Jamming Strobe
+                            10: Filter for PSR data
+                            11: Filter for SSR/Mode S data
+                            12: Filter for SSR/Mode S+PSR data
+                            13: Filter for Enhanced Surveillance data
+                            14: Filter for PSR+Enhanced Surveillance
+                            15: Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of Prime Interest
+                            16: Filter for PSR+Enhanced Surveillance + all SSR/Mode S data
+                COUNT "COUNTER"
+                    element 11
+                        unsigned integer
+
+    090 "Collimation Error"
+        definition
+            Averaged difference in range and in azimuth for the primary target position
+            with respect to the SSR target position as calculated by the radar station.
+        group
+            RNG "Range Error"
+                element 8
+                    signed quantity 1/2^7 "NM"
+            AZM "Azimuth Error"
+                element 8
+                    signed quantity 360/2^14 "°"
+        remark
+            Notes:
+
+                - Negative values are coded in two’s complement form.
+
+    100 "Generic Polar Window"
+        definition
+            Geographical window defined in polar co-ordinates.
+        group
+            RHOST "Rho Start"
+                element 16
+                    unsigned quantity 1/2^8 "NM" <= 256
+            RHOEND "Rho End"
+                element 16
+                    unsigned quantity 1/2^8 "NM" <= 256
+            THETAST "Theta Start"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+            THETAEND "Theta End"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+
+    110 "Data Filter"
+        definition
+            Data Filter, which allows suppression of individual data types.
+        element 8
+            table
+                0: Invalid value
+                1: Filter for Weather data
+                2: Filter for Jamming Strobe
+                3: Filter for PSR data
+                4: Filter for SSR/Mode S data
+                5: Filter for SSR/Mode S + PSR data
+                6: Enhanced Surveillance data
+                7: Filter for PSR+Enhanced Surveillance data
+                8: Filter for PSR+Enhanced Surveillance + SSR/Mode S data not in Area of Prime Interest
+                9: Filter for PSR+Enhanced Surveillance + all SSR/Mode S data
+        remark
+            Notes:
+
+                1. This Data Item is often used in conjunction with I034/100 and
+                   represents a Data Filter for a specific geographical subarea.
+                   A Data Source may have zero, one or multiple data filters active at any time.
+                2. If I034/110 is not accompanied with I034/100, then the Data Filter
+                   is valid throughout the total area of coverage.
+
+    120 "3D-Position Of Data Source"
+        definition
+            3D-Position of Data Source in WGS 84 Co-ordinates
+        group
+            HGT "Height of Data Source"
+                element 16
+                    signed quantity 1 "m"
+            LAT "Latitude"
+                element 24
+                    signed quantity 180/2^23 "°" >= -90 <= 90
+            LON "Longitude"
+                element 24
+                    signed quantity 180/2^23 "°" >= -180 <= 180
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    030
+    020
+    041
+    050
+    060
+    070
+    100
+    110
+    120
+    090
+    RE
+    SP

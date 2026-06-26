@@ -1,0 +1,846 @@
+ref 048 "Monoradar Target Reports Appendix A: Reserved Expansion Field"
+edition 1.11
+date 2022-12-07
+
+compound 1
+    MD5 "Mode 5 Reports"
+        definition
+            Mode 5 Data/Reports, Extended Mode 1 Code and X pulse.
+        compound
+            SUM "Mode 5 Summary"
+                group
+                    M5 ""
+                        element 1
+                            table
+                                0: No Mode 5 interrogation
+                                1: Mode 5 interrogation
+                    ID ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 ID reply/report
+                                1: Authenticated Mode 5 ID reply/report
+                    DA ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 Data reply/report
+                                1: Authenticated Mode 5 Data reply/report (i.e any valid Mode 5 reply type other than ID)
+                    M1 ""
+                        element 1
+                            table
+                                0: Mode 1 code not present or not from Mode 5 reply/report
+                                1: Mode 1 code from Mode 5 reply/report
+                    M2 ""
+                        element 1
+                            table
+                                0: Mode 2 code not present or not from Mode 5 reply/report
+                                1: Mode 2 code from Mode 5 reply/report
+                    M3 ""
+                        element 1
+                            table
+                                0: Mode 3 code not present or not from Mode 5 reply/report
+                                1: Mode 3 code from Mode 5 reply/report
+                    MC ""
+                        element 1
+                            table
+                                0: Mode C altitude not present or not from Mode 5 reply/report
+                                1: Mode C altitude from Mode 5 reply/report
+                    spare 1
+                remark
+                    Notes:
+                        1. The flags M2, M3, MC refer to the contents of data items I048/050, I048/070
+                           and I048/090 respectively. The flag M1 refers to the contents of data item
+                           I048/055, Mode 1 Code in Octal Representation, and to the contents of the
+                           Subitem #5 (Extended Mode 1 Code in Octal Representation).
+                        2. If an authenticated Mode 5 reply/report is received with the Emergency bit set,
+                           then the Military Emergency bit (ME) in Data Item I048/020, Target Report
+                           Descriptor, shall be set.
+                        3. If an authenticated Mode 5 reply/report is received with the Identification of
+                           Position bit set, then the Special Position Identification bit (SPI) in Data Item
+                           I048/020, Target Report Descriptor, shall be set.
+            PMN "PIN/ National Origin/Mission Code"
+                group
+                    spare 2
+                    PIN "PIN Code"
+                        element 14
+                            raw
+                    spare 2
+                    NAV "Validity of NAT"
+                        element 1
+                            table
+                                0: National Origin is valid
+                                1: National Origin is invalid
+                    NAT "National Origin"
+                        element 5
+                            raw
+                    spare 2
+                    MIS "Mission Code"
+                        element 6
+                            raw
+                remark
+                    Note:
+                        Bit 14 (NAV) is set to 1 if the value for National Origin is not known or invalid.
+                        Under certain conditions PIN is available but NAT is not available. NAV then
+                        indicates that the NAT field was not actively populated.
+            POS "Mode 5 Reported Position"
+                group
+                    LAT "Latitude in WGS 84"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -90/1 <= 90/1
+                    LON "Longitude in WGS 84"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -180/1 <= 180/1
+                remark
+                    Notes:
+                        Latitude in WGS 84 is expressed as a 24-bit two’s complement number.
+                        Range -90° ≤ latitude ≤ 90°. Sign convention: North is positive.
+                        LSB = 180/223 degrees = 2.145767*10-05 degrees.
+
+                        Longitude in WGS 84 is expressed as a 24-bit two’s complement number.
+                        Range -180° ≤ longitude < 180°. Sign convention: East is positive.
+                        LSB = 180/223 degrees = 2.145767*10-05 degrees.
+
+                        The resolution implied by the LSB is better than the resolution with which Mode 5
+                        position reports are transmitted from aircraft transponders using currently defined
+                        formats.
+            GA "Mode 5 GNSS-derived Altitude"
+                group
+                    spare 1
+                    RES ""
+                        description
+                            "Resolution with which the GNSS-derived Altitude (GA) is reported"
+                        element 1
+                            table
+                                0: GA reported in 100 ft increments
+                                1: GA reported in 25 ft increments
+                    GA ""
+                        description
+                            "GNSS-derived Altitude of target, expressed as height above WGS 84 ellipsoid"
+                        element 14
+                            signed quantity 25 "ft" >= -1000
+            EM1 "Extended Mode 1 Code in Octal Representation"
+                group
+                    V ""
+                        element 1
+                            table
+                                0: Code not validated
+                                1: Code validated
+                    G ""
+                        element 1
+                            table
+                                0: Default
+                                1: Garbled code
+                    L ""
+                        element 1
+                            table
+                                0: Mode 1 Code derived from the reply of the transponder
+                                1: Mode 1 Code not extracted during the last scan
+                    spare 1
+                    EM1 "Extended Mode 1 Code in Octal Representation"
+                        element 12
+                            string octal
+                remark
+                    Notes:
+                        1. If Subitem #1 is present, the M1 bit in Subitem #1 indicates whether the
+                           Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If Subitem
+                           #1 is not present, the Extended Mode 1 Code is from a Mode 1 reply.
+                        2. For reasons of backwards compatibility the logic for the setting of the V-bit
+                           was inverted compared to other similar data items.
+                        3. The values of the bits for V, G, L, A4, A2, A1, B2 and B1 shall be identical to
+                           the values of the corresponding bits in data item I048/055.
+            TOS "Time Offset for POS and GA"
+                element 8
+                    unsigned quantity 1/2^7 "s"
+                remark
+                    Note:
+                        TOS shall be assumed to be zero if Subitem #6 is not present.
+            XP "X Pulse Presence"
+                group
+                    spare 2
+                    XP "X-pulse from Mode 5 PIN Reply/Report"
+                        element 1
+                            table
+                                0: X-Pulse not present
+                                1: X-pulse present
+                    X5 "X-pulse from Mode 5 Data Reply or Report"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no authenticated Data reply or Report received
+                                1: X-pulse set to one (present)
+                    XC "X-pulse from Mode C Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode C reply
+                                1: X-pulse set to one (present)
+                    X3 "X-pulse from Mode 3/A Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 3/A reply
+                                1: X-pulse set to one (present)
+                    X2 "X-pulse from Mode 2 Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 2 reply
+                                1: X-pulse set to one (present)
+                    X1 "X-pulse from Mode 1 Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 1 reply
+                                1: X-pulse set to one (present)
+                remark
+                    Note:
+                        Within Mode 5 replies/reports, the X-Pulse can be set for the following cases:
+                        1. In a combined Mode 1 and Mode 2 reply/report: in this case the X5 bit and the X2 bit
+                           shall be set;
+                        2. In a combined Mode 3 and Mode C reply/report: in this case the X5 bit and the X3 bit
+                           shall be set;
+                        3. In a Mode 5 PIN data reply/report: in this case the X5 bit and the XP bit shall be set.
+                        The X1 bit and the XC bit are meaningless as in Mode 1 and Mode C replies/reports
+                        the X Pulse is not defined. They are kept for compatibility reasons.
+        remark
+            Note:
+                In 2011 NATO has modified the format of the National Origin information
+                available in subitem 2 of the Mode 5 data item in this Reserved Expansion Field. The
+                information for National Origin and Mission Code were combined into a 11-bit long
+                field. In order to maintain backwards compatibility and to ease the use of the new
+                layout, the original Mode 5 data item was copied and the layout of subitem #2
+                adapted. The new layout is reflected in the data item M5N and shall be used by
+                equipment prepared for the new National Origin system.
+                Equipment certified to the previous encoding shall continue to use the data item MD5
+                corresponding to the 5-bit National Origin / 6-bit Mission Code.
+    M5N "Mode 5 Reports, New Format"
+        definition
+            Mode 5 Data/Reports, Extended Mode 1 Code and X pulse following the updated NATO format for the National Origin code
+        compound
+            SUM "Mode 5 Summary"
+                group
+                    M5 ""
+                        element 1
+                            table
+                                0: No Mode 5 interrogation
+                                1: Mode 5 interrogation
+                    ID ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 ID reply/report
+                                1: Authenticated Mode 5 ID reply/report
+                    DA ""
+                        element 1
+                            table
+                                0: No authenticated Mode 5 Data reply/report
+                                1: Authenticated Mode 5 Data reply/report (i.e any valid Mode 5 reply type other than ID)
+                    M1 ""
+                        element 1
+                            table
+                                0: Mode 1 code not present or not from Mode 5 reply/report
+                                1: Mode 1 code from Mode 5 reply/report
+                    M2 ""
+                        element 1
+                            table
+                                0: Mode 2 code not present or not from Mode 5 reply/report
+                                1: Mode 2 code from Mode 5 reply/report
+                    M3 ""
+                        element 1
+                            table
+                                0: Mode 3 code not present or not from Mode 5 reply/report
+                                1: Mode 3 code from Mode 5 reply/report
+                    MC ""
+                        element 1
+                            table
+                                0: Mode C altitude not present or not from Mode 5 reply/report
+                                1: Mode C altitude from Mode 5 reply/report
+                    spare 1
+                remark
+                    Notes:
+                        4. The flags M2, M3, MC refer to the contents of data items I048/050, I048/070
+                           and I048/090 respectively. The flag M1 refers to the contents of data item
+                           I048/055, Mode 1 Code in Octal Representation, and to the contents of the
+                           Subitem #5 (Extended Mode 1 Code in Octal Representation).
+                        5. If an authenticated Mode 5 reply/report is received with the Emergency bit set,
+                           then the Military Emergency bit (ME) in Data Item I048/020, Target Report
+                           Descriptor, shall be set.
+                        6. If an authenticated Mode 5 reply/report is received with the Identification of
+                           Position bit set, then the Special Position Identification bit (SPI) in Data Item
+                           I048/020, Target Report Descriptor, shall be set.
+            PMN "PIN/ National Origin/Mission Code"
+                group
+                    spare 2
+                    PIN "PIN Code"
+                        element 14
+                            raw
+                    spare 4
+                    NOV "Validity of NO"
+                        element 1
+                            table
+                                0: National Origin is valid
+                                1: National Origin is invalid
+                    NO "National Origin"
+                        element 11
+                            raw
+                remark
+                    Note:
+                        Bit 12 (NOV) is set to 1 if the value for National Origin is not known or invalid.
+                        Under certain conditions PIN is available but NO is not available. NOV then
+                        indicates that the NO field was not actively populated.
+            POS "Mode 5 Reported Position"
+                group
+                    LAT "Latitude in WGS 84"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -90/1 <= 90/1
+                    LON "Longitude in WGS 84"
+                        element 24
+                            signed quantity 180/2^23 "°" >= -180/1 <= 180/1
+                remark
+                    Notes:
+                        Latitude in WGS 84 is expressed as a 24-bit two’s complement number.
+                        Range -90° ≤ latitude ≤ 90°. Sign convention: North is positive.
+                        LSB = 180/223 degrees = 2.145767*10-05 degrees
+
+                        Longitude in WGS 84 is expressed as a 24-bit two’s complement number.
+                        Range -180° ≤ longitude < 180°. Sign convention: East is positive.
+                        LSB = 180/223 degrees = 2.145767*10-05 degrees
+
+                        The resolution implied by the LSB is better than the resolution with which Mode 5
+                        position reports are transmitted from aircraft transponders using currently defined
+                        formats.
+            GA "Mode 5 GNSS-derived Altitude"
+                group
+                    spare 1
+                    RES ""
+                        description
+                            Resolution with which the GNSS-derived Altitude (GA) is reported
+                        element 1
+                            table
+                                0: GA reported in 100 ft increments
+                                1: GA reported in 25 ft increments
+                    GA ""
+                        description
+                            GNSS-derived Altitude of target, expressed as height above WGS 84 ellipsoid
+                        element 14
+                            signed quantity 25 "ft" >= -1000
+            EM1 "Extended Mode 1 Code in Octal Representation"
+                group
+                    V ""
+                        element 1
+                            table
+                                0: Code not validated
+                                1: Code validated
+                    G ""
+                        element 1
+                            table
+                                0: Default
+                                1: Garbled code
+                    L ""
+                        element 1
+                            table
+                                0: Mode 1 Code derived from the reply of the transponder
+                                1: Mode 1 Code not extracted during the last scan
+                    spare 1
+                    EM1 "Extended Mode 1 Code in Octal Representation"
+                        element 12
+                            string octal
+                remark
+                    Notes:
+                        1. If Subitem #1 is present, the M1 bit in Subitem #1 indicates whether the
+                           Extended Mode 1 Code is from a Mode 5 reply or a Mode 1 reply. If Subitem
+                           #1 is not present, the Extended Mode 1 Code is from a Mode 1 reply.
+                        2. For reasons of backwards compatibility the logic for the setting of the V-bit
+                           was inverted compared to other similar data items.
+                        3. The values of the bits for V, G, L, A4, A2, A1, B2 and B1 shall be identical to
+                           the values of the corresponding bits in data item I048/055.
+            TOS "Time Offset for POS and GA"
+                element 8
+                    unsigned quantity 1/2^7 "s"
+                remark
+                    Note:
+                        TOS shall be assumed to be zero if Subitem #6 is not present.
+            XP "X Pulse Presence"
+                group
+                    spare 2
+                    XP "X-pulse from Mode 5 PIN Reply/Report"
+                        element 1
+                            table
+                                0: X-Pulse not present
+                                1: X-pulse present
+                    X5 "X-pulse from Mode 5 Data Reply or Report"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no authenticated Data reply or Report received
+                                1: X-pulse set to one (present)
+                    XC "X-pulse from Mode C Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode C reply
+                                1: X-pulse set to one (present)
+                    X3 "X-pulse from Mode 3/A Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 3/A reply
+                                1: X-pulse set to one (present)
+                    X2 "X-pulse from Mode 2 Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 2 reply
+                                1: X-pulse set to one (present)
+                    X1 "X-pulse from Mode 1 Reply"
+                        element 1
+                            table
+                                0: X-pulse set to zero or no Mode 1 reply
+                                1: X-pulse set to one (present)
+                remark
+                    Note:
+                        Within Mode 5 replies/reports, the X-Pulse can be set for the following cases:
+                        1. In a combined Mode 1 and Mode 2 reply/report: in this case the X5 bit and the X2 bit
+                           shall be set;
+                        2. In a combined Mode 3 and Mode C reply/report: in this case the X5 bit and the X3 bit
+                           shall be set;
+                        3. In a Mode 5 PIN data reply/report: in this case the X5 bit and the XP bit shall be set.
+                        The X1 bit and the XC bit are meaningless as in Mode 1 and Mode C replies/reports
+                        the X Pulse is not defined. They are kept for compatibility reasons.
+            FOM "Figure of Merit"
+                group
+                    spare 3
+                    FOM ""
+                        description
+                            Figure of Merit. Position Accuracy as extracted and provided by a Mode 5 transponder.
+                        element 5
+                            raw
+        remark
+            Note:
+                In 2011 NATO has modified the format of the National Origin information
+                available in subitem 2 of the Mode 5 data item in this Reserved Expansion Field. The
+                information for National Origin and Mission Code were combined into a 11-bit long
+                field. In order to maintain backwards compatibility and to ease the use of the new
+                layout, the original Mode 5 data item was copied and the layout of subitem #2
+                adapted. The new layout is reflected in the data item M5N and shall be used by
+                equipment prepared for the new National Origin system.
+                Equipment certified to the previous encoding shall continue to use the data item MD5
+                corresponding to the 5-bit National Origin / 6-bit Mission Code.
+    M4E "Extended Mode 4 Report"
+        definition
+            Extended encoding of the Mode 4 interrogation result
+        extended
+            spare 5
+            FOEFRI "Indication Foe/Friend (Mode4)"
+                element 2
+                    table
+                        0: No Mode 4 interrogation
+                        1: Possibly friendly target
+                        2: Probably friendly target
+                        3: Friendly target
+            -
+    RPC "Radar Plot Characteristics"
+        definition
+            Extension to data item I048/130 for primary reports
+        compound
+            SCO "Score"
+                description
+                    The score describes the number of raw responses used to create the plot.
+                element 8
+                    unsigned integer
+            SRC "Signal/Clutter Ratio"
+                description
+                    The Signal / Clutter Ratio describes the difference in signal strength between the
+                    signal constituting the raw plot and the signal of the clutter.
+                element 16
+                    unsigned quantity 1/10 "dB" >= 1/10 <= 2550
+            RW "Range Width"
+                description
+                    The Range Width defines the difference in range between the closest proximity to the
+                    radar of the raw response and the point farthest away from the radar.
+                element 16
+                    unsigned quantity 1/2^8 "NM" <= 256/1
+            AR "Ambiguous Range"
+                description
+                    The Ambiguous Range describes the Pulse Repetition Interval of the radar in range.
+                element 16
+                    unsigned quantity 1/2^8 "NM" <= 256/1
+    ERR "Extended Range Report"
+        definition
+            Adaptation of data item I048/040 to extended range radars for
+            provision of the measured range of an aircraft in local polar
+            coordinates when the range is equal to or greater than 256NM
+        element 24
+            unsigned quantity 1/2^8 "NM" <= 65535
+        remark
+            Notes:
+                1. For radars with an operational range beyond 256 NM data item I048/040 is
+                   insufficient. These radars may use this extension to provide the target position
+                   equal to or beyond 256 NM. In such cases, data item I048/040 shall be
+                   transmitted in addition to this extension. In this case it is recommended to
+                   set bits 32/17 in data item I048/040 to “1”.
+                2. The Encoding Rule for data item I048/040 still applies.
+                3. This item represents the measured target position of the plot, even if
+                   associated with a track, for the present antenna scan. It is expressed in polar
+                   co-ordinates in the local reference system, centred on the radar station.
+                4. In case of combined detection by a PSR and an SSR, then the SSR position is
+                   sent.
+                5. Before migrating an ASTERIX encoder to Edition 1.10 of this specification,
+                   care has to be taken that receiving decoders allow the presence of the value
+                   256 NM in the record. Systems applying a range check may otherwise
+                   suppress the record.
+    RTC "Radar Track Characteristics"
+        definition
+            Additional Track Characteristics
+        compound
+            PTL "Plot/Track Link"
+                description
+                    Providing link between a track and its associated plot.
+                group
+                    spare 3
+                    SCN "Track / SCN Association"
+                        element 1
+                            table
+                                0: Track is not associated with an SCN Plot
+                                1: Track is associated with an SCN Plot
+                    RC "Roll Call Component"
+                        element 1
+                            table
+                                0: Associated Plot does not contain a Roll Call component
+                                1: Associated Plot contains at least a Roll Call component
+                    AC "All Call Component"
+                        element 1
+                            table
+                                0: Associated Plot does not contain an All Call component
+                                1: Associated Plot contains at least an All Call component
+                    SSR "SSR Component"
+                        element 1
+                            table
+                                0: Associated Plot does not contain an SSR component
+                                1: Associated Plot contains at least an SSR component
+                    PSR "PSR Component"
+                        element 1
+                            table
+                                0: Associated Plot does not contain a PSR component
+                                1: Associated Plot contains at least a PSR component
+                    PLOTNR ""
+                        description
+                            Unique reference to the associated plot record
+                        element 16
+                            raw
+                remark
+                    Notes:
+                        1. (to bits-16/1): If SCN = 0, PLOTNR shall be set to 0.
+                        2. (to bit-21): If SCN = 1, I048/020/SCN#VAL – if implemented - shall be set to “1”.
+            ATL "ADS-B/Track Link"
+                description
+                    Providing link between a track and its associated ADS-B Report.
+                repetitive 1
+                    element 16
+                        raw
+                remark
+                    Note:
+                        The presence of this information shall be communicated in Data Item
+                        I048/020 by setting I048/020/ADSB#VAL – if implemented - = 1.
+            TRN "Turn State"
+                description
+                    Turn State with probability with regards to track evolution hypothesis (Circular model).
+                element 8
+                    unsigned quantity 1 "%" <= 100
+            NPP "Next Predicted Position"
+                description
+                    Next predicted position for a track update at the next expected antenna rotation in
+                    reference to the current track update.
+                group
+                    PREDRHO "Predicted Range"
+                        element 16
+                            unsigned quantity 1/2^7 "NM"
+                    PREDTHETA "Predicted Azimuth"
+                        element 16
+                            unsigned quantity 360/2^16 "°"
+                    EVOLRHOSTART "Predicted Closest Range"
+                        element 16
+                            unsigned quantity 1/2^7 "NM"
+                    EVOLRHOEND "Predicted Largest Range"
+                        element 16
+                            unsigned quantity 1/2^7 "NM"
+                    EVOLTHETASTART "Predicted Smallest Azimuth"
+                        element 16
+                            unsigned quantity 360/2^16 "°"
+                    EVOLTHETAEND "Predicted Largest Azimuth"
+                        element 16
+                            unsigned quantity 360/2^16 "°"
+                    NOISERHOSTART "Predicted Closest Range"
+                        element 16
+                            unsigned quantity 1/2^7 "NM"
+                    NOISERHOEND "Predicted Largest Range"
+                        element 16
+                            unsigned quantity 1/2^7 "NM"
+                    NOISETHETASTART "Predicted Smallest Azimuth"
+                        element 16
+                            unsigned quantity 360/2^16 "°"
+                    NOISETHETAEND "Predicted Largest Azimuth"
+                        element 16
+                            unsigned quantity 360/2^16 "°"
+                    PREDTIME "Predicted Detection Time"
+                        element 16
+                            unsigned quantity 1/2^7 "s"
+                remark
+                    Notes:
+                        1. When the area crosses North, THETASTART is larger than THETAEND.
+                        2. Next detection = Time of Day of current track record + PREDTIME.
+            DLK "Data Link Characteristics"
+                description
+                    Active message list for the aircraft for the current scan.
+                repetitive 1
+                    group
+                        TYPE ""
+                            description
+                                Type of Message Protocol
+                            element 4
+                                table
+                                    0: Surveillance Mode A (alert bit or periodic)
+                                    1: Comm-A
+                                    2: Ground Initiated Comm-B
+                                    3: Air Initiated Comm-B
+                                    4: Broadcast Comm-B
+                                    5: Comm-C
+                                    6: Comm-D
+                                    7: Reserved for future use
+                                    8: Reserved for future use
+                                    9: Reserved for future use
+                                    10: Reserved for future use
+                                    11: Reserved for future use
+                                    12: Reserved for future use
+                                    13: Reserved for future use
+                                    14: Reserved for future use
+                                    15: Reserved for future use
+                        ORIGIN ""
+                            description
+                                Frame Detection
+                            element 2
+                                table
+                                    0: From previous scan
+                                    1: New in current scan
+                                    2: Requested in the beam by transponder
+                                    3: Invalid ASTERIX value
+                        STATE ""
+                            description
+                                Frame state at aircraft release
+                            element 2
+                                table
+                                    0: In progress
+                                    1: Completed
+                                    2: Cancelled
+                                    3: Invalid ASTERIX value
+            LCK "Lockout Characteristics"
+                description
+                    Lockout State and remaining Lockout Time
+                group
+                    LS "Lockout State"
+                        element 1
+                            table
+                                0: Target not locked out by this radar
+                                1: Target locked out by this radar
+                    LOCTIM "Lockout Time"
+                        element 15
+                            unsigned quantity 1 "ms"
+            TC "Transition Code"
+                description
+                    Indication and Counter of Transition Codes for Modes 1, 2, and 3
+                group
+                    spare 7
+                    TCOUNT1 ""
+                        description
+                            Number of scans with transient Mode 1 Code
+                        element 4
+                            unsigned integer
+                    TCODE1 ""
+                        description
+                            Transient Mode 1 Code
+                        element 5
+                            raw
+                    TCOUNT2 ""
+                        description
+                            Number of scans with transient Mode 2 Code
+                        element 4
+                            unsigned integer
+                    TCODE2 ""
+                        description
+                            Transient Mode 2 Code
+                        element 12
+                            string octal
+                    TCOUNT3 ""
+                        description
+                            Number of scans with transient Mode 3 Code
+                        element 4
+                            unsigned integer
+                    TCODE3 ""
+                        description
+                            Transient Mode 3 Code
+                        element 12
+                            string octal
+                remark
+                    Notes:
+                        1. This item indicates a difference in the value for TCODEX between the code in
+                           the track file and the code from the latest plot updating the track.
+                        2. If TCOUNTX is set to 0 then TCODEX is meaningless and all bits shall be set
+                           to 0.
+                        3. The meaning of the individual bits in TCODEX is described in ICAO Annex 10
+                           Volume 4 Chapter 3.1.1.6.2.
+            TLC "Track Life Cycle"
+                description
+                    Acquisition Status of the Track and Track Life Cycle Counters
+                group
+                    ACQI ""
+                        description
+                            Acquisition Status Indicator
+                        element 2
+                            table
+                                0: Tentative Track with One Plot
+                                1: Tentative Track with at least Two Plots
+                                2: Pre-Confirmed Track
+                                3: Confirmed Track
+                    TRKUPDCTR ""
+                        description
+                            Track Update Counter
+                        element 14
+                            unsigned integer
+                    LASTTRKUPD ""
+                        description
+                            Time since last Track Update
+                        element 16
+                            unsigned quantity 1 "ms"
+                remark
+                    Notes:
+                        1. When Subitem #8 is included, each element shall be properly populated.
+                        2. The setting of bits 32/31 is implementation dependent and shall be described
+                           in the ICD of the system generating the ASTERIX record.
+                        3. The TRKUPDCTR is initiated with a value of 1 and it is incremented by 1 each
+                           time a track is updated.
+                        4. The LASTTRKUPD is set to 0 each time a track is updated.
+            ASI "Adjacent Sensor Information"
+                description
+                    Adjacent Sensor information (received via SCN) for the respective Mode S address
+                repetitive 1
+                    group
+                        SACADJS "SAC of the Adjacent Sensor"
+                            element 8
+                                raw
+                        SICADJS "SIC of the Adjacent Sensor"
+                            element 8
+                                raw
+                        TIMEOFDAYSCN "Absolute Timestamp in UTC Provided by the SCN"
+                            element 16
+                                unsigned quantity 1/2^7 "s"
+                        DATAUSE "Use of Adjacent Sensor Data"
+                            element 7
+                                table
+                                    0: Data used by Tracker
+                                    1: Data not used by Tracker
+                                    2: 2-127: Reserved for future use
+                        DRNA "DRN Availability"
+                            element 1
+                                table
+                                    0: DRN not available
+                                    1: DRN available
+                        DRN ""
+                            description
+                                Duplicate Address Reference Number uniquely identifying the aircraft in case of a duplicate Mode S Address
+                            element 16
+                                raw
+            TES "Track Extrapolation Source"
+                description
+                    Source for the extrapolation of the track information
+                element 8
+                    table
+                        0: Radar tracker calculation
+                        1: Integrated ADS-B
+                        2: External ADS-B
+                        3: SCN
+            IR "Identity Requested"
+                description
+                    Information whether during latest scan the Mode 3/A Code was requested
+                group
+                    IR ""
+                        description
+                            Identity Requested during latest scan
+                        element 1
+                            table
+                                0: Identity not requested
+                                1: Identity requested
+                    M3A "Age of Mode 3/A Code (I048/070)"
+                        element 7
+                            unsigned quantity 1 "s"
+    CPC "Common and Plot Characteristics"
+        definition
+            Plot Characteristics and Common Characteristics for Plots and Tracks
+        compound
+            PNB "Plot Number"
+                description
+                    Unique reference to a Plot Record
+                element 16
+                    raw
+            RPL "Replies/Plot Link"
+                description
+                    Link between a Plot and its Replies
+                repetitive 1
+                    group
+                        TYPE "Reply Type"
+                            element 8
+                                table
+                                    0: PSR Echo
+                                    1: SSR Reply
+                                    2: All Call Reply
+                                    3: Roll Call Reply
+                        REPLYNBR ""
+                            description
+                                Unique reference to a plot record
+                            element 16
+                                raw
+            SNB "Scan Number"
+                description
+                    Scan Number
+                element 8
+                    unsigned integer
+                remark
+                    Note:
+                        The Scan Number ranges from 1 to 127 and is incremented when the radar
+                        passes North. Once SCANNBR reached 127 it will restarted at 1 with the next
+                        scan.
+            DATE "Common and Plot Characteristics Date"
+                description
+                    Current Date in the form YYYYMMDD
+                group
+                    Y1 ""
+                        description
+                            First digit of year
+                        element 4
+                            unsigned integer >= 0 <= 10
+                    Y2 ""
+                        description
+                            Second digit of year
+                        element 4
+                            unsigned integer >= 0 <= 10
+                    Y3 ""
+                        description
+                            Third digit of year
+                        element 4
+                            unsigned integer >= 0 <= 10
+                    Y4 ""
+                        description
+                            Fourth digit of year
+                        element 4
+                            unsigned integer >= 0 <= 10
+                    M1 ""
+                        description
+                            First digit of month
+                        element 4
+                            unsigned integer >= 0 <= 1
+                    M2 ""
+                        description
+                            Second digit of month
+                        element 4
+                            unsigned integer >= 0 <= 10
+                    D1 ""
+                        description
+                            First digit of day
+                        element 4
+                            unsigned integer >= 0 <= 3
+                    D2 ""
+                        description
+                            Second digit of day
+                        element 4
+                            unsigned integer >= 0 <= 10
+                remark
+                    Note:
+                        The day is incremented at midnight UTC.

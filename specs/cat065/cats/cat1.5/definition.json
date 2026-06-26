@@ -1,0 +1,636 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ntransaction.\n",
+                    "description": null,
+                    "remark": "Notes:\n    - In application where transactions of various types are exchanged, the\n      Message Type Data Item facilitates the proper message handling at the\n      receiver side.\n"
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "SDPS Status"
+                                        ],
+                                        [
+                                            2,
+                                            "End of Batch"
+                                        ],
+                                        [
+                                            3,
+                                            "Service Status Report"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the system sending the data.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n"
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the service provided to one or more users.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The service identification is allocated by the SDPS.\n"
+                },
+                "name": "015",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [],
+                                    "tag": "ContentRaw"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Service Identification"
+            },
+            {
+                "documentation": {
+                    "definition": "A number indicating the completion of a service for that batch of track\ndata, from 0 to N-1, N being the number of batches used to make\none complete processing cycle.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "020",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        }
+                                    },
+                                    "tag": "ContentInteger"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Batch Number"
+            },
+            {
+                "documentation": {
+                    "definition": "Absolute time stamping of the message, in the form of elapsed time\nsince last midnight, expressed as UTC.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The time is reset to zero at every midnight.\n"
+                },
+                "name": "030",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Message"
+            },
+            {
+                "documentation": {
+                    "definition": "Status of an SDPS.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "040",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "NOGO",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Operational"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Degraded"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Not currently connected"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Unknown"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "OVL",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Default"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Overload"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TSV",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Default"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Invalid Time Source"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "PSS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Not applicable"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "SDPS-1 selected"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "SDPS-2 selected"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "SDPS-3 selected"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Processing System Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": "The STTN bit indicates when track numbering has been restarted. The STTN bit\nis a toggle bit that changes its value whenever the SDPS system starts re-numbering\nits tracks. Re-numbering of the track takes place either after SDPS start-up (cold or hot\nstart-up) or when a configuration set has been changed (please note that the latter\ncase is ARTAS specific behaviour and may be different in another SDPS).\n"
+                                    },
+                                    "name": "STTN",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Track Re-numbering Indication"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 1,
+                                "tag": "Spare"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "SDPS Configuration and Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Report sent by the SDPS related to a service\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "050",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "Service degradation"
+                                        ],
+                                        [
+                                            2,
+                                            "Service degradation ended"
+                                        ],
+                                        [
+                                            3,
+                                            "Main radar out of service"
+                                        ],
+                                        [
+                                            4,
+                                            "Service interrupted by the operator"
+                                        ],
+                                        [
+                                            5,
+                                            "Service interrupted due to contingency"
+                                        ],
+                                        [
+                                            6,
+                                            "Ready for service restart after contingency"
+                                        ],
+                                        [
+                                            7,
+                                            "Service ended by the operator"
+                                        ],
+                                        [
+                                            8,
+                                            "Failure of user main radar"
+                                        ],
+                                        [
+                                            9,
+                                            "Service restarted by the operator"
+                                        ],
+                                        [
+                                            10,
+                                            "Main radar becoming operational"
+                                        ],
+                                        [
+                                            11,
+                                            "Main radar becoming degraded"
+                                        ],
+                                        [
+                                            12,
+                                            "Service continuity interrupted due to disconnection with adjacent unit"
+                                        ],
+                                        [
+                                            13,
+                                            "Service continuity restarted"
+                                        ],
+                                        [
+                                            14,
+                                            "Service synchronised on backup radar"
+                                        ],
+                                        [
+                                            15,
+                                            "Service synchronised on main radar"
+                                        ],
+                                        [
+                                            16,
+                                            "Main and backup radar, if any, failed"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Service Status Report"
+            },
+            {
+                "documentation": {
+                    "definition": "Expansion\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "RE",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "ReservedExpansion"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Reserved Expansion Field"
+            },
+            {
+                "documentation": {
+                    "definition": "Special Purpose Field\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "SP",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "SpecialPurpose"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Special Purpose Field"
+            }
+        ],
+        "category": 65,
+        "date": {
+            "day": 18,
+            "month": 6,
+            "year": 2020
+        },
+        "edition": {
+            "major": 1,
+            "minor": 5
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "SDPS Service Status Reports",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "015",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "030",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "020",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "040",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "050",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": "RE",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "SP",
+                    "tag": "UapItem"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}
