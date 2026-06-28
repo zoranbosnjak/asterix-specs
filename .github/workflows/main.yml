@@ -4,7 +4,7 @@ jobs:
     main:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v2.3.4
+            - uses: actions/checkout@v7
               with:
                 persist-credentials: false
             - uses: cachix/install-nix-action@master
@@ -26,7 +26,7 @@ jobs:
               run: echo ${{ github.ref }}
             - name: deploy
               if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
-              uses: JamesIves/github-pages-deploy-action@3.7.1
+              uses: JamesIves/github-pages-deploy-action@4
               with:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 BRANCH: gh-pages
