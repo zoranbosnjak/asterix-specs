@@ -1,0 +1,1465 @@
+asterix 015 "Independent Non-Cooperative Surveillance System Target Reports"
+edition 1.0
+date 2019-07-15
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This data item conveys the report type and whether the output is
+            periodically updated or asynchronous depending upon external events.
+        group
+            MT "Message Type"
+                element 7
+                    table
+                        1: Measurement Plot
+                        2: Measurement Track
+                        3: Sensor Centric Plot
+                        4: Sensor Centric Track
+                        5: Track End Message
+            RG "Report Generation"
+                element 1
+                    table
+                        0: Periodic Report
+                        1: Event Driven Report
+        remark
+            Note 1: See Section 4.7 and ANNEX A for definitions of the Message
+            Types.
+
+            Note 2: Values 6 to 127 are reserved for future use
+
+            Note 3: Periodic Report: A periodic report is one transmitted
+            periodically with an independently configurable period.
+
+            Note 4: Event Driven Report: An Event Driven Report is one
+            generated in response to the occurrence of an external event such
+            as an RF echo off a target.
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the sensor from which the data is received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note 1: The up-to-date list of SACs is published on the EUROCONTROL
+            Web Site (http://www.eurocontrol.int/asterix).
+
+            Note 2: The SICs are allocated by the national authority
+            responsible for the surveillance infrastructure.
+
+            Note 3: The SIC and SAC values shall be formatted as binary
+            unsigned integers.
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+        remark
+            Note 1: The Service Identification is allocated by the system.
+
+            Note 2: The SID value shall be formatted as binary unsigned
+            integers.
+
+    020 "Target Report Descriptor"
+        definition
+            Type and characteristics of the data as transmitted by a system.
+        extended
+            MOMU "Mono-Static Target Report or Multi-Static Target Report"
+                element 2
+                    table
+                        0: Mono-Static Sensor
+                        1: Multi-Static Sensor
+                        2: Other
+                        3: Unknown
+            TTAX "Target Taxonomy"
+                element 2
+                    table
+                        0: Actual Target Report
+                        1: Reference Target
+                        2: Synthetic Target
+                        3: Simulated / Replayed Target
+            SCD "Scanning Direction"
+                element 2
+                    table
+                        0: Unknown
+                        1: Forward
+                        2: Backward
+                        3: Static
+            spare 1
+            -
+        remark
+            Note 1: The MoMu bit is used to indicate whether the target report
+            was constructed from a multi-static (including bi-static) or
+            mono-static sensor. Its setting dictates the interpretation of data
+            items I015/625 and I015/626. The meaning of the value “other” shall
+            be described in the system ICD.
+
+            Note 2: In this context, a Reference Target Report stems from
+            a non-aircraft target based on RF received externally to the system
+            boundary. This may be generated, for example, by an external RF
+            generator or a Permanent Echo or from a device, which is deployed
+            in line of sight of the sensor.
+
+            Note 3: A synthetic target is an internally generated diagnostic
+            signal prior to the generation of the ASTERIX Category 015 target
+            report. For example used to support test processes.
+
+            Note 4: This value is used to represent externally generated
+            targets or recorded data injected into the output data stream
+            of the INCS system e.g. for test or training purposes.
+
+            Note 5: This indication is used to inform about the scanning
+            direction of the system (e.g. left/right, up/down,
+            clockwise/anti-clockwise). It’s exact meaning is implementation
+            dependent and shall be described in the system ICD.
+
+    030 "Warning/Error Conditions"
+        definition
+            Warning/error conditions detected by a system for the target report
+            involved.
+        repetitive fx
+            element 7
+                raw
+        remark
+            Note 1: It has to be stressed that a series of one or more W/E
+            conditions can be reported per target report.
+
+            Note 2: The nature of the warning / error condition may differ
+            between sensor types and the declaration and use of such alerts
+            is driven by end user requirements.
+
+            Note 3: Potential applications could be to indicate that the target
+            report correlates with road infrastructure (terrestrial vehicles)
+            or a wind turbine or that it is a fixed or slow moving return or
+            originating from an area of high clutter. Such data items could
+            also be used to indicate the presence of interference – either
+            deliberate or accidental.
+
+            Note 4: The Warning/Error Condition Values from 1-31 are reserved
+            for designation by the ASTERIX Maintenance Group. System
+            implementers are free to use values of 32 and above. The allocation
+            of the remaining values of this data item shall be defined in a
+            local Interface Control Document.
+
+            Note 5: The value of “0” must not be assigned.
+
+    050 "Update Period"
+        definition
+            Period until next expected output of a target report for this
+            target.
+        group
+            spare 2
+            UPD "Update Period"
+                element 14
+                    unsigned quantity 1/2^7 "s" <= 128
+        remark
+            Note 1: It is not necessary that all targets detected by the INCS
+            sensor have target reports generated at the same update period.
+
+            Note 2: This data item indicates the period until the next expected
+            output of a target report for this target relative to the Time
+            of Applicability contained in data item I015/145
+
+    145 "Time of Applicability"
+        definition
+            Absolute time stamping for applicability of the measured
+            information expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s" < 86400
+        remark
+            Note 1: The Time of Applicability refers to the information
+            contained in data item I015/600, I015/601, I015/625, I015/626,
+            I015/627, I015/628 whichever is available. In case of a Track End
+            Message (Message Type = 5) it refers to the time at which the track
+            is terminated and the track number (data item I015/161) is released
+            for re-use.
+
+            Note 2: A distributed sensor, such as an MSPSR, may have multiple
+            elements that are each individually time stamped which are
+            consolidated in to a target report. Rather than provide details
+            of each time stamped message, this data item conveys the time
+            of applicability of position of the target report.
+
+            Note 3: The Time of Applicability value is reset to zero each day
+            at midnight.
+
+            Note 4: The Time of Applicability value shall be formatted as a
+            binary unsigned integer.
+
+    161 "Track/Plot Number"
+        definition
+            An integer value representing a unique reference to a track/plot
+            record.
+        element 16
+            unsigned integer <= 65535
+        remark
+            Note 1: Track numbers are required for Sensor and Measurement
+            Tracks. However, for Sensor and Measurement Plots the inclusion
+            of a track number is optional – depending upon whether the INCS
+            sensor has used tracking processing to reduce the false alarm
+            rates.
+
+            Note 2: The track number is allocated by the system.
+
+            Note 3: The track number value shall be formatted as binary
+            unsigned integers.
+
+    170 "Track/Plot Status"
+        definition
+            Status of Track/Plot.
+        extended
+            BIZ ""
+                element 1
+                    table
+                        0: Target not in Blind Zone
+                        1: Target in Blind Zone
+            BAZ ""
+                element 1
+                    table
+                        0: Target not in Blanked Zone
+                        1: Target in Blanked Zone
+            TUR ""
+                element 1
+                    table
+                        0: Track Alive
+                        1: Track Terminated by User Request
+            spare 1
+            CSTP "Coasted - Position"
+                element 1
+                    table
+                        0: Not extrapolated
+                        1: Extrapolated
+            CSTH "Coasted – Height"
+                element 1
+                    table
+                        0: Not extrapolated
+                        1: Extrapolated
+            CNF "Confirmed vs. Tentative Track"
+                element 1
+                    table
+                        0: Confirmed Track
+                        1: Tentative Track
+            -
+        remark
+            Note 1: The indication for CSTP and/or CSTH applies only to data
+            items I015/600 and I015/605 respectively. In case one of these data
+            items is not present, CSTP and/or CSTH has no meaning.
+
+            Note 2: A coasted track is one for which the sensor detections have
+            been interrupted and whose position/height is being predicted based
+            on the previously received responses.
+
+            Note 3: The blind zone or blanked zone are predictable zones where
+            no detection is predicted.
+            If bit 5 is set and TTS = 1 then the track is coasted because it is
+            in a blind zone or sector blank zone.
+
+            Note 4: The indication TUR=1 shall be sent only with
+            Message Type = 5 “Track End Message”.
+
+    270 "Target Size & Orientation"
+        definition
+            Data item containing the size and orientation information of the
+            target.
+        compound
+            LEN "Target Length"
+                description
+                    The target length is the longest dimension in the targets
+                    direction of motion
+                element 16
+                    unsigned quantity 1/100 "m" <= 13107/20
+            WDT "Target Width"
+                description
+                    The target width is the longest dimension orthogonal to
+                    the targets direction of motion
+                element 16
+                    unsigned quantity 1/100 "m" <= 13107/20
+            HGT "Target Height"
+                description
+                    The target height is the longest dimension in the vertical
+                    direction.
+                element 16
+                    unsigned quantity 1/100 "m" <= 13107/20
+            ORT "Target Orientation"
+                description
+                    The orientation gives the direction, which the target nose
+                    is pointing, relative to the Geographical North.
+                element 16
+                    unsigned quantity 360/2^16 "°" <= 360
+                remark
+                    Note: The orientation shall increment in a clockwise manner
+                    relative to Geographic North.
+        remark
+            Note: If length and width cannot be clearly determined, the greater
+            value of the two shall be transmitted as length.
+
+    300 "Object Classification"
+        definition
+            Classification result of the object detection.
+        repetitive 1
+            group
+                CLS "Classification"
+                    element 9
+                        unsigned integer
+                PRB "Probability"
+                    element 7
+                        unsigned integer
+        remark
+            Note 1: INCS processing may be able to provide an indication of the
+            nature of the target e.g. road vehicle or aircraft with the
+            potential for further discrimination in the type of the aircraft
+            e.g. two engine, fixed wing/helicopter etc.
+            Before including requirements for target classification it is
+            necessary to consider the operational manner in which such
+            information would be used and how/if such data would be made
+            available to the controllers.
+
+            Note 2: Target classification is attributing, with an acceptable
+            degree of confidence, a target report as having originated from
+            a specific object or target type e.g. fixed wing aircraft, flock
+            of birds etc. (It should be noted that the probabilities assigned
+            to a target do not necessarily need to add up to 100%)
+            The ability of an INCS sensor to classify the targets it detects
+            is dependent upon the systems capabilities and is driven by end
+            user requirements. The use of this optional data item is to be
+            agreed between parties such as the system manufacturer, the system
+            operator agency and the end user. The allocation of the CLS octet
+            is to be defined in a local Interface Control Document that shall
+            be agreed by both parties.
+
+            Note 3: If this functionality is implemented in the sensor, the
+            classification result (CLS), PRB and REP value shall be formatted
+            as a binary unsigned integer.
+
+    400 "Measurement Identifier"
+        definition
+            An identifier pointing to a measurement that was created from a
+            specific contributing Tx/Rx Pair where the Pair Identifier refers
+            to the index which details both the transmitter characteristics
+            (DVB-T, DAB, FM, dedicated etc.) and the receiver characteristics.
+            These are defined in ASTERIX Category 016 – Data Item I016/300).
+        group
+            PID "Pair Identifier"
+                element 16
+                    unsigned integer
+            ON "Observation Number"
+                element 24
+                    unsigned integer
+        remark
+            Note 1: INCS sensors may achieve their operational requirements
+            based upon different techniques and technologies. Some may utilise
+            multiple transmitter stations or multiple receiver stations.
+            This data items provides the means for subsequent processing stages
+            to be able to analyse the target report data based upon the system
+            components that contributed to the formation of the target report.
+            See ANNEX A for further details.
+
+            Note 2: The Pair Identifier shall be defined in ASTERIX Category
+            016 (Data Item I016/300).
+
+            Note 3: The Observation Number is identifying an element of
+            ‘raw data’ information. The sensor plots and sensor tracks are
+            usually composed of several
+
+    480 "Associations"
+        definition
+            Information on which Measurement Identifiers contributed to the
+            Sensor Centric Plot / Sensor Centric Track.
+        repetitive 1
+            element 40
+                raw
+
+    600 "Horizontal Position Information"
+        definition
+            Data item containing the horizontal position information of the
+            target.
+        compound
+            P84 "Horizontal Position in WGS-84 Coordinates"
+                description
+                    Position of a target in WGS-84 Coordinates.
+                group
+                    LATITUDE ""
+                        description
+                            Latitude in WGS-84, in Two’s complement.
+                        element 32
+                            signed quantity 180/2^31 "°" >= -90 < 90
+                    LONGITUDE ""
+                        description
+                            Longitude in WGS-84, in Two’s complement.
+                        element 32
+                            signed quantity 180/2^31 "°" >= -180 < 180
+                remark
+                    Note: The LSB provides a resolution of 1cm. Positive
+                    longitude indicates East. Positive latitude indicates North.
+            HPR "Horizontal Position Resolution"
+                description
+                    A horizontal 2D dimensional area (ellipse) within which the
+                    sensor is unable to resolve two separate targets.
+                group
+                    RSHPX ""
+                        description
+                            Horizontal position resolution of the target in
+                            target centric Cartesian coordinates (X-component)
+                        element 16
+                            unsigned quantity 1/2 "m" <= 32767
+                    RSHPY ""
+                        description
+                            Horizontal position resolution of the target in
+                            target centric Cartesian coordinates (Y-component)
+                        element 16
+                            unsigned quantity 1/2 "m" <= 32767
+                    CORSHPXY ""
+                        description
+                            Correlation of horizontal position resolution
+                            of X and Y components, in Two’s complement.
+                        element 8
+                            signed quantity 1/2^7 ""
+            HPP "Horizontal Position Precision"
+                description
+                    The distribution of horizontal position random errors.
+                group
+                    SDHPX ""
+                        description
+                            Standard Deviation of horizontal position of the
+                            target in target centric Cartesian coordinates
+                            (X-component)
+                        element 16
+                            unsigned quantity 1/2^2 "m" <= 65535/4
+                    SDHPY ""
+                        description
+                            Standard Deviation of horizontal position of the
+                            target in target centric Cartesian coordinates
+                            (Y-component)
+                        element 16
+                            unsigned quantity 1/2^2 "m" <= 65535/4
+                    COSDHPXY ""
+                        description
+                            Correlation of standard deviation of horizontal
+                            position of X and Y components, in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+
+    601 "Geometric Height Information"
+        definition
+            Data item containing the geometric height information of the target
+            in WGS 84 height above ellipsoid.
+        compound
+            GH "Geometric Height (WGS-84)"
+                description
+                    Vertical distance between the target and the projection
+                    of its position on the earth’s ellipsoid, as defined by
+                    WGS-84, in Two’s complement form.
+                element 24
+                    signed quantity 1/100 "m" >= -83286 <= 83286
+            RSGH "Geometric Height Resolution"
+                description
+                    Vertical distance within which the sensor is unable to
+                    resolve two separate targets.
+                element 24
+                    unsigned quantity 1/100 "m" <= 3355443/20
+            SDGH "Geometric Height Precision"
+                description
+                    The distribution of random Geometric Height errors (see
+                    also the definition of Precision in the appendix).
+                element 24
+                    unsigned quantity 1/100 "m" <= 3355443/20
+            CI6 "Confidence Interval for Geometric Height (67%)"
+                description
+                    A measure of the uncertainty within which 67% of geometric
+                    height measurements will be contained.
+                group
+                    UCI6 ""
+                        description
+                            Upper confidence interval for Geometric Height (67%)
+                        element 12
+                            unsigned quantity 16 "m" <= 65520
+                    LCI6 ""
+                        description
+                            Lower confidence interval for Geometric Height (67%)
+                        element 12
+                            unsigned quantity 16 "m" <= 65520
+            CI9 "Confidence Interval for Geometric Height (95%)"
+                description
+                    A measure of the certainty within which 95% of geometric
+                    height measurements will be contained.
+                group
+                    UCI9 ""
+                        description
+                            Upper confidence interval for Geometric Height (95%)
+                        element 12
+                            unsigned quantity 16 "m" <= 65520
+                    LCI9 ""
+                        description
+                            Lower confidence interval for Geometric Height (95%)
+                        element 12
+                            unsigned quantity 16 "m" <= 65520
+            COGHHP "Correlation of Geometric Height and Horizontal Position"
+                description
+                    Correlation of Geometric Height converted into metres and
+                    Horizontal Position of X/Y-components.
+                group
+                    X ""
+                        description
+                            Correlation of Geometric Height converted into
+                            metres and Horizontal Position of (X-component),
+                            in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Geometric Height converted into
+                            metres and Horizontal Position of (Y-component),
+                            in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COGHHV "Correlation of Geometric Height and Horizontal Velocity"
+                description
+                    Correlation of Geometric Height converted into metres and
+                    Horizontal Velocity.
+                group
+                    X ""
+                        description
+                            Correlation of Geometric Height converted into
+                            metres and Horizontal Velocity of (X-component),
+                            in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Geometric Height converted into
+                            metres and Horizontal Velocity of (Y-component),
+                            in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COGHHA "Correlation of Geometric Height and Horizontal Acceleration"
+                description
+                    Correlation of Geometric Height converted into metres and
+                    Horizontal Acceleration of X/Y-components.
+                group
+                    X ""
+                        description
+                            Correlation of Geometric Height converted into
+                            metres and Horizontal Acceleration of
+                            (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Geometric Height converted into
+                            metres and Horizontal Acceleration of
+                            (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+
+    602 "Horizontal Velocity Information"
+        definition
+            Magnitude of the Horizontal Velocity Vector.
+        compound
+            HV "Horizontal Velocity Vector"
+                description
+                    Horizontal velocity vector expressed in target centric
+                    Cartesian coordinates.
+                group
+                    X ""
+                        description
+                            Horizontal Velocity (X-component), in Two’s
+                            complement
+                        element 20
+                            signed quantity 1/100 "m/s" >= -524287/100 <= 524287/100
+                    Y ""
+                        description
+                            Horizontal Velocity in (Y-component), in Two’s
+                            complement
+                        element 20
+                            signed quantity 1/100 "m/s" >= -524287/100 <= 524287/100
+            RSHV "Horizontal Velocity Resolution"
+                description
+                    Minimum difference in Horizontal Velocity at which a sensor
+                    system is able to distinguish two targets with otherwise
+                    identical parameters in range and angular domain (under
+                    ideal measurement).
+                group
+                    X ""
+                        description
+                            Horizontal velocity resolution of the target in
+                            target centric Cartesian coordinates (X-component)
+                        element 16
+                            unsigned quantity 1/100 "m/s" <= 13107/20
+                    Y ""
+                        description
+                            Horizontal velocity resolution of the target in
+                            target centric Cartesian coordinates (Y-component)
+                        element 16
+                            unsigned quantity 1/100 "m/s" <= 13107/20
+                    CORSHVXY ""
+                        description
+                            Correlation of horizontal position resolution of
+                            X and Y components, in Two’s complement.
+                        element 8
+                            signed quantity 1/2^7 ""
+                remark
+                    Note: The velocity resolution describes the capability
+                    of a sensor to be able to separate two closely located
+                    targets in the velocity domain. The velocity resolution
+                    for an INCS system depends on the signal integration time
+                    as well as the transmit frequency. A longer integration
+                    time or a higher transmit frequency leads to a better
+                    velocity resolution. Depending on the specific INCS
+                    application, a better velocity resolution may be more
+                    important than a high sensor refresh rate. The velocity
+                    resolution might also alleviate the limitations on the
+                    range resolution, in order to make small bandwidth
+                    applications possible.
+            SDHV "Horizontal Velocity Precision"
+                description
+                    Root-mean-square (rms) error of the Horizontal Velocity
+                    estimate provided by a sensor system.
+                group
+                    X ""
+                        description
+                            Standard Deviation of horizontal velocity
+                            (X-component)
+                        element 16
+                            unsigned quantity 1/100 "m/s" <= 13107/20
+                    Y ""
+                        description
+                            Standard Deviation of horizontal velocity
+                            (Y-component)
+                        element 16
+                            unsigned quantity 1/100 "m/s" <= 13107/20
+                    COHVXY ""
+                        description
+                            Correlation of standard deviation of horizontal
+                            velocity of X and Y components, in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COHVHP "Correlation of Horizontal Velocity and Horizontal Position"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Horizontal Velocity and Horizontal Position provided
+                    by a sensor system.
+                group
+                    COHVXHPX ""
+                        description
+                            Correlation of Horizontal Velocity (X-component)
+                            and Horizontal Position (X-component), in Two’s
+                            complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHVXHPY ""
+                        description
+                            Correlation of Horizontal Velocity (X-component)
+                            and Horizontal Position (Y-component), in Two’s
+                            complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHVYHPX ""
+                        description
+                            Correlation of Horizontal Velocity (Y-component)
+                            and Horizontal Position (X-component), in Two’s
+                            complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHVYHPY ""
+                        description
+                            Correlation of Horizontal Velocity (Y-component)
+                            and Horizontal Position (Y-component), in Two’s
+                            complement
+                        element 8
+                            signed quantity 1/2^7 ""
+
+    603 "Horizontal Acceleration Information"
+        definition
+            Magnitude of the Horizontal Acceleration Vector.
+        compound
+            HA "Horizontal Acceleration Vector"
+                description
+                    Horizontal acceleration vector expressed in target centric
+                    local Cartesian coordinates, in Two’s complement
+                    representation.
+                group
+                    X ""
+                        description
+                            Horizontal Acceleration (X-component), in Two’s
+                            complement
+                        element 12
+                            signed quantity 1/2^4 "m/s²" >= -128 <= 128
+                    Y ""
+                        description
+                            Horizontal Acceleration (Y-component), in Two’s
+                            complement
+                        element 12
+                            signed quantity 1/2^4 "m/s²" >= -128 <= 128
+            SDHA "Horizontal Acceleration Precision"
+                description
+                    Root-mean-square (rms) error of the Horizontal Acceleration
+                    estimate provided by a sensor system.
+                group
+                    X ""
+                        description
+                            Standard Deviation of Horizontal Acceleration
+                            (X-component)
+                        element 12
+                            unsigned quantity 1/2^4 "m/s²" <= 4095/16
+                    Y ""
+                        description
+                            Standard Deviation of Horizontal Acceleration
+                            (Y-component)
+                        element 12
+                            unsigned quantity 1/2^4 "m/s²" <= 4095/16
+                    COHAXY ""
+                        description
+                            Correlation of standard deviation of Horizontal
+                            Acceleration of X and Y components, in Two’s
+                            complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COHAHP "Correlation of Horizontal Acceleration and Horizontal Position"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Horizontal Acceleration and Horizontal Position provided
+                    by a sensor system.
+                group
+                    COHAXHPX ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (X-component) and Horizontal Position
+                            (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHAXHPY ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (X-component) and Horizontal Position
+                            (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHAYHPX ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (Y-component) and Horizontal Position
+                            (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COAYHPY ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (Y-component) and Horizontal Position
+                            (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COHAHV "Correlation of Horizontal Acceleration and Horizontal Velocity"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Horizontal Acceleration and Horizontal Velocity provided
+                    by a sensor system.
+                group
+                    COHAXHVX ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (X-component) and Horizontal Velocity
+                            (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHAXHVY ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (X-component) and Horizontal Velocity
+                            (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHAYHVX ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (Y-component) and Horizontal Velocity
+                            (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COHAYHVY ""
+                        description
+                            Correlation of Horizontal Acceleration
+                            (Y-component) and Horizontal Velocity
+                            (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+
+    604 "Vertical Velocity Information"
+        definition
+            Vertical velocity as given by the rate of change of the Geometric
+            Height.
+        compound
+            VV "Vertical Velocity"
+                description
+                    Vertical velocity as given by the rate of change of the
+                    Geometric Height expressed in Two’s Complement.
+                element 24
+                    signed quantity 1/100 "m/s" >= -8388607/100 <= 8388607/100
+                remark
+                    Note: Positive values indicates climbing target and
+                    negative values indicates descending target.
+            RSVV "Vertical Velocity Resolution"
+                description
+                    Minimum difference in Vertical Velocity at which a sensor
+                    system is able to distinguish two targets with otherwise
+                    identical parameters in range and angular domain (under
+                    ideal measurement).
+                element 16
+                    unsigned quantity 1/100 "m/s" <= 13107/20
+            SDVV "Vertical Velocity Precision"
+                description
+                    Root-mean-square (rms) error of the Vertical Velocity
+                    estimate provided by a sensor system.
+                group
+                    SDVV ""
+                        description
+                            Standard Deviation of Vertical Velocity
+                        element 16
+                            unsigned quantity 1/100 "m/s" <= 13107/20
+                    COVVGH ""
+                        description
+                            Correlation of Vertical Velocity and Geometric
+                            Height, in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COVVHP "Correlation of Vertical Velocity and Horizontal Position"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Vertical Velocity converted in to metres/sec and
+                    Horizontal Position provided by a sensor system.
+                group
+                    X ""
+                        description
+                            Correlation of Vertical Velocity and Horizontal
+                            Position (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Vertical Velocity and Horizontal
+                            Position (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COVVHV "Correlation of Vertical Velocity and Horizontal Velocity"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Vertical Velocity converted in to metres/sec and
+                    Horizontal Velocity provided by a sensor system.
+                group
+                    X ""
+                        description
+                            Correlation of Vertical Velocity and Horizontal
+                            Velocity (X-component)), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Vertical Velocity and Horizontal
+                            Velocity (Y-component)), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COVVHA "Correlation of Vertical Velocity and Horizontal Acceleration"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Vertical Velocity converted in to metres/sec and
+                    Horizontal Acceleration provided by a sensor system.
+                group
+                    X ""
+                        description
+                            Correlation of Vertical and Horizontal Acceleration
+                            (X-component)), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Vertical Velocity and Horizontal
+                            Acceleration (Y-component)), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+
+    605 "Vertical Velocity Information"
+        definition
+            Compound data item, comprising a primary subfield of one-octet,
+            followed by one or more defined subfields.
+        compound
+            VA "Vertical Acceleration"
+                description
+                    Vertical acceleration information expressed in Two’s
+                    complement.
+                element 16
+                    signed quantity 1/100 "m/s²" >= -32767/100 <= 32767/100
+                remark
+                    Note: Positive values indicates accelerating during climb
+                    or descent and negative values indicates deceleration
+                    during climb or descent.
+            RSVA "Vertical Acceleration Precision"
+                description
+                    Root-mean-square (rms) error of the Vertical Acceleration
+                    estimate provided by a sensor system.
+                group
+                    SDVA ""
+                        description
+                            Standard Deviation of Vertical Acceleration
+                        element 16
+                            unsigned quantity 1/100 "m/s²" <= 3355443/20
+                    COVAGH ""
+                        description
+                            Correlation of Vertical Acceleration and Geometric
+                            Height, in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    COVAVV ""
+                        description
+                            Correlation of Vertical Acceleration and Vertical
+                            Velocity, in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COVAHP "Correlation of Vertical Acceleration and Horizontal Position"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Vertical Acceleration and Horizontal Position provided
+                    by a sensor system.
+                group
+                    X ""
+                        description
+                            Correlation of Vertical Acceleration and Horizontal
+                            Position (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Vertical Acceleration and Horizontal
+                            Position (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COVAHV "Correlation of Vertical Acceleration and Horizontal Velocity"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Vertical Acceleration and Horizontal Velocity provided
+                    by a sensor system.
+                group
+                    X ""
+                        description
+                            Correlation of Vertical Acceleration and Horizontal
+                            Velocity (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Vertical Acceleration and Horizontal
+                            Velocity (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            COVAHA "Correlation of Vertical Acceleration and Horizontal Acceleration"
+                description
+                    Correlation of the errors associated with the estimates
+                    of Vertical Acceleration and Horizontal Acceleration
+                    provided by a sensor system.
+                group
+                    X ""
+                        description
+                            Correlation of Vertical Acceleration and Horizontal
+                            Acceleration (X-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    Y ""
+                        description
+                            Correlation of Vertical Acceleration and Horizontal
+                            Acceleration (Y-component), in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+
+    625 "Range Information"
+        definition
+            The targets range information is given relative to the sensor
+            reference point(s).
+        compound
+            R "Range"
+                description
+                    Measured range between a target object and a pre-defined
+                    point associated with the sensor system (e.g., for
+                    a mono-static radar system the phase centre of the antenna
+                    aperture) or measured bistatic range between a pre-defined
+                    point associated with the transmitter station, the target
+                    object position and a pre-defined point associated with
+                    the sensor system (e.g., for a bistatic radar system
+                    the phase centres of the transmitter and receiver antenna
+                    aperture).
+                element 24
+                    signed quantity 1/10 "m" >= -8388607/10 <= 8388607/10
+            RSR "Range Resolution"
+                description
+                    Minimum difference in Range at which a sensor system is
+                    able to distinguish two targets with otherwise identical
+                    parameters in velocity and angular domain (under ideal
+                    measurement).
+                element 24
+                    unsigned quantity 1/10 "m" <= 3355443/2
+                remark
+                    Note: This may differ from the cell size applied within
+                    the Sensor.
+            SDR "Range Precision"
+                description
+                    Root-mean-square (rms) error of the Range estimate provided
+                    by a sensor system.
+                element 24
+                    unsigned quantity 1/10 "m" <= 3355443/2
+            RR "Range Rate"
+                description
+                    The range rate is derived from different range measurements.
+                element 24
+                    signed quantity 1/10 "m/s" >= -8388607/10 <= 8388607/10
+                remark
+                    Note: The range rate is the first derivative computed from
+                    the range. In contrast, the Doppler velocity in I015/626
+                    is actually measured through Doppler.
+            RSRR "Range Rate Resolution"
+                description
+                    Minimum difference in Range Rate at which a sensor system
+                    is able to distinguish two targets with otherwise identical
+                    parameters in position and angular domain (under ideal
+                    measurement).
+                element 24
+                    unsigned quantity 1/10 "m/s" <= 3355443/2
+            SDRR "Range Rate Precision"
+                description
+                    Root-mean-square (rms) error of the Range Rate estimate
+                    provided by a sensor system.
+                group
+                    SDRR ""
+                        description
+                            Standard Deviation of Range Rate
+                        element 24
+                            unsigned quantity 1/10 "m/s" <= 3355443/2
+                    CORRR ""
+                        description
+                            Correlation of Range Rate and Range, in Two’s
+                            complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            RA "Range Acceleration"
+                description
+                    The range acceleration is derived from different range
+                    rates.
+                element 16
+                    signed quantity 1/2^6 "m/s²" >= -512 <= 512
+            SDRA "Range Acceleration Precision"
+                description
+                    Root-mean-square (rms) error of the Range Acceleration
+                    determined by the sensor system.
+                group
+                    SDRA ""
+                        description
+                            Standard Deviation of Range Acceleration
+                        element 16
+                            unsigned quantity 1/2^7 "m/s²" <= 512
+                    CORAR ""
+                        description
+                            Correlation of Range Acceleration and Range,
+                            in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+                    CORARR ""
+                        description
+                            Correlation of Range Acceleration and Range Rate,
+                            in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+        remark
+            Note 1: Depending upon its design the manner in which the
+            positional data is declared by an INCS sensor may be expressed
+            in WGS-84 (I015/ 600) or sensor centric coordinate system based
+            upon the ‘system reference point’ of the sensor (I015/625).
+
+            Note 2: The optional ‘precision’ fields (in Data Items
+            I015/600 – I015/625) provide a measure of the accuracy the INCS
+            system has assigned to positional data contained in the target
+            report.
+            Such information can be used to improve the quality with which
+            the INCS target report data is integrated in to the subsequent
+            processing stages of the ATM infrastructure.
+            However a consideration of the sensor characteristics and
+            capabilities, the manner in which INCS data is used operationally,
+            the weighting assigned to INCS data within a multi-sensor tracker
+            and the credibility assigned to the covariance data items should
+            be made to support the decision of whether these optional
+            covariance data items are required or whether the basic data items
+            provide sufficient performance.
+            Whilst not an operational consideration the additional costs that
+            may be associated with the provision and use of such data items
+            should also be weighed against the potential performance benefits
+            that would be achieved through the inclusion of these Data Items
+            in performance specifications.
+
+            Note 3: If I015/020 MoMu indicates that the target report is
+            Bi-Static (MoMu =1) then the range information is the difference
+            between the path from the transmitter to target to the receiver
+            less the distance between the transmitter and receiver. In this
+            case, the reference points referred to above are the positions
+            of the transmitter and receiver.
+            If I015/020 MoMu indicates that the target report is Mono-Static
+            (MoMu =0) then the range information is the distance between
+            the sensor and the target. In this case, the reference point
+            referred to above is the position of the mono-static sensor.
+
+            Note 4: The meaning of range in Category 015 is significantly
+            broader than the traditional hence the different INCS working
+            principles. This is especially true for bi-static and multi-static
+            radars. For readability the field is still called range and not
+            mono-/bi-/multi-static range or pseudo-range.
+            For radar the measured range is calculated from time differences
+            of signals assumed to be transmitted/received at the sensor
+            reference point(s). As noted above for bi-static radars the
+            reference points are the positions of the transmitter and receiver.
+            Moreover multi-static radars may receive identical signals from
+            other transmitters than the assumed reference transmitter
+            (e.g. passive INCS which are using single frequency networks as
+            illuminators) and therefore may calculate negative values for
+            bi-static range measurement data.
+
+    626 "Doppler Information"
+        definition
+            Doppler measurement of the Target.
+        compound
+            DV "Doppler Velocity"
+                description
+                    Radial velocity or bistatic velocity of a target object
+                    measured by a sensor system via a corresponding Doppler
+                    frequency shift.
+                element 24
+                    signed quantity 1/100 "m/s" >= -8388607/100 <= 8388607/100
+                remark
+                    Note: The radial velocity is the magnitude of the
+                    3-dimensional velocity vector (i.e., the time derivative
+                    of the 3-dimensional position vector) projected onto the
+                    line between target object and sensor. The bistatic
+                    velocity is the magnitude of the 3-dimensional velocity
+                    vector projected onto the line between transmitter station
+                    and target object plus the magnitude of the 3-dimensional
+                    velocity vector projected onto the line between target
+                    object and sensor.
+            SDDV "Precision of Doppler Velocity"
+                description
+                    Root-mean-square (rms) error of the Doppler Velocity
+                    measured by the sensor system.
+                element 16
+                    unsigned quantity 1/2^6 "m/s" <= 1024
+            DA "Doppler Acceleration"
+                description
+                    Radial acceleration or bistatic acceleration of a target
+                    object measured by a sensor system via a corresponding
+                    Doppler frequency shift and a subsequent difference
+                    operation.
+                element 16
+                    signed quantity 1/2^6 "m/s²" >= -512 <= 512
+                remark
+                    Note: The radial acceleration is the magnitude of the
+                    3-dimensional acceleration vector (i.e., the time
+                    derivative of the 3-dimensional velocity vector) projected
+                    onto the line between target object and sensor. The
+                    bistatic acceleration is the magnitude of the 3-dimensional
+                    acceleration vector projected onto the line between
+                    transmitter station and target object plus the magnitude
+                    of the 3-dimensional acceleration vector projected onto
+                    the line between target object and sensor.
+            SDDA "Precision of Doppler Acceleration"
+                description
+                    Root-mean-square (rms) error of the Doppler Velocity
+                    measured by the sensor system.
+                group
+                    SDDA ""
+                        description
+                            Standard Deviation of Doppler Acceleration
+                        element 16
+                            unsigned quantity 1/2^6 "m/s²" <= 1024
+                    CODADV ""
+                        description
+                            Correlation of Doppler Acceleration and Doppler
+                            Velocity, in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            CODVR "Correlation of Doppler Velocity and Range"
+                description
+                    Correlation of Doppler Velocity and Range (e.g. bistatic
+                    range).
+                element 8
+                    signed quantity 1/2^7 ""
+            CODVRR "Correlation of Doppler Velocity and Range Rate"
+                description
+                    Correlation of Doppler Velocity and Range Rate.
+                element 8
+                    signed quantity 1/2^7 ""
+            CODVRA "Correlation of Doppler Velocity and Range Acceleration"
+                description
+                    Correlation of Doppler Velocity and Range (e.g. bistatic
+                    range).
+                element 8
+                    signed quantity 1/2^7 ""
+            CODAR "Correlation of Doppler Acceleration and Range"
+                description
+                    Correlation of Doppler Acceleration and Range (e.g.
+                    bistatic range).
+                element 8
+                    signed quantity 1/2^7 ""
+            CODARR "Correlation of Doppler Acceleration and Range Rate"
+                description
+                    Correlation of Doppler Acceleration and Range Rate.
+                element 8
+                    signed quantity 1/2^7 ""
+            CODARA "Correlation of Doppler Acceleration and Range Acceleration"
+                description
+                    Correlation of Doppler Acceleration and Range Acceleration.
+                element 8
+                    signed quantity 1/2^7 ""
+
+    627 "Azimuth Information"
+        definition
+            Azimuth information that is provided relative to the sensor
+            or component reference point.
+        compound
+            AZ "Azimuth"
+                description
+                    Target angle relative to geographic North in the local
+                    reference system centred on the sensor.
+                element 16
+                    unsigned quantity 360/2^16 "°" >= 360
+                remark
+                    Note: The azimuth shall increment in a clockwise manner
+                    relative to geographic North.
+            RSAZ "Azimuth Resolution"
+                description
+                    Minimum angle in order to separate targets by the sensor
+                    in the azimuth dimension.
+                element 16
+                    unsigned quantity 45/2^16 "°" <= 45
+            SDASZ "Standard Deviation of Azimuth"
+                description
+                    Estimated standard deviation of the azimuth angle.
+                element 16
+                    unsigned quantity 45/2^16 "°" <= 45
+            AZR "Azimuth Rate"
+                description
+                    Rate of change of the azimuth angle.
+                element 16
+                    signed quantity 180/2^16 "°" >= -90 <= 90
+            SDAZR "Standard Deviation of Azimuth Rate"
+                description
+                    Estimated standard deviation of the azimuth angle rate.
+                group
+                    SDAZR ""
+                        description
+                            Standard Deviation of Azimuth Rate
+                        element 16
+                            unsigned quantity 45/2^16 "°" <= 45
+                    COAZRAZ ""
+                        description
+                            Correlation of Azimuth Rate and Azimuth, in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            AZEX "Azimuth Extent"
+                description
+                    Target size in the azimuth angle dimension. The target
+                    extends between start angle and end angle traversed
+                    clockwise.
+                group
+                    S ""
+                        description
+                            Azimuth Extent Start
+                        element 16
+                            unsigned quantity 360/2^16 "°" <= 360
+                    E ""
+                        description
+                            Azimuth Extent End
+                        element 16
+                            unsigned quantity 360/2^16 "°" <= 360
+        remark
+            Note: The Sensor Reference Point is detailed in ASTERIX Category
+            016 – where there is also provision for including the reference
+            points for the transmitter(s) and receiver(s) that are used within
+            the sensor configuration. The Sensor Reference Point is also
+            contained in ASTERIX Category 025.
+
+    628 "Elevation Information"
+        definition
+            Information related to the elevation angle provided by the sensor.
+            (Predominantly used by electro-optic sensors).
+        compound
+            EL "Elevation"
+                description
+                    The elevation shall be given with respect to the horizontal
+                    plane of the sensor expressed in Two’s Complement.
+                element 16
+                    signed quantity 180/2^16 "°" >= -90 <= 90
+                remark
+                    Note: The elevation shall be given with respect to the
+                    local WGS-84 tangential plane of the receiver dedicated
+                    by I015/400.
+                    Note: For targets above the horizontal plane the elevation
+                    angle is positive and for targets below negative.
+            RSEL "Elevation Resolution"
+                description
+                    Minimum angle in order to separate targets by the sensor
+                    in the elevation dimension.
+                element 16
+                    unsigned quantity 45/2^16 "°" <= 45
+            SDEL "Standard Deviation of Elevation"
+                description
+                    Estimated standard deviation of the elevation angle.
+                element 16
+                    unsigned quantity 45/2^16 "°" <= 45
+            ER "Elevation Rate"
+                description
+                    Rate of change of the elevation angle.
+                element 16
+                    signed quantity 180/2^16 "°/s" >= -90 <= 90
+            SDER "Standard Deviation of Elevation Rate"
+                description
+                    Estimated standard deviation of the elevation angle rate.
+                group
+                    SDELR ""
+                        description
+                            Standard Deviation of Elevation Rate
+                        element 16
+                            unsigned quantity 45/2^16 "°/s"
+                    COELREL ""
+                        description
+                            Correlation of Elevation Rate and Elevation,
+                            in Two’s complement
+                        element 8
+                            signed quantity 1/2^7 ""
+            ELEX "Elevation Extent"
+                description
+                    Target size in the elevation angle dimension. The target
+                    extends between start angle and end angle.
+                group
+                    S ""
+                        description
+                            Elevation Extent Start, in Two’s complement
+                        element 16
+                            signed quantity 180/2^16 "°" >= -90 <= 90
+                    E ""
+                        description
+                            Elevation Extent End, in Two’s complement
+                        element 16
+                            signed quantity 180/2^16 "°" >= -90 <= 90
+
+    630 "Path Quality"
+        definition
+            Measure characterising the signal quality associated with
+            a specific target echo signal.
+        compound
+            DPP "Direct Path - Power"
+                description
+                    Signal power measured for the direct signal received
+                    from a specific transmitter station.
+                element 8
+                    signed quantity 1 "dB" >= -128 <= 127
+            DPS "Direct Path - Signal to Noise Ratio (SNR)"
+                description
+                    Signal to noise ratio measured for the direct signal
+                    received from a specific transmitter station.
+                element 8
+                    signed quantity 1 "dB" >= -128 <= 127
+            RPP "Reflected Path - Power"
+                description
+                    Signal power measured for a specific target echo signal
+                    found within range-Doppler matrix (associated with
+                    a specific transmitter station).
+                group
+                    spare 7
+                    RPP ""
+                        description
+                            Power of reflected path, in Two’s complement"
+                        element 9
+                            signed quantity 1 "dB" >= -256 <= 255
+            RPS "Reflected Path - Signal to Noise Ratio (SNR)"
+                description
+                    Signal to noise ratio measured for a specific target echo
+                    signal found within range-Doppler matrix (associated with
+                    a specific transmitter station).
+                element 8
+                    signed quantity 1 "dB" >= -128 <= 127
+        remark
+            Notes: Some INCS sensors may be capable of outputting an indication
+            of the signal quality based upon the received echo signal strength
+            for that target.
+            Before including the provision of such data items in the technical
+            specification, it is advised that the cost and operational benefits
+            of the availability of such data is assessed.
+
+    631 "Contour (Azimuth, Elevation Angle, Range Extent)"
+        definition
+            Azimuth, elevation angles and range extent of all elementary
+            presences constituting a plot.
+        repetitive 1
+            group
+                AZCON ""
+                    description
+                        Azimuth Contour
+                    element 16
+                        unsigned quantity 360/2^16 "°" >= 360
+                ELCON ""
+                    description
+                        Elevation Contour, in Two’s complement
+                    element 16
+                        signed quantity 180/2^16 "°" <= -90 >= 90
+                RGCONSTOP ""
+                    description
+                        Range Contour Stop
+                    element 16
+                        unsigned quantity 10000/2^16 "m"
+                RGCONSTART ""
+                    description
+                        Range Contour Start
+                    element 16
+                        unsigned quantity 10000/2^16 "m"
+        remark
+            Note 1: The azimuth shall increment in a clockwise manner relative
+            to geographic North centred at the System Reference Point.
+
+            Note 2: The elevation shall be given with respect to the local
+            WGS-84 tangential plane of the receiver dedicated by I015/400.
+
+            Note 3: If populated, the range contour requires a start and stop
+            point. The stop point is to be greater or equal than the start
+            point.
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    015
+    020
+    030
+    145
+    161
+    170
+    050
+    270
+    300
+    400
+    600
+    601
+    602
+    603
+    604
+    605
+    480
+    625
+    626
+    627
+    628
+    630
+    631
+    SP

@@ -1,0 +1,203 @@
+asterix 002 "Transmission of Monoradar Service Messages"
+edition 1.1
+date 2021-04-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the
+            messages at the receiver side by further defining the type of
+            transaction.
+        element 8
+            table
+                1: North marker message
+                2: Sector crossing message
+                3: South marker message
+                8: Activation of blind zone filtering
+                9: Stop of blind zone filtering
+        remark
+            Notes:
+                1. In application where transactions of various types are exchanged, the
+                Message Type Data Item facilitates the proper message handling at the
+                receiver side.
+
+                2. Message Type values 1-127 are reserved for common standard use,
+                whereas the values 128-255 are application dependent.
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Notes:
+                1. The defined SACs are listed in Part 1, Table 2 [Ref. 2]
+                2. The defined SICs are listed in Part 1, Annex B [Ref. 2]
+
+    020 "Sector Number"
+        definition
+            Eight most significant bits of the antenna azimuth defining a
+            particular azimuth sector.
+        element 8
+            unsigned quantity 360/2^8 "°"
+        remark
+            The use of the antenna azimuth as sector number has the
+            advantage of being independent of the number of sectors
+            implemented.
+
+    030 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC time.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                1. The time of day value is reset to zero each day at midnight.
+                2. For time management in radar transmission applications, refer to Part 1,
+                   paragraph 5.4 [ Ref.2].
+                3. Data Item I002/030 can have various logical meanings. In a particular
+                   message, the logical meaning is implicit from its context (e.g. in a North
+                   marker message it represents the antenna North crossing time; in a
+                   sector message it represents the antenna sector crossing time).
+
+    041 "Antenna Rotation Speed"
+        definition
+            Antenna rotation period as measured between two
+            consecutive North crossings or as averaged during a period
+            of time.
+        element 16
+            unsigned quantity 1/2^7 "s"
+
+    050 "Station Configuration Status"
+        definition
+            Information concerning the use and status of some vital
+            hardware components of the radar system.
+        repetitive fx
+            element 7
+                raw
+        remark
+            Due to the diversity in hardware design and requirement of
+            present and future radar stations, it is felt impractical to attempt to
+            define the individual bits.
+
+    060 "Station Processing Mode"
+        definition
+            Details concerning the present status with respect to
+            processing parameters and options.
+        repetitive fx
+            element 7
+                raw
+        remark
+            NOTES:
+                1. Typical information conveyed within this Data Item includes inter alia
+                   type of polarisation in use, Moving Target Indicator (MTI) in use and/or
+                   definition of the range to which MTI is applied, presence of overload
+                   conditions and the type of load reduction measures in use.
+                2. Only the structure of this Data Item is defined, no attempt is made to
+                   standardise its contents, in order not to hamper any application or future
+                   development.
+
+    070 "Plot Count Values"
+        definition
+            Plot count values according to various plot categories, either
+            for the last full antenna scan or for the last sector processed.
+        repetitive 1
+            group
+                A "Aerial Identification"
+                    element 1
+                        table
+                            0: Counter for antenna 1
+                            1: Counter for antenna 2
+                IDENT ""
+                    element 5
+                        table
+                            1: Sole primary plots
+                            2: Sole SSR plots
+                            3: Combined plots
+                COUNTER ""
+                    element 10
+                        unsigned integer
+
+    080 "Warning/Error Conditions"
+        definition
+            Warning/error conditions affecting the functioning of the
+            radar system itself.
+        repetitive fx
+            element 7
+                raw
+        remark
+            NOTE:
+                Warning/error condition values 1-63 are reserved for common
+                Standard use, whereas the values 64-127 are application
+                dependent.
+
+    090 "Collimation Error"
+        definition
+            Averaged difference in range and in azimuth for the primary
+            target position with respect to the SSR target position as
+            calculated by the radar station.
+        group
+            RE "Range Error"
+                element 8
+                    signed quantity 1/2^7 "NM"
+            AE "Azimuth Error"
+                element 8
+                    signed quantity 360/2^14 "°"
+        remark
+            NOTES
+                1. LSB of RE is calculated as :math:`2^{16-f}`.
+                2. A default quantisation unit of 0.022° and a range between -2.8125° and
+                   +2.7905° is obtained for a value of f=2 .
+
+    100 "Dynamic Window Type 1"
+        definition
+            Signals the activation of a certain selective filtering function
+            and in a polar coordinates system the respective
+            geographical areas.
+        group
+            RS "Rho Start"
+                element 16
+                    unsigned quantity 1/2^7 "NM" < 512
+            RE "Rho End"
+                element 16
+                    unsigned quantity 1/2^7 "NM" < 512
+            TS "Theta Start"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+            TE "Theta End"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+        remark
+            The logical meaning of the polar window is defined by its context,
+            given by the Message Type (Data Item I002/000) in the record
+            concerned.
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    020
+    030
+    041
+    050
+    060
+    070
+    100
+    090
+    080
+    -
+    SP
+    rfs

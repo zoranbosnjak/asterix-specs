@@ -1,0 +1,298 @@
+asterix 017 "Mode S Surveillance Coordination Function Messages"
+edition 1.3
+date 2009-01-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            Definition of the type of message in the Surveillance
+            Coordination Network (SCN) environment
+        element 8
+            table
+                0: Network information
+                10: Track data
+                20: Track data request
+                21: Track data stop
+                22: Cancel track data request
+                23: Track data stop acknowledgement
+                30: New Node / Change-over Initial or intermediate message segment
+                31: New Node / Change-over Final or only message segment
+                32: New Node / Change-over Initial or intermediate message segment reply
+                33: New Node / Change-over Final or only message segment reply
+                110: Move node to new cluster state;
+                111: Move node to new cluster state acknowledgement
+        remark
+            NOTE:
+                - Message types 30 to 33 are specific to POEMS stations.
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the source node for the SCN data
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            NOTE:
+                - The up-to-date list of SACs is published on the Eurocontrol
+                  Web Site (http://www.eurocontrol.int/asterix).
+
+    012 "Data Destination Identifier"
+        definition
+            Identification of the destination node for the SCN data.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            NOTE:
+                - The up-to-date list of SACs is published on the Eurocontrol
+                  Web Site (http://www.eurocontrol.int).
+
+    045 "Calculated Position in WGS-84 Coordinates"
+        definition
+            Calculated Position in WGS-84 Coordinates.
+        group
+            LAT "Latitude"
+                element 24
+                    signed quantity 180/2^25 "°" >= -90 <= 90
+            LON "Longitude"
+                element 24
+                    signed quantity 180/2^25 "°" >= -180 < 180
+        remark
+            NOTE:
+                - See Annex A for calculation details
+
+    050 "Flight Level in Binary Representation"
+        definition
+            Flight Level of the Aircraft
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code / Error correction applied
+            ALT "Altitude"
+                element 14
+                    unsigned quantity 1/2^2 "FL"
+        remark
+            NOTES:
+                1. The value shall be within the range described by ICAO Annex
+                   10
+                2. Bit-15 (G) is set to one when an error correction has been
+                   attempted
+                3. In case of a track miss (coasted position) the flight level
+                   sent will be either he predicted flight level from the
+                   vertical tracking or the last measured flight level, if no
+                   vertical tracking is performed. Bit 7 (FLT) of I017/240
+                   (Track Status) indicates whether vertical tracking was
+                   performed or not.
+
+    070 "Mode 3/A Code in Octal Representation"
+        definition
+            Mode 3/A code converted into octal representation.
+        group
+            V ""
+                element 1
+                    table
+                        0: Code validated
+                        1: Code not validated
+            G ""
+                element 1
+                    table
+                        0: Default
+                        1: Garbled code
+            L ""
+                element 1
+                    table
+                        0: Mode-3/A code derived from the reply of the transponder
+                        1: Smoothed Mode-3/A code not extracted during the last scan
+            spare 1
+            MODE3A "Mode 3/A Reply in Octal Representation"
+                element 12
+                    string octal
+        remark
+            NOTES:
+                1. Bit 15 is set to one when an error correction has been
+                   attempted
+                2. The data could be used to correlate tracks with non unique
+                   Mode S addresses
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as Coordinated Universal Time
+            (UTC) time.
+        element 24
+            unsigned quantity 1/2^7 "s" < 86400
+        remark
+            NOTE:
+                - The time of day is reset to zero each day at midnight
+
+    200 "Track Velocity in Polar Co-ordinates"
+        definition
+            Calculated track velocity expressed in polar co-ordinates. The
+            heading is the heading with respect to the geographical north at
+            the aircraft position. For clarification see annex A, paragraph5.
+        group
+            GSP "Calculated Groundspeed"
+                element 16
+                    unsigned quantity 1/2^14 "NM/s"
+            HDG "Calculated Heading"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+
+    210 "Mode S Address List"
+        definition
+            Repetitive Data Item starting with a one-octet Repetition Factor
+            followed by at least one Mode S Address of 3-octets length.
+        repetitive 1
+            element 24
+                raw
+        remark
+            NOTE:
+                - This data item shall be sent even if there is no Mode S
+                  Address. In this case it is reduced in length to one octet
+                  only (REP =0) with all bits set to zero.
+
+    220 "Aircraft Address"
+        definition
+            Aircraft address (24-bits Mode S address) assigned uniquely to
+            each aircraft.
+        element 24
+            raw
+
+    221 "Duplicate Address Reference Number (DRN)"
+        definition
+            A number uniquely identifying the aircraft in case the Mode-S
+            Address is not unique.
+        element 16
+            raw
+        remark
+            NOTE:
+                1. The DRN shall be added to the Track Data message, if the
+                   radar node, which is sending the Track Data messages,
+                   detects two or more aircraft with the same mode-S address
+                   in its coverage. How the numbers are generated is determined
+                   by the sending station.
+                2. The radar node receiving the Track Data Messages containing
+                   a DRN shall add this DRN in the corresponding ”Cancellation
+                   of Track Data” message.
+                3. The DRN is used to associate the ”Cancellation of Track
+                   Data” message with the corresponding ”Track Data” messages.
+                4. The cluster controller node will not use the DRN in the
+                   track data message, because there is no cancellation.
+
+    230 "Transponder Capability"
+        definition
+            Communications capability of the transponder received in the
+            All-Call reply when the aircraft is initially acquired.
+        group
+            CA "Communications Capability of the Transponder"
+                element 3
+                    table
+                        0: No communications capability (surveillance only), no ability to set CA code 7 either airborne or on the ground
+                        1: Reserved
+                        2: Reserved
+                        3: Reserved
+                        4: At Least Comm. A and Comm. B capability and the ability to set CA code 7 and on the ground
+                        5: At Least Comm. A and Comm. B capability and the ability to set CA code 7 and airborne
+                        6: At Least Comm. A and Comm. B capability and the ability to set CA code 7 and either airborne or on the ground
+                        7: Signifies the DR field is not equal to 0 or the FS field equals 2, 3, 4 or 5 and either airborne or on the ground SI/II-capabilities of the Transponder
+            SI "SI/II-capabilities of the Transponder"
+                element 1
+                    table
+                        0: Transponder SI capable
+                        1: Transponder not SI capable
+            spare 4
+
+    240 "Track Status"
+        definition
+            Status of the track position
+        group
+            CST "Track Coasted"
+                element 1
+                    table
+                        0: Measured position
+                        1: No measured position (coasted)
+            FLT "Flight Level Tracking"
+                element 1
+                    table
+                        0: Last Measured Flight Level
+                        1: Predicted Flight Level
+            spare 6
+        remark
+            NOTE:
+                - This item shall not be sent when CST and FLT equal zero.
+
+    350 "Cluster Station/Node List"
+        definition
+            List of stations/nodes stored in the known network topology
+            maintained by NMP. The topology to be reported is as defined
+            in the SCN ICD.
+        repetitive 1
+            group
+                SAC "System Area Code"
+                    element 8
+                        raw
+                SIC "System Identification Code"
+                    element 8
+                        raw
+        remark
+            NOTE:
+                - The up-to-date list of SACs is published on the Eurocontrol
+                  Web Site (http://www.eurocontrol.int).
+
+    360 "Cluster Controller Command State"
+        definition
+            Defines the current mode and state in which a cluster station,
+            the radar node taking part in the cluster, should be operating.
+        element 8
+            raw
+        remark
+            NOTE:
+                - The Cluster Controller will use this field to select the
+                  state in which a cluster station should be operating and
+                  the cluster station will use this field to indicate to the
+                  cluster controller the adopted state.
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    012
+    000
+    350
+    220
+    221
+    140
+    045
+    070
+    050
+    200
+    230
+    240
+    210
+    360
+    -
+    -
+    -
+    -
+    -
+    SP

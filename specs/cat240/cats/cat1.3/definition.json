@@ -1,0 +1,1091 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "This Data Item allows for a more convenient handling of the messages at\nthe receiver side by further defining the type of transaction.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    1. In applications where transactions of various types are exchanged,\n       the Message Type Data Item facilitates the proper report handling\n       at the receiver side.\n    2. All Message Type values are reserved for common standard use.\n    3. The list of items present for the two message types is defined in\n       the following table.\n\n    Table: Message Types ::\n\n        Type Item       001         002\n        I240/000        M           M\n        I240/010        M           M\n        I240/020        X           M\n        I240/030        M           X\n        I240/040        X           O(1)\n        I240/041        X           O(1)\n        I240/048        X           M\n        I240/049        X           M\n        I240/050        X           O(2)\n        I240/051        X           O(2)\n        I240/052        X           O(2)\n        I240/140        O           O\n\n    (1) - Either Item I240/040 or I240/041 shall be present in each Video Message\n    (2) - Either Item I240/050 or I240/051 or I240/052 shall be present in each video\n          message\n"
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "Video Summary message"
+                                        ],
+                                        [
+                                            2,
+                                            "Video message"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the system from which the data are received.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The up-to-date list of SACs is published on the EUROCONTROL Web Site\n      (http://www.eurocontrol.int/asterix)\n"
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Contains a message sequence identifier.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The Message Sequence Identifier is used by the receiving application\n      to detect lost messages.\n"
+                },
+                "name": "020",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 32,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        }
+                                    },
+                                    "tag": "ContentInteger"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Record Header"
+            },
+            {
+                "documentation": {
+                    "definition": "Contains an ASCII string (free text to define stream meta data).\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "030",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 8,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "contents": [],
+                                                "tag": "StringAscii"
+                                            },
+                                            "tag": "ContentString"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Summary"
+            },
+            {
+                "documentation": {
+                    "definition": "Defines a group of video cells corresponding to a video radial: all cells\nhave the same size in azimuth and range and are consecutive in range.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "040",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "STARTAZ",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 0,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Start Azimuth of the Cells Group"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "ENDAZ",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 0,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "End Azimuth of the Cells Group"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "STARTRG",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Starting Range of the Cells Group, Expressed in Number of Cells"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "CELLDUR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": 1,
+                                                                "tag": "NumInt"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "ns"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Video Cell Duration in Nano-seconds"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Header Nano"
+            },
+            {
+                "documentation": {
+                    "definition": "Defines a group of video cells corresponding to a video radial: all cells\nhave the same size in azimuth and range and are consecutive in range.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "041",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "STARTAZ",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 0,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Start Azimuth of the Cells Group"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "ENDAZ",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 0,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 16
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 360,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "End Azimuth of the Cells Group"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "STARTRG",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Starting Range of the Cells Group, Expressed in Number of Cells"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "CELLDUR",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "lsb": {
+                                                                "contents": 1,
+                                                                "tag": "NumInt"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            },
+                                                            "unit": "fs"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Video Cell Duration in Femto-seconds"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Header Femto"
+            },
+            {
+                "documentation": {
+                    "definition": "This Data Item defines the bit resolution used in the coding of the video\nsignal amplitude in all cells of the video group as well as an indicator\nwhether data compression has been applied.\n",
+                    "description": null,
+                    "remark": "Note:\n    - When the Data Compression Indicator (C) is set, shows that a data\n      compression technique has been applied. The actual algorithm used\n      and the related parameters have to be specified in a relevant ICD\n      (Interface Control Document).\n"
+                },
+                "name": "048",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "C",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "No compression applied"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Compression applied"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Data Compression Indicator"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 7,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "RES",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                1,
+                                                                "Monobit Resolution (1 bit)"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Low Resolution (2 bits)"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Medium Resolution (4 bits)"
+                                                            ],
+                                                            [
+                                                                4,
+                                                                "High Resolution (8 bits)"
+                                                            ],
+                                                            [
+                                                                5,
+                                                                "Very High Resolution (16 bits)"
+                                                            ],
+                                                            [
+                                                                6,
+                                                                "Ultra High Resolution (32 bits)"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Bit Resolution"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Cells Resolution & Data Compression Indicator"
+            },
+            {
+                "documentation": {
+                    "definition": "This Data Item contains the number of “valid” octets (i.e. nonempty octets)\nused in the coding of the video signal amplitude and the number of “valid”\ncells in the video group.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "049",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "NBVB",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 16,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Number of 'valid' Octets"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "NBCELLS",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 24,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [],
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Unsigned"
+                                                            }
+                                                        },
+                                                        "tag": "ContentInteger"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Number of 'valid' Cells"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Octets & Video Cells Counters"
+            },
+            {
+                "documentation": {
+                    "definition": "Contains a group of video cells corresponding to a video radial; all cells\nhave the same size in azimuth and range and are consecutive in range. This\nitem shall be used in cases where a low data volume, up to 1020 bytes, will\nbe transmitted.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    1. The first cell in the block is always the closest to the sensor and\n       the following cells are in increasing range order.\n    2. To get the range in meters of the cell at position “NU_CELL” in the\n       data stream, the following formula shall be used:\n       D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)\n       where c = 299 792 458 m/s: light celerity.\n"
+                },
+                "name": "050",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 32,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Block Low Data Volume"
+            },
+            {
+                "documentation": {
+                    "definition": "Contains a group of video cells corresponding to a video radial; all cells\nhave the same size in azimuth and range and are consecutive in range. This\nitem shall be used in cases where a medium data volume, up to 16320 bytes,\nwill be transmitted.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    1. The first cell in the block is always the closest to the sensor and\n       the following cells are in increasing range order.\n    2. To get the range in meters of the cell at position “NU_CELL” in the\n       data stream, the following formula shall be used:\n       D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)\n       where c = 299 792 458 m/s: light celerity.\n"
+                },
+                "name": "051",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 512,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Block Medium Data Volume"
+            },
+            {
+                "documentation": {
+                    "definition": "Contains a group of video cells corresponding to a video radial; all cells\nhave the same size in azimuth and range and are consecutive in range. This\nitem shall be used in cases where a high data volume, up to 65024 bytes,\nwill be transmitted.\n",
+                    "description": null,
+                    "remark": "Notes:\n\n    1. The first cell in the block is always the closest to the sensor and\n       the following cells are in increasing range order.\n    2. The maximum value of REP that should be used is 254, in order to keep\n       the maximum size of the field at 64kbytes.\n    3. To get the range in meters of the cell at position “NU_CELL” in the\n       data stream, the following formula shall be used:\n       D = CELL_DUR(in seconds) * (START_RG + NU_CELL - 1) * c/(2.)\n       where c = 299 792 458 m/s: light celerity.\n"
+                },
+                "name": "052",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": {
+                                    "bitSize": 2048,
+                                    "rule": {
+                                        "contents": {
+                                            "contents": [],
+                                            "tag": "ContentRaw"
+                                        },
+                                        "tag": "ContextFree"
+                                    }
+                                },
+                                "tag": "Element"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Video Block High Data Volume"
+            },
+            {
+                "documentation": {
+                    "definition": "Absolute time stamping expressed as UTC.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The time information, shall reflect the exact time of an event,\n      expressed as a number of 1/128 s elapsed since last midnight.\n"
+                },
+                "name": "140",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Day"
+            },
+            {
+                "documentation": {
+                    "definition": "Expansion\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "RE",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "ReservedExpansion"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Reserved Expansion Field"
+            },
+            {
+                "documentation": {
+                    "definition": "Special Purpose Field\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "SP",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "SpecialPurpose"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Special Purpose Field"
+            }
+        ],
+        "category": 240,
+        "date": {
+            "day": 13,
+            "month": 5,
+            "year": 2015
+        },
+        "edition": {
+            "major": 1,
+            "minor": 3
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "Radar Video Transmission",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "020",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "030",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "040",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "041",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "048",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "049",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "050",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "051",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "052",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "140",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "RE",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "SP",
+                    "tag": "UapItem"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}

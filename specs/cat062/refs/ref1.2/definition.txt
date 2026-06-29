@@ -1,0 +1,87 @@
+ref 062 "Coding rules for Reserved Expansion Field"
+edition 1.2
+date 2011-06-01
+
+compound 1
+    CST "Contributing Sensors With Local Tracknumbers"
+        definition
+            List of Sensors contributing to the system track and providing a
+            local track-number
+        repetitive 1
+            group
+                SAC "System Area Code"
+                    element 8
+                        raw
+                SIC "System Identification Code"
+                    element 8
+                        raw
+                spare 4
+                TYP ""
+                    element 4
+                        table
+                            0: No detection
+                            1: Single PSR detection
+                            2: Single SSR detection
+                            3: SSR+PSR detection
+                            4: Single Mode S All-Call
+                            5: Single Mode S Roll-Call
+                            6: Mode S All-Call + PSR
+                            7: Mode S Roll-Call + PSR
+                            8: ADS-B
+                            9: WAM
+                LTN "Local Track Number"
+                    element 16
+                        raw
+    CSN "Contributing Sensors No Local Tracknumbers"
+        definition
+            List of Sensors contributing to the system track and not providing
+            a local track-number
+        repetitive 1
+            group
+                SAC "System Area Code"
+                    element 8
+                        raw
+                SIC "System Identification Code"
+                    element 8
+                        raw
+                spare 4
+                TYP ""
+                    element 4
+                        table
+                            0: No detection
+                            1: Single PSR detection
+                            2: Single SSR detection
+                            3: SSR+PSR detection
+                            4: Single Mode S All-Call
+                            5: Single Mode S Roll-Call
+                            6: Mode S All-Call + PSR
+                            7: Mode S Roll-Call + PSR
+                            8: ADS-B
+                            9: WAM
+    TVS "Calculated Track Velocity Relative to System Reference Point"
+        definition
+            Calculated track velocity expressed in Cartesian co-ordinates
+            relative to the system reference point, in two’s complement form.
+        group
+            VX ""
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
+            VY ""
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 32767/4
+        remark
+            Note:
+                The y-axis points to the Geographical North at the system reference
+                point as available in the Reserved Expansion Field of category 065.
+    STS "Supplementary Track Status"
+        definition
+            Track status information to be transmitted in addition to the
+            information available in data item I062/080 (Track Status).
+        extended
+            FDR "Flight Data Retained"
+                element 1
+                    table
+                        0: Flight plan data from active FDPS
+                        1: Flight plan data retained from no longer active FDPS
+            spare 6
+            -
