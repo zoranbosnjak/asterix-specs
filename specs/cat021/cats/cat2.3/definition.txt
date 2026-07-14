@@ -1,0 +1,1217 @@
+asterix 021 "ADS-B Target Reports"
+edition 2.3
+date 2015-01-06
+preamble
+    Surveillance data exchange.
+    ADS-B Target Reports.
+
+items
+
+    008 "Aircraft Operational Status"
+        definition
+            Identification of the operational services available in the aircraft
+            while airborne.
+        group
+            RA "TCAS Resolution Advisory Active"
+                element 1
+                    table
+                        0: TCAS II or ACAS RA not active
+                        1: TCAS RA active
+            TC "Target Trajectory Change Report Capability"
+                element 2
+                    table
+                        0: No capability for Trajectory Change Reports
+                        1: Support for TC+0 reports only
+                        2: Support for multiple TC reports
+                        3: Reserved
+            TS "Target State Report Capability"
+                element 1
+                    table
+                        0: No capability to support Target State Reports
+                        1: Capable of supporting target State Reports
+            ARV "Air-Referenced Velocity Report Capability"
+                element 1
+                    table
+                        0: No capability to generate ARV-reports
+                        1: Capable of generate ARV-reports
+            CDTIA "Cockpit Display of Traffic Information Airborne"
+                element 1
+                    table
+                        0: CDTI not operational
+                        1: CDTI operational
+            NOTTCAS "TCAS System Status"
+                element 1
+                    table
+                        0: TCAS operational
+                        1: TCAS not operational
+            SA "Single Antenna"
+                element 1
+                    table
+                        0: Antenna Diversity
+                        1: Single Antenna only
+        remark
+            Note:
+                - Additional Aircraft Status Information is available in the Reserved
+                  Expansion Field of Category 021.
+
+    010 "Data Source Identification"
+        definition
+            Identification of the ADS-B station providing information.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the EUROCONTROL
+                  ASTERIX Web Site
+                  (http://www.eurocontrol.int/services/system-area-code-list).
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+        remark
+            Notes:
+
+                1. The service identification is allocated by the system.
+                2. The service identification is also available in item I023/015 [Ref. 3].
+
+    016 "Service Management"
+        definition
+            Identification of services offered by a ground station (identified by a SIC code).
+        element 8
+            unsigned quantity 1/2 "s"
+        remark
+            Notes:
+
+                1. This item contains the same information as item I023/101 in
+                   ASTERIX category 023 [Ref. 3]. Since not all service users
+                   receive category 023 data, this information has to be conveyed
+                   in category 021 as well.
+                2. If this item is due to be sent according to the encoding rule
+                   above, it shall be sent with the next target report
+
+    020 "Emitter Category"
+        definition
+            Characteristics of the originating ADS-B unit.
+        element 8
+            table
+                0: No ADS-B Emitter Category Information
+                1: Light aircraft <= 15500 lbs
+                2: 15500 lbs < small aircraft <75000 lbs
+                3: 75000 lbs < medium a/c < 300000 lbs
+                4: High Vortex Large
+                5: 300000 lbs <= heavy aircraft
+                6: Highly manoeuvrable (5g acceleration capability) and high speed (>400 knots cruise)
+                7: Reserved
+                8: Reserved
+                9: Reserved
+                10: Rotocraft
+                11: Glider / sailplane
+                12: Lighter-than-air
+                13: Unmanned aerial vehicle
+                14: Space / transatmospheric vehicle
+                15: Ultralight / handglider / paraglider
+                16: Parachutist / skydiver
+                17: Reserved
+                18: Reserved
+                19: Reserved
+                20: Surface emergency vehicle
+                21: Surface service vehicle
+                22: Fixed ground or tethered obstruction
+                23: Cluster obstacle
+                24: Line obstacle
+
+    040 "Target Report Descriptor"
+        definition
+            Type and characteristics of the data as transmitted by a system.
+        extended
+            ATP "Address Type"
+                element 3
+                    table
+                        0: 24-Bit ICAO address
+                        1: Duplicate address
+                        2: Surface vehicle address
+                        3: Anonymous address
+                        4: Reserved for future use
+                        5: Reserved for future use
+                        6: Reserved for future use
+                        7: Reserved for future use
+            ARC "Altitude Reporting Capability"
+                element 2
+                    table
+                        0: 25 ft
+                        1: 100 ft
+                        2: Unknown
+                        3: Invalid
+            RC "Range Check"
+                element 1
+                    table
+                        0: Default
+                        1: Range Check passed, CPR Validation pending
+            RAB "Report Type"
+                element 1
+                    table
+                        0: Report from target transponder
+                        1: Report from field monitor (fixed transponder)
+            -
+            DCR "Differential Correction"
+                element 1
+                    table
+                        0: No differential correction (ADS-B)
+                        1: Differential correction (ADS-B)
+            GBS "Ground Bit Setting"
+                element 1
+                    table
+                        0: Ground Bit not set
+                        1: Ground Bit set
+            SIM "Simulated Target"
+                element 1
+                    table
+                        0: Actual target report
+                        1: Simulated target report
+            TST "Test Target"
+                element 1
+                    table
+                        0: Default
+                        1: Test Target
+            SAA "Selected Altitude Available"
+                element 1
+                    table
+                        0: Equipment capable to provide Selected Altitude
+                        1: Equipment not capable to provide Selected Altitude
+            CL "Confidence Level"
+                element 2
+                    table
+                        0: Report valid
+                        1: Report suspect
+                        2: No information
+                        3: Reserved for future use
+            -
+            spare 1
+            LLC "List Lookup Check"
+                element 1
+                    table
+                        0: Default
+                        1: List Lookup failed (see note)
+            IPC "Independent Position Check"
+                element 1
+                    table
+                        0: Default (see note)
+                        1: Independent Position Check failed
+            NOGO "No-go Bit Status"
+                element 1
+                    table
+                        0: NOGO-bit not set
+                        1: NOGO-bit set
+            CPR "Compact Position Reporting"
+                element 1
+                    table
+                        0: CPR Validation correct
+                        1: CPR Validation failed
+            LDPJ "Local Decoding Position Jump"
+                element 1
+                    table
+                        0: LDPJ not detected
+                        1: LDPJ detected
+            RCF "Range Check"
+                element 1
+                    table
+                        0: Default
+                        1: Range Check failed
+            -
+        remark
+            Notes:
+
+                1. Bit 3 indicates that the position reported by the target is
+                   within a credible range from the ground station. The range
+                   check is followed by the CPR validation to ensure that global
+                   and local position decoding both indicate valid position
+                   information. Bit 3=1 indicates that the range check was done,
+                   but the CPR validation is not yet completed.
+                   Once CPR validation is completed, Bit 3 will be reset to 0.
+                2. The second extension signals the reasons for which the report has
+                   been indicated as suspect (indication Confidence Level (CL) in the
+                   first extension).
+                3. Bit 2 indicates that the Range Check failed, i.e. the target is
+                   reported outside the credible range for the Ground Station. For
+                   operational users such a target will be suppressed. In services
+                   used for monitoring the Ground Station, the target will be
+                   transmitted with bit 2 indicating the fault condition.
+                4. Bit 6, if set to 1, indicates that the position reported by the
+                   target was validated by an independent means and a discrepancy
+                   was detected. If no independent position check is implemented,
+                   the default value “0” is to be used.
+                5. Bit 5 represents the setting of the GO/NOGO-bit as defined in
+                   item I023/100 of category 023 [Ref. 3].
+                6. Bit 7, if set to 1, indicates that a lookup in a Black-list/White-list
+                   failed, indicating that the target may be suspect
+
+    070 "Mode 3/A Code in Octal Representation"
+        definition
+            Mode-3/A code converted into octal representation.
+        group
+            spare 4
+            MODE3A "Mode-3/A Reply in Octal Representation"
+                element 12
+                    string octal
+
+    071 "Time of Applicability for Position"
+        definition
+            Time of applicability of the reported position, in the form of elapsed
+            time since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                1. The time of applicability value is reset to zero at every midnight.
+                2. The time of applicability indicates the exact time at which the
+                   position transmitted in the target report is valid.
+
+    072 "Time of Applicability for Velocity"
+        definition
+            Time of applicability (measurement) of the reported velocity, in the
+            form of elapsed time since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Notes:
+
+                1. The time of the applicability value is reset to zero at every midnight.
+                2. The time of applicability indicates the exact time at which the
+                   velocity information transmitted in the target report is valid.
+                3. This item will not be available in some ADS-B technologies.
+
+    073 "Time of Message Reception for Position"
+        definition
+            Time of reception of the latest position squitter in the Ground Station,
+            in the form of elapsed time since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                - The time of message reception value is reset to zero at every midnight.
+
+    074 "Time of Message Reception of Position-High Precision"
+        definition
+            Time at which the latest ADS-B position information was received by
+            the ground station, expressed as fraction of the second of the UTC Time.
+        group
+            FSI "Full Second Indication"
+                element 2
+                    table
+                        3: Reserved
+                        2: TOMRp whole seconds = (I021/073) Whole seconds - 1
+                        1: TOMRp whole seconds = (I021/073) Whole seconds + 1
+                        0: TOMRp whole seconds = (I021/073) Whole seconds
+            TOMRP "Fractional Part of the Time of Message Reception for Position in the Ground Station"
+                element 30
+                    unsigned quantity 1/2^30 "s"
+
+    075 "Time of Message Reception for Velocity"
+        definition
+            Time of reception of the latest velocity squitter in the Ground Station,
+            in the form of elapsed time since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                - The time of message reception value is reset to zero at every midnight.
+
+    076 "Time of Message Reception of Velocity-High Precision"
+        definition
+            Time at which the latest ADS-B velocity information was received by
+            the ground station, expressed as fraction of the second of the UTC Time.
+        group
+            FSI "Full Second Indication"
+                element 2
+                    table
+                        3: Reserved
+                        2: TOMRp whole seconds = (I021/075) Whole seconds - 1
+                        1: TOMRp whole seconds = (I021/075) Whole seconds + 1
+                        0: TOMRp whole seconds = (I021/075) Whole seconds
+            TOMRP "Fractional Part of the Time of Message Reception for Position in the Ground Station"
+                element 30
+                    unsigned quantity 1/2^30 "s"
+
+    077 "Time of ASTERIX Report Transmission"
+        definition
+            Time of the transmission of the ASTERIX category 021 report in the
+            form of elapsed time since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                - The time of ASTERIX report transmission value is reset to zero at
+                  every midnight.
+
+    080 "Target Address"
+        definition
+            Target address (emitter identifier) assigned uniquely to each target.
+        element 24
+            raw
+
+    090 "Quality Indicators"
+        definition
+            ADS-B quality indicators transmitted by a/c according to MOPS version.
+        extended
+            NUCRNACV "Navigation Uncertainty Category for Velocity NUCr or the Navigation Accuracy Category for Velocity NACv"
+                element 3
+                    raw
+            NUCPNIC "Navigation Uncertainty Category for Position NUCp or Navigation Integrity Category NIC"
+                element 4
+                    raw
+                remark
+                    Notes:
+                        1. Apart from the “PIC” item, all items are defined as per the
+                           respective link technology protocol version (“MOPS version”,
+                           see I021/210).
+                        2. The primary subfield is kept for backwards compatibility reasons.
+                           Version 2 NIC-values shall be mapped accordingly. This is required
+                           to ensure that downstream systems, which are not capable of
+                           interpreting extensions 2 and 3 (because they use an ASTERIX
+            -
+            NICBARO "Navigation Integrity Category for Barometric Altitude"
+                element 1
+                    raw
+            SIL "Surveillance (version 1) or Source (version 2) Integrity Level"
+                element 2
+                    raw
+            NACP "Navigation Accuracy Category for Position"
+                element 4
+                    raw
+            -
+            spare 2
+            SILS "SIL-Supplement"
+                element 1
+                    table
+                        0: Measured per flight-hour
+                        1: Measured per sample
+            SDA "Horizontal Position System Design Assurance Level (as Defined in Version 2)"
+                element 2
+                    raw
+            GVA "Geometric Altitude Accuracy"
+                element 2
+                    raw
+            -
+            PIC "Position Integrity Category"
+                element 4
+                    raw
+            spare 3
+            -
+        remark
+            Notes:
+
+                1. Apart from the “PIC” item, all items are defined as per the
+                   respective link technology protocol version (“MOPS version”,
+                   see I021/210).
+                2. The primary subfield is kept for backwards compatibility reasons.
+                   Version 2 NIC-values shall be mapped accordingly. This is required
+                   to ensure that downstream systems, which are not capable of
+                   interpreting extensions 2 and 3 (because they use an ASTERIX
+                   edition earlier than 2.0) still get the required information
+                3. “Version 1” or “Version 2” refers to the MOPS version as defined
+                   in data item I021/210, bits 6/4
+                4. “Version 2” refers to the MOPS version as defined in data item
+                   I021/210, bits 6/4
+                5. PIC=0 is defined for completeness only. In this case the third
+                   extension shall not be generated.
+                6. For ED102A/DO260B PIC values of 7 and 9, the NIC supplements
+                   for airborne messages (NIC supplements A/B) and surface messages
+                   (NIC supplements A/C) are listed.
+                   For ED102A/DO260B PIC=8, the NIC supplements A/B for airborne
+                   messages are listed.
+                   For DO260A PIC values of 7 and 8, the NIC supplement for airborne
+                   messages is shown in brackets.
+                   The aircraft air-ground status, and hence message type (airborne
+                   or surface), is derived from the GBS-bit in I021/040, 1 st extension.
+
+    110 "Trajectory Intent"
+        definition
+            Reports indicating the 4D intended trajectory of the aircraft.
+        compound
+            TIS "Trajectory Intent Status"
+                extended
+                    NAV ""
+                        element 1
+                            table
+                                0: Trajectory Intent Data is available for this aircraft
+                                1: Trajectory Intent Data is not available for this aircraft
+                    NVB ""
+                        element 1
+                            table
+                                0: Trajectory Intent Data is valid
+                                1: Trajectory Intent Data is not valid
+                    spare 5
+                    -
+            TID "Trajectory Intent Data"
+                repetitive 1
+                    group
+                        TCA ""
+                            element 1
+                                table
+                                    0: TCP number available
+                                    1: TCP number not available
+                        NC ""
+                            element 1
+                                table
+                                    0: TCP compliance
+                                    1: TCP non-compliance
+                        TCPN ""
+                            description
+                                Trajectory Change Point number
+                            element 6
+                                raw
+                        ALT "Altitude in Two's Complement Form"
+                            element 16
+                                signed quantity 10 "ft" >= -1500 <= 150000
+                        LAT "In WGS.84 in Two's Complement"
+                            element 24
+                                signed quantity 180/2^23 "°" >= -90 <= 90
+                        LON "In WGS.84 in Two's Complement"
+                            element 24
+                                signed quantity 180/2^23 "°" >= -180 < 180
+                        PT "Point Type"
+                            element 4
+                                table
+                                    0: Unknown
+                                    1: Fly by waypoint (LT)
+                                    2: Fly over waypoint (LT)
+                                    3: Hold pattern (LT)
+                                    4: Procedure hold (LT)
+                                    5: Procedure turn (LT)
+                                    6: RF leg (LT)
+                                    7: Top of climb (VT)
+                                    8: Top of descent (VT)
+                                    9: Start of level (VT)
+                                    10: Cross-over altitude (VT)
+                                    11: Transition altitude (VT)
+                        TD ""
+                            element 2
+                                table
+                                    0: N/A
+                                    1: Turn right
+                                    2: Turn left
+                                    3: No turn
+                        TRA ""
+                            description
+                                Turn Radius Availability
+                            element 1
+                                table
+                                    0: TTR not available
+                                    1: TTR available
+                        TOA ""
+                            element 1
+                                table
+                                    0: TOV available
+                                    1: TOV not available
+                        TOV "Time Over Point"
+                            element 24
+                                unsigned quantity 1 "s"
+                        TTR "TCP Turn Radius"
+                            element 16
+                                unsigned quantity 1/100 "NM" >= 0 <= 13107/20
+        remark
+            Notes:
+
+                1. NC is set to one when the aircraft will not fly the path described
+                   by the TCP data.
+                2. TCP numbers start from zero.
+                3. LT = Lateral Type
+                4. VT = Vertical Type
+                5. TOV gives the estimated time before reaching the point. It is
+                   defined as the absolute time from midnight.
+                6. TOV is meaningful only if TOA is set to 1.
+
+    130 "Position in WGS-84 Co-ordinates"
+        definition
+            Position in WGS-84 Co-ordinates.
+        group
+            LAT "Latitude"
+                element 24
+                    signed quantity 180/2^23 "°" >= -90 <= 90
+            LON "Longitude"
+                element 24
+                    signed quantity 180/2^23 "°" >= -180 < 180
+        remark
+            Notes:
+
+                - Positive longitude indicates East. Positive latitude indicates North.
+
+    131 "High-Resolution Position in WGS-84 Co-ordinates"
+        definition
+            Position in WGS-84 Co-ordinates in high resolution.
+        group
+            LAT "Latitude"
+                element 32
+                    signed quantity 180/2^30 "°" >= -90 <= 90
+            LON "Longitude"
+                element 32
+                    signed quantity 180/2^30 "°" >= -180 < 180
+        remark
+            Notes:
+
+                - Positive longitude indicates East. Positive latitude indicates North.
+
+    132 "Message Amplitude"
+        definition
+            Amplitude, in dBm, of ADS-B messages received by the ground station,
+            coded in two’s complement.
+        element 8
+            signed quantity 1 "dBm"
+        remark
+            Note:
+                - The value gives the amplitude of the latest received squitter.
+
+    140 "Geometric Height"
+        definition
+            Minimum height from a plane tangent to the earth’s ellipsoid, defined
+            by WGS-84, in two’s complement form.
+        element 16
+            signed quantity 25/2^2 "ft" >= -1500 < 150000
+        remark
+            Note:
+                1. LSB is required to be less than 10 ft by ICAO.
+                2. A value of ‘0111111111111111’ indicates that the aircraft transmits
+                   a “greater than” indication.
+
+    145 "Flight Level"
+        definition
+            Flight Level from barometric measurements,not QNH corrected, in two’s
+            complement form.
+        element 16
+            signed quantity 1/2^2 "FL" >= -15 < 1500
+
+    146 "Selected Altitude"
+        definition
+            The Selected Altitude as provided by the avionics and corresponding
+            either to the MCP/FCU Selected Altitude (the ATC cleared altitude
+            entered by the flight crew into the avionics) or to the FMS Selected Altitude.
+        group
+            SAS "Source Availability"
+                element 1
+                    table
+                        0: No source information provided
+                        1: Source Information provided
+            S "Source"
+                element 2
+                    table
+                        0: Unknown
+                        1: Aircraft Altitude (Holding Altitude)
+                        2: MCP/FCU Selected Altitude
+                        3: FMS Selected Altitude
+            ALT "Altitude"
+                element 13
+                    signed quantity 25 "ft" >= -1300 < 100000
+        remark
+            Notes:
+
+                1. The Selected Altitude provided in this field is not necessarily
+                   the “Target Altitude” as defined by ICAO.
+                2. The value of “Source” (bits 15/14) indicating “unknown” or “Aircraft
+                   Altitude” is kept for backward compatibility as these indications are
+                   not provided by “version 2” systems as defined by data item I021/210,
+                   bits 6/4.
+                3. Vertical mode indications supporting the determination of the
+                   nature of the Selected Altitude are provided in the Reserved
+                   Expansion Field in the subfield NAV.
+
+    148 "Final State Selected Altitude"
+        definition
+            The vertical intent value that corresponds with the ATC cleared altitude,
+            as derived from the Altitude Control Panel (MCP/FCU).
+        group
+            MV "Manage Vertical Mode"
+                element 1
+                    table
+                        0: Not active or unknown
+                        1: Active
+            AH "Altitude Hold Mode"
+                element 1
+                    table
+                        0: Not active or unknown
+                        1: Active
+            AM "Approach Mode"
+                element 1
+                    table
+                        0: Not active or unknown
+                        1: Active
+            ALT "Altitude"
+                element 13
+                    signed quantity 25 "ft" >= -1300 < 100000
+        remark
+            Notes:
+
+                - This item is kept for backward compatibility but shall not be used
+                  for “version 2” ADS-B systems (as defined by data item I021/210,
+                  bits 6/4) for which item 146 will be used to forward the MCP/FCU
+                  or the FMS selected altitude information. For “version 2” ADS-B
+                  systems, the vertical mode indications will be provided through
+                  the Reserved Expansion Field in the subfield NAV .
+
+    150 "Air Speed"
+        definition
+            Calculated Air Speed (Element of Air Vector).
+        group
+            IM ""
+                element 1
+                    table
+                        0: Air Speed = IAS, LSB (Bit-1) = 2 -14 NM/s
+                        1: Air Speed = Mach, LSB (Bit-1) = 0.001
+            AS "Air Speed (IAS or Mach)"
+                element 15
+                    case 150/IM
+                        0:
+                            unsigned quantity 1/2^14 "NM/s"
+                        1:
+                            unsigned quantity 1/1000 "Mach"
+                        default:
+                            raw
+
+    151 "True Airspeed"
+        definition
+            True Air Speed.
+        group
+            RE "Range Exceeded Indicator"
+                element 1
+                    table
+                        0: Value in defined range
+                        1: Value exceeds defined range
+            TAS "True Air Speed"
+                element 15
+                    unsigned quantity 1 "kt"
+        remark
+            Notes:
+
+                - The RE-Bit, if set, indicates that the value to be transmitted is
+                  beyond the range defined for this specific data item and the
+                  applied technology. In this case the True Air Speed contains the
+                  maximum value that can be downloaded from the aircraft avionics
+                  and the RE-bit indicates that the actual value is greater than the
+                  value contained in the field.
+
+    152 "Magnetic Heading"
+        definition
+            Magnetic Heading (Element of Air Vector).
+        element 16
+            unsigned quantity 360/2^16 "°"
+        remark
+            Notes:
+
+                - True North Heading is defined in the Reserved Expansion Field in
+                  the subfield TNH.
+
+    155 "Barometric Vertical Rate"
+        definition
+            Barometric Vertical Rate, in two’s complement form.
+        group
+            RE "Range Exceeded Indicator"
+                element 1
+                    table
+                        0: Value in defined range
+                        1: Value exceeds defined range
+            BVR "Barometric Vertical Rate"
+                element 15
+                    signed quantity 25/2^2 "ft/min"
+        remark
+            Notes:
+
+                - The RE-Bit, if set, indicates that the value to be transmitted is
+                  beyond the range defined for this specific data item and the applied
+                  technology. In this case the Barometric Vertical Rate contains the
+                  maximum value that can be downloaded from the aircraft avionics and
+                  the RE-bit indicates that the actual value is greater than the value
+                  contained in the field.
+
+    157 "Geometric Vertical Rate"
+        definition
+            Geometric Vertical Rate, in two’s complement form, with reference to WGS-84.
+        group
+            RE "Range Exceeded Indicator"
+                element 1
+                    table
+                        0: Value in defined range
+                        1: Value exceeds defined range
+            GVR "Geometric Vertical Rate"
+                element 15
+                    signed quantity 25/2^2 "ft/min"
+        remark
+            Notes:
+
+                - The RE-Bit, if set, indicates that the value to be transmitted is
+                  beyond the range defined for this specific data item and the applied
+                  technology. In this case the Geometric Vertical Rate contains the
+                  maximum value that can be downloaded from the aircraft avionics and
+                  the RE-bit indicates that the actual value is greater than the value
+                  contained in the field.
+
+    160 "Airborne Ground Vector"
+        definition
+            Ground Speed and Track Angle elements of Airborne Ground Vector.
+        group
+            RE "Range Exceeded Indicator"
+                element 1
+                    table
+                        0: Value in defined range
+                        1: Value exceeds defined range
+            GS "Ground Speed Referenced to WGS-84"
+                element 15
+                    unsigned quantity 1/2^14 "NM/s" >= 0 < 2
+            TA "Track Angle Clockwise Reference to True North"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+        remark
+            Notes:
+
+                1. The RE-Bit, if set, indicates that the value to be transmitted is
+                   beyond the range defined for this specific data item and the applied
+                   technology. In this case the Ground Speed contains the maximum value
+                   that can be downloaded from the aircraft avionics and the RE-bit
+                   indicates that the actual value is greater than the value contained
+                   in the field.
+                2. The Surface Ground Vector format is defined in the Reserved Expansion
+                   Field in the subfield SGV.
+
+    161 "Track Number"
+        definition
+            An integer value representing a unique reference to a track record
+            within a particular track file.
+        group
+            spare 4
+            TRNUM "Track Number"
+                element 12
+                    raw
+
+    165 "Track Angle Rate"
+        definition
+            Rate of Turn, in two’s complement form.
+        group
+            spare 6
+            TAR "Track Angle Rate"
+                element 10
+                    signed quantity 1/2^5 "°/s" >= -16 <= 16
+        remark
+            Notes:
+
+                1. A positive value represents a right turn, whereas a negative value
+                   represents a left turn.
+                2. Maximum value means Maximum value or above.
+                3. This item will not be transmitted for the technology 1090 MHz
+                   Extended Squitter.
+
+    170 "Target Identification"
+        definition
+            Target (aircraft or vehicle) identification in 8 characters, as reported
+            by the target.
+        element 48
+            string icao
+
+    200 "Target Status"
+        definition
+            Status of the target
+        group
+            ICF "Intent Change Flag (see Note)"
+                element 1
+                    table
+                        0: No intent change active
+                        1: Intent change flag raised
+            LNAV "LNAV Mode"
+                element 1
+                    table
+                        0: LNAV Mode engaged
+                        1: LNAV Mode not engaged
+            ME "Military Emergency"
+                element 1
+                    table
+                        0: No military emergency
+                        1: Military emergency
+            PS "Priority Status"
+                element 3
+                    table
+                        0: No emergency / not reported
+                        1: General emergency
+                        2: Lifeguard / medical emergency
+                        3: Minimum fuel
+                        4: No communications
+                        5: Unlawful interference
+                        6: DOWNED Aircraft
+            SS "Surveillance Status"
+                element 2
+                    table
+                        0: No condition reported
+                        1: Permanent Alert (Emergency condition)
+                        2: Temporary Alert (change in Mode 3/A Code other than emergency)
+                        3: SPI set
+        remark
+            Notes:
+
+                - Bit-8 (ICF), when set to “1” indicates that new information is
+                  available in the Mode S GICB registers 40, 41 or 42.
+
+    210 "MOPS Version"
+        definition
+            Identification of the MOPS version used by a/c to supply ADS-B information.
+        group
+            spare 1
+            VNS "Version Not Supported"
+                element 1
+                    table
+                        0: The MOPS Version is supported by the GS
+                        1: The MOPS Version is not supported by the GS
+            VN "Version Number"
+                element 3
+                    table
+                        0: ED102/DO-260 [Ref. 8]
+                        1: DO-260A [Ref. 9]
+                        2: ED102A/DO-260B [Ref. 11]
+            LTT "Link Technology Type"
+                element 3
+                    table
+                        0: Other
+                        1: UAT
+                        2: 1090 ES
+                        3: VDL 4
+                        4: Not assigned
+                        5: Not assigned
+                        6: Not assigned
+                        7: Not assigned
+        remark
+            Notes:
+
+                - VN sub-field shall contain a value describing the MOPS used by each aircraft.
+                  The versions of other link technologies are assumed to be in line
+                  with the 1090 ES MOPS versions and the corresponding MASPS versions.
+
+                - Bit 7 (VNS) when set to 1 indicates that the aircraft transmits a
+                  MOPS Version indication that is not supported by the Ground Station.
+                  However, since MOPS versions are supposed to be backwards compatible,
+                  the GS has attempted to interpret the message and achieved a credible
+                  result. The fact that the MOPS version received is not supported by
+                  the GS is submitted as additional information to subsequent processing
+                  systems.
+
+    220 "Met Information"
+        definition
+            Meteorological information.
+        compound
+            WS "Wind Speed"
+                element 16
+                    unsigned quantity 1 "kt" >= 0 <= 300
+            WD "Wind Direction"
+                element 16
+                    unsigned quantity 1 "°" >= 1 <= 360
+            TMP "Temperature"
+                element 16
+                    signed quantity 1/2^2 "°C" >= -100 <= 100
+            TRB "Turbulence"
+                element 8
+                    unsigned integer >= 0 <= 15
+
+    230 "Roll Angle"
+        definition
+            The roll angle, in two’s complement form, of an aircraft executing a turn.
+        element 16
+            signed quantity 1/100 "°" >= -180 <= 180
+        remark
+            Notes:
+
+                1. Negative Value indicates “Left Wing Down”.
+                2. Resolution provided by the technology “1090 MHz Extended Squitter”
+                   is 1 degree.
+
+    250 "Mode S MB Data"
+        definition
+            Mode S Comm B data as extracted from the aircraft transponder.
+        repetitive 1
+            element 64
+                bds
+        remark
+            Notes:
+
+                1. For the transmission of BDS20, item 170 should be used.
+                2. For the transmission of BDS30, item 260 is used.
+
+    260 "ACAS Resolution Advisory Report"
+        definition
+            Currently active Resolution Advisory (RA), if any, generated by the ACAS
+            associated with the transponder transmitting the RA message and threat
+            identity data.
+        group
+            TYP "Message Type (= 28 for 1090 ES, Version 2)"
+                element 5
+                    raw
+            STYP "Message Sub-type (= 2 for 1090 ES, Version 2)"
+                element 3
+                    raw
+            ARA "Active Resolution Advisories"
+                element 14
+                    raw
+            RAC "RAC (RA Complement) Record"
+                element 4
+                    raw
+            RAT "RA Terminated"
+                element 1
+                    raw
+            MTE "Multiple Threat Encounter"
+                element 1
+                    raw
+            TTI "Threat Type Indicator"
+                element 2
+                    raw
+            TID "Threat Identity Data"
+                element 26
+                    raw
+        remark
+            Notes:
+
+                1. Version denotes the MOPS version as defined in I021/210, bits 6/4
+                2. This data items copies the value of BDS register 6,1 for message
+                   type 28, subtype 2
+                3. The “TYP” and “STYP” items are implementation (i.e. link technology)
+                   dependent.
+                4. Refer to ICAO Annex 10 SARPs for detailed explanations [Ref. 10]
+
+    271 "Surface Capabilities and Characteristics"
+        definition
+            Operational capabilities of the aircraft while on the ground.
+        extended
+            spare 2
+            POA "Position Offset Applied"
+                element 1
+                    table
+                        0: Position transmitted is not ADS-B position reference point
+                        1: Position transmitted is the ADS-B position reference point
+            CDTIS "Cockpit Display of Traffic Information Surface"
+                element 1
+                    table
+                        0: CDTI not operational
+                        1: CDTI operational
+            B2LOW "Class B2 Transmit Power Less Than 70 Watts"
+                element 1
+                    table
+                        0: >= 70 Watts
+                        1: < 70 Watts
+            RAS "Receiving ATC Services"
+                element 1
+                    table
+                        0: Aircraft not receiving ATC-services
+                        1: Aircraft receiving ATC services
+            IDENT "Setting of IDENT Switch"
+                element 1
+                    table
+                        0: IDENT switch not active
+                        1: IDENT switch active
+            -
+            LW "Length and Width of the Aircraft"
+                element 4
+                    raw
+            spare 3
+            -
+        remark
+            Notes:
+
+                1. Version 2 (as defined in I021/210, bits 6/4) data technology
+                   protocols encode “No Data or Unknown” with value 0. In this
+                   case data item I021/271, first extension is not generated.
+                2. As of edition 2.2 the structure of this data item has been changed.
+                   Edition 2.2 is not backwards compatible with previous editions.
+
+    295 "Data Ages"
+        definition
+            Ages of the data provided.
+        compound
+            AOS "Aircraft Operational Status Age"
+                description
+                    Age of the information transmitted in item I021/008.
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            TRD "Target Report Descriptor Age"
+                description
+                    Age of the Target Report Descriptor, item I021/040
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            M3A "Mode 3/A Age"
+                description
+                    Age of the Mode 3/A Code, item I021/070
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            QI "Quality Indicators Age"
+                description
+                    Age of the Quality Indicators, item I021/090
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            TI1 "Trajectory Intent Age"
+                description
+                    Age of the Trajectory Intent information, item I021/110
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            MAM "Message Amplitude Age"
+                description
+                    Age of the message amplitude, item I021/132
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            GH "Geometric Height Age"
+                description
+                    Age of the Geometric Height, item 021/140
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            FL "Flight Level Age"
+                description
+                    Age of the Flight Level, item I021/145
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            ISA "Intermediate State Selected Altitude Age"
+                description
+                    Age of the Intermediate State Selected Altitude, item I021/146
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            FSA "Final State Selected Altitude Age"
+                description
+                    Age of the Final State Selected Altitude, item I021/148
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            AS "Air Speed Age"
+                description
+                    Age of the Air Speed, item I021/150
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            TAS "True Air Speed Age"
+                description
+                    Age of the True Air Speed, item I021/151
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            MH "Magnetic Heading Age"
+                description
+                    Age of the Magnetic Heading, item I021/152
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            BVR "Barometric Vertical Rate Age"
+                description
+                    Age of the Barometric Vertical Rate, item I021/155
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            GVR "Geometric Vertical Rate Age"
+                description
+                    Age of the Geometric Vertical Rate, item I021/157
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            GV "Ground Vector Age"
+                description
+                    Age of the Ground Vector, item I021/160
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            TAR "Track Angle Rate Age"
+                description
+                    Age of the Track Angle Rate, item I021/165
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            TI2 "Target Identification Age"
+                description
+                    Age of the Target Identification, item I021/170
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            TS "Target Status Age"
+                description
+                    Age of the Target Status, item I021/200
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            MET "Met Information Age"
+                description
+                    Age of the Meteorological Information, item I021/220
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            ROA "Roll Angle Age"
+                description
+                    Age of the Roll Angle, item I021/230
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            ARA "ACAS Resolution Advisory Age"
+                description
+                    Age of the latest update of an active ACAS Resolution Advisory,
+                    item I021/260
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+            SCC "Surface Capabilities and Characteristics Age"
+                description
+                    Age of the information on the surface capabilities and
+                    characteristics of the respective target, item I021/271
+                element 8
+                    unsigned quantity 1/10 "s" <= 51/2
+        remark
+            Notes:
+
+                - In all the subfields, the maximum value indicates “maximum value
+                  or above”.
+
+    400 "Receiver ID"
+        definition
+            Designator of Ground Station in Distributed System.
+        element 8
+            raw
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    040
+    161
+    015
+    071
+    130
+    131
+    072
+    150
+    151
+    080
+    073
+    074
+    075
+    076
+    140
+    090
+    210
+    070
+    230
+    145
+    152
+    200
+    155
+    157
+    160
+    165
+    077
+    170
+    020
+    220
+    146
+    148
+    110
+    016
+    008
+    271
+    132
+    250
+    260
+    400
+    295
+    -
+    -
+    -
+    -
+    -
+    RE
+    SP

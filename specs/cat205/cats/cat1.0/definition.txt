@@ -1,0 +1,285 @@
+asterix 205 "Radio Direction Finder Reports"
+edition 1.0
+date 2020-03-17
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the
+            messages at the receiver side by further defining the type of
+            transaction.
+        element 8
+            table
+                1: System Position Report
+                2: System Bearing Report
+                3: System Position Report of conflicting transmission
+                4: System Detection End Report
+                5: Sensor Data Report
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the Radio Direction Finder System or Sensor from which the 
+            report is received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                The up-to-date list of SACs is published on the
+                EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+        remark
+            Note:
+                The service identification is allocated by the system.
+
+    030 "Time of Day"
+        definition
+            UTC time of transmission of this ASTERIX message.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                The TOD value is reset to zero at every midnight UTC. 
+
+    040 "Report Number"
+        definition
+            Sequential and cyclic number of position detection reports.
+        element 8
+            raw
+        remark
+            Note:
+                The number is incremented if there is a new position or bearing detected, independent 
+                from the respective channel. The report number shall also be incremented if, during 
+                the ongoing position or bearing detection, the position or bearing value is deviating by 
+                a system-defined threshold from the previous one. If the message type (I205/000) 
+                changes to another Detection Report, the report number is incremented as well.
+                to detect lost messages.
+                
+
+    050 "Position in WGS-84 Coordinates"
+        definition
+            Calculated position in WGS-84 Coordinates.
+        group
+            LAT "Latitude in WGS-84"
+                element 32
+                    signed quantity 180/2^25 "°" >= -90 <= 90
+            LON "Longitude in WGS-84"
+                element 32
+                    signed quantity 180/2^25 "°" >= -180 < 180
+        remark
+            Note:
+                The LSB provides a resolution at least better than 0.6 meters.
+                For reports of Message Type 001 and 003, the item shall contain the estimated 
+                position of the transmitting aircraft.
+                For reports of Message Type 002, the item shall contain the position of the bearing 
+                starting point, i.e. the position of the respective RDF sensor.
+                
+
+    060 "Position in Cartesian Coordinates"
+        definition
+            Calculated position in Cartesian Coordinates.
+        group
+            X "X-coordinate"
+                element 24
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
+            Y "Y-coordinate"
+                element 24
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
+        remark
+            Note:
+                The Cartesian coordinates are relative to an agreed System Reference Point. The 
+                System Reference Point may be communicated in ASTERIX category 025, item 600.
+                For reports of Message Type 001 and 003, the item shall contain the estimated 
+                position of the transmitting aircraft.
+                For reports of Message Type 002, the item shall contain the position of the bearing 
+                starting point, i.e. the position of the respective RDF sensor.
+                
+
+    070 "Local Bearing"
+        definition
+            Bearing of the detected radio transmission, starting at the position contained in 
+            I205/050 and given relative to this position.
+        element 16
+            unsigned quantity 1/100 "°" >= 0 <= 360
+        remark
+            Note:
+                The angle is given in degrees, in clock-wise notation, 
+                starting with 0 degrees for the geographical North. 
+
+    080 "System Bearing"
+        definition
+            Bearing of the detected radio transmission, starting at the position contained in 
+            I205/060, projected to the Cartesian Coordinate System relative to the System 
+            Reference Point (as used for I205/ 060).
+        element 16
+            unsigned quantity 1/100 "°" >= 0 <= 360
+        remark
+            Note:
+                The angle is given in degrees, in clock-wise notation, 
+                starting with 0 degrees for the geographical North. 
+
+    090 "Radio Channel Name"
+        definition
+            Name of the channel the radio transmission is detected on.
+        element 56
+            string ascii
+        remark
+            Note:
+                NU1 till NU7 contain digits or a decimal point in ASCII representation, specifying the 
+                name of the radio channel. Channel names that could be provided with less than 6 
+                digits shall be filled with trailing zeroes (e.g. 121.100).
+                This channel name is not identical with the actual physical frequency.
+                
+
+    100 "Quality of Measurement"
+        definition
+            Quality of the measurement provided by the Radio Direction Finder system.
+        element 8
+            raw
+        remark
+            Note:
+                The actual meanings of the bits are application dependent.
+                
+
+    110 "Estimated Uncertainty"
+        definition
+            Uncertainty estimation of the RDF System. The transmitter is expected to be 
+            within the provided radius around the calculated position.
+        element 8
+            unsigned quantity 100 "m" >= 0 <= 25500
+
+    120 "Contributing Sensors"
+        definition
+            The identification of the RDF sensors that contributed to the detection of the radio 
+            transmitter.
+        repetitive 1
+            element 8
+                raw
+        remark
+            Note:
+                The actual identification of the receivers is application dependent.
+                
+
+    130 "Conflicting Transmitter Position in WGS-84 Coordinates"
+        definition
+            Calculated position in WGS-84 Coordinates. This is the position of a second 
+            transmitter on the same frequency and overlapping in time with the transmitter 
+            position communicated in data item I205/050.
+        group
+            LAT "Latitude in WGS-84"
+                element 32
+                    signed quantity 180/2^25 "°" >= -90 <= 90
+            LON "Longitude in WGS-84"
+                element 32
+                    signed quantity 180/2^25 "°" >= -180 < 180
+        remark
+            Note:
+                The LSB provides a resolution at least better than 0.6 meters.
+
+    140 "Conflicting Transmitter Position in Cartesian Coordinates"
+        definition
+            Calculated position in Cartesian Coordinates. This is the position of a second 
+            transmitter on the same frequency and overlapping in time with the transmitter 
+            position communicated in data item I205/060.
+        group
+            X "X-coordinate"
+                element 24
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
+            Y "Y-coordinate"
+                element 24
+                    signed quantity 1/2 "m" >= -4194300 <= 4194300
+        remark
+            Note:
+                The Cartesian coordinates are relative to an agreed System Reference Point. The 
+                System Reference Point may be communicated in ASTERIX category 025, item 600.
+                
+
+    150 "Conflicting Transmitter Estimated Uncertainty"
+        definition
+            Range uncertainty estimation of the RDF System for the Conflicting Transmitter, 
+            i.e. a transmitter on the same frequency and with a timely overlapping 
+            transmission. The transmitter is estimated to be within the provided radius around 
+            the detected position.
+        element 8
+            unsigned quantity 100 "m" >= 0 <= 25500
+
+    160 "Track Number"
+        definition
+            Unique identification of a track at the calculated RDF position.
+        element 16
+            raw
+
+    170 "Sensor Identification"
+        definition
+            Unique identification of an RDF sensor.
+        element 8
+            raw
+        remark
+            Note:
+                For Message Type 5 (Sensor Data Report) in I205/000, the item has to be used if 
+                there is no unique SAC/SIC defined for each RDF Sensor.
+                The actual identification number is application dependent
+                
+
+    180 "Signal Level"
+        definition
+            The level of the signal received by an RDF sensor.
+        element 16
+            signed quantity 1/100 "dBµV"
+
+    190 "Signal Quality"
+        definition
+            Relative quality of the received signal as estimated by the RDF sensor.
+        element 8
+            raw
+        remark
+            Note:
+                255 corresponds to the best quality,
+                0 to the worst quality
+
+    200 "Signal Elevation"
+        definition
+            The elevation of the signal received by an RDF sensor.
+        element 16
+            signed quantity 1/100 "°" >= -90 <= 90
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    015
+    000
+    030
+    040
+    090
+    050
+    060
+    070
+    080
+    100
+    110
+    120
+    130
+    140
+    150
+    160
+    170
+    180
+    190
+    200
+    SP

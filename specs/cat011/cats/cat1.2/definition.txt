@@ -1,0 +1,858 @@
+asterix 011 "Transmission of A-SMGCS Data"
+edition 1.2
+date 2008-05-01
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the messages
+            at the receiver side by further defining the type of transaction.
+        element 8
+            table
+                1: Target reports, flight plan data and basic alerts
+                2: Manual attachment of flight plan to track
+                3: Manual detachment of flight plan to track
+                4: Insertion of flight plan data
+                5: Suppression of flight plan data
+                6: Modification of flight plan data
+                7: Holdbar status
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC "System Area Code Fixed to Zero"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                The SAC is fixed to zero to indicate a data flow local to the airport.
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+        remark
+            Note:
+                The service identification is allocated by the A-SMGCS
+
+    041 "Position in WGS-84 Coordinates"
+        definition
+            Position of a target in WGS-84 Coordinates.
+        group
+            LAT "Latitude in WGS-84 in Two's Complement"
+                element 32
+                    signed quantity 180/2^31 "°" >= -90 <= 90
+            LON "Longitude in WGS-84 in Two's Complement"
+                element 32
+                    signed quantity 180/2^31 "°" >= -180 < 180
+
+    042 "Calculated Position in Cartesian Co-ordinates"
+        definition
+            Calculated position of a target in Cartesian co-ordinates (two's complement form).
+        group
+            X "X-Component"
+                element 16
+                    signed quantity 1 "m" >= -32768 <= 32768
+            Y "Y-Component"
+                element 16
+                    signed quantity 1 "m" >= -32768 <= 32768
+
+    060 "Mode-3/A Code in Octal Representation"
+        definition
+            Track Mode-3/A code converted into octal representation.
+        group
+            spare 4
+            MOD3A "Mode-3/A Reply in Octal Representation"
+                element 12
+                    string octal
+
+    090 "Measured Flight Level"
+        definition
+            Last valid and credible flight level used to update the track, in two's complement representation.
+        element 16
+            signed quantity 1/2^2 "FL" >= -12 <= 1500
+        remark
+            Note:
+                 The criteria to determine the credibility of the flight level are Tracker dependent.
+                 Credible means: within reasonable range of change with respect to the previous detection.
+
+    092 "Calculated Track Geometric Altitude"
+        definition
+            Calculated geometric vertical distance above mean sea level, not related to barometric pressure.
+        element 16
+            signed quantity 25/2^2 "ft" >= -1500 <= 150000
+        remark
+            Note:
+                 The source of altitude is identified in bits (SRC) of item I011/170 Track Status.
+
+    093 "Calculated Track Barometric Altitude"
+        definition
+            Calculated Barometric Altitude of the track.
+        group
+            QNH "QNH Correction Applied"
+                element 1
+                    table
+                        0: No QNH correction applied
+                        1: QNH correction applied
+            CTBA "Calculated Track Barometric Altitude"
+                element 15
+                    signed quantity 1/2^2 "FL" >= -15 <= 1500
+
+    140 "Time of Track Information"
+        definition
+            Absolute time stamping expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                The time of day value is reset to zero each day at midnight.
+
+    161 "Track Number"
+        definition
+            Identification of a fusion track (single track number).
+        group
+            spare 1
+            FTN "Fusion Track Number"
+                element 15
+                    raw
+
+    170 "Track Status"
+        definition
+            Status of track.
+        extended
+            MON ""
+                element 1
+                    table
+                        0: Multisensor Track
+                        1: Monosensor Track
+            GBS ""
+                element 1
+                    table
+                        0: Transponder Ground bit not set or unknown
+                        1: Transponder Ground bit set
+            MRH ""
+                element 1
+                    table
+                        0: Barometric altitude (Mode C) more reliable
+                        1: Geometric altitude more reliable
+            SRC ""
+                element 3
+                    table
+                        0: No source
+                        1: GPS
+                        2: 3d radar
+                        3: Triangulation
+                        4: Height from coverage
+                        5: Speed look-up table
+                        6: Default height
+                        7: Multilateration
+            CNF ""
+                element 1
+                    table
+                        0: Confirmed track
+                        1: Tentative track
+            -
+            SIM ""
+                element 1
+                    table
+                        0: Actual Track
+                        1: Simulated track
+            TSE ""
+                element 1
+                    table
+                        0: Default value
+                        1: Track service end (i.e. last message transmitted to the user for the track)
+            TSB ""
+                element 1
+                    table
+                        0: Default value
+                        1: Track service begin (i.e. first message transmitted to the user for the track)
+            FRIFOE ""
+                element 2
+                    table
+                        0: No Mode 4 interrogationt
+                        1: Friendly target
+                        2: Unknown target
+                        3: No reply
+            ME ""
+                element 1
+                    table
+                        0: Default value
+                        1: Military Emergency present in the last report received from a sensor capable of decoding this data
+            MI ""
+                element 1
+                    table
+                        0: End of Data Item
+                        1: Military Identification present in the last report received from a sensor capable of decoding this data
+            -
+            AMA ""
+                element 1
+                    table
+                        0: Track not resulting from amalgamation process
+                        1: Track resulting from amalgamation process
+            SPI ""
+                element 1
+                    table
+                        0: Default value
+                        1: SPI present in the last report received from a sensor capable of decoding this data
+            CST ""
+                element 1
+                    table
+                        0: Default value
+                        1: Age of the last received track update is higher than system dependent threshold (coasting)
+            FPC ""
+                element 1
+                    table
+                        0: Not flight-plan correlated
+                        1: Flight plan correlated
+            AFF ""
+                element 1
+                    table
+                        0: Default value
+                        1: ADS-B data inconsistent with other surveillance information
+            spare 2
+            -
+
+    202 "Calculated Track Velocity in Cartesian Coordinates"
+        definition
+            Calculated track velocity expressed in Cartesian co-ordinates.
+        group
+            VX "Vx"
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
+            VY "Vy"
+                element 16
+                    signed quantity 1/2^2 "m/s" >= -8192 <= 8192
+
+    210 "Calculated Acceleration"
+        definition
+            Calculated Acceleration of the target, in two's complement form.
+        group
+            AX "Ax"
+                element 8
+                    signed quantity 1/2^2 "m/s²" >= -31 <= 31
+            AY "Ay"
+                element 8
+                    signed quantity 1/2^2 "m/s²" >= -31 <= 31
+
+    215 "Calculated Rate Of Climb/Descent"
+        definition
+            Calculated rate of Climb/Descent of an aircraft, in two's complement form.
+        element 16
+            signed quantity 25/2^2 "ft/min" >= -204800 <= 204800
+
+    245 "Target Identification"
+        definition
+            Target (aircraft or vehicle) identification in 8 characters.
+        group
+            STI ""
+                element 2
+                    table
+                        0: Callsign or registration downlinked from transponder
+                        1: Callsign not downlinked from transponder
+                        2: Registration not downlinked from transponder
+            spare 6
+            TID "Target Identification"
+                element 48
+                    string icao
+        remark
+            Note:
+                Characters 1-8 (coded on 6 bits each) defining target identification
+
+    270 "Target Size and Orientation"
+        definition
+            Target size defined as length and with of the detected target, and orientation.
+        extended
+            LENGTH "Length"
+                element 7
+                    unsigned quantity 1 "m"
+            -
+            ORIENTATION "Orientation"
+                element 7
+                    unsigned quantity 360/2^7 "°"
+            -
+            WIDTH "Width"
+                element 7
+                    unsigned quantity 1 "m"
+            -
+        remark
+            Note:
+                The orientation gives the direction which the aircraft nose is pointing, relative to the Geographical North.
+
+    290 "System Track Update Ages"
+        definition
+            Ages of the last plot/local track, or the last valid mode-A/mode-C, used to update the system track.
+        compound
+            PSR "Age of The Last Primary Detection Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            SSR "Age of the Last Secondary Detection Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            MDA "Age of the Last Mode A Detection Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            MFL "Age of the Last Mode C Detection Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            MDS "Age of the Last Mode S Detection Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            ADS "Age of the Last ADS Report Used to Update the Track"
+                element 16
+                    unsigned quantity 1/2^2 "s"
+            ADB "Age of the Last ADS-B Report Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            MD1 "Age of the Last Valid Mode 1 Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            MD2 "Age of the Last Mode 2 Used to Update the Track"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            LOP "Age of the Last Magentic Loop Detection"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            TRK "Actual Track Age Since First Occurrence"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+            MUL "Age of the Last Multilateration Detection"
+                element 8
+                    unsigned quantity 1/2^2 "s"
+        remark
+            Note:
+                The ages are counted from Data Item I011/140, Time Of Track
+                Information, using the following formula:
+                Age = Time of track information - Time of last (valid) update
+                If the computed age is greater than the maximum value or if the
+                data has never been received, then the corresponding subfield is not sent.
+
+    300 "Vehicle Fleet Identification"
+        definition
+            Vehicle fleet identification number.
+        element 8
+            table
+                0: Flyco (follow me)
+                1: ATC equipment maintenance
+                2: Airport maintenance
+                3: Fire
+                4: Bird scarer
+                5: Snow plough
+                6: Runway sweeper
+                7: Emergency
+                8: Police
+                9: Bus
+                10: Tug (push/tow)
+                11: Grass cutter
+                12: Fuel
+                13: Baggage
+                14: Catering
+                15: Aircraft maintenance
+                16: Unknown
+
+    310 "Pre-programmed Message"
+        definition
+            Number related to a pre-programmed message that can be transmitted by a vehicle.
+        group
+            TRB "In Trouble"
+                element 1
+                    table
+                        0: Default
+                        1: In Trouble
+            MSG "Message"
+                element 7
+                    table
+                        1: Towing aircraft
+                        2: FOLLOW-ME operation
+                        3: Runway check
+                        4: Emergency operation (fire, medical...)
+                        5: Work in progress (maintenance, birds scarer, sweepers...)
+
+    380 "Mode-S / ADS-B Related Data"
+        definition
+            Data specific to Mode-S ADS-B.
+        compound
+            MB "BDS"
+                repetitive 1
+                    element 64
+                        bds
+            ADR "24 Bits Aircraft Address"
+                element 24
+                    raw
+            -
+            COMACAS "Communications/ACAS Capability and Flight Status"
+                group
+                    COM "Communications Capability of the Transponder"
+                        element 3
+                            table
+                                0: No communications capability (surveillance only)
+                                1: Comm. A and Comm. B capability
+                                2: Comm. A, Comm. B and Uplink ELM
+                                3: Comm. A, Comm. B, Uplink ELM and Downlink ELM
+                                4: Level 5 Transponder capability
+                                5: Not assigned
+                                6: Not assigned
+                                7: Not assigned
+                    STAT "Flight Status"
+                        element 4
+                            table
+                                0: No alert, no SPI, aircraft airborne
+                                1: No alert, no SPI, aircraft on ground
+                                2: Alert, no SPI, aircraft airborne
+                                3: Alert, no SPI, aircraft on ground
+                                4: Alert, SPI, aircraft airborne or on ground
+                                5: No alert, SPI, aircraft airborne or on ground
+                                6: General Emergency
+                                7: Lifeguard / medical
+                                8: Minimum fuel
+                                9: No communications
+                                10: Unlawful
+                    spare 1
+                    SSC "Specific Service Capability"
+                        element 1
+                            table
+                                0: No
+                                1: Yes
+                    ARC "Altitude Reporting Capability"
+                        element 1
+                            table
+                                0: 100 ft resolution
+                                1: 25 ft resolution
+                    AIC "Aircraft Identification Capability"
+                        element 1
+                            table
+                                0: No
+                                1: Yes
+                    B1A "BDS 1,0 Bit 16"
+                        element 1
+                            raw
+                    B1B "BDS 1,0 Bit 37/40"
+                        element 4
+                            raw
+                    AC "ACAS Operational"
+                        element 1
+                            table
+                                0: No
+                                1: Yes
+                    MN "Multiple Navigational Aids Operating"
+                        element 1
+                            table
+                                0: No
+                                1: Yes
+                    DC "Differential Correction"
+                        element 1
+                            table
+                                0: Yes
+                                1: No
+                    spare 5
+            -
+            -
+            -
+            ACT "Aircraft Derived Aircraft Type"
+                element 32
+                    string ascii
+            ECAT "Emitter Category"
+                element 8
+                    table
+                        1: Light aircraft <= 7000 kg
+                        2: Reserved
+                        3: 7000 kg &lt; medium aircraft &lt; 136000 kg
+                        4: Reserved
+                        5: 136000 kg <= heavy aircraft
+                        6: Highly manoeuvrable (5g acceleration capability) and high speed (&gt;400 knots cruise)
+                        7: Reserved
+                        8: Reserved
+                        9: Reserved
+                        10: Rotocraft
+                        11: Glider / sailplane
+                        12: Lighter-than-air
+                        13: Unmanned aerial vehicle
+                        14: Space / transatmospheric vehicle
+                        15: Ultralight / handglider / paraglider
+                        16: Parachutist / skydiver
+                        17: Reserved
+                        18: Reserved
+                        19: Reserved
+                        20: Surface emergency vehicle
+                        21: Surface service vehicle
+                        22: Fixed ground or tethered obstruction
+                        23: Reserved
+                        24: Reserved
+            -
+            AVTECH "Available Technologies"
+                group
+                    VDL "VDL Mode 4"
+                        element 1
+                            table
+                                0: VDL Mode 4 available
+                                1: VDL Mode 4 not available
+                    MDS "Mode S"
+                        element 1
+                            table
+                                0: Mode S available
+                                1: Mode S not available
+                    UAT "UAT"
+                        element 1
+                            table
+                                0: UAT available
+                                1: UAT not available
+                    spare 5
+
+    390 "Flight Plan Related Data"
+        definition
+            All flight plan related information.
+        compound
+            FPPSID "FPPS Identification Tag"
+                group
+                    SAC "System Area Code"
+                        element 8
+                            raw
+                    SIC "System Identity Code"
+                        element 8
+                            raw
+            CSN "Callsign"
+                element 56
+                    string ascii
+            IFPSFLIGHTID "IFPS_FLIGHT_ID"
+                group
+                    TYP "IFPS Flight ID Type"
+                        element 2
+                            table
+                                0: Plan number
+                                1: Unit 1 internal flight number
+                                2: Unit 2 internal flight number
+                                3: Unit 3 internal flight number
+                    spare 3
+                    NBR "IFPS Flight ID Number"
+                        element 27
+                            raw
+            FLIGHTCAT "Flight Category"
+                group
+                    GATOAT "Flight Type"
+                        element 2
+                            table
+                                0: Unknown
+                                1: General Air Traffic
+                                2: Operational Air Traffic
+                                3: Not applicable
+                    FR1FR2 "Flight Rules"
+                        element 2
+                            table
+                                0: Instrument Flight Rules
+                                1: Visual Flight rules
+                                2: Not applicable
+                                3: Controlled Visual Flight Rules
+                    RVSM "RVSM"
+                        element 2
+                            table
+                                0: Unknown
+                                1: Approved
+                                2: Exempt
+                                3: Not Approved
+                    HPR "Flight Priority"
+                        element 1
+                            table
+                                0: Normal Priority Flight
+                                1: High Priority Flight
+                    spare 1
+            TOA "Type of Aircraft"
+                element 32
+                    string ascii
+            WTC "Wake Turbulence Category"
+                element 8
+                    table
+                        76: Light
+                        77: Medium
+                        72: Heavy
+                        74: Super
+            ADEP "Departure Airport"
+                element 32
+                    string ascii
+            ADES "Destination Airport"
+                element 32
+                    string ascii
+            RWY "Runway Designation"
+                element 24
+                    string ascii
+            CFL "Current Cleared Flight Level"
+                element 16
+                    unsigned quantity 1/2^2 "FL"
+            CCP "Current Control Position"
+                group
+                    CENTRE "8-bit Group Identification Code"
+                        element 8
+                            raw
+                    POSITION "8-bit Control Position Identification Code"
+                        element 8
+                            raw
+            TOD "Time of Departure"
+                repetitive 1
+                    group
+                        TYP "Time Type"
+                            element 5
+                                table
+                                    0: Scheduled off-block time
+                                    1: Estimated off-block time
+                                    2: Estimated take-off time
+                                    3: Actual off-block time
+                                    4: Predicted time at runway hold
+                                    5: Actual time at runway hold
+                                    6: Actual line-up time
+                                    7: Actual take-off time
+                                    8: Estimated time of arrival
+                                    9: Predicted landing time
+                                    10: Actual landing time
+                                    11: Actual time off runway
+                                    12: Predicted time to gate
+                                    13: Actual on-block time
+                        DAY "Day"
+                            element 2
+                                table
+                                    0: Today
+                                    1: Yesterday
+                                    2: Tomorrow
+                        spare 4
+                        HOR "Hours, from 0 to 23"
+                            element 5
+                                unsigned integer >= 0 <= 23
+                        spare 2
+                        MIN "Minutes, from 0 to 59"
+                            element 6
+                                unsigned integer >= 0 <= 59
+                        AVS "Seconds Available"
+                            element 1
+                                table
+                                    0: Seconds available
+                                    1: Seconds not available
+                        spare 1
+                        SEC "Seconds, from 0 to 59"
+                            element 6
+                                unsigned integer >= 0 <= 59
+            AST "Aircraft Stand"
+                element 48
+                    string ascii
+            STS "Stand Status"
+                group
+                    EMP "Stand Empty"
+                        element 2
+                            table
+                                0: Empty
+                                1: Occupied
+                                2: Unknown
+                    AVL "Stand Available"
+                        element 2
+                            table
+                                0: Available
+                                1: Not available
+                                2: Unknown
+                    spare 4
+
+    430 "Phase of Flight"
+        definition
+            Current phase of the flight.
+        element 8
+            table
+                0: Unknown
+                1: On stand
+                2: Taxiing for departure
+                3: Taxiing for arrival
+                4: Runway for departure
+                5: Runway for arrival
+                6: Hold for departure
+                7: Hold for arrival
+                8: Push back
+                9: On finals
+
+    500 "Estimated Accuracies"
+        definition
+            Overview of all important accuracies (standard deviations).
+        compound
+            APC "Estimated Accuracy Of Track Position (Cartesian)"
+                group
+                    X "Estimated Accuracy of the Calculated Position of X Component"
+                        element 8
+                            unsigned quantity 1/2^2 "m"
+                    Y "Estimated Accuracy of the Calculated Position of Y Component"
+                        element 8
+                            unsigned quantity 1/2^2 "m"
+            APW "Estimated Accuracy Of Track Position (WGS84)"
+                group
+                    LAT "APW Latitude Component Accuracy"
+                        element 16
+                            signed quantity 180/2^31 "°"
+                    LON "APW Longitude Component Accuracy"
+                        element 16
+                            signed quantity 180/2^31 "°"
+            ATH "Estimated Accuracy Of Track Height"
+                element 16
+                    signed quantity 1/2 "m"
+            AVC "Estimated Accuracy Of Track Velocity (Cartesian)"
+                group
+                    X "Estimated Accuracy of the Calculated Velocity of X Component"
+                        element 8
+                            unsigned quantity 1/10 "m/s"
+                    Y "Estimated Accuracy of the Calculated Velocity of Y Component"
+                        element 8
+                            unsigned quantity 1/10 "m/s"
+            ARC "Estimated Accuracy Of Rate Of Climb / Descent"
+                element 16
+                    signed quantity 1/10 "m/s"
+            AAC "Estimated Accuracy Of Acceleration (Cartesian)"
+                group
+                    X "Estimated Accuracy Of Acceleration of X Component"
+                        element 8
+                            unsigned quantity 1/100 "m/s²"
+                    Y "Estimated Accuracy Of Acceleration of Y Component"
+                        element 8
+                            unsigned quantity 1/100 "m/s²"
+
+    600 "Alert Messages"
+        definition
+            Alert involving the targets indicated in I011/605.
+        group
+            ACK "Alert Acknowleged"
+                element 1
+                    table
+                        0: Alert acknowledged
+                        1: Alert not acknowledged
+            SVR "Alert Severity"
+                element 2
+                    table
+                        0: End fo alert
+                        1: Pre-alarm
+                        2: Severe alert
+            spare 5
+            AT "Alert Type"
+                element 8
+                    raw
+            AN "Alert Number"
+                element 8
+                    raw
+
+    605 "Tracks in Alert"
+        definition
+            List of track numbers of the targets concerned by the alert described in I011/600.
+        repetitive 1
+            group
+                spare 4
+                FTN "Fusion Track Number"
+                    element 12
+                        raw
+
+    610 "Holdbar Status"
+        definition
+            Status of up to sixteen banks of twelve indicators.
+        repetitive 1
+            group
+                BKN "Bank Number"
+                    element 4
+                        raw
+                I1 "Indicator 1"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I2 "Indicator 2"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I3 "Indicator 3"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I4 "Indicator 4"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I5 "Indicator 5"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I6 "Indicator 6"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I7 "Indicator 7"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I8 "Indicator 8"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I9 "Indicator 9"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I10 "Indicator 10"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I11 "Indicator 11"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+                I12 "Indicator 12"
+                    element 1
+                        table
+                            0: Indicator on
+                            1: Indicator off
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+uap
+    010
+    000
+    015
+    140
+    041
+    042
+    202
+    210
+    060
+    245
+    380
+    161
+    170
+    290
+    430
+    090
+    093
+    092
+    215
+    270
+    390
+    300
+    310
+    500
+    600
+    605
+    610
+    SP
+    RE

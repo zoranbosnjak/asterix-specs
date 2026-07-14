@@ -1,0 +1,165 @@
+asterix 009 "Composite Weather Reports"
+edition 2.1
+date 2014-10-22
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the messages
+            at the receiver side by further defining the type of transaction.
+        element 8
+            table
+                2: Cartesian vector
+                253: Intermediate-update-step message
+                254: Start-of-picture message
+                255: End-of-picture message
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the radar station from which the data are received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                The defined SACs are on the EUROCONTROL ASTERIX website
+                (www.eurocontrol.int/asterix)
+
+    020 "Vector Qualifier"
+        definition
+            This Data Item defines the orientation of the following sequence
+            of Cartesian vectors, their intensity level and the relevant
+            coordinate system.
+        extended
+            ORG ""
+                element 1
+                    table
+                        0: Local Coordinates
+                        1: System Coordinates
+            I "Intensity Level"
+                element 3
+                    unsigned integer
+            S "Shading Orientation with Respect to North"
+                element 3
+                    table
+                        0: 0°
+                        1: 22.5°
+                        2: 45°
+                        3: 67.5°
+                        4: 90°
+                        5: 112.5°
+                        6: 135°
+                        7: 157.5°
+            -
+        remark
+            For polar vectors "S-bits" are meaningless and shall be set to zero.
+
+    030 "Sequence of Cartesian Vectors"
+        definition
+            Sequence of weather vectors in local or system Cartesian coordinates.
+        repetitive 1
+            group
+                X "X-coordinate"
+                    element 16
+                        signed integer
+                    remark
+                        Adjust with scaling factor '080/F'
+                        2exp (-6+f), where f is the scaling factor applied, modifying the
+                        standard quantisation unit.
+                        Range:-2exp (9+f) =<X<2exp (9+f) NM.
+                Y "Y-coordinate"
+                    element 16
+                        signed integer
+                    remark
+                        Adjust with scaling factor '080/F'
+                        2exp (-6+f), where f is the scaling factor applied, modifying the
+                        standard quantisation unit.
+                        Range:-2exp (9+f) =<Y<2exp (9+f) NM.
+                L "Vector Length"
+                    element 16
+                        unsigned integer
+                    remark
+                        Adjust with scaling factor '080/F'
+                        2exp (-6+f).
+                        Max. range = 2exp (9+f) NM.
+        remark
+            'F' shall be incorporated as a parameter in the SOP message.
+
+    060 "Synchronisation/Control Signal"
+        definition
+            This Data Item provides the serial Step Number.
+        extended
+            SN "Step Number"
+                element 6
+                    unsigned integer
+            spare 1
+            -
+
+    070 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC time.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            The time of day value is reset to zero each day at midnight.
+
+    080 "Processing Status"
+        definition
+            Processing status of the Track Server.
+        extended
+            F "Scaling Factor"
+                element 5
+                    signed integer
+            R "Current Reduction Stage in Use"
+                element 3
+                    raw
+            Q "Processing Parameters"
+                element 15
+                    raw
+            -
+
+    090 "Radar Configuration and Status"
+        definition
+            Current radar configuration and status of all operational radars.
+        repetitive 1
+            group
+                SAC "SAC of Radar Concerned"
+                    element 8
+                        raw
+                SIC "SIC of Radar Concerned"
+                    element 8
+                        raw
+                spare 3
+                CP "Circular Polarisation"
+                    element 1
+                        raw
+                WO "Weather Channel Overload"
+                    element 1
+                        raw
+                R "Reduction Step in Use By Radar  Concerned"
+                    element 3
+                        raw
+
+    100 "Vector Count"
+        definition
+            Total number of vectors defining a complete weather picture.
+        element 16
+            unsigned integer
+
+uap
+    010
+    000
+    020
+    030
+    060
+    070
+    080
+    090
+    100
