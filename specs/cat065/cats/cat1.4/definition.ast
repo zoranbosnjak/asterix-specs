@@ -1,0 +1,152 @@
+asterix 065 "SDPS Service Status Reports"
+edition 1.4
+date 2014-08-07
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This Data Item allows for a more convenient handling of the
+            messages at the receiver side by further defining the type of
+            transaction.
+        element 8
+            table
+                1: SDPS Status
+                2: End of Batch
+                3: Service Status Report
+        remark
+            Notes:
+                - In application where transactions of various types are exchanged, the
+                  Message Type Data Item facilitates the proper message handling at the
+                  receiver side.
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the system sending the data.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            Note:
+                - The up-to-date list of SACs is published on the
+                  EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).
+
+    015 "Service Identification"
+        definition
+            Identification of the service provided to one or more users.
+        element 8
+            raw
+        remark
+            Note:
+                - The service identification is allocated by the SDPS.
+
+    020 "Batch Number"
+        definition
+            A number indicating the completion of a service for that batch of track
+            data, from 0 to N-1, N being the number of batches used to make
+            one complete processing cycle.
+        element 8
+            unsigned integer
+
+    030 "Time of Message"
+        definition
+            Absolute time stamping of the message, in the form of elapsed time
+            since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            Note:
+                - The time is reset to zero at every midnight.
+
+    040 "SDPS Configuration and Status"
+        definition
+            Status of an SDPS.
+        group
+            NOGO ""
+                element 2
+                    table
+                        0: Operational
+                        1: Degraded
+                        2: Not currently connected
+                        3: Unknown
+            OVL ""
+                element 1
+                    table
+                        0: Default
+                        1: Overload
+            TSV ""
+                element 1
+                    table
+                        0: Default
+                        1: Invalid Time Source
+            PSS "Processing System Status"
+                element 2
+                    table
+                        0: Not applicable
+                        1: SDPS-1 selected
+                        2: SDPS-2 selected
+                        3: SDPS-3 selected
+            STTN "Track Re-numbering Indication"
+                element 1
+                    raw
+                remark
+                    The STTN bit indicates when track numbering has been restarted. The STTN bit
+                    is a toggle bit that changes its value whenever the SDPS system starts re-numbering
+                    its tracks. Re-numbering of the track takes place either after SDPS start-up (cold or hot
+                    start-up) or when a configuration set has been changed (please note that the latter
+                    case is ARTAS specific behaviour and may be different in another SDPS).
+            spare 1
+
+    050 "Service Status Report"
+        definition
+            Report sent by the SDPS related to a service
+        element 8
+            table
+                1: Service degradation
+                2: Service degradation ended
+                3: Main radar out of service
+                4: Service interrupted by the operator
+                5: Service interrupted due to contingency
+                6: Ready for service restart after contingency
+                7: Service ended by the operator
+                8: Failure of user main radar
+                9: Service restarted by the operator
+                10: Main radar becoming operational
+                11: Main radar becoming degraded
+                12: Service continuity interrupted due to disconnection with adjacent unit
+                13: Service continuity restarted
+                14: Service synchronised on backup radar
+                15: Service synchronised on main radar
+                16: Main and backup radar, if any, failed
+
+    RE "Reserved Expansion Field"
+        definition
+            Expansion
+        explicit re
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    000
+    015
+    030
+    020
+    040
+    050
+    -
+    -
+    -
+    -
+    -
+    RE
+    SP

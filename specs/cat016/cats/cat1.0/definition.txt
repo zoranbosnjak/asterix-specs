@@ -1,0 +1,221 @@
+asterix 016 "Independent Non-Cooperative Surveillance System Configuration Reports"
+edition 1.0
+date 2019-07-15
+preamble
+    Surveillance data exchange.
+
+items
+
+    000 "Message Type"
+        definition
+            This data item conveys the message type.
+        element 8
+            table
+                1: System Configuration
+                2: Transmitter / Receiver Configuration
+
+    010 "Data Source Identifier"
+        definition
+            Identification of the Ground System from which the data is received.
+        group
+            SAC "System Area Code"
+                element 8
+                    raw
+            SIC "System Identification Code"
+                element 8
+                    raw
+        remark
+            NOTE - The up-to-date list of SACs is published on the EUROCONTROL
+            Web Site (http://www.eurocontrol.int/asterix).
+
+            NOTE - The SICs are allocated by the national authority responsible
+            for the surveillance infrastructure.
+
+    015 "Service Identification"
+        definition
+            Identifies the service being reported.
+        element 8
+            raw
+        remark
+            NOTE - The service identification is allocated by the system.
+
+    140 "Time of Day"
+        definition
+            Absolute time stamping expressed as UTC time.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            NOTE - The time of day value is reset to zero each day at midnight.
+
+    200 "System Configuration Reporting Period"
+        definition
+            Data item to indicate the reporting period of the system
+            configuration messages.
+        element 8
+            unsigned quantity 1 "s" > 1
+        remark
+            NOTE - The item will be sent periodically (every SCRP) and each
+            time a value change occurs.
+
+    300 "Pair Identification"
+        definition
+            The use of a pair identifier in this data item, that is common
+            with its counterpart in ASTERIX Category I015/400, enables direct
+            mapping from the INCS Target Report to the Transmitter/Receiver
+            Pair that contributed to the target report.
+            This is an identifier pointing to a measurement that was created
+            from a specific contributing pair where the Pair Identifier refers
+            to the index that details both the transmitter characteristics
+            (DVB-T, DAB, FM, dedicated etc) and the receiver characteristics.
+        repetitive 1
+            group
+                PID "Pair Identification"
+                    element 16
+                        raw
+                TID "Transmitter Identification"
+                    element 16
+                        raw
+                RID "Receiver Identification"
+                    element 16
+                        raw
+
+    400 "Position of the System Reference Point"
+        definition
+            Position of the system reference point in WGS-84 coordinates.
+        group
+            LAT "Latitude"
+                element 32
+                    signed quantity 180/2^31 "°" >= -90 <= 90
+            LON "Longitude"
+                element 32
+                    signed quantity 180/2^31 "°" >= -180 < 180
+        remark
+            NOTE - Positive longitude indicates East. Positive latitude
+            indicates North.
+
+            NOTE - I016/400 shall only be sent together with item I016/405
+            “Height of the System Reference Point”.
+
+    405 "Height of System Reference Point"
+        definition
+            Height of the system reference point in Two’s Complement form.
+            The height shall use mean sea level as the zero reference level.
+        element 16
+            signed quantity 1/2^2 "m" > -8192 < 8192
+        remark
+            NOTE - I016/405 shall only be sent together with item I016/400
+            “Position of the System Reference Point”.
+
+    410 "Transmitter Properties"
+        definition
+            This item provides properties of a transmitter component.
+        repetitive 1
+            group
+                TID "Transmitter ID"
+                    element 16
+                        raw
+                LAT "Latitude"
+                    element 32
+                        signed quantity 180/2^31 "°" >= -90 <= 90
+                LON "Longitude"
+                    element 32
+                        signed quantity 180/2^31 "°" >= -180 < 180
+                ALT "Altitude"
+                    element 16
+                        signed quantity 1/2^2 "m" > -8192 < 8192
+                TTO "Transmission Time Offset"
+                    element 32
+                        signed quantity 2 "ns"
+                spare 4
+                ATO "Accuracy of Transmission Time Offset"
+                    element 20
+                        unsigned quantity 1 "ns"
+                PCI "Parallel Transmitter Index"
+                    element 16
+                        unsigned integer
+        remark
+            NOTE - Regarding Transmitter Identification:
+                a. Individual channels of a transmitter are considered as
+                separate collocated transmitters.
+
+                b. A Transmitter ID may be assigned to individual channels
+                of a compound transmitter. i.e. a single multi-channel
+                transmitter may be assigned several Tx ID.
+
+                c. The Tx ID shall be used in a unique way for a specific
+                SAC/SIC.
+
+            NOTE - Regarding Transmitter Latitude and Longitude and Altitude:
+                a. The Tx Location and Altitude is the position of the
+                component in WGS-84 coordinates. The vertical distance between
+                the component and the projection of its position on the earth’s
+                ellipsoid, as defined by WGS-84, in two’s complement form.
+
+            NOTE - Regarding Transmission Time Offset
+                a. Time offset of transmitter compared to the reference
+                transmitter within the single frequency network (SFN).
+
+            NOTE - Regarding Accuracy of Transmission Time Offset
+                a. The Accuracy of the Transmission Time Offset is the Standard
+                Deviation of the measurement of the transmission time offset
+                between the transmitter channel compared to the reference
+                transmitter within the single frequency network (SFN).
+
+            NOTE - Regarding Parallel Transmitter Index
+                a. The Parallel Transmitter Index is the identification of the
+                transmitter via index, which is sent in parallel.
+
+                b. For referring to a one-octet index bits-16/9 shall be set
+                to zero.
+
+                c. This index shall be used in a unique way for a specific
+                SAC/SIC.
+
+                d. In a Single Frequency Network the parallel transmitter
+                index is the index of the reference transmitter.
+
+    420 "Receiver Properties"
+        definition
+            This item provides properties of the receiver component.
+        repetitive 1
+            group
+                RID "Receiver Component ID"
+                    element 16
+                        raw
+                LAT "Latitude"
+                    element 32
+                        signed quantity 180/2^31 "°" >= -90 <= 90
+                LON "Longitude"
+                    element 32
+                        signed quantity 180/2^31 "°" >= -180 < 180
+                ALT "Altitude"
+                    element 16
+                        signed quantity 1/2^2 "m" > -8192 < 8192
+        remark
+            NOTE - Regarding the Receiver Identification
+                a. The Rx ID shall be used in a unique way for a specific
+                SAC/SIC.
+
+            NOTE - Regarding the Receiver Location and Altitude (WGS-84)
+                a. The Rx Location and Altitude is the of the component
+                in WGS-84 coordinates. The vertical distance between the
+                component and the projection of its position on the earth’s
+                ellipsoid, as defined by WGS-84, in two’s complement form.
+
+    SP "Special Purpose Field"
+        definition
+            Special Purpose Field
+        explicit sp
+
+uap
+    010
+    015
+    000
+    140
+    200
+    300
+    400
+    405
+    410
+    420
+    SP

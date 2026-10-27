@@ -1,0 +1,4415 @@
+[ Header
+    1
+    ( "" , [] , [] )
+    [ Str "Asterix category 011 - Transmission of A-SMGCS Data"
+    ]
+, Para
+    [ Strong [ Str "category" ] , Str ":" , Space , Str "011" ]
+, Para
+    [ Strong [ Str "edition" ] , Str ":" , Space , Str "1.2" ]
+, Para
+    [ Strong [ Str "date" ]
+    , Str ":"
+    , Space
+    , Str "2008-05-01"
+    ]
+, Header 2 ( "" , [] , [] ) [ Str "Preamble" ]
+, Para
+    [ Str "Surveillance"
+    , Space
+    , Str "data"
+    , Space
+    , Str "exchange."
+    ]
+, Header
+    2
+    ( "" , [] , [] )
+    [ Str "Description"
+    , Space
+    , Str "of"
+    , Space
+    , Str "standard"
+    , Space
+    , Str "data"
+    , Space
+    , Str "items"
+    ]
+, Para [ Strong [ Str "I011/000 - Message Type" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: This Data Item allows for a more convenient handling of the messages\nat the receiver side by further defining the type of transaction.\n"
+        ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 8" ]
+        , Para [ Str "Values:" ]
+        , BlockQuote
+            [ DefinitionList
+                [ ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                  , [ [ Plain
+                          [ Str
+                              "Target reports, flight plan data and basic alerts"
+                          ]
+                      ]
+                    ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                  , [ [ Plain
+                          [ Str
+                              "Manual attachment of flight plan to track"
+                          ]
+                      ]
+                    ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "3" , Str ":" ]
+                  , [ [ Plain
+                          [ Str
+                              "Manual detachment of flight plan to track"
+                          ]
+                      ]
+                    ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "4" , Str ":" ]
+                  , [ [ Plain [ Str "Insertion of flight plan data" ] ]
+                    ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "5" , Str ":" ]
+                  , [ [ Plain [ Str "Suppression of flight plan data" ]
+                      ]
+                    ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "6" , Str ":" ]
+                  , [ [ Plain [ Str "Modification of flight plan data" ]
+                      ]
+                    ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "7" , Str ":" ]
+                  , [ [ Plain [ Str "Holdbar status" ] ] ]
+                  )
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/010 - Data Source Identifier" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Identification of the radar station from which the data are received.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para
+            [ Strong
+                [ Str "I011/010/SAC - System Area Code Fixed to Zero" ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/010/SIC - System Identification Code" ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "The"
+                  , Space
+                  , Str "SAC"
+                  , Space
+                  , Str "is"
+                  , Space
+                  , Str "fixed"
+                  , Space
+                  , Str "to"
+                  , Space
+                  , Str "zero"
+                  , Space
+                  , Str "to"
+                  , Space
+                  , Str "indicate"
+                  , Space
+                  , Str "a"
+                  , Space
+                  , Str "data"
+                  , Space
+                  , Str "flow"
+                  , Space
+                  , Str "local"
+                  , Space
+                  , Str "to"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "airport."
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/015 - Service Identification" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Identification of the service provided to one or more users.\n"
+        ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 8" ]
+        , Para [ Str "Raw Content" ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "The"
+                  , Space
+                  , Str "service"
+                  , Space
+                  , Str "identification"
+                  , Space
+                  , Str "is"
+                  , Space
+                  , Str "allocated"
+                  , Space
+                  , Str "by"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "A-SMGCS"
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/041 - Position in WGS-84 Coordinates" ]
+    ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Position of a target in WGS-84 Coordinates.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para
+            [ Strong
+                [ Str
+                    "I011/041/LAT - Latitude in WGS-84 in Two's Complement"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 32" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "180/2^31"
+                    , Space
+                    , Str "\176"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "8.381903171539306640625e-8"
+                    , Space
+                    , Str "\176"
+                    ]
+                , Para [ Str "unit: \"\176\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-90.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "90.0"
+                    ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/041/LON - Longitude in WGS-84 in Two's Complement"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 32" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "180/2^31"
+                    , Space
+                    , Str "\176"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "8.381903171539306640625e-8"
+                    , Space
+                    , Str "\176"
+                    ]
+                , Para [ Str "unit: \"\176\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-180.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<"
+                    , Space
+                    , Math InlineMath "180.0"
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong
+        [ Str
+            "I011/042 - Calculated Position in Cartesian Co-ordinates"
+        ]
+    ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Calculated position of a target in Cartesian co-ordinates (two's complement form).\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/042/X - X-Component" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1"
+                    , Space
+                    , Str "m"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "1.0"
+                    , Space
+                    , Str "m"
+                    ]
+                , Para [ Str "unit: \"m\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-32768.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "32768.0"
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/042/Y - Y-Component" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1"
+                    , Space
+                    , Str "m"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "1.0"
+                    , Space
+                    , Str "m"
+                    ]
+                , Para [ Str "unit: \"m\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-32768.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "32768.0"
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong
+        [ Str "I011/060 - Mode-3/A Code in Octal Representation" ]
+    ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Track Mode-3/A code converted into octal representation.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Str "Spare bits: 4" ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/060/MOD3A - Mode-3/A Reply in Octal Representation"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 12" ]
+                , Para [ Str "Octal string (3-bits per char)" ]
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/090 - Measured Flight Level" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Last valid and credible flight level used to update the track, in two's complement representation.\n"
+        ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 16" ]
+        , Para [ Str "Signed quantity" ]
+        , Para
+            [ Str "LSB = "
+            , Math InlineMath "1/2^2"
+            , Space
+            , Str "FL"
+            , Space
+            , Str "\8776"
+            , Space
+            , Math InlineMath "0.25"
+            , Space
+            , Str "FL"
+            ]
+        , Para [ Str "unit: \"FL\"" ]
+        , Para
+            [ Code ( "" , [] , [] ) ">="
+            , Space
+            , Math InlineMath "-12.0"
+            ]
+        , Para
+            [ Code ( "" , [] , [] ) "<="
+            , Space
+            , Math InlineMath "1500.0"
+            ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "The"
+                  , Space
+                  , Str "criteria"
+                  , Space
+                  , Str "to"
+                  , Space
+                  , Str "determine"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "credibility"
+                  , Space
+                  , Str "of"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "flight"
+                  , Space
+                  , Str "level"
+                  , Space
+                  , Str "are"
+                  , Space
+                  , Str "Tracker"
+                  , Space
+                  , Str "dependent."
+                  , SoftBreak
+                  , Str "Credible"
+                  , Space
+                  , Str "means:"
+                  , Space
+                  , Str "within"
+                  , Space
+                  , Str "reasonable"
+                  , Space
+                  , Str "range"
+                  , Space
+                  , Str "of"
+                  , Space
+                  , Str "change"
+                  , Space
+                  , Str "with"
+                  , Space
+                  , Str "respect"
+                  , Space
+                  , Str "to"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "previous"
+                  , Space
+                  , Str "detection."
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para
+    [ Strong
+        [ Str "I011/092 - Calculated Track Geometric Altitude" ]
+    ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Calculated geometric vertical distance above mean sea level, not related to barometric pressure.\n"
+        ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 16" ]
+        , Para [ Str "Signed quantity" ]
+        , Para
+            [ Str "LSB = "
+            , Math InlineMath "25/2^2"
+            , Space
+            , Str "ft"
+            , Space
+            , Str "\8776"
+            , Space
+            , Math InlineMath "6.25"
+            , Space
+            , Str "ft"
+            ]
+        , Para [ Str "unit: \"ft\"" ]
+        , Para
+            [ Code ( "" , [] , [] ) ">="
+            , Space
+            , Math InlineMath "-1500.0"
+            ]
+        , Para
+            [ Code ( "" , [] , [] ) "<="
+            , Space
+            , Math InlineMath "150000.0"
+            ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "The"
+                  , Space
+                  , Str "source"
+                  , Space
+                  , Str "of"
+                  , Space
+                  , Str "altitude"
+                  , Space
+                  , Str "is"
+                  , Space
+                  , Str "identified"
+                  , Space
+                  , Str "in"
+                  , Space
+                  , Str "bits"
+                  , Space
+                  , Str "(SRC)"
+                  , Space
+                  , Str "of"
+                  , Space
+                  , Str "item"
+                  , Space
+                  , Str "I011/170"
+                  , Space
+                  , Str "Track"
+                  , Space
+                  , Str "Status."
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para
+    [ Strong
+        [ Str "I011/093 - Calculated Track Barometric Altitude" ]
+    ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Calculated Barometric Altitude of the track.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para
+            [ Strong [ Str "I011/093/QNH - QNH Correction Applied" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str "No QNH correction applied" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "QNH correction applied" ] ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/093/CTBA - Calculated Track Barometric Altitude"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 15" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "FL"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "FL"
+                    ]
+                , Para [ Str "unit: \"FL\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-15.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "1500.0"
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/140 - Time of Track Information" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Absolute time stamping expressed as UTC.\n"
+        ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 24" ]
+        , Para [ Str "Unsigned quantity" ]
+        , Para
+            [ Str "LSB = "
+            , Math InlineMath "1/2^7"
+            , Space
+            , Str "s"
+            , Space
+            , Str "\8776"
+            , Space
+            , Math InlineMath "7.8125e-3"
+            , Space
+            , Str "s"
+            ]
+        , Para [ Str "unit: \"s\"" ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "The"
+                  , Space
+                  , Str "time"
+                  , Space
+                  , Str "of"
+                  , Space
+                  , Str "day"
+                  , Space
+                  , Str "value"
+                  , Space
+                  , Str "is"
+                  , Space
+                  , Str "reset"
+                  , Space
+                  , Str "to"
+                  , Space
+                  , Str "zero"
+                  , Space
+                  , Str "each"
+                  , Space
+                  , Str "day"
+                  , Space
+                  , Str "at"
+                  , Space
+                  , Str "midnight."
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para [ Strong [ Str "I011/161 - Track Number" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Identification of a fusion track (single track number).\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Str "Spare bits: 1" ]
+        , Para
+            [ Strong [ Str "I011/161/FTN - Fusion Track Number" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 15" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/170 - Track Status" ] ]
+, BlockQuote
+    [ Para [ Str "definition: Status of track.\n" ]
+    , Para [ Str "Extended" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/170/MON" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Multisensor Track" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Monosensor Track" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/GBS" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Transponder Ground bit not set or unknown"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str "Transponder Ground bit set" ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/MRH" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Barometric altitude (Mode C) more reliable"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Geometric altitude more reliable"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/SRC" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 3" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "No source" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "GPS" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                          , [ [ Plain [ Str "3d radar" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "3" , Str ":" ]
+                          , [ [ Plain [ Str "Triangulation" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "4" , Str ":" ]
+                          , [ [ Plain [ Str "Height from coverage" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "5" , Str ":" ]
+                          , [ [ Plain [ Str "Speed look-up table" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "6" , Str ":" ]
+                          , [ [ Plain [ Str "Default height" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "7" , Str ":" ]
+                          , [ [ Plain [ Str "Multilateration" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/CNF" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Confirmed track" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Tentative track" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Emph
+                [ Str "(FX)"
+                , Space
+                , Str "-"
+                , Space
+                , Str "extension"
+                , Space
+                , Str "bit"
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/SIM" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Actual Track" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Simulated track" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/TSE" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Default value" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Track service end (i.e. last message transmitted to the user for the track)"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/TSB" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Default value" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Track service begin (i.e. first message transmitted to the user for the track)"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/FRIFOE" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 2" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "No Mode 4 interrogationt" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Friendly target" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                          , [ [ Plain [ Str "Unknown target" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "3" , Str ":" ]
+                          , [ [ Plain [ Str "No reply" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/ME" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Default value" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Military Emergency present in the last report received from a sensor capable of decoding this data"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/MI" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "End of Data Item" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Military Identification present in the last report received from a sensor capable of decoding this data"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Emph
+                [ Str "(FX)"
+                , Space
+                , Str "-"
+                , Space
+                , Str "extension"
+                , Space
+                , Str "bit"
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/AMA" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Track not resulting from amalgamation process"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Track resulting from amalgamation process"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/SPI" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Default value" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "SPI present in the last report received from a sensor capable of decoding this data"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/CST" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Default value" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Age of the last received track update is higher than system dependent threshold (coasting)"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/FPC" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str "Not flight-plan correlated" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Flight plan correlated" ] ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/170/AFF" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Default value" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "ADS-B data inconsistent with other surveillance information"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Str "Spare bits: 2" ]
+        , Para
+            [ Emph
+                [ Str "(FX)"
+                , Space
+                , Str "-"
+                , Space
+                , Str "extension"
+                , Space
+                , Str "bit"
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong
+        [ Str
+            "I011/202 - Calculated Track Velocity in Cartesian Coordinates"
+        ]
+    ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Calculated track velocity expressed in Cartesian co-ordinates.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/202/VX - Vx" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "m/s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "m/s"
+                    ]
+                , Para [ Str "unit: \"m/s\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-8192.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "8192.0"
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/202/VY - Vy" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "m/s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "m/s"
+                    ]
+                , Para [ Str "unit: \"m/s\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-8192.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "8192.0"
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/210 - Calculated Acceleration" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Calculated Acceleration of the target, in two's complement form.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/210/AX - Ax" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "m/s\178"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "m/s\178"
+                    ]
+                , Para [ Str "unit: \"m/s\178\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-31.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "31.0"
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/210/AY - Ay" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "m/s\178"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "m/s\178"
+                    ]
+                , Para [ Str "unit: \"m/s\178\"" ]
+                , Para
+                    [ Code ( "" , [] , [] ) ">="
+                    , Space
+                    , Math InlineMath "-31.0"
+                    ]
+                , Para
+                    [ Code ( "" , [] , [] ) "<="
+                    , Space
+                    , Math InlineMath "31.0"
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong
+        [ Str "I011/215 - Calculated Rate Of Climb/Descent" ]
+    ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Calculated rate of Climb/Descent of an aircraft, in two's complement form.\n"
+        ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 16" ]
+        , Para [ Str "Signed quantity" ]
+        , Para
+            [ Str "LSB = "
+            , Math InlineMath "25/2^2"
+            , Space
+            , Str "ft/min"
+            , Space
+            , Str "\8776"
+            , Space
+            , Math InlineMath "6.25"
+            , Space
+            , Str "ft/min"
+            ]
+        , Para [ Str "unit: \"ft/min\"" ]
+        , Para
+            [ Code ( "" , [] , [] ) ">="
+            , Space
+            , Math InlineMath "-204800.0"
+            ]
+        , Para
+            [ Code ( "" , [] , [] ) "<="
+            , Space
+            , Math InlineMath "204800.0"
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/245 - Target Identification" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Target (aircraft or vehicle) identification in 8 characters.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/245/STI" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 2" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Callsign or registration downlinked from transponder"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Callsign not downlinked from transponder"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Registration not downlinked from transponder"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Str "Spare bits: 6" ]
+        , Para
+            [ Strong [ Str "I011/245/TID - Target Identification" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 48" ]
+                , Para [ Str "ICAO string (6-bits per char)" ]
+                ]
+            ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "Characters"
+                  , Space
+                  , Str "1-8"
+                  , Space
+                  , Str "(coded"
+                  , Space
+                  , Str "on"
+                  , Space
+                  , Str "6"
+                  , Space
+                  , Str "bits"
+                  , Space
+                  , Str "each)"
+                  , Space
+                  , Str "defining"
+                  , Space
+                  , Str "target"
+                  , Space
+                  , Str "identification"
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/270 - Target Size and Orientation" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Target size defined as length and with of the detected target, and orientation.\n"
+        ]
+    , Para [ Str "Extended" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/270/LENGTH - Length" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 7" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1"
+                    , Space
+                    , Str "m"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "1.0"
+                    , Space
+                    , Str "m"
+                    ]
+                , Para [ Str "unit: \"m\"" ]
+                ]
+            ]
+        , Para
+            [ Emph
+                [ Str "(FX)"
+                , Space
+                , Str "-"
+                , Space
+                , Str "extension"
+                , Space
+                , Str "bit"
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/270/ORIENTATION - Orientation" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 7" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "360/2^7"
+                    , Space
+                    , Str "\176"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "2.8125"
+                    , Space
+                    , Str "\176"
+                    ]
+                , Para [ Str "unit: \"\176\"" ]
+                ]
+            ]
+        , Para
+            [ Emph
+                [ Str "(FX)"
+                , Space
+                , Str "-"
+                , Space
+                , Str "extension"
+                , Space
+                , Str "bit"
+                ]
+            ]
+        , Para [ Strong [ Str "I011/270/WIDTH - Width" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 7" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1"
+                    , Space
+                    , Str "m"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "1.0"
+                    , Space
+                    , Str "m"
+                    ]
+                , Para [ Str "unit: \"m\"" ]
+                ]
+            ]
+        , Para
+            [ Emph
+                [ Str "(FX)"
+                , Space
+                , Str "-"
+                , Space
+                , Str "extension"
+                , Space
+                , Str "bit"
+                ]
+            ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "The"
+                  , Space
+                  , Str "orientation"
+                  , Space
+                  , Str "gives"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "direction"
+                  , Space
+                  , Str "which"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "aircraft"
+                  , Space
+                  , Str "nose"
+                  , Space
+                  , Str "is"
+                  , Space
+                  , Str "pointing,"
+                  , Space
+                  , Str "relative"
+                  , Space
+                  , Str "to"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "Geographical"
+                  , Space
+                  , Str "North."
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/290 - System Track Update Ages" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Ages of the last plot/local track, or the last valid mode-A/mode-C, used to update the system track.\n"
+        ]
+    , Para [ Str "Compound" ]
+    , BlockQuote
+        [ Para
+            [ Strong
+                [ Str
+                    "I011/290/PSR - Age of The Last Primary Detection Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/SSR - Age of the Last Secondary Detection Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/MDA - Age of the Last Mode A Detection Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/MFL - Age of the Last Mode C Detection Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/MDS - Age of the Last Mode S Detection Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/ADS - Age of the Last ADS Report Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/ADB - Age of the Last ADS-B Report Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/MD1 - Age of the Last Valid Mode 1 Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/MD2 - Age of the Last Mode 2 Used to Update the Track"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/LOP - Age of the Last Magentic Loop Detection"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/TRK - Actual Track Age Since First Occurrence"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/290/MUL - Age of the Last Multilateration Detection"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "s"
+                    ]
+                , Para [ Str "unit: \"s\"" ]
+                ]
+            ]
+        ]
+    , DefinitionList
+        [ ( [ Str "Note:" ]
+          , [ [ Para
+                  [ Str "The"
+                  , Space
+                  , Str "ages"
+                  , Space
+                  , Str "are"
+                  , Space
+                  , Str "counted"
+                  , Space
+                  , Str "from"
+                  , Space
+                  , Str "Data"
+                  , Space
+                  , Str "Item"
+                  , Space
+                  , Str "I011/140,"
+                  , Space
+                  , Str "Time"
+                  , Space
+                  , Str "Of"
+                  , Space
+                  , Str "Track"
+                  , SoftBreak
+                  , Str "Information,"
+                  , Space
+                  , Str "using"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "following"
+                  , Space
+                  , Str "formula:"
+                  , SoftBreak
+                  , Str "Age"
+                  , Space
+                  , Str "="
+                  , Space
+                  , Str "Time"
+                  , Space
+                  , Str "of"
+                  , Space
+                  , Str "track"
+                  , Space
+                  , Str "information"
+                  , Space
+                  , Str "-"
+                  , Space
+                  , Str "Time"
+                  , Space
+                  , Str "of"
+                  , Space
+                  , Str "last"
+                  , Space
+                  , Str "(valid)"
+                  , Space
+                  , Str "update"
+                  , SoftBreak
+                  , Str "If"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "computed"
+                  , Space
+                  , Str "age"
+                  , Space
+                  , Str "is"
+                  , Space
+                  , Str "greater"
+                  , Space
+                  , Str "than"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "maximum"
+                  , Space
+                  , Str "value"
+                  , Space
+                  , Str "or"
+                  , Space
+                  , Str "if"
+                  , Space
+                  , Str "the"
+                  , SoftBreak
+                  , Str "data"
+                  , Space
+                  , Str "has"
+                  , Space
+                  , Str "never"
+                  , Space
+                  , Str "been"
+                  , Space
+                  , Str "received,"
+                  , Space
+                  , Str "then"
+                  , Space
+                  , Str "the"
+                  , Space
+                  , Str "corresponding"
+                  , Space
+                  , Str "subfield"
+                  , Space
+                  , Str "is"
+                  , Space
+                  , Str "not"
+                  , Space
+                  , Str "sent."
+                  ]
+              ]
+            ]
+          )
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/300 - Vehicle Fleet Identification" ] ]
+, BlockQuote
+    [ Para
+        [ Str "definition: Vehicle fleet identification number.\n" ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 8" ]
+        , Para [ Str "Values:" ]
+        , BlockQuote
+            [ DefinitionList
+                [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                  , [ [ Plain [ Str "Flyco (follow me)" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                  , [ [ Plain [ Str "ATC equipment maintenance" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                  , [ [ Plain [ Str "Airport maintenance" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "3" , Str ":" ]
+                  , [ [ Plain [ Str "Fire" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "4" , Str ":" ]
+                  , [ [ Plain [ Str "Bird scarer" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "5" , Str ":" ]
+                  , [ [ Plain [ Str "Snow plough" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "6" , Str ":" ]
+                  , [ [ Plain [ Str "Runway sweeper" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "7" , Str ":" ]
+                  , [ [ Plain [ Str "Emergency" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "8" , Str ":" ]
+                  , [ [ Plain [ Str "Police" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "9" , Str ":" ]
+                  , [ [ Plain [ Str "Bus" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "10" , Str ":" ]
+                  , [ [ Plain [ Str "Tug (push/tow)" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "11" , Str ":" ]
+                  , [ [ Plain [ Str "Grass cutter" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "12" , Str ":" ]
+                  , [ [ Plain [ Str "Fuel" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "13" , Str ":" ]
+                  , [ [ Plain [ Str "Baggage" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "14" , Str ":" ]
+                  , [ [ Plain [ Str "Catering" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "15" , Str ":" ]
+                  , [ [ Plain [ Str "Aircraft maintenance" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "16" , Str ":" ]
+                  , [ [ Plain [ Str "Unknown" ] ] ]
+                  )
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/310 - Pre-programmed Message" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Number related to a pre-programmed message that can be transmitted by a vehicle.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/310/TRB - In Trouble" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Default" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "In Trouble" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/310/MSG - Message" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 7" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Towing aircraft" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                          , [ [ Plain [ Str "FOLLOW-ME operation" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "3" , Str ":" ]
+                          , [ [ Plain [ Str "Runway check" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "4" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Emergency operation (fire, medical...)"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "5" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Work in progress (maintenance, birds scarer, sweepers...)"
+                                  ]
+                              ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/380 - Mode-S / ADS-B Related Data" ] ]
+, BlockQuote
+    [ Para
+        [ Str "definition: Data specific to Mode-S ADS-B.\n" ]
+    , Para [ Str "Compound" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/380/MB - BDS" ] ]
+        , BlockQuote
+            [ Para [ Str "Repetitive" ]
+            , Para [ Str "Regular, 1 byte(s) REP field size." ]
+            , BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 64" ]
+                , Para [ Str "BDS register with address" ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/380/ADR - 24 Bits Aircraft Address" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 24" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        , Para [ Emph [ Str "Spare" ] ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/380/COMACAS - Communications/ACAS Capability and Flight Status"
+                ]
+            ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str
+                            "I011/380/COMACAS/COM - Communications Capability of the Transponder"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 3" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "No communications capability (surveillance only)"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Comm. A and Comm. B capability"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Comm. A, Comm. B and Uplink ELM"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "3"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Comm. A, Comm. B, Uplink ELM and Downlink ELM"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "4"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Level 5 Transponder capability"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "5"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Not assigned" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "6"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Not assigned" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "7"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Not assigned" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/380/COMACAS/STAT - Flight Status" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 4" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "No alert, no SPI, aircraft airborne"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "No alert, no SPI, aircraft on ground"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Alert, no SPI, aircraft airborne"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "3"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Alert, no SPI, aircraft on ground"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "4"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Alert, SPI, aircraft airborne or on ground"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "5"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "No alert, SPI, aircraft airborne or on ground"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "6"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "General Emergency" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "7"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Lifeguard / medical" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "8"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Minimum fuel" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "9"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "No communications" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "10"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Unlawful" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 1" ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/380/COMACAS/SSC - Specific Service Capability"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "No" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Yes" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/380/COMACAS/ARC - Altitude Reporting Capability"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "100 ft resolution" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "25 ft resolution" ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/380/COMACAS/AIC - Aircraft Identification Capability"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "No" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Yes" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/380/COMACAS/B1A - BDS 1,0 Bit 16" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Raw Content" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/380/COMACAS/B1B - BDS 1,0 Bit 37/40"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 4" ]
+                        , Para [ Str "Raw Content" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/380/COMACAS/AC - ACAS Operational" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "No" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Yes" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/380/COMACAS/MN - Multiple Navigational Aids Operating"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "No" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Yes" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/380/COMACAS/DC - Differential Correction"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Yes" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "No" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 5" ]
+                ]
+            ]
+        , Para [ Emph [ Str "Spare" ] ]
+        , Para [ Emph [ Str "Spare" ] ]
+        , Para [ Emph [ Str "Spare" ] ]
+        , Para
+            [ Strong
+                [ Str "I011/380/ACT - Aircraft Derived Aircraft Type" ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 32" ]
+                , Para [ Str "Ascii string (8-bits per char)" ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/380/ECAT - Emitter Category" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str "Light aircraft <= 7000 kg" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "3" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "7000 kg &lt; medium aircraft &lt; 136000 kg"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "4" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "5" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str "136000 kg <= heavy aircraft" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "6" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Highly manoeuvrable (5g acceleration capability) and high speed (&gt;400 knots cruise)"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "7" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "8" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "9" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "10" , Str ":" ]
+                          , [ [ Plain [ Str "Rotocraft" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "11" , Str ":" ]
+                          , [ [ Plain [ Str "Glider / sailplane" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "12" , Str ":" ]
+                          , [ [ Plain [ Str "Lighter-than-air" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "13" , Str ":" ]
+                          , [ [ Plain [ Str "Unmanned aerial vehicle" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "14" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Space / transatmospheric vehicle"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "15" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Ultralight / handglider / paraglider"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "16" , Str ":" ]
+                          , [ [ Plain [ Str "Parachutist / skydiver" ] ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "17" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "18" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "19" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "20" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str "Surface emergency vehicle" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "21" , Str ":" ]
+                          , [ [ Plain [ Str "Surface service vehicle" ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "22" , Str ":" ]
+                          , [ [ Plain
+                                  [ Str
+                                      "Fixed ground or tethered obstruction"
+                                  ]
+                              ]
+                            ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "23" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "24" , Str ":" ]
+                          , [ [ Plain [ Str "Reserved" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Emph [ Str "Spare" ] ]
+        , Para
+            [ Strong [ Str "I011/380/AVTECH - Available Technologies" ]
+            ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong [ Str "I011/380/AVTECH/VDL - VDL Mode 4" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "VDL Mode 4 available" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "VDL Mode 4 not available"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Strong [ Str "I011/380/AVTECH/MDS - Mode S" ] ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Mode S available" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Mode S not available" ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Strong [ Str "I011/380/AVTECH/UAT - UAT" ] ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "UAT available" ] ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "UAT not available" ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 5" ]
+                ]
+            ]
+        ]
+    ]
+, Para
+    [ Strong [ Str "I011/390 - Flight Plan Related Data" ] ]
+, BlockQuote
+    [ Para
+        [ Str "definition: All flight plan related information.\n" ]
+    , Para [ Str "Compound" ]
+    , BlockQuote
+        [ Para
+            [ Strong [ Str "I011/390/FPPSID - FPPS Identification Tag" ]
+            ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str "I011/390/FPPSID/SAC - System Area Code" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Raw Content" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/390/FPPSID/SIC - System Identity Code"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Raw Content" ]
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/390/CSN - Callsign" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 56" ]
+                , Para [ Str "Ascii string (8-bits per char)" ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/390/IFPSFLIGHTID - IFPS_FLIGHT_ID" ] ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str
+                            "I011/390/IFPSFLIGHTID/TYP - IFPS Flight ID Type"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 2" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Plan number" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Unit 1 internal flight number"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Unit 2 internal flight number"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "3"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Unit 3 internal flight number"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 3" ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/390/IFPSFLIGHTID/NBR - IFPS Flight ID Number"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 27" ]
+                        , Para [ Str "Raw Content" ]
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/390/FLIGHTCAT - Flight Category" ] ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str "I011/390/FLIGHTCAT/GATOAT - Flight Type"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 2" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Unknown" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "General Air Traffic" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Operational Air Traffic"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "3"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Not applicable" ] ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/390/FLIGHTCAT/FR1FR2 - Flight Rules"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 2" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Instrument Flight Rules"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Visual Flight rules" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Not applicable" ] ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "3"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Controlled Visual Flight Rules"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong [ Str "I011/390/FLIGHTCAT/RVSM - RVSM" ] ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 2" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Unknown" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Approved" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Exempt" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "3"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Not Approved" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/390/FLIGHTCAT/HPR - Flight Priority"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Normal Priority Flight"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "High Priority Flight" ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 1" ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/390/TOA - Type of Aircraft" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 32" ]
+                , Para [ Str "Ascii string (8-bits per char)" ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/390/WTC - Wake Turbulence Category" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "76" , Str ":" ]
+                          , [ [ Plain [ Str "Light" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "77" , Str ":" ]
+                          , [ [ Plain [ Str "Medium" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "72" , Str ":" ]
+                          , [ [ Plain [ Str "Heavy" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "74" , Str ":" ]
+                          , [ [ Plain [ Str "Super" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/390/ADEP - Departure Airport" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 32" ]
+                , Para [ Str "Ascii string (8-bits per char)" ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/390/ADES - Destination Airport" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 32" ]
+                , Para [ Str "Ascii string (8-bits per char)" ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/390/RWY - Runway Designation" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 24" ]
+                , Para [ Str "Ascii string (8-bits per char)" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str "I011/390/CFL - Current Cleared Flight Level" ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Unsigned quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2^2"
+                    , Space
+                    , Str "FL"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.25"
+                    , Space
+                    , Str "FL"
+                    ]
+                , Para [ Str "unit: \"FL\"" ]
+                ]
+            ]
+        , Para
+            [ Strong [ Str "I011/390/CCP - Current Control Position" ] ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str
+                            "I011/390/CCP/CENTRE - 8-bit Group Identification Code"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Raw Content" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/390/CCP/POSITION - 8-bit Control Position Identification Code"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Raw Content" ]
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/390/TOD - Time of Departure" ] ]
+        , BlockQuote
+            [ Para [ Str "Repetitive" ]
+            , Para [ Str "Regular, 1 byte(s) REP field size." ]
+            , Para [ Str "Group" ]
+            , BlockQuote
+                [ Para [ Strong [ Str "I011/390/TOD/TYP - Time Type" ] ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 5" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Scheduled off-block time"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Estimated off-block time"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Estimated take-off time"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "3"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Actual off-block time"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "4"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Predicted time at runway hold"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "5"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Actual time at runway hold"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "6"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Actual line-up time" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "7"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Actual take-off time" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "8"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str
+                                              "Estimated time of arrival"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "9"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Predicted landing time"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "10"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Actual landing time" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "11"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Actual time off runway"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "12"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Predicted time to gate"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "13"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Actual on-block time" ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Strong [ Str "I011/390/TOD/DAY - Day" ] ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 2" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Today" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Yesterday" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Tomorrow" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 4" ]
+                , Para
+                    [ Strong
+                        [ Str "I011/390/TOD/HOR - Hours, from 0 to 23" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 5" ]
+                        , Para [ Str "Unsigned integer" ]
+                        , Para
+                            [ Code ( "" , [] , [] ) ">="
+                            , Space
+                            , Math InlineMath "0.0"
+                            ]
+                        , Para
+                            [ Code ( "" , [] , [] ) "<="
+                            , Space
+                            , Math InlineMath "23.0"
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 2" ]
+                , Para
+                    [ Strong
+                        [ Str "I011/390/TOD/MIN - Minutes, from 0 to 59"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 6" ]
+                        , Para [ Str "Unsigned integer" ]
+                        , Para
+                            [ Code ( "" , [] , [] ) ">="
+                            , Space
+                            , Math InlineMath "0.0"
+                            ]
+                        , Para
+                            [ Code ( "" , [] , [] ) "<="
+                            , Space
+                            , Math InlineMath "59.0"
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/390/TOD/AVS - Seconds Available" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 1" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Seconds available" ]
+                                      ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain
+                                          [ Str "Seconds not available"
+                                          ]
+                                      ]
+                                    ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 1" ]
+                , Para
+                    [ Strong
+                        [ Str "I011/390/TOD/SEC - Seconds, from 0 to 59"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 6" ]
+                        , Para [ Str "Unsigned integer" ]
+                        , Para
+                            [ Code ( "" , [] , [] ) ">="
+                            , Space
+                            , Math InlineMath "0.0"
+                            ]
+                        , Para
+                            [ Code ( "" , [] , [] ) "<="
+                            , Space
+                            , Math InlineMath "59.0"
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/390/AST - Aircraft Stand" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 48" ]
+                , Para [ Str "Ascii string (8-bits per char)" ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/390/STS - Stand Status" ] ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong [ Str "I011/390/STS/EMP - Stand Empty" ] ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 2" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Empty" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Occupied" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Unknown" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str "I011/390/STS/AVL - Stand Available" ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 2" ]
+                        , Para [ Str "Values:" ]
+                        , BlockQuote
+                            [ DefinitionList
+                                [ ( [ Code ( "" , [] , [] ) "0"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Available" ] ] ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "1"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Not available" ] ]
+                                    ]
+                                  )
+                                , ( [ Code ( "" , [] , [] ) "2"
+                                    , Str ":"
+                                    ]
+                                  , [ [ Plain [ Str "Unknown" ] ] ]
+                                  )
+                                ]
+                            ]
+                        ]
+                    ]
+                , Para [ Str "Spare bits: 4" ]
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/430 - Phase of Flight" ] ]
+, BlockQuote
+    [ Para [ Str "definition: Current phase of the flight.\n" ]
+    , BlockQuote
+        [ Para [ Str "Element" ]
+        , Para [ Str "bit size: 8" ]
+        , Para [ Str "Values:" ]
+        , BlockQuote
+            [ DefinitionList
+                [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                  , [ [ Plain [ Str "Unknown" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                  , [ [ Plain [ Str "On stand" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                  , [ [ Plain [ Str "Taxiing for departure" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "3" , Str ":" ]
+                  , [ [ Plain [ Str "Taxiing for arrival" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "4" , Str ":" ]
+                  , [ [ Plain [ Str "Runway for departure" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "5" , Str ":" ]
+                  , [ [ Plain [ Str "Runway for arrival" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "6" , Str ":" ]
+                  , [ [ Plain [ Str "Hold for departure" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "7" , Str ":" ]
+                  , [ [ Plain [ Str "Hold for arrival" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "8" , Str ":" ]
+                  , [ [ Plain [ Str "Push back" ] ] ]
+                  )
+                , ( [ Code ( "" , [] , [] ) "9" , Str ":" ]
+                  , [ [ Plain [ Str "On finals" ] ] ]
+                  )
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/500 - Estimated Accuracies" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Overview of all important accuracies (standard deviations).\n"
+        ]
+    , Para [ Str "Compound" ]
+    , BlockQuote
+        [ Para
+            [ Strong
+                [ Str
+                    "I011/500/APC - Estimated Accuracy Of Track Position (Cartesian)"
+                ]
+            ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str
+                            "I011/500/APC/X - Estimated Accuracy of the Calculated Position of X Component"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Unsigned quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "1/2^2"
+                            , Space
+                            , Str "m"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math InlineMath "0.25"
+                            , Space
+                            , Str "m"
+                            ]
+                        , Para [ Str "unit: \"m\"" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/500/APC/Y - Estimated Accuracy of the Calculated Position of Y Component"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Unsigned quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "1/2^2"
+                            , Space
+                            , Str "m"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math InlineMath "0.25"
+                            , Space
+                            , Str "m"
+                            ]
+                        , Para [ Str "unit: \"m\"" ]
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/500/APW - Estimated Accuracy Of Track Position (WGS84)"
+                ]
+            ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str
+                            "I011/500/APW/LAT - APW Latitude Component Accuracy"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 16" ]
+                        , Para [ Str "Signed quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "180/2^31"
+                            , Space
+                            , Str "\176"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math
+                                InlineMath "8.381903171539306640625e-8"
+                            , Space
+                            , Str "\176"
+                            ]
+                        , Para [ Str "unit: \"\176\"" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/500/APW/LON - APW Longitude Component Accuracy"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 16" ]
+                        , Para [ Str "Signed quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "180/2^31"
+                            , Space
+                            , Str "\176"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math
+                                InlineMath "8.381903171539306640625e-8"
+                            , Space
+                            , Str "\176"
+                            ]
+                        , Para [ Str "unit: \"\176\"" ]
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/500/ATH - Estimated Accuracy Of Track Height"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/2"
+                    , Space
+                    , Str "m"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.5"
+                    , Space
+                    , Str "m"
+                    ]
+                , Para [ Str "unit: \"m\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/500/AVC - Estimated Accuracy Of Track Velocity (Cartesian)"
+                ]
+            ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str
+                            "I011/500/AVC/X - Estimated Accuracy of the Calculated Velocity of X Component"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Unsigned quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "1/10"
+                            , Space
+                            , Str "m/s"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math InlineMath "0.1"
+                            , Space
+                            , Str "m/s"
+                            ]
+                        , Para [ Str "unit: \"m/s\"" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/500/AVC/Y - Estimated Accuracy of the Calculated Velocity of Y Component"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Unsigned quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "1/10"
+                            , Space
+                            , Str "m/s"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math InlineMath "0.1"
+                            , Space
+                            , Str "m/s"
+                            ]
+                        , Para [ Str "unit: \"m/s\"" ]
+                        ]
+                    ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/500/ARC - Estimated Accuracy Of Rate Of Climb / Descent"
+                ]
+            ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 16" ]
+                , Para [ Str "Signed quantity" ]
+                , Para
+                    [ Str "LSB = "
+                    , Math InlineMath "1/10"
+                    , Space
+                    , Str "m/s"
+                    , Space
+                    , Str "\8776"
+                    , Space
+                    , Math InlineMath "0.1"
+                    , Space
+                    , Str "m/s"
+                    ]
+                , Para [ Str "unit: \"m/s\"" ]
+                ]
+            ]
+        , Para
+            [ Strong
+                [ Str
+                    "I011/500/AAC - Estimated Accuracy Of Acceleration (Cartesian)"
+                ]
+            ]
+        , BlockQuote
+            [ Para [ Str "Group" ]
+            , BlockQuote
+                [ Para
+                    [ Strong
+                        [ Str
+                            "I011/500/AAC/X - Estimated Accuracy Of Acceleration of X Component"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Unsigned quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "1/100"
+                            , Space
+                            , Str "m/s\178"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math InlineMath "1.0e-2"
+                            , Space
+                            , Str "m/s\178"
+                            ]
+                        , Para [ Str "unit: \"m/s\178\"" ]
+                        ]
+                    ]
+                , Para
+                    [ Strong
+                        [ Str
+                            "I011/500/AAC/Y - Estimated Accuracy Of Acceleration of Y Component"
+                        ]
+                    ]
+                , BlockQuote
+                    [ BlockQuote
+                        [ Para [ Str "Element" ]
+                        , Para [ Str "bit size: 8" ]
+                        , Para [ Str "Unsigned quantity" ]
+                        , Para
+                            [ Str "LSB = "
+                            , Math InlineMath "1/100"
+                            , Space
+                            , Str "m/s\178"
+                            , Space
+                            , Str "\8776"
+                            , Space
+                            , Math InlineMath "1.0e-2"
+                            , Space
+                            , Str "m/s\178"
+                            ]
+                        , Para [ Str "unit: \"m/s\178\"" ]
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/600 - Alert Messages" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Alert involving the targets indicated in I011/605.\n"
+        ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/600/ACK - Alert Acknowleged" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Alert acknowledged" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Alert not acknowledged" ] ]
+                            ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/600/SVR - Alert Severity" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 2" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "End fo alert" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Pre-alarm" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "2" , Str ":" ]
+                          , [ [ Plain [ Str "Severe alert" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Str "Spare bits: 5" ]
+        , Para [ Strong [ Str "I011/600/AT - Alert Type" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/600/AN - Alert Number" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 8" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/605 - Tracks in Alert" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: List of track numbers of the targets concerned by the alert described in I011/600.\n"
+        ]
+    , Para [ Str "Repetitive" ]
+    , Para [ Str "Regular, 1 byte(s) REP field size." ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Str "Spare bits: 4" ]
+        , Para
+            [ Strong [ Str "I011/605/FTN - Fusion Track Number" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 12" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/610 - Holdbar Status" ] ]
+, BlockQuote
+    [ Para
+        [ Str
+            "definition: Status of up to sixteen banks of twelve indicators.\n"
+        ]
+    , Para [ Str "Repetitive" ]
+    , Para [ Str "Regular, 1 byte(s) REP field size." ]
+    , Para [ Str "Group" ]
+    , BlockQuote
+        [ Para [ Strong [ Str "I011/610/BKN - Bank Number" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 4" ]
+                , Para [ Str "Raw Content" ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I1 - Indicator 1" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I2 - Indicator 2" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I3 - Indicator 3" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I4 - Indicator 4" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I5 - Indicator 5" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I6 - Indicator 6" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I7 - Indicator 7" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I8 - Indicator 8" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I9 - Indicator 9" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I10 - Indicator 10" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I11 - Indicator 11" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        , Para [ Strong [ Str "I011/610/I12 - Indicator 12" ] ]
+        , BlockQuote
+            [ BlockQuote
+                [ Para [ Str "Element" ]
+                , Para [ Str "bit size: 1" ]
+                , Para [ Str "Values:" ]
+                , BlockQuote
+                    [ DefinitionList
+                        [ ( [ Code ( "" , [] , [] ) "0" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator on" ] ] ]
+                          )
+                        , ( [ Code ( "" , [] , [] ) "1" , Str ":" ]
+                          , [ [ Plain [ Str "Indicator off" ] ] ]
+                          )
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+, Para [ Strong [ Str "I011/SP - Special Purpose Field" ] ]
+, BlockQuote
+    [ Para [ Str "definition: Special Purpose Field\n" ]
+    , Para [ Str "Explicit (SpecialPurpose)" ]
+    ]
+, Para
+    [ Strong [ Str "I011/RE - Reserved Expansion Field" ] ]
+, BlockQuote
+    [ Para [ Str "definition: Expansion\n" ]
+    , Para [ Str "Explicit (ReservedExpansion)" ]
+    ]
+, Header
+    2
+    ( "" , [] , [] )
+    [ Str "User"
+    , Space
+    , Str "Application"
+    , Space
+    , Str "Profile"
+    ]
+, BulletList
+    [ [ Plain
+          [ Str "1: "
+          , Code ( "" , [] , [] ) "I011/010"
+          , Str " - Data Source Identifier"
+          ]
+      ]
+    , [ Plain
+          [ Str "2: "
+          , Code ( "" , [] , [] ) "I011/000"
+          , Str " - Message Type"
+          ]
+      ]
+    , [ Plain
+          [ Str "3: "
+          , Code ( "" , [] , [] ) "I011/015"
+          , Str " - Service Identification"
+          ]
+      ]
+    , [ Plain
+          [ Str "4: "
+          , Code ( "" , [] , [] ) "I011/140"
+          , Str " - Time of Track Information"
+          ]
+      ]
+    , [ Plain
+          [ Str "5: "
+          , Code ( "" , [] , [] ) "I011/041"
+          , Str " - Position in WGS-84 Coordinates"
+          ]
+      ]
+    , [ Plain
+          [ Str "6: "
+          , Code ( "" , [] , [] ) "I011/042"
+          , Str " - Calculated Position in Cartesian Co-ordinates"
+          ]
+      ]
+    , [ Plain
+          [ Str "7: "
+          , Code ( "" , [] , [] ) "I011/202"
+          , Str
+              " - Calculated Track Velocity in Cartesian Coordinates"
+          ]
+      ]
+    , [ Plain [ Str "(FX) - Field extension indicator" ] ]
+    , [ Plain
+          [ Str "8: "
+          , Code ( "" , [] , [] ) "I011/210"
+          , Str " - Calculated Acceleration"
+          ]
+      ]
+    , [ Plain
+          [ Str "9: "
+          , Code ( "" , [] , [] ) "I011/060"
+          , Str " - Mode-3/A Code in Octal Representation"
+          ]
+      ]
+    , [ Plain
+          [ Str "10: "
+          , Code ( "" , [] , [] ) "I011/245"
+          , Str " - Target Identification"
+          ]
+      ]
+    , [ Plain
+          [ Str "11: "
+          , Code ( "" , [] , [] ) "I011/380"
+          , Str " - Mode-S / ADS-B Related Data"
+          ]
+      ]
+    , [ Plain
+          [ Str "12: "
+          , Code ( "" , [] , [] ) "I011/161"
+          , Str " - Track Number"
+          ]
+      ]
+    , [ Plain
+          [ Str "13: "
+          , Code ( "" , [] , [] ) "I011/170"
+          , Str " - Track Status"
+          ]
+      ]
+    , [ Plain
+          [ Str "14: "
+          , Code ( "" , [] , [] ) "I011/290"
+          , Str " - System Track Update Ages"
+          ]
+      ]
+    , [ Plain [ Str "(FX) - Field extension indicator" ] ]
+    , [ Plain
+          [ Str "15: "
+          , Code ( "" , [] , [] ) "I011/430"
+          , Str " - Phase of Flight"
+          ]
+      ]
+    , [ Plain
+          [ Str "16: "
+          , Code ( "" , [] , [] ) "I011/090"
+          , Str " - Measured Flight Level"
+          ]
+      ]
+    , [ Plain
+          [ Str "17: "
+          , Code ( "" , [] , [] ) "I011/093"
+          , Str " - Calculated Track Barometric Altitude"
+          ]
+      ]
+    , [ Plain
+          [ Str "18: "
+          , Code ( "" , [] , [] ) "I011/092"
+          , Str " - Calculated Track Geometric Altitude"
+          ]
+      ]
+    , [ Plain
+          [ Str "19: "
+          , Code ( "" , [] , [] ) "I011/215"
+          , Str " - Calculated Rate Of Climb/Descent"
+          ]
+      ]
+    , [ Plain
+          [ Str "20: "
+          , Code ( "" , [] , [] ) "I011/270"
+          , Str " - Target Size and Orientation"
+          ]
+      ]
+    , [ Plain
+          [ Str "21: "
+          , Code ( "" , [] , [] ) "I011/390"
+          , Str " - Flight Plan Related Data"
+          ]
+      ]
+    , [ Plain [ Str "(FX) - Field extension indicator" ] ]
+    , [ Plain
+          [ Str "22: "
+          , Code ( "" , [] , [] ) "I011/300"
+          , Str " - Vehicle Fleet Identification"
+          ]
+      ]
+    , [ Plain
+          [ Str "23: "
+          , Code ( "" , [] , [] ) "I011/310"
+          , Str " - Pre-programmed Message"
+          ]
+      ]
+    , [ Plain
+          [ Str "24: "
+          , Code ( "" , [] , [] ) "I011/500"
+          , Str " - Estimated Accuracies"
+          ]
+      ]
+    , [ Plain
+          [ Str "25: "
+          , Code ( "" , [] , [] ) "I011/600"
+          , Str " - Alert Messages"
+          ]
+      ]
+    , [ Plain
+          [ Str "26: "
+          , Code ( "" , [] , [] ) "I011/605"
+          , Str " - Tracks in Alert"
+          ]
+      ]
+    , [ Plain
+          [ Str "27: "
+          , Code ( "" , [] , [] ) "I011/610"
+          , Str " - Holdbar Status"
+          ]
+      ]
+    , [ Plain
+          [ Str "28: "
+          , Code ( "" , [] , [] ) "I011/SP"
+          , Str " - Special Purpose Field"
+          ]
+      ]
+    , [ Plain [ Str "(FX) - Field extension indicator" ] ]
+    , [ Plain
+          [ Str "29: "
+          , Code ( "" , [] , [] ) "I011/RE"
+          , Str " - Reserved Expansion Field"
+          ]
+      ]
+    , [ Plain [ Emph [ Str "Spare" ] ] ]
+    , [ Plain [ Emph [ Str "Spare" ] ] ]
+    , [ Plain [ Emph [ Str "Spare" ] ] ]
+    , [ Plain [ Emph [ Str "Spare" ] ] ]
+    , [ Plain [ Emph [ Str "Spare" ] ] ]
+    , [ Plain [ Emph [ Str "Spare" ] ] ]
+    , [ Plain [ Str "(FX) - Field extension indicator" ] ]
+    ]
+]

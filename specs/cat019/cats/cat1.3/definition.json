@@ -1,0 +1,1463 @@
+{
+    "contents": {
+        "catalogue": [
+            {
+                "documentation": {
+                    "definition": "This Data Item allows for a more convenient handling of the\nmessages at the receiver side by further defining the type of\ninformation.\n",
+                    "description": null,
+                    "remark": "NOTES:\n  1. In applications where data of various types is exchanged, the Message\n     Type Data Item facilitates the proper message handling at the receiver\n     side.\n  2. All Message Type values are reserved for common standard use.\n"
+                },
+                "name": "000",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": [
+                                        [
+                                            1,
+                                            "Start of Update Cycle"
+                                        ],
+                                        [
+                                            2,
+                                            "Periodic Status Message"
+                                        ],
+                                        [
+                                            3,
+                                            "Event-triggered Status Message"
+                                        ]
+                                    ],
+                                    "tag": "ContentTable"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Message Type"
+            },
+            {
+                "documentation": {
+                    "definition": "Identification of the system from which the data is received.\n",
+                    "description": null,
+                    "remark": "Note:\n    - The up-to-date list of SACs is published on the\n      EUROCONTROL Web Site (http://www.eurocontrol.int/asterix).\n"
+                },
+                "name": "010",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SAC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Area Code"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "SIC",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 8,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [],
+                                                        "tag": "ContentRaw"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "System Identification Code"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Data Source Identifier"
+            },
+            {
+                "documentation": {
+                    "definition": "Absolute time stamping expressed as UTC.\n",
+                    "description": null,
+                    "remark": "Note:\n\n    The time of day value is reset to zero each day at midnight.\n"
+                },
+                "name": "140",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 24,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 7
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Unsigned"
+                                        },
+                                        "unit": "s"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Time of Day"
+            },
+            {
+                "documentation": {
+                    "definition": "Information concerning the configuration and status of a System.\n",
+                    "description": null,
+                    "remark": "Note:\n\n    A time source is considered as valid when either externally synchronised\n    or running on a local oscillator within the required accuracy of UTC.\n"
+                },
+                "name": "550",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "NOGO",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Operational"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Degraded"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "NOGO"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Undefined"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Operational Release Status of the System"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "OVL",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "No overload"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Overload"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Overload Indicator"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TSV",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Valid"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Invalid"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Time Source Validity"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TTF",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Test Target Operative"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Test Target Failure"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Test Target"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 3,
+                                "tag": "Spare"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "System Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Information concerning the configuration and status of the Tracking processors.\n",
+                    "description": null,
+                    "remark": "Note:\n\n    Both Bits of one TP set to zero means, that this TP is not used\n    in the system.\n"
+                },
+                "name": "551",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP1A",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Standby"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Exec"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP1B",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP2A",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Standby"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Exec"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP2B",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP3A",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Standby"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Exec"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP3B",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP4A",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Standby"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Exec"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "TP4B",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 1,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                0,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                1,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": ""
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Tracking Processor Detailed Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Information concerning the configuration and status of the Remote Sensors (RS)\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "552",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "type": {
+                                "contents": {
+                                    "byteSize": 1
+                                },
+                                "tag": "RepetitiveRegular"
+                            },
+                            "variation": {
+                                "contents": [
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "RSI",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 8,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [],
+                                                                "tag": "ContentRaw"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "8-bit Identification Number of RS"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": 1,
+                                        "tag": "Spare"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "RS1090",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 1,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        0,
+                                                                        "Not present"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Present"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Receiver 1090 MHz"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "TX1030",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 1,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        0,
+                                                                        "Not present"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Present"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Transmitter 1030 MHz"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "TX1090",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 1,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        0,
+                                                                        "Not present"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Present"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "Transmitter 1090 MHz"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "RSS",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 1,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        0,
+                                                                        "Faulted"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Good"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "RS Status"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": {
+                                            "documentation": {
+                                                "definition": null,
+                                                "description": null,
+                                                "remark": null
+                                            },
+                                            "name": "RSO",
+                                            "rule": {
+                                                "contents": {
+                                                    "contents": {
+                                                        "bitSize": 1,
+                                                        "rule": {
+                                                            "contents": {
+                                                                "contents": [
+                                                                    [
+                                                                        0,
+                                                                        "Offline"
+                                                                    ],
+                                                                    [
+                                                                        1,
+                                                                        "Online"
+                                                                    ]
+                                                                ],
+                                                                "tag": "ContentTable"
+                                                            },
+                                                            "tag": "ContextFree"
+                                                        }
+                                                    },
+                                                    "tag": "Element"
+                                                },
+                                                "tag": "ContextFree"
+                                            },
+                                            "title": "RS Operational"
+                                        },
+                                        "tag": "Item"
+                                    },
+                                    {
+                                        "contents": 2,
+                                        "tag": "Spare"
+                                    }
+                                ],
+                                "tag": "Group"
+                            }
+                        },
+                        "tag": "Repetitive"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Remote Sensor Detailed Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Information concerning the configuration and status of the Reference Transponder.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "553",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "REFTR1",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                1,
+                                                                "Warning"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Ref Trans 1 Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 2,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "REFTR2",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                1,
+                                                                "Warning"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Ref Trans 2 Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 1,
+                                "tag": "Spare"
+                            },
+                            null,
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "REFTR3",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                1,
+                                                                "Warning"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Ref Trans 3 Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 2,
+                                "tag": "Spare"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "REFTR4",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 2,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": [
+                                                            [
+                                                                1,
+                                                                "Warning"
+                                                            ],
+                                                            [
+                                                                2,
+                                                                "Faulted"
+                                                            ],
+                                                            [
+                                                                3,
+                                                                "Good"
+                                                            ]
+                                                        ],
+                                                        "tag": "ContentTable"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Ref Trans 4 Status"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": 1,
+                                "tag": "Spare"
+                            },
+                            null
+                        ],
+                        "tag": "Extended"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Reference Transponder Detailed Status"
+            },
+            {
+                "documentation": {
+                    "definition": "Position of the MLT reference point in WGS-84 Coordinates.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "600",
+                "rule": {
+                    "contents": {
+                        "contents": [
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LAT",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 90,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThanOrEqualTo"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 30
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Latitude"
+                                },
+                                "tag": "Item"
+                            },
+                            {
+                                "contents": {
+                                    "documentation": {
+                                        "definition": null,
+                                        "description": null,
+                                        "remark": null
+                                    },
+                                    "name": "LON",
+                                    "rule": {
+                                        "contents": {
+                                            "contents": {
+                                                "bitSize": 32,
+                                                "rule": {
+                                                    "contents": {
+                                                        "contents": {
+                                                            "constraints": [
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": -180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "GreaterThanOrEqualTo"
+                                                                },
+                                                                {
+                                                                    "contents": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    },
+                                                                    "tag": "LessThan"
+                                                                }
+                                                            ],
+                                                            "lsb": {
+                                                                "contents": {
+                                                                    "denominator": {
+                                                                        "contents": {
+                                                                            "base": 2,
+                                                                            "exponent": 30
+                                                                        },
+                                                                        "tag": "NumPow"
+                                                                    },
+                                                                    "numerator": {
+                                                                        "contents": 180,
+                                                                        "tag": "NumInt"
+                                                                    }
+                                                                },
+                                                                "tag": "NumDiv"
+                                                            },
+                                                            "signedness": {
+                                                                "contents": [],
+                                                                "tag": "Signed"
+                                                            },
+                                                            "unit": "°"
+                                                        },
+                                                        "tag": "ContentQuantity"
+                                                    },
+                                                    "tag": "ContextFree"
+                                                }
+                                            },
+                                            "tag": "Element"
+                                        },
+                                        "tag": "ContextFree"
+                                    },
+                                    "title": "Longitude"
+                                },
+                                "tag": "Item"
+                            }
+                        ],
+                        "tag": "Group"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Position of the MLT System Reference Point"
+            },
+            {
+                "documentation": {
+                    "definition": "Height of the MLT system reference point in two’s complement form.\nThe height shall use mean sea level as the zero reference level.\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "610",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 16,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [
+                                            {
+                                                "contents": {
+                                                    "contents": -8192,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "GreaterThanOrEqualTo"
+                                            },
+                                            {
+                                                "contents": {
+                                                    "contents": 8192,
+                                                    "tag": "NumInt"
+                                                },
+                                                "tag": "LessThanOrEqualTo"
+                                            }
+                                        ],
+                                        "lsb": {
+                                            "contents": {
+                                                "denominator": {
+                                                    "contents": {
+                                                        "base": 2,
+                                                        "exponent": 2
+                                                    },
+                                                    "tag": "NumPow"
+                                                },
+                                                "numerator": {
+                                                    "contents": 1,
+                                                    "tag": "NumInt"
+                                                }
+                                            },
+                                            "tag": "NumDiv"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Signed"
+                                        },
+                                        "unit": "m"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Height of the MLT System Reference Point"
+            },
+            {
+                "documentation": {
+                    "definition": "WGS-84 undulation value of the MLT system reference point, in meters.\nGeoid undulation value is the difference between the ellipsoidal height\nand the height above mean sea level\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "620",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "bitSize": 8,
+                            "rule": {
+                                "contents": {
+                                    "contents": {
+                                        "constraints": [],
+                                        "lsb": {
+                                            "contents": 1,
+                                            "tag": "NumInt"
+                                        },
+                                        "signedness": {
+                                            "contents": [],
+                                            "tag": "Signed"
+                                        },
+                                        "unit": "m"
+                                    },
+                                    "tag": "ContentQuantity"
+                                },
+                                "tag": "ContextFree"
+                            }
+                        },
+                        "tag": "Element"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "WGS-84 Undulation"
+            },
+            {
+                "documentation": {
+                    "definition": "Expansion\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "RE",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "ReservedExpansion"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Reserved Expansion Field"
+            },
+            {
+                "documentation": {
+                    "definition": "Special Purpose Field\n",
+                    "description": null,
+                    "remark": null
+                },
+                "name": "SP",
+                "rule": {
+                    "contents": {
+                        "contents": {
+                            "contents": [],
+                            "tag": "SpecialPurpose"
+                        },
+                        "tag": "Explicit"
+                    },
+                    "tag": "ContextFree"
+                },
+                "title": "Special Purpose Field"
+            }
+        ],
+        "category": 19,
+        "date": {
+            "day": 1,
+            "month": 12,
+            "year": 2010
+        },
+        "edition": {
+            "major": 1,
+            "minor": 3
+        },
+        "preamble": "Surveillance data exchange.\n",
+        "title": "Multilateration System Status Messages",
+        "uap": {
+            "contents": [
+                {
+                    "contents": "010",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "000",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "140",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "550",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "551",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "552",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "553",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "600",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "610",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "620",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": [],
+                    "tag": "UapItemSpare"
+                },
+                {
+                    "contents": "RE",
+                    "tag": "UapItem"
+                },
+                {
+                    "contents": "SP",
+                    "tag": "UapItem"
+                }
+            ],
+            "tag": "Uap"
+        }
+    },
+    "tag": "AsterixBasic"
+}
