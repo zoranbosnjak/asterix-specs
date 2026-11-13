@@ -1,0 +1,435 @@
+ref 020 "Multilateration Target Reports Expansion"
+edition 1.5
+date 2025-07-02
+
+compound 1
+    PA "Position Accuracy"
+        definition
+            Standard Deviation of Position
+        compound
+            DOP "DOP of Position"
+                group
+                    X "DOP Along X Axis"
+                        element 16
+                            unsigned quantity 1/2^2 ""
+                    Y "DOP Along Y Axis"
+                        element 16
+                            unsigned quantity 1/2^2 ""
+                    XY "DOP Covariance Component"
+                        element 16
+                            signed quantity 1/2^2 ""
+                remark
+                    Notes:
+
+                    1. DOP Covariance Component (DOP-xy) = sign {HDOPxy} * sqrt {abs (HDOPxy)}
+                    2. "Maximum value" means Maximum value or above.
+                    3. From Edition 1.4 of this specification Data Item "High Precision DOP" has een
+                       defined. To prevent incompatibilities in receiving systems, the "High Precision
+                       DOP" does not replace this "DOP of Position" Data Item but provide additional
+                       information. Decoders using this "DOP of Position" Data Item shall continue to
+                       provide this Data Item.
+            SDC "Standard Deviation of Position (Cartesian)"
+                group
+                    X "Standard Deviation of X-Component"
+                        element 16
+                            unsigned quantity 1/2^2 "m"
+                    Y "Standard Deviation of Y-Component"
+                        element 16
+                            unsigned quantity 1/2^2 "m"
+                    COV "XY Covariance Component"
+                        element 16
+                            signed quantity 1/2^2 "m"
+                remark
+                    Notes:
+
+                    1. XY covariance component = sign {Cov(X,Y)} * sqrt {abs [Cov (X,Y)]}
+                    2. "Maximum value" means Maximum value or above.
+            SDH "Standard Deviation of Geometric Height (WGS-84)"
+                definition
+                    Standard deviation of Geometric Height of the target expressed in WGS-84.
+                element 16
+                    unsigned quantity 1 "ft"
+                remark
+                    Maximum value means maximum value or above.
+            SDW "Standard Deviation of Position (WGS-84)"
+                group
+                    LAT "Standard Deviation of Latitude Component"
+                        element 16
+                            unsigned quantity 180/2^25 "°"
+                    LON "Standard Deviation of Longitude Component"
+                        element 16
+                            unsigned quantity 180/2^25 "°"
+                    COV "Lat/Long Covariance Component"
+                        element 16
+                            signed quantity 180/2^25 "°"
+                remark
+                    Notes:
+
+                    1. WGS-84 covariance component = sign {Cov(Lat,Long)} * sqrt {abs [Cov (Lat,Long)]}
+                    2. "Maximum value" means Maximum value or above.
+    GVV "Ground Velocity Vector"
+        definition
+            Ground Speed and Track Angle elements of Ground Velocity Vector.
+        group
+            RE "Range Exceeded Indicator"
+                element 1
+                    table
+                        0: Value in defined range
+                        1: Value exceeds defined range
+            GS "Ground Speed"
+                element 15
+                    unsigned quantity 1/2^14 "NM/s" >= 0 < 2
+            TA "Track Angle"
+                element 16
+                    unsigned quantity 360/2^16 "°"
+        remark
+            Notes:
+
+            1. The RE-Bit, if set, indicates that the value to be transmitted is beyond the range
+               defined for this specific data item and the applied technology. In this case the
+               Ground Speed contains the maximum value defined and the RE-bit indicates
+               that the actual value is greater than the value contained in the field.
+            2. The True North is the geographical north at the position of the aircraft.
+            3. This Data Item should be populated by the Ground Velocity Vector as
+               calculated by the Multilateration System.
+    GVA "Ground Velocity Accuracy"
+        definition
+            Accuracy of the Ground Speed and Track Angle elements of Ground Velocity Vector.
+        group
+            GSSD "Standard Deviation of the Ground Speed"
+                element 8
+                    unsigned quantity 1/2^14 "NM/s" >= 0 < 1/2^6
+            TASD "Standard Deviation of the Track Angle"
+                element 8
+                    unsigned quantity 360/2^12 "°" >= 0 < 45/2
+        remark
+            Maximum value indicates maximum value or above.
+    TRT "Time of ASTERIX Report Transmission"
+        definition
+            Time of the transmission of the ASTERIX category 020 report in
+            the form of elapsed time since last midnight, expressed as UTC.
+        element 24
+            unsigned quantity 1/2^7 "s"
+        remark
+            NOTE: The time of ASTERIX report transmission value is reset to zero
+            at every midnight. The Time of Report Transmission is the time
+            used as a reference for the different data-ages provided in DA.
+    DA "Data Ages"
+        definition
+            Age of specific data-items or subfields at the Time of Report
+            Transmission provided in TRT.
+        compound
+            SPI "Special Position Identification Age"
+                definition
+                    Age of the Special Position Information (SPI) information
+                    transmitted in data item I020/020 SPI field.
+                element 8
+                    unsigned quantity 1/10 "s"
+            TI "Target Identification Age"
+                definition
+                    Age of the Target Identification information transmitted
+                    in data item I020/245.
+                element 8
+                    unsigned quantity 1/10 "s"
+            MBD "BDS Register Data Age"
+                definition
+                    Age for the BDS Register Data data extracted from aircraft
+                    transponder as transmitted in Data item I020/250.
+                repetitive 1
+                    group
+                        BDS1 "Comm B Data Buffer Store 1 Address"
+                            element 4
+                                raw
+                        BDS2 "Comm B Data Buffer Store 2 Address"
+                            element 4
+                                raw
+                        MBA "Age of the Information in the BDS Report"
+                            element 8
+                                unsigned quantity 1/10 "s"
+            M3A "Mode-3/A Code Age"
+                definition
+                    Age of the information transmitted in data item I020/070.
+                element 8
+                    unsigned quantity 1/10 "s"
+            FL "Flight Level Age"
+                definition
+                    Age of the information transmitted in data item I020/090.
+                element 8
+                    unsigned quantity 1/10 "s"
+            FS "Flight Status Age"
+                definition
+                    Age of the Flight Status information transmitted in data
+                    item I020/230 STAT subfield.
+                element 8
+                    unsigned quantity 1/10 "s"
+            GH "Geometric / Measured Height Age"
+                definition
+                    Age of the information transmitted in data item I020/105
+                    or in data item I020/110.
+                element 8
+                    unsigned quantity 1/10 "s"
+            TA "Target Address Age"
+                definition
+                    Age of the Target Address information transmitted in data
+                    item I020/220.
+                element 8
+                    unsigned quantity 1/10 "s"
+            MC "Mode C Code Age"
+                definition
+                    Age of the information transmitted in data item I020/100.
+                element 8
+                    unsigned quantity 1/10 "s"
+            MSS "Mode-S Specific Service Capability Age"
+                definition
+                    Age of the Mode-S Specific Service Capability information
+                    transmitted in data item I020/230 MSSC subfield.
+                element 8
+                    unsigned quantity 1/10 "s"
+            ARC "Altitude Reporting Capability Age"
+                definition
+                    Age of the Altitude reporting capability information
+                    transmitted in item I020/230 ARC subfield.
+                element 8
+                    unsigned quantity 1/10 "s"
+            AIC "Aircraft Identification Capability Age"
+                definition
+                    Age of the Aircraft Identification Capability information
+                    transmitted in data item I020/230 AIC subfield.
+                element 8
+                    unsigned quantity 1/10 "s"
+            M2 "Mode-2 Code Age"
+                definition
+                    Age of the information transmitted in data item I020/050.
+                element 8
+                    unsigned quantity 1/10 "s"
+            M1 "Mode-1 Code Age"
+                definition
+                    Age of information transmitted in data item I020/055.
+                element 8
+                    unsigned quantity 1/10 "s"
+            ARA "ACAS Resolution Advisory Age"
+                definition
+                    Age of the ACAS Advisory Report transmitted in data item
+                    I020/260.
+                element 8
+                    unsigned quantity 1/10 "s"
+            VI "Vehicle Fleet Identification Age"
+                definition
+                    Age of the information transmitted in data item I020/300.
+                element 8
+                    unsigned quantity 1/10 "s"
+            MSG "Pre-programmed Message Age"
+                definition
+                    Age of the information transmitted in data item I020/310.
+                element 8
+                    unsigned quantity 1/10 "s"
+        remark
+            Notes:
+
+            1. In all subfields, the age is the time delay since the latest update received from
+               the target.
+            2. The ages are provided in reference to the time of the Target Report
+               Transmission (TRT) provided in the message.
+            3. In all the subfields, the maximum value indicates "maximum value or above".
+            4. If the data-item is not transmitted in the target report the corresponding age is
+               not transmitted.
+            5. The Target Address is considered as received if either it has been received in
+               clear in a message or if it has been used to decode a message associated to
+               the target.
+    HPDOP "High Precision Dilution of Position"
+        definition
+            Dilution of Precision of the reported Multilateration Position in High Precision.
+        group
+            X "HPDOP Along X Axis"
+                element 16
+                    unsigned quantity 1/2^8 "" >= 0 < 256
+            Y "HPDOP Along Y Axis"
+                element 16
+                    unsigned quantity 1/2^8 "" >= 0 < 256
+            XY "HPDOP Pearson Correlation Coefficient"
+                element 16
+                    signed quantity 1/2^15 "" >= -1 < 1
+        remark
+            Notes:
+
+            1. DOP "Pearson Correlation Coefficient" ρ(X,Y) = DOPxy / (DOPx *
+               DOPy) where DOPxy is the DOP Covariance Component.
+            2. "Maximum value" means Maximum value or above.
+            3. To prevent incompatibilities with existing decoders, this Data
+               Item does not replace the "DOP of Position" in Data Item PA,
+               Position Accuracy, Subfield #1. Encoders providing "DOP of
+               Position" in Data Item PA, Position Accuracy, Subfield #1
+               shall continue to do so.
+    STRD "Supplementary Target Report Descriptor"
+        definition
+            Target report descriptor supplementary to I020/020.
+        extended
+            ADSBCAP "ADS-B Capability Reported by the Target"
+                element 4
+                    table
+                        0: ADS-B Version 0
+                        1: ADS-B Version 1
+                        2: ADS-B Version 2
+                        3: ADS-B Version 3
+                        4: Reserved for future use
+                        5: Reserved for future use
+                        6: Reserved for future use
+                        7: Reserved for future use
+                        8: Reserved for future use
+                        9: Reserved for future use
+                        10: Reserved for future use
+                        11: Reserved for future use
+                        12: Reserved for future use
+                        13: Reserved for future use
+                        14: No ADS-B
+                        15: Information not available
+            EHSCAP40 "EHS Capability of the Target for BDS 4,0"
+                group
+                    EP "Element Populated Bit"
+                        element 1
+                            table
+                                0: Element not populated
+                                1: Element populated
+                    VAL "EHS Capability for BDS 4,0"
+                        element 1
+                            table
+                                0: Target cannot provide BDS 4,0
+                                1: Target can provide BDS 4,0
+            EHSCAP50 "EHS Capability of the Target for BDS 5,0"
+                group
+                    EP "Element Populated Bit"
+                        element 1
+                            table
+                                0: Element not populated
+                                1: Element populated
+                    VAL "EHS Capability for BDS 5,0"
+                        element 1
+                            table
+                                0: Target cannot provide BDS 5,0
+                                1: Target can provide BDS 5,0
+            EHSCAP60 "EHS Capability of the Target for BDS 6,0"
+                group
+                    EP "Element Populated Bit"
+                        element 1
+                            table
+                                0: Element not populated
+                                1: Element populated
+                    VAL "EHS Capability for BDS 6,0"
+                        element 1
+                            table
+                                0: Target cannot provide BDS 6,0
+                                1: Target can provide BDS 6,0
+            ATRPS "Active Transponder Side Indicator"
+                element 2
+                    table
+                        0: Information not available
+                        1: Transponder #1 (left side or single)
+                        2: Transponder #2 (right side)
+                        3: Transponder #3 (auxiliary or backup)
+            POSMT "Type of Message Used to Calculate the WAM Position"
+                definition
+                    Type of message used to calculate the WAM position in
+                    I020/041 or I020/042
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            GBSSRC "Source of the Information in I020/020/GBS"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            SPISRC "Source of the Information in I020/020/SPI"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            ATRPSSRC "Source of the Information in I020/020/ATRPS"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            M3ASRC "Source of the Information in I020/070"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            FLSRC "Source of the Information in I020/090"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            COMSRC "Source of the Position Information in I020/230/COM"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            ARCSRC "Source of the Position Information in I020/230/ARC"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            ACIDSRC "Source of the Information in I020/245"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            ARASRC "Source of the Information in I020/260"
+                element 2
+                    table
+                        0: Information not available
+                        1: Mode S message received passively (w/o interrogation)
+                        2: Mode S message received in response to an active interrogation
+                        3: ADS-B message
+            spare 7
+            -
+        remark
+            Note:
+
+            ADSBCAP (bits-40/37) indicates if the target is ADS-B capable and, if yes,
+            which version of the ADS-B system is installed.
+
+            ADSBCAP =0 indicates that the target is ADS-B version 0 capable as
+            defined in EUROCAE ED-102/RTCA DO-260.
+
+            ADSBCAP =1 indicates that the target is ADS-B version 1 capable as
+            defined in RTCA DO-260A for 1090 ES and DO-282 or DO-282A for UAT.
+
+            ADSBCAP =2 indicates that the target is ADS-B version 2 capable as
+            defined in EUROCAE ED-102A/RTCA DO-260B for 1090 ES and DO-282B
+            for UAT.
+
+            ADSBCAP =3 indicates that the target is ADS-B version 3 capable as
+            defined in EUROCAE ED-102B/RTCA DO-260C for 1090 ES and DO-282C
+            for UAT.
+    GEN20 "Generic Category 020 Data"
+        definition
+            Placeholder for the addition of information to Category 020 even if
+            all bits of the Item Indicator are allocated.
+        compound
+            -
+        remark
+            Notes:
+
+            1. For this version of the specification no Sub-Items have been defined for this
+               Item.
+            2. The definition of additional subitems to I020/REF/GEN20 is the responsibility
+               of the AMG and shall be agreed upon prior to implementation.
