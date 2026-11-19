@@ -403,15 +403,15 @@ items
                            respective link technology protocol version (“MOPS version”,
                            see I021/210).
                         2. The primary subfield is kept for backwards compatibility reasons.
-                           Version 2 NIC-values shall be mapped accordingly. This is required
-                           to ensure that downstream systems, which are not capable of
-                           interpreting extensions 2 and 3 (because they use an ASTERIX
-                           edition earlier than 2.0) still get the required information
+                           NIC-values of MOPS Version 2 or higher shall be mapped accordingly.
+                           This is required to ensure that downstream systems, which are not
+                           capable of interpreting extensions 2 and 3 (because they use an
+                           ASTERIX edition earlier than 2.0) still get the required information
             -
             NICBARO "Navigation Integrity Category for Barometric Altitude"
                 element 1
                     raw
-            SIL "Surveillance (version 1) or Source (version 2) Integrity Level"
+            SIL "Surveillance (Version 1) or Source (Version 2 or Higher) Integrity Level"
                 element 2
                     raw
             NACP "Navigation Accuracy Category for Position"
@@ -424,7 +424,7 @@ items
                     table
                         0: Measured per flight-hour
                         1: Measured per sample
-            SDA "Horizontal Position System Design Assurance Level (as Defined in Version 2)"
+            SDA "Horizontal Position System Design Assurance Level (as Defined in Version 2 or Higher)"
                 element 2
                     raw
             GVA "Geometric Altitude Accuracy"
@@ -443,20 +443,20 @@ items
                    respective link technology protocol version (“MOPS version”,
                    see I021/210).
                 2. The primary subfield is kept for backwards compatibility reasons.
-                   Version 2 NIC-values shall be mapped accordingly. This is required
-                   to ensure that downstream systems, which are not capable of
-                   interpreting extensions 2 and 3 (because they use an ASTERIX
-                   edition earlier than 2.0) still get the required information
-                3. “Version 1” or “Version 2” refers to the MOPS version as defined
-                   in data item I021/210, bits 6/4
-                4. “Version 2” refers to the MOPS version as defined in data item
+                   NIC-values of MOPS Version 2 or higher shall be mapped accordingly.
+                   This is required to ensure that downstream systems, which are not
+                   capable of interpreting extensions 2 and 3 (because they use an
+                   ASTERIX edition earlier than 2.0) still get the required information
+                3. “Version X” refers to the MOPS version as defined in data item
+                   I021/210, bits 6/4
+                4. “Version 2 or higher” refers to the MOPS version as defined in data item
                    I021/210, bits 6/4
                 5. PIC=0 is defined for completeness only. In this case the third
                    extension shall not be generated.
-                6. For ED102A/DO260B PIC values of 7 and 9, the NIC supplements
+                6. For Version 2 or higher PIC values of 7 and 9, the NIC supplements
                    for airborne messages (NIC supplements A/B) and surface messages
                    (NIC supplements A/C) are listed.
-                   For ED102A/DO260B PIC=8, the NIC supplements A/B for airborne
+                   For Version 2 or higher PIC=8, the NIC supplements A/B for airborne
                    messages are listed.
                    For DO260A PIC values of 7 and 8, the NIC supplement for airborne
                    messages is shown in brackets.
@@ -647,7 +647,7 @@ items
                    the “Target Altitude” as defined by ICAO.
                 2. The value of “Source” (bits 15/14) indicating “unknown” or “Aircraft
                    Altitude” is kept for backward compatibility as these indications are
-                   not provided by “version 2” systems as defined by data item I021/210,
+                   not provided by “version 2 or higher” systems as defined by data item I021/210,
                    bits 6/4.
                 3. Vertical mode indications supporting the determination of the
                    nature of the Selected Altitude are provided in the Reserved
@@ -680,11 +680,11 @@ items
             Notes:
 
                 - This item is kept for backward compatibility but shall not be used
-                  for “version 2” ADS-B systems (as defined by data item I021/210,
-                  bits 6/4) for which item 146 will be used to forward the MCP/FCU
-                  or the FMS selected altitude information. For “version 2” ADS-B
-                  systems, the vertical mode indications will be provided through
-                  the Reserved Expansion Field in the subfield NAV .
+                  for “version 2 or higher” ADS-B systems (as defined by data item
+                  I021/210, bits 6/4) for which item 146 will be used to forward the
+                  MCP/FCU or the FMS selected altitude information. For “version 2
+                  or higher” ADS-B systems, the vertical mode indications will be
+                  provided through the Reserved Expansion Field in the subfield NAV .
 
     150 "Air Speed"
         definition
@@ -987,10 +987,10 @@ items
             associated with the transponder transmitting the RA message and threat
             identity data.
         group
-            TYP "Message Type (= 28 for 1090 ES, Version 2)"
+            TYP "Message Type (= 28 for 1090 ES, Version 2 or Higher)"
                 element 5
                     raw
-            STYP "Message Sub-type (= 2 for 1090 ES, Version 2)"
+            STYP "Message Sub-type (= 2 for 1090 ES, Version 2 or Higher)"
                 element 3
                     raw
             ARA "Active Resolution Advisories"
@@ -1014,7 +1014,8 @@ items
         remark
             Notes:
 
-                1. Version denotes the MOPS version as defined in I021/210, bits 6/4
+                1. “Version 2 or higher” denotes the MOPS version as defined in
+                   I021/210, bits 6/4
                 2. This data items copies the value of BDS register 6,1 for message
                    type 28, subtype 2
                 3. The “TYP” and “STYP” items are implementation (i.e. link technology)
@@ -1060,9 +1061,9 @@ items
         remark
             Notes:
 
-                1. Version 2 (as defined in I021/210, bits 6/4) data technology
-                   protocols encode “No Data or Unknown” with value 0. In this
-                   case data item I021/271, first extension is not generated.
+                1. Version 2 or higher (as defined in I021/210, bits 6/4) data
+                   technology protocols encode “No Data or Unknown” with value 0.
+                   In this case data item I021/271, first extension is not generated.
                 2. As of edition 2.2 the structure of this data item has been changed.
                    Edition 2.2 is not backwards compatible with previous editions.
 
