@@ -170,37 +170,25 @@ items
     553 "Reference Transponder Detailed Status"
         definition
             Information concerning the configuration and status of the Reference Transponder.
-        extended
-            REFTR1 "Ref Trans 1 Status"
-                element 2
-                    table
-                        1: Warning
-                        2: Faulted
-                        3: Good
-            spare 2
-            REFTR2 "Ref Trans 2 Status"
-                element 2
-                    table
-                        1: Warning
-                        2: Faulted
-                        3: Good
-            spare 1
-            -
-            REFTR3 "Ref Trans 3 Status"
-                element 2
-                    table
-                        1: Warning
-                        2: Faulted
-                        3: Good
-            spare 2
-            REFTR4 "Ref Trans 4 Status"
-                element 2
-                    table
-                        1: Warning
-                        2: Faulted
-                        3: Good
-            spare 1
-            -
+        repetitive fx
+            group
+                REFTRA "Status of Reference Transponder 2n-1"
+                    element 2
+                        table
+                            1: Warning
+                            2: Faulted
+                            3: Good
+                spare 2
+                REFTRB "Status of Reference Transponder 2n"
+                    element 2
+                        table
+                            1: Warning
+                            2: Faulted
+                            3: Good
+                spare 1
+        remark
+            Repetition n (n = 1, 2, ...) carries the status of Reference
+            Transponders 2n-1 and 2n.
 
     600 "Position of the MLT System Reference Point"
         definition
@@ -226,7 +214,7 @@ items
             Geoid undulation value is the difference between the ellipsoidal height
             and the height above mean sea level
         element 8
-            signed quantity 1 "m"
+            signed quantity 1 "m" >= -127 <= 127
 
     RE "Reserved Expansion Field"
         definition

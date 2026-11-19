@@ -126,6 +126,12 @@ items
                 22: Fixed ground or tethered obstruction
                 23: Cluster obstacle
                 24: Line obstacle
+        remark
+            Note:
+                - Values 4, 6, 13, 14, and 16 are available for ADS-B Versions 0, 1,
+                  and 2 only. For the purpose of Avionics Monitoring, the values 4, 6,
+                  13, 14 and 16 shall also be sent if received from a Version 3 ADS-B
+                  System.
 
     040 "Target Report Descriptor"
         definition
@@ -396,10 +402,10 @@ items
                 element 2
                     table
                         3: Reserved
-                        2: TOMRp whole seconds = (I021/075) Whole seconds - 1
-                        1: TOMRp whole seconds = (I021/075) Whole seconds + 1
-                        0: TOMRp whole seconds = (I021/075) Whole seconds
-            TOMRP "Fractional Part of the Time of Message Reception for Position in the Ground Station"
+                        2: TOMRv whole seconds = (I021/075) Whole seconds - 1
+                        1: TOMRv whole seconds = (I021/075) Whole seconds + 1
+                        0: TOMRv whole seconds = (I021/075) Whole seconds
+            TOMRV "Fractional Part of the Time of Message Reception for Velocity in the Ground Station"
                 element 30
                     unsigned quantity 1/2^30 "s"
 
@@ -441,14 +447,15 @@ items
                            respective link technology protocol version (“MOPS version”,
                            see I021/210).
                         2. The primary subfield is kept for backwards compatibility reasons.
-                           Version 2 NIC-values shall be mapped accordingly. This is required
-                           to ensure that downstream systems, which are not capable of
-                           interpreting extensions 2 and 3 (because they use an ASTERIX
+                           NIC-values of MOPS Version 2 or higher shall be mapped accordingly.
+                           This is required to ensure that downstream systems, which are not
+                           capable of interpreting extensions 2 and 3 (because they use an
+                           ASTERIX edition earlier than 2.0) still get the required information
             -
             NICBARO "Navigation Integrity Category for Barometric Altitude"
                 element 1
                     raw
-            SIL "Surveillance (version 1) or Source (version 2) Integrity Level"
+            SIL "Surveillance (Version 1) or Source (Version 2 or Higher) Integrity Level"
                 element 2
                     raw
             NACP "Navigation Accuracy Category for Position"
@@ -461,7 +468,7 @@ items
                     table
                         0: Measured per flight-hour
                         1: Measured per sample
-            SDA "Horizontal Position System Design Assurance Level (as Defined in Version 2)"
+            SDA "Horizontal Position System Design Assurance Level (as Defined in Version 2 or Higher)"
                 element 2
                     raw
             GVA "Geometric Altitude Accuracy"
@@ -530,10 +537,10 @@ items
                   see I021/210).
 
                 - The primary subfield is kept for backwards compatibility reasons.
-                  Version 2 NIC-values shall be mapped accordingly. This is required
-                  to ensure that downstream systems, which are not capable of
-                  interpreting extensions 2 and 3 (because they use an ASTERIX
-                  edition earlier than 2.0) still get the required information.
+                  NIC-values of MOPS Version 2 or higher shall be mapped accordingly.
+                  This is required to ensure that downstream systems, which are not
+                  capable of interpreting extensions 2 and 3 (because they use an
+                  ASTERIX edition earlier than 2.0) still get the required information
 
                 - “Version X” refers to the MOPS version as defined in data item
                   I021/210/VN
@@ -691,7 +698,7 @@ items
                                 1: Trajectory Intent Data is not valid
                     spare 5
                     -
-            TID "Trajectory Intent Data"
+            TI "Trajectory Intent Data"
                 repetitive 1
                     group
                         TCA ""
@@ -857,7 +864,7 @@ items
                    the “Target Altitude” as defined by ICAO.
                 2. The value of “Source” (bits 15/14) indicating “unknown” or “Aircraft
                    Altitude” is kept for backward compatibility as these indications are
-                   not provided by “version 2” systems as defined by data item I021/210,
+                   not provided by “version 2 or higher” systems as defined by data item I021/210,
                    bits 6/4.
                 3. Vertical mode indications supporting the determination of the
                    nature of the Selected Altitude are provided in the Reserved
@@ -890,11 +897,11 @@ items
             Notes:
 
                 - This item is kept for backward compatibility but shall not be used
-                  for “version 2” ADS-B systems (as defined by data item I021/210,
-                  bits 6/4) for which item 146 will be used to forward the MCP/FCU
-                  or the FMS selected altitude information. For “version 2” ADS-B
-                  systems, the vertical mode indications will be provided through
-                  the Reserved Expansion Field in the subfield NAV .
+                  for “version 2 or higher” ADS-B systems (as defined by data item
+                  I021/210, bits 6/4) for which item 146 will be used to forward the
+                  MCP/FCU or the FMS selected altitude information. For “version 2
+                  or higher” ADS-B systems, the vertical mode indications will be
+                  provided through the Reserved Expansion Field in the subfield NAV.
 
     150 "Air Speed"
         definition
@@ -1172,13 +1179,18 @@ items
 
                 - In Bits 6/4 (VN) the possibility has been added to indicate an
                   Extended Squitter received from a “Version 3” ADS-B System
-                  conforming to Ref. [11]. This edition of the Category 021
-                  Specification has NOT been extended to process additional data
-                  contained in VERSION 3 Extended Squitters. Thus, systems in line
-                  with this specification cannot benefit from the changes applied.
-                  Adding Version 3 to the permitted Version Numbers only permits to
-                  utilise the Version 3 Extended Squitters by decoding the information
-                  that can be encoded in the version of this specification.
+                  conforming to EUROCAE ED-102B/RTCA DO-260C [Ref. 11]. This
+                  edition of the Category 021 Specification has been extended to
+                  partially process additional data contained in Version 3 Extended
+                  Squitters. Thus, systems in line with this specification can benefit
+                  from the changes applied.
+
+                - ADS-B Versions 0, 1 and 2 are covered in full by the specification.
+                  This document contains a partial implementation of ADS-B Version
+                  3. Most modifications for the implementation of ADS-B Version 3
+                  have been performed in the Reserved Expansion Field (REF). To
+                  make use of these modifications it is required also to implement the
+                  REF (Edition 1.5).
 
     220 "Met Information"
         definition
@@ -1209,17 +1221,26 @@ items
                 2. Resolution provided by the technology “1090 MHz Extended Squitter”
                    is 1 degree.
 
-    250 "Mode S MB Data"
+    250 "BDS Register Data"
         definition
-            Mode S Comm B data as extracted from the aircraft transponder.
+            BDS Register Data as extracted from the aircraft transponder.
         repetitive 1
             element 64
                 bds
         remark
             Notes:
 
-                1. For the transmission of BDS20, item 170 should be used.
-                2. For the transmission of BDS30, item 260 is used.
+                1. For the transmission of Register 08₁₆ (as defined in EUROCAE ED-
+                   102B/RTCA DO-260C [11] Figure A-13), Data Item I021/170 should be
+                   used.
+                2. For the transmission of the information contained in Format Type Code 28,
+                   Subtype Code 2 (as defined in [11] Figure A-16 – “1090 ES TCAS RA
+                   Broadcast”), Data Item I021/260 shall be used.
+                3. This Data Item may be used to transmit (in bits 64/9) the contents of the
+                   1090 MHz Extended Squitter messages as received from the aircraft. The
+                   detailed contents of the Extended Squitter messages can be found in
+                   EUROCAE ED-102B/RTCA DO-260C [11] Appendix A. It should be noted
+                   that this data is not encoded in ASTERIX but in the original Squitter format.
 
     260 "ACAS Resolution Advisory Report"
         definition
@@ -1227,10 +1248,10 @@ items
             associated with the transponder transmitting the RA message and threat
             identity data.
         group
-            TYP "Message Type (= 28 for 1090 ES, Version 2)"
+            TYP "Message Type (= 28 for 1090 ES, Version 2 or Higher)"
                 element 5
                     raw
-            STYP "Message Sub-type (= 2 for 1090 ES, Version 2)"
+            STYP "Message Sub-type (= 2 for 1090 ES, Version 2 or Higher)"
                 element 3
                     raw
             ARA "Active Resolution Advisories"
@@ -1254,7 +1275,8 @@ items
         remark
             Notes:
 
-                1. Version denotes the MOPS version as defined in I021/210, bits 6/4
+                1. “Version 2 or higher” denotes the MOPS version as defined in
+                   I021/210, bits 6/4
                 2. This data items copies the value of BDS register 6,1 for message
                    type 28, subtype 2
                 3. The “TYP” and “STYP” items are implementation (i.e. link technology)
@@ -1308,9 +1330,9 @@ items
             Notes:
                 (see original PDF for complex encoding table)
 
-                - Version 2 (as defined in I021/210, bits 6/4) data technology
-                  protocols encode “No Data or Unknown” with value 0. In this
-                  case data item I021/271, first extension is not generated.
+                - Version 2 or higher (as defined in I021/210/VN, bits 6/4) data
+                  technology protocols encode “No Data or Unknown” with value 0.
+                  In this case data item I021/271, first extension is not generated.
 
                 - As of edition 2.2 the structure of this data item has been changed.
                   Edition 2.2 is not backwards compatible with previous editions.
@@ -1339,7 +1361,7 @@ items
                     Age of the Quality Indicators, item I021/090
                 element 8
                     unsigned quantity 1/10 "s" <= 51/2
-            TI1 "Trajectory Intent Age"
+            TI "Trajectory Intent Age"
                 description
                     Age of the Trajectory Intent information, item I021/110
                 element 8
@@ -1404,7 +1426,7 @@ items
                     Age of the Track Angle Rate, item I021/165
                 element 8
                     unsigned quantity 1/10 "s" <= 51/2
-            TI2 "Target Identification Age"
+            TID "Target Identification Age"
                 description
                     Age of the Target Identification, item I021/170
                 element 8

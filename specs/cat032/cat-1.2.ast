@@ -110,17 +110,18 @@ items
 
                     Data        Description         FPL to track Initial    End of correlation ($13),       Initial SUC correlation ($21),
                     Ref Num                         Correlation ($11),      Miniplan cancellation ($14),    Change of SUC correlation ($23)
-                                                    Miniplan update ($12)   Retained Miniplan ($15)
+                                                    Miniplan update ($12)   Retained Miniplan ($15),
+                                                                            End of SUC correlation ($22)
 
                     I032/010    Server id ...               M                       M                                   M
                     I032/015    User Number                 O                       O                                   O
                     I032/018    Data Source ...             M                       M                                   M
                     I032/020    Time of ...                 M                       M                                   M
                     I032/035    Type of Message             M                       M                                   M
-                    I032/040    Track Number            M from FPPS             M from FPPS                         M from FDPS
-                                                        X from SDPS             X from SDPS                         X from FDPS
-                    I032/050    Composed trknum...      M from SDPS             M from SDPS                         M from FDPS
-                                                        X from FPPS             X from FDPS                         X from FDPS
+                    I032/040    Track Number            M from FPPS             M from FPPS                         M from FPPS
+                                                        X from SDPS             X from SDPS                         X from SDPS
+                    I032/050    Composed trknum...      M from SDPS             M from SDPS                         M from SDPS
+                                                        X from FPPS             X from FPPS                         X from FPPS
                     I032/060    Track Mode 3/A              O                       X                                   M
                     I032/400    Callsign                    O                       X                                   X
                     I032/410    Plan Number                 O                       X                                   X
@@ -144,14 +145,14 @@ items
     050 "Composed Track Number"
         definition
             Identification of a system track.
-        extended
-            SUI "System Unit Identification"
-                element 8
-                    unsigned integer
-            STN "System Track Number"
-                element 15
-                    unsigned integer
-            -
+        repetitive fx
+            group
+                SUI "System Unit Identification"
+                    element 8
+                        unsigned integer
+                STN "System Track Number"
+                    element 15
+                        unsigned integer
         remark
             Notes:
 
