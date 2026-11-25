@@ -135,16 +135,6 @@ withPreffix :: Text -> ErrM () -> ErrM ()
 withPreffix name act = forM_ (runErrM act) $ \err -> do
     throw $ name <> ":" <> err
 
-isCapital :: Text -> Bool
-isCapital w
-    | w `elem` exceptions = True
-    | otherwise = T.head w `notElem` ['a'..'z']
-  where
-    exceptions =
-        [ "of", "in", "by", "to", "from", "the", "for", "and", "or"
-        , "with", "which", "is", "as", "on", "a", "vs."
-        ]
-
 isNegative :: Number -> Bool
 isNegative = \case
     NumInt val -> val < 0
@@ -174,9 +164,6 @@ instance Validate (BitSize, Content) where
         when (any T.null values) "empty value"
         when (sizeCheck == GT) "table too big"
         forM_ values $ \val -> do
-            forM_ (take 1 $ T.words val) $ \w -> do
-                unless (isCapital w) $ do
-                    throw $ "Expecting capitalized word -> " <> val <> " -> " <> w
             when (val /= "" && T.last val == '.') $ do
                 throw $ "Unexpected dot at the end of table entry -> " <> val
             when ('"' `elem` T.unpack val) $ do
@@ -286,9 +273,6 @@ instance Validate (NonSpare a) where
         forM_ (T.unpack name) $ \c -> do
             unless (c `elem` (['A'..'Z'] <> ['0'..'9'])) $ do
                 throw ("Invalid character " <> T.pack (show c))
-        forM_ (T.words title) $ \w -> do
-            unless (isCapital w) $ do
-                throw $ "Title not capitalized -> " <> title <> " -> " <> w
         when (title /= "" && T.last title == '.') $ do
             throw $ "Unexpected dot at the end of title -> " <> title
         when (T.strip title /= title) $ do
